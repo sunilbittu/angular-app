@@ -1,0 +1,115 @@
+<div class="container-fluid">
+    <div class="d-flex align-items-center mt-2">
+        <div class="m-2">
+            <div class="h-size"><em class="fa fa-user"></em> <strong>Language</strong></div>
+        </div>
+        <div class="flex-fill">
+        </div>
+        <div class="m-3"><input class="form-control rounded-pill py-2 border-right-0 border" type="search"
+            placeholder="search" id="example-search-input" [(ngModel)]="searchModel" (keyup)="fetchLanguages()">
+        </div>        
+    </div>
+    <div class="row">
+        <div class="col-md-12">
+            <table class="table table-bordered table-hover table-sm  ">
+                <thead>
+                    <tr>
+                        <th><a>Language Code</a></th>
+                        <th><a>Language Name</a></th>
+                        <th><a>Action</a></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let language of languageList | paginate
+                    : {
+                        itemsPerPage: itemsPerPage,
+                        currentPage: currentPage,
+                        totalItems: totalItems
+                      };let i=index">
+                        <td>{{language.languageCode}} </td>
+                        <td>{{language.languageName}} </td>
+                        <td>
+                            <a title="Edit" class="icon-margin" data-toggle="modal" data-target="#myModal-edit"
+                                (click)="modelShowEdit(language)"><em class="fas fa-user-edit"></em></a>
+                            <a title="Delete" class="icon-margin" mwlConfirmationPopover [popoverTitle]="popoverTitle"
+                                [popoverMessage]="popoverMessage" placement="left" (confirm)="delete(language.languageId)"
+                                (cancel)="cancelClicked = true"><span class="fas fa-trash"></span></a>
+                        </td>
+                    </tr>
+                </tbody>
+
+            </table>
+            <div class="row" *ngIf="totalElements!=0">
+                <div class="col-md-6 pull-left"><span class="show-entry">Showing
+                        <span>{{showingFrom}} to {{showingTo}} of {{totalElements}} entries</span></span>&nbsp;
+                </div>
+
+                <div class="col-md-6 pull-right" *ngIf="totalItems > 0">
+                    <pagination-controls (pageChange)="pageChanged($event)"></pagination-controls>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-12">
+            <button id="btn_add" type="button" class="btn btn-primary button btn-sm" data-toggle="modal"
+                data-target="#language-add-modal" (click)="clear()"><em class="fas fa-user-plus"></em>Add</button>
+        </div>
+    </div>
+</div>
+
+
+<div class="modal fade common-model" id="language-add-modal">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content model">
+            <form [formGroup]="languageForm" (ngSubmit)="submit()">
+                <!-- Modal Header -->
+                <div class="modal-header">
+                    <div class="modal-title"><i class="fas fa-plus"></i>/ <i class="fas fa-edit ml-1"></i>
+                        Create/ Update Language
+                    </div>
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                </div>
+                <!-- Modal body -->
+                <div class="modal-body">
+                    <div class="row col-12 padding-field-bottom">
+                        <div class="col-4">
+                            <label for="type">Language Code<span class="color-red">*</span></label>
+                        </div>
+                        <div class="col-8">
+                            <input type="text" class="form-control" placeholder="Please Enter Language Code"
+                                formControlName="languageCode">
+                            <span class="color-red" *ngIf="submitted && form_.languageCode.errors">Language Name
+                                {{requiredErrorText}}</span>
+                        </div>
+                    </div>
+                    <div class="row col-12 padding-field-bottom">
+                        <div class="col-4">
+                            <label for="type">Language Name<span class="color-red">*</span></label>
+                        </div>
+                        <div class="col-8">
+                            <input type="text" class="form-control" placeholder="Please Enter Language Name"
+                                formControlName="languageName">
+                            <span class="color-red" *ngIf="submitted && form_.languageName.errors">Language Name
+                                {{requiredErrorText}}</span>
+                        </div>
+                    </div>
+                    <hr />
+                    <div class="row">
+                        <div class="col-md-6 pull-left">
+                            <button type="submit" id="btnComponentSave" [disabled]="submitProcessing"
+                                class="button btn-primary btn-style"><i class="fas fa-save"></i>
+                                {{submitText}} <i class="fa fa-spinner fa-spin" *ngIf="submitProcessing"
+                                    style="font-size:19px"></i></button>
+                        </div>
+                        <div class="col-md-6 pull-right" *ngIf="submitText == 'Create'">
+                            <button type="button" id="btnComponentSave" (click)="clear()"
+                                class="button btn-warning btn-style" [disabled]="submitProcessing">
+                                Clear</button>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

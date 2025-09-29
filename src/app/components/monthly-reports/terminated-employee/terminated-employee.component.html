@@ -1,0 +1,41 @@
+<div class="container-fluid">
+    <div class="d-flex align-items-center mt-2">
+        <div class="m-2">
+            <div class="h-size"><em class="fa fa-user mr-1"></em> <strong>Employee Termination Report</strong></div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-12">
+            <table class="table table-bordered table-hover table-sm">
+                <thead class="t-head">
+                    <tr>
+                        <th *ngFor="let head of headers" id="headers1"><a>{{head}}</a></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let data of tenureReportList;let i=index">
+                        <td>{{i+1}}</td>
+                        <td>{{data.employeeCode}}</td>
+                        <td>{{data.lastName}} {{data.firstName}}</td>
+                        <td>{{data.branchName}}</td>
+                        <td>{{data.departmentName}}</td>
+                        <td>{{data.gradeName}}</td>
+                        <td>{{data.designationName}}</td>
+                    </tr>
+                </tbody>
+
+            </table>
+        </div>
+    </div>
+    
+    <div class="row">
+    <div class="col-md-2">
+        <button type="button" class="btn btn-labeled btn-outline-danger btn-sm" (click)="exportTable('PDF')">
+            <span class="btn-label"><i class="fa fa-file-pdf-o" aria-hidden="true"></i></span>Export To PDF</button>
+    </div>
+
+    <div class="col-md-2">
+        <button type="button" class="btn btn-labeled btn-outline-success btn-sm" (click)="exportTable('EXCEL')">
+            <span class="btn-label"><i class="fa fa-file-excel-o" aria-hidden="true"></i></span>Export To Excel</button>
+    </div>
+   </div>

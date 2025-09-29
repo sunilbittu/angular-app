@@ -1,0 +1,432 @@
+<div class="container-fluid">
+    <div class="d-flex align-items-center mt-2">
+        <div class="m-2">
+            <div class="h-size"><em class="fa fa-user"></em> <strong> Manage Attandence</strong></div>
+        </div>
+        <div class="flex-fill">
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-12">
+            <table class="table table-bordered table-hover table-sm">
+                <thead class="t-head">
+                    <tr>
+                        <th *ngFor="let head of headers"><a>{{head}}</a></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <ng-container *ngFor="let data of trainingList">
+                        <tr *ngIf="data.startDate != null ">
+                        <td>{{data.technologyName}}</td>
+                        <td>{{data.trainerDetails.trainerName}}</td>
+                        <td>{{data.startDate | date:'dd-MM-yyyy'}}</td>
+                        <td>{{data.endDate | date:'dd-MM-yyyy'}}</td>
+                        <td>{{data.startTime}}</td>
+                        <td>{{data.endTime}}</td>
+                        <td>{{data.totalTrainingHours}} hour(s)</td>
+                        <td style="padding-left: 10px;">
+                            <a title="Take Attandence" (click)="fetchTrainees(data.traineesIds,data.startDate ,data.endDate,data.manageTrainingId,data)" data-toggle="modal"
+                                data-target="#show_trainees" class="icon-margin"><i
+                                    class="fa fa-address-card fa-lg"></i></a>
+                        </td>
+                        <td>
+                            <a title="View" (click)="modelShowView(data)" class="icon-margin"><i
+                                    class="fa fa-eye"></i></a>
+                            <!-- <a title="Edit" (click)="modelShowEdit(data)" class="icon-margin"><i
+                                    class="fas fa-user-edit"></i></a> -->
+                            <!-- <a title="Delete" class="icon-margin" mwlConfirmationPopover [popoverTitle]="popoverTitle"
+                                [popoverMessage]="popoverMessage" placement="left" (confirm)="delete(data.trainingId)"
+                                (cancel)="cancelClicked = true"><span class="fas fa-trash"></span></a> -->
+                        </td>
+                    </tr>
+                    </ng-container>
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <!-- <div class="row">
+        <div class="col-12">
+            <button type="button" class="btn btn-primary btn-sm" (click)="modelShow()" data-toggle="modal"
+                data-target="#addPopup">
+                <i class="fas fa-user-plus"></i> Add
+            </button>
+        </div>
+    </div> -->
+</div>
+<div class="modal fade common-model" id="addPopup">
+    <div class="modal-dialog modal-xl">
+        <div class="modal-content model">
+            <form [formGroup]="trainingsForm" (ngSubmit)="submit()">
+                <!-- Modal Header -->
+                <div class="modal-header">
+                    <div class="modal-title" *ngIf="!isForViewAndSubmitDisabled"><i class="fas fa-plus"></i>/ <i
+                            class="fas fa-edit ml-1"></i> Manage Training
+                    </div>
+                    <div class="modal-title" *ngIf="isForViewAndSubmitDisabled"><i class="fa fa-eye"></i> View Training
+                        Details
+                    </div>
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                </div>
+                <!-- Modal body -->
+                <div class="modal-body">
+                    <div class="row col-12 padding-field-bottom">
+                        <div class="col-2">
+                            <label for="type">Training Technology<span class="color-red">*</span></label>
+                        </div>
+                        <div class="col-4">
+                            <select class="form-control" id="technology" formControlName="technology"
+                                (change)="changeName()"
+                                [ngClass]="{ 'is-invalid': submitted && form_.technology.errors }">
+                                <option value=null disabled>Please Select Technology</option>
+                                <option *ngFor="let tech of technologies" [value]="tech.technologyId">
+                                    {{tech.technologyName}}
+                                </option>
+                            </select>
+                            <span class="color-red" *ngIf="submitted && form_.technology.errors">Technology
+                                {{requiredErrorText}}</span>
+                        </div>
+                        <div class="col-2">
+                            <label for="type">Trainer Name <span class="color-red">*</span></label>
+                        </div>
+                        <div class="col-4">
+                            <select class="form-control" id="trainer" formControlName="trainer"
+                                [ngClass]="{ 'is-invalid': submitted && form_.trainer.errors }">
+                                <option [value]=null disabled>Please Select Trainer</option>
+                                <option *ngFor="let t of trainersList" [value]="t.trainerId">
+                                    {{t.trainerDetails.trainerName}}
+                                </option>
+                            </select>
+                            <span class="color-red" *ngIf="submitted && form_.trainer.errors">Trainer
+                                {{requiredErrorText}}</span>
+                        </div>
+                    </div>
+                    <div class="row col-12 padding-field-bottom">
+                        <div class="col-2">
+                            <label>Start Date<span class="color-red">*</span></label>
+                        </div>
+                        <div class="col-4">
+                            <input type="text" formControlName="startDate" bsDatepicker
+                                placeholder="Please Select Start Date"
+                                [ngClass]="{ 'is-invalid': submitted && form_.startDate.errors }" [minDate]="now"
+                                readonly [bsConfig]="{ isAnimated: true, dateInputFormat: 'DD-MM-YYYY' }" bsDatepicker
+                                (bsValueChange)="onStartDateValueChange($event)" placement="bottom"
+                                class="text form-control pull-top-5 read-only" maxlength="50" />
+                            <span class="color-red" *ngIf="submitted && form_.startDate.errors">Start Date
+                                {{requiredErrorText}}</span>
+                        </div>
+                        <div class="col-2">
+                            <label>End Date<span class="color-red">*</span></label>
+                        </div>
+                        <div class="col-4">
+                            <input type="text" formControlName="endDate" bsDatepicker
+                                placeholder="Please Select End Date"
+                                [ngClass]="{ 'is-invalid': submitted && form_.endDate.errors }"
+                                [minDate]="selectedStartDate" readonly
+                                [bsConfig]="{ isAnimated: true, dateInputFormat: 'DD-MM-YYYY' }" bsDatepicker
+                                (bsValueChange)="onEndDateValueChange($event)" placement="bottom"
+                                class="text form-control pull-top-5 read-only" maxlength="50" />
+                            <span class="color-red" *ngIf="submitted && form_.endDate.errors">End Date
+                                {{requiredErrorText}}</span>
+                        </div>
+                    </div>
+                    <div class="row col-12 padding-field-bottom">
+                        <div class="col-2">
+                            <label for="startTime">Start Time <span class="color-red">*</span></label>
+                        </div>
+                        <div class="col-4">
+                            <input formControlName="startTime" class="form-control read-only" id="startTime"
+                                [ngxTimepicker]="picker" placeholder="Please Select Start Time" readonly>
+                            <ngx-material-timepicker [minutesGap]="minutesGap" #picker (timeSet)="timeChange1($event)">
+                            </ngx-material-timepicker>
+                            <span class="color-red" *ngIf="submitted && form_.startTime.errors">Start Time
+                                {{requiredErrorText}}</span>
+                        </div>
+                        <div class="col-2">
+                            <label for="endTime">End Time <span class="color-red">*</span></label>
+                        </div>
+                        <div class="col-4">
+                            <input formControlName="endTime" class="form-control read-only" id="endTime"
+                                [ngxTimepicker]="picker2" placeholder="Please Select End Time" readonly>
+                            <ngx-material-timepicker [minutesGap]="minutesGap" #picker2 (timeSet)="timeChange2($event)">
+                            </ngx-material-timepicker>
+                            <span class="color-red" *ngIf="submitted && form_.endTime.errors">End Time
+                                {{requiredErrorText}}</span>
+                        </div>
+                    </div>
+                    <div class="row col-12 padding-field-bottom">
+                        <div class="col-2">
+                            <label for="totalTrainingHours">Total Training Hour(s) </label>
+                        </div>
+                        <div class="col-4">
+                            <input readonly type="text" class="form-control " [value]="finalDuration"
+                                formControlName="totalTrainingHours" id="totalTrainingHours">
+                        </div>
+                    </div>
+                    <div class="row col-12 padding-field-bottom" *ngIf="!isForViewAndSubmitDisabled">
+                        <div class="container">
+                            <button title="Click here to select Trainees" type="button" style="border-color: cadetblue;"
+                                class="btn btn-default btn-sm" data-toggle="collapse" data-target="#demo">Select
+                                Trainee(s)</button>
+                            <div id="demo" class="collapse in" style="border-style: groove;">
+                                <div class="modal-body">
+                                    <div class="row">
+                                        <div class="col-md-7">
+                                            <div class="title-headers">
+                                                <h2><em class="fas fa-filter"></em> Master Filter</h2>
+                                                <button type="button" (click)="applyFilter()"
+                                                    class="btn btn-secondary btn-sm btn-header ml-40">Apply
+                                                    Filter</button>
+                                                <button type="button" class="btn btn-secondary btn-sm btn-header"
+                                                    (click)="resetFilter()">Clear Filter</button>
+                                            </div>
+                                            <div>
+                                                <table class="model-tbl mt-10">
+                                                    <tr>
+                                                        <td>
+                                                            <label class="label">Branch</label>
+                                                        </td>
+                                                        <td class="td-width">
+                                                            <ng-multiselect-dropdown
+                                                                [ngModelOptions]="{standalone: true}"
+                                                                [placeholder]="'Select Branch'"
+                                                                [settings]="dropdownSettingsBranch"
+                                                                [data]="branchDetailsList"
+                                                                [(ngModel)]="selectedItemsBranch"
+                                                                (onSelect)="onItemSelectBranch($event)"
+                                                                (onSelectAll)="onSelectAllBranch($event)">
+                                                            </ng-multiselect-dropdown>
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>
+                                                            <label class="label">Grade</label>
+                                                        </td>
+                                                        <td class="td-width">
+                                                            <ng-multiselect-dropdown
+                                                                [ngModelOptions]="{standalone: true}"
+                                                                [placeholder]="'Select Grade'"
+                                                                [settings]="dropdownSettingsGrade" [data]="gradeList"
+                                                                [(ngModel)]="selectedItemsGrade"
+                                                                (onSelect)="onItemSelectGrade($event)"
+                                                                (onSelectAll)="onSelectAllGrade($event)">
+                                                            </ng-multiselect-dropdown>
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>
+                                                            <label class="label">Department</label>
+                                                        </td>
+                                                        <td class="td-width">
+                                                            <ng-multiselect-dropdown
+                                                                [ngModelOptions]="{standalone: true}"
+                                                                [placeholder]="'Select Department'"
+                                                                [settings]="dropdownSettingsDepartment"
+                                                                [data]="departmentMasterList"
+                                                                [(ngModel)]="selectedItemsDepartment"
+                                                                (onSelect)="onItemSelectDepartment($event)"
+                                                                (onSelectAll)="onSelectAllDepartment($event)">
+                                                            </ng-multiselect-dropdown>
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>
+                                                            <label class="label">Designation</label>
+                                                        </td>
+                                                        <td class="td-width">
+                                                            <ng-multiselect-dropdown
+                                                                [ngModelOptions]="{standalone: true}"
+                                                                [placeholder]="'Select Designation'"
+                                                                [settings]="dropdownSettingsDesignation"
+                                                                [data]="designationList"
+                                                                [(ngModel)]="selectedItemsDesignation"
+                                                                (onSelect)="onItemSelectDesignation($event)"
+                                                                (onSelectAll)="onSelectAllDesignation($event)">
+                                                            </ng-multiselect-dropdown>
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>
+                                                            <label class="label">Cost Center</label>
+                                                        </td>
+                                                        <td class="td-width">
+                                                            <ng-multiselect-dropdown
+                                                                [ngModelOptions]="{standalone: true}"
+                                                                [placeholder]="'Select Cost Center'"
+                                                                [settings]="dropdownSettingsCostCenter"
+                                                                [data]="costCenterMasterList"
+                                                                [(ngModel)]="selectedItemsCostCenter"
+                                                                (onSelect)="onItemSelectCostCenter($event)"
+                                                                (onSelectAll)="onSelectAllCostCenter($event)">
+                                                            </ng-multiselect-dropdown>
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>
+                                                            <label class="label">Project</label>
+                                                        </td>
+                                                        <td class="td-width">
+                                                            <ng-multiselect-dropdown
+                                                                [ngModelOptions]="{standalone: true}"
+                                                                [placeholder]="'Select Project'"
+                                                                [settings]="dropdownSettingsProject"
+                                                                [data]="projectMasterList"
+                                                                [(ngModel)]="selectedItemsProject"
+                                                                (onSelect)="onItemSelectProject($event)"
+                                                                (onSelectAll)="onSelectAllProject($event)">
+                                                            </ng-multiselect-dropdown>
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>
+                                                            <label class="label">Category</label>
+                                                        </td>
+                                                        <td class="td-width">
+                                                            <ng-multiselect-dropdown
+                                                                [ngModelOptions]="{standalone: true}"
+                                                                [placeholder]="'Select Category'"
+                                                                [settings]="dropdownSettingsCategory"
+                                                                [data]="categoryMasterList"
+                                                                [(ngModel)]="selectedItemsCategory"
+                                                                (onSelect)="onItemSelectCategory($event)"
+                                                                (onSelectAll)="onSelectAllCategory($event)">
+                                                            </ng-multiselect-dropdown>
+                                                        </td>
+                                                    </tr>
+                                                </table>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-5">
+                                            <div class="title-headers">
+                                                <h2><em class="fas fa-filter"></em> Employee Filter</h2>
+                                            </div>
+                                            <div>
+                                                <input type="text" class="form-control" style="height: 33px;"
+                                                    [ngModelOptions]="{standalone: true}" [(ngModel)]="searchValue"
+                                                    (ngModelChange)="applyFilter()">
+                                            </div>
+                                            <br>
+                                            <div class="emp-scroll">
+                                                <label><strong>Please select employee(s)</strong></label>
+                                                <table>
+                                                    <tr>
+                                                        <th class="align-center">
+                                                            <input type="checkbox" class="select-all" name="allStudents"
+                                                                [value]="employeeList" (change)="selectAll($event)">
+                                                        </th>
+                                                        <th>
+                                                            <label class="s-lable"> Emp Code</label>
+                                                        </th>
+                                                        <th>
+                                                            <label class="s-lable"> Emp Name</label>
+                                                        </th>
+                                                    </tr>
+                                                    <tr *ngIf="toggleLoader">
+                                                        <td colspan="2">
+                                                            <img src="./assets/images/loader-icon.gif"
+                                                                class="loader-margin img-responsive" alt="loading....">
+                                                        </td>
+                                                    </tr>
+                                                    <tr *ngFor="let emp of employeeList">
+                                                        <td class="align-center">
+                                                            <input type="checkbox" class="status-check select-all"
+                                                                [checked]="emp.selected"
+                                                                (change)="onClickCheckBox(emp.employeeId)"
+                                                                name="status">
+                                                        </td>
+                                                        <td>{{emp.employeeCode}} </td>
+                                                        <td>{{emp.fullName}}</td>
+                                                    </tr>
+                                                </table>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div *ngIf="validationText != ''" class="color-red pull-left-5">
+                                <strong>{{validationText}}</strong>
+                            </div>
+                        </div>
+                    </div>
+                    <hr>
+                    <div class="row" *ngIf="!isForViewAndSubmitDisabled">
+                        <div class="col-md-6 pull-left">
+                            <button type="submit" id="btnComponentSave" [disabled]="submitProcessing"
+                                class="button btn-primary btn-style"><i class="fas fa-save"></i>
+                                {{submitText}} <i class="fa fa-spinner fa-spin" *ngIf="submitProcessing"
+                                    style="font-size:19px"></i></button>
+                        </div>
+                        <div class="col-md-6 pull-right" *ngIf="submitText == 'Create'">
+                            <button type="button" id="btnComponentSave" (click)="clear()"
+                                class="button btn-warning btn-style" [disabled]="submitProcessing">
+                                Clear</button>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+<div class="modal fade common-model" id="show_trainees" role="dialog" style="margin-top:100px;">
+    <div class="modal-dialog modal-xl">
+        <div class="modal-content box-body table-responsive table-wrapper-scroll-y table-wrapper-scroll-x">
+            <div class="modal-header " id="msg_header" >
+                <h4 class="modal-title">Take Attandence</h4>
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+            </div>
+            <div class="modal-body ">
+                <div class="col-md-12">
+                    <table class="table table-bordered table-hover table-sm">
+                        <thead class="t-head">
+                            <tr>
+                                <th><a>Sr No</a></th>
+                                <th><a>Employee Id</a></th>
+                                <th><a>Employee Code</a></th>
+                                <th><a>Employee Name</a></th>
+                                <ng-container *ngFor="let date of dates;">
+                                    <th><a>{{date | date:'dd-MM-yyyy'}}</a></th>
+                                </ng-container>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr *ngFor="let data of traineesList; let i=index">
+                                <td>{{i + 1}}</td>
+                                <td>{{data.employeeId}}</td>
+                                <td>{{data.employeeCode}}</td>
+                                <td>{{data.firstName}} {{data.lastName}}</td>
+                                <ng-container *ngFor="let date of dates;">
+                                    <!-- <ng-container *ngFor="let attandence of attandenceList;">  -->
+                                    <td class="align-center">
+                                        <input type="checkbox"  checked="true" class="status-check select-all"
+                                            [checked]="date.selected"
+                                            (change)="onClickCheckBox(data.employeeId,date)"
+                                            name="status">
+                                    </td>
+                                    <!-- </ng-container> -->
+                                </ng-container>
+                            </tr>
+                        </tbody>
+                    </table>
+
+                    <div>
+                        <div class="col-md-6 pull-left">
+                            <button type="button" (click)="submit()" id="btnComponentSave" [disabled]="submitProcessing"
+                                class="button btn-primary btn-style"><i class="fas fa-save"></i>
+                                {{submitText}} <i class="fa fa-spinner fa-spin" *ngIf="submitProcessing"
+                                    style="font-size:19px"></i></button>
+                        </div>
+                        <!-- <div class="col-md-6 pull-right" *ngIf="submitText == 'Create'">
+                            <button type="button" id="btnComponentSave" (click)="clear()"
+                                class="button btn-warning btn-style" [disabled]="submitProcessing">
+                                Clear</button>
+                        </div> -->
+                    </div>
+                </div>
+                
+            </div>
+        </div>
+    </div>
+
+   
+
+</div>

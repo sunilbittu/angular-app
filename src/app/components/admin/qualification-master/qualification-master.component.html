@@ -1,0 +1,139 @@
+<div class="container-fluid">
+    <div class="d-flex align-items-center mt-2">
+        <div class="m-2">
+            <div class="h-size"><i class="fa fa-user"></i> <b>Qualification Master</b></div>
+        </div>
+        <div class="flex-fill">
+        </div>
+        <div class="m-3"><input class="form-control rounded-pill py-2 border-right-0 border" type="search"
+            placeholder="search" id="example-search-input" [(ngModel)]="searchModel" (keyup)="fetchQualificationsListByCompanyId()">
+        </div>
+        <div class="m-3"></div>
+    </div>
+    <div class="row">
+        <div class="col-md-12">
+            <table class="table table-striped table-bordered mt-4">
+                <thead class="t-head">
+                    <th *ngFor="let head of headers"><a>{{head}}</a></th>
+                    <tr>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let qualification of qualifications  | paginate
+                    : {
+                        itemsPerPage: itemsPerPage,
+                        currentPage: currentPage,
+                        totalItems: totalItems
+                      };let i=index">
+                        <td>{{qualification.qualificationCode}}</td>
+                        <td>{{qualification.qualificationName | titlecase}}</td>
+                        <td>{{qualification.qualificationType}}</td>
+                        <td> 
+                            <!-- <a title="View" class="icon-margin"><span class="fas fa-eye"></span></a> -->
+                            <a title="Edit" class="icon-margin" (click)="edit(qualification)" data-toggle="modal"
+                                data-target="#addQualification"><i class="fas fa-user-edit"></i></a>
+
+                            <a title="Delete" class="icon-margin" mwlConfirmationPopover [popoverTitle]="popoverTitle"
+                                [popoverMessage]="popoverMessage" placement="left"
+                                (confirm)="deleteById(qualification.qualificationId)"
+                                (cancel)="cancelClicked = true"><span class="fas fa-trash"></span></a>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+            <div class="row" *ngIf="totalElements!=0">
+                <div class="col-md-6 pull-left"><span class="show-entry">Showing
+                        <span>{{showingFrom}} to {{showingTo}} of {{totalElements}} entries</span></span>&nbsp;
+                </div>
+  
+                <div class="col-md-6 pull-right" *ngIf="totalItems > 0">
+                    <pagination-controls (pageChange)="pageChanged($event)"></pagination-controls>
+                </div>
+            </div> 
+            <!-- <div class="pagination-block">
+                <nav aria-label="Page navigation example">
+                    <ul class="pagination justify-content-end">
+                        <li class="page-item disabled">
+                            <a class="page-link" href="#" tabindex="-1">Previous</a>
+                        </li>
+                        <li class="page-item"><a class="page-link" href="#">1</a></li>
+                        <li class="page-item"><a class="page-link" href="#">2</a></li>
+                        <li class="page-item"><a class="page-link" href="#">3</a></li>
+                        <li class="page-item">
+                            <a class="page-link" href="#">Next</a>
+                        </li>
+                    </ul>
+                </nav>
+            </div> -->
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-12">
+            <!-- Button trigger modal -->
+            <button type="button" class="btn btn-primary btn-sm" data-toggle="modal" (click)="clickAdd()"
+                data-target="#addQualification">
+                <i class="fas fa-user-plus"></i> Add
+            </button>
+        </div>
+    </div>
+    <!-- Modal -->
+    <div class="modal fade" id="addQualification" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle"
+        aria-hidden="true" data-backdrop="static">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title text-center"><i class="fas fa-edit ml-1"></i> Qualification Master</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form [formGroup]=qualificationMasterForm (ngSubmit)="onSubmit()">
+                        <div class="form-group">
+                            <label for="qualificationCode">Qualification Code<span class="color-red">*</span></label>
+                            <input type="text" class="form-control form-control-sm" id="qualificationCode"
+                                formControlName="qualificationCode" aria-describedby="emailHelp"
+                                placeholder="Qualification Code">
+                            <span class="color-red" *ngIf="submitted && form_.qualificationCode.errors">Qualification
+                                Code can't be blank
+                            </span>
+                        </div>
+                        <div class="form-group">
+                            <label for="qualificationName">Qualification Name<span class="color-red">*</span></label>
+                            <input type="text" class="form-control form-control-sm" id="qualificationName"
+                                formControlName="qualificationName" aria-describedby="emailHelp"
+                                placeholder="Qualification Name">
+                            <span class="color-red" *ngIf="submitted && form_.qualificationName.errors">Qualification
+                                Name can't be blank
+                            </span>
+                        </div>
+                        <div class="form-group">
+                            <label for="qualificationType">Course Type<span class="color-red">*</span></label>
+                            <select class="form-control form-control-sm" formControlName="qualificationType">
+                                <option>select</option>
+                                <option>Graduate</option>
+                                <option>Post Graduate</option>
+                                <option>Under Graduate</option>
+                            </select>
+                            <span class="color-red" *ngIf="submitted && form_.qualificationType.errors">Course Type
+                                can't be blank
+                            </span>
+                        </div>
+                        <div class="modal-footer">
+                            <div>
+                                <button type="submit" id="btnComponentSave" class="btn btn-primary btn-sm"><i
+                                        class="fas fa-save"></i>
+                                    {{submitText}}</button>
+                            </div>
+                            <div *ngIf="submitText == 'Save'">
+                                <button type="button" id="btnComponentSave" (click)="resetTheForm()"
+                                    class="btn btn-warning btn-sm">
+                                    Clear</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

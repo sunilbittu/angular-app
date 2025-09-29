@@ -1,0 +1,190 @@
+<div class="container-fluid">
+    <h2 class="company-title"><i class="fas fa-user"></i><b> Form 24 Q</b></h2>
+    <!-- Nav tabs -->
+    <ul class="nav nav-tabs menu-tabs" role="tablist">
+        <li class="nav-item">
+            <a class="nav-link active" data-toggle="tab" href="#companyDetails"><i class="fas fa-building"></i> Company Details</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" data-toggle="tab" href="#Challan"><i class="fas fa-house-user"></i> Challan</a>
+        </li>
+        <li class="nav-item" >
+            <a class="nav-link" data-toggle="tab" href="#Annexure"><i class="fas fa-file-word"></i> Annexure</a>
+        </li>
+        <li class="nav-item" >
+            <a class="nav-link" data-toggle="tab" href="#SalaryDeatails"><i class="fas fa-cogs"></i> Salary Deatails</a>
+        </li>
+    </ul>
+    <br>
+
+    <!-- Tab panes -->
+
+ <div class="tab-content">
+    <div id="companyDetails" class="tab-pane active">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-md-12">
+                    <table class="table table-bordered table-hover table-sm">
+                        <thead class="t-head">
+                            <tr>
+                                <th *ngFor="let head of headers1"><a>{{head}}</a></th>
+                            </tr>
+                            
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>{{companyDetails.companyName}}</td>
+                                    <td>{{companyDetails.panNo}}</td>
+                                    <td>{{companyDetails.tanNo}}</td>
+                                    <td>{{companyDetails.tanRegisteredAt}}</td>
+                                    <td>{{companyDetails.tdsCircle}}</td>
+                                    <td>{{companyDetails.deductorName}}</td>
+                                    <td>{{companyDetails.address}}</td>
+                                    <td>{{companyDetails.cityName}}</td>
+                                    <td>{{companyDetails.pincode}}</td>
+                                    <td>{{companyDetails.stateName}}</td>
+                                    <td>{{companyDetails.email}}</td>
+                                    <td>{{companyDetails.phone}}</td>
+                                    <td>{{companyDetails.responsiblePersonName}}</td>
+                                    <td>{{companyDetails.fatherName}}</td>
+                                    <td>{{companyDetails.mobileNo}}</td>
+                                    <td>-</td>
+                                    <td>-</td>
+                                </tr>
+                            </tbody>
+
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div id="Challan" class="tab-pane ">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-md-12">
+                    <table class="table table-bordered table-hover table-sm">
+                        <thead class="t-head">
+                            <tr>
+                                <th *ngFor="let head of headers2"><a>{{head}}</a></th>
+                            </tr>
+                            
+                            </thead>
+                            <tbody>
+                                <tr *ngFor="let data of challanList">
+                                    <td>
+                                        <span *ngIf="data.cashPayment">Cash/Online Payment</span>
+                                        <span *ngIf="!data.cashPayment">Cheque Payment</span>
+                                    </td>
+                                    <td>{{data.bankName}}</td>
+                                    <td>{{data.challanAmount}}</td>
+                                    <td>{{data.challanNo}}</td>
+                                    <td>{{data.chequeNo}}</td>
+                                    <td>{{data.tdsAmount}}</td>
+                                    <td>0</td>
+                                    <td>{{data.educationCess}}</td>
+                                    <td>{{data.intrest}}</td>
+                                    <td>{{data.other}}</td>
+                                    <td>{{data.dateOfDeposit}}</td>
+                                    
+                                </tr>
+                            </tbody>
+
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div id="Annexure" class="tab-pane ">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-md-12">
+                    <table class="table table-bordered table-hover table-sm">
+                        <thead class="t-head">
+                            <tr>
+                                <th *ngFor="let head of headers3"><a>{{head}}</a></th>
+                            </tr>
+                            
+                            </thead>
+                            <tbody>
+                                <tr *ngFor="let data of annexureList">
+                                    <td>{{data.employeeCode}}</td>
+                                    <td>{{data.firstName}}</td>
+                                    <td>{{data.panNo}}</td>
+                                    <td>{{data.challanNo}}</td>
+                                    <td>{{data.tds}}</td>
+                                    <td>{{data.tdsDeposit}}</td>
+                                    <td>{{data.incomeTax}}</td>
+                                    <td>{{data.surcharge}}</td>
+                                    <td>{{data.educationCess}}</td>
+                                    <td>{{data.month}}</td>
+                                    <td>{{data.grossTotal}}</td>
+                                </tr>
+                            </tbody>
+
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div id="SalaryDeatails" class="tab-pane ">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-md-12 table-scroll" >
+                    <table class="table table-bordered table-hover table-sm">
+                        <thead class="t-head">
+                            <tr>
+                                <th *ngFor="let head of headers4"><a>{{head}}</a></th>
+                            </tr>
+                            
+                            </thead>
+                            <tbody>
+                                <tr *ngFor="let data of slaryDetails">
+                                    <td>{{data.employeeCode}}</td>
+                                    <td>{{data.firstName}}</td>
+                                    <td>{{data.panNo}}</td>
+                                    <td>{{data.doj}}</td>
+                                    <td>{{data.dol}}</td>
+                                    <td>{{data.gender}}</td>
+                                    <td>{{data.age}}</td>
+
+                                    <td>{{data.grossEarning}}</td>
+                                    <td>{{data.professionalTax}}</td>
+                                    <td>{{data.chargeableIncome}}</td>
+                                    <td>{{data.totalTaxableIncome}}</td>
+                                    <td>{{data.incomeTax}}</td>
+                                    <td>{{data.surcharge}}</td>
+                                    <td>{{data.educationCess}}</td>
+
+                                    <td>{{data.netTaxable}}</td>
+                                    <td>{{data.totalTaxDeductionForYear}}</td>
+                                    <td>{{data.tdsDeductionpreviousEmployee}}</td>
+                                    <td>{{data.sec80c}}</td>
+                                    <td>{{data.sec80ccg}}</td>
+                                    <td>{{data.sec80d}}</td>
+                                    <td>{{data.sec80d}}</td>
+                                    
+                                    <td>{{data.sec80g}}</td>
+                                    <td>{{data.sec80ccd}}</td>
+                                    <td>{{data.otherExemptionSection10A}}</td>
+                                    <td>{{data.standardDeduction}}</td>
+                                    <td>{{data.exemptionSection10}}</td>
+                                    <td>{{data.hraExemption}}</td>
+                                    <td>{{data.rebate87A}}</td>
+                                    <td>{{data.otherExemptionSection10A}}</td>
+                                    <td>{{data.ltaExemption}}</td>
+                                    <td>{{data.leaveEncashmentExemption}}</td>
+                                    <td>{{data.gartuityexemption}}</td>
+                                    <td>{{data.previousEmployerTaxableIncome}}</td>
+                                    <td>{{data.landLordPan1}}</td>
+                                    <td>{{data.landLordName1}}</td>
+
+
+                                </tr>
+                            </tbody>
+
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

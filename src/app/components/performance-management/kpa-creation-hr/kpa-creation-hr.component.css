@@ -1,0 +1,110 @@
+.form-control{
+    height: 30px ;
+    margin: 5px;
+    border: 1px solid #81badb;
+    font-family: sans-serif;
+}
+
+
+
+.main {
+    width: 20%;
+    margin: 10px;
+}
+
+/* Bootstrap 4 text input with search icon */
+
+
+.has-search .form-control-feedback {
+    position: absolute;
+    z-index: 2;
+    display: block;
+    width: 2.375rem;
+    height: 2.375rem;
+    line-height: 2.375rem;
+    text-align: center;
+    pointer-events: none;
+    color: #aaa;
+}
+
+.btn-sm,
+.btn-xs {
+  font-size: .85em;
+  padding: .5em 1em;}
+
+.btn-xs {
+  font-size: .85em;
+  padding: .25em .75em;}
+
+  .table tr th {
+    font-size: 14px;
+}
+
+.table tr td {
+    font-size: 14px;
+}
+
+.model-tbl tr td input {
+    height: 32px;
+    width: 310px;
+}
+.td-width {
+    width: 65%;
+    padding-top: 5px;
+}
+.td-width-1 {
+    width: 37%;
+    padding-top: 5px;
+}
+.modal-title {
+    font-size: 1rem;
+    font-weight: bold;
+    text-align: center;
+    flex: 1;
+    color: #000;
+}
+.margin-left {
+    margin-left:10px;
+}
+.model-tbl tr td h4 {
+    padding-right: 50px;
+    padding-top: 3px;
+}
+.btn-footer {
+    margin: 1px;
+    margin-bottom: 15px;
+}
+.custom-select-box {
+    width: 100%;
+    border: 1px solid #adadad;
+    padding: 6px 9px;
+    font-weight: 400;
+    background-color: white;
+    border-radius: 4px;
+    margin-top: 4px;
+    height: 35px;
+}
+.pull-top-5 {
+    margin-top: 6px;
+}
+.padding-top-5 {
+    padding-top: 5px;
+}
+label {
+    display: inline-block;
+    font-size: 15px;
+    margin-bottom: 0px;
+}
+button:disabled,
+button[disabled]{
+  border: 1px solid #999999;
+  background-color: #cccccc;
+  color: #666666;
+}
+.padding-top-set {
+  margin-bottom: -30px;
+}
+.search {
+  background-color: #d0e5f9;
+}
+

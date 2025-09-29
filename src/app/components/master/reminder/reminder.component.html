@@ -1,0 +1,67 @@
+
+<div class="container-fluid">
+    <div class="d-flex align-items-center mt-2">
+        <div class="m-2">
+            <div class="h-size"><i class="fa fa-user"></i> <b> Reminder</b></div>
+        </div>
+        <div class="flex-fill">
+        </div>
+        
+    </div>
+    <div class="d-flex align-items-center mt-2">
+        <div class="m-2">
+            <div class="dropdown-m-2 border-none" >
+                <label class="control-label">From Date:</label>
+                <input type="text" name="fromDate" pleaceholder="Select From date">
+            </div>
+        </div>
+        <div class="m-2">
+            <div class="dropdown-m-2 border-none" >
+                <label class="control-label">To Date:</label>
+                <input type="text" name="toDate" pleaceholder="Select To date">
+            </div>
+        </div>
+        
+        <div class="m-2">
+            <div class="dropdown-m-2 border-none" >
+                <label class="control-label">&nbsp;</label>
+                <button id="btn_add" type="button" class="btn-primary button">Search</button>
+            </div>
+        </div>
+    </div>
+   <br>
+    <div class="row">
+        <div class="col-md-12">
+            <table class="table table-bordered table-hover table-sm">
+                <thead class="t-head">
+                    <tr>
+                        <th *ngFor="let head of headers"><a>{{head}}</a></th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                         <tr *ngFor="let employee of employees">
+                             <td><input type="checkbox" name="co"></td>
+                             <td>{{employee.code}}</td>
+                             <td>{{employee.name | titlecase}}</td>
+                             <td>{{employee.birthDate}}</td>
+                             <td>{{employee.daysToGo}}</td>
+                             <td>{{employee.branchDate}}</td>
+                             <td>{{employee.deptName}}</td>
+                             <td>{{employee.emailStatus}}</td>
+                             <td>
+                                <a  title="View" class="icon-margin"><span class="fas fa-eye"></span></a>
+                                <a title="Edit" class="icon-margin"><i class="fas fa-user-edit"></i></a>
+                             </td>
+                         </tr>
+                    </tbody>
+
+            </table>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-12">
+            <button id="btn_add" type="button" class="btn btn-primary button" disabled="disabled"><i
+                    class="fas fa-user-plus"></i>Assign</button>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,169 @@
+<div class="container-fluid">
+    <div class="d-flex align-items-center mt-2">
+        <div class="m-2">
+            <div class="h-size"><em class="fa fa-user mr-1"></em> <strong>List of Asset Categories</strong></div>
+        </div>
+        <div class="flex-fill">
+        </div>
+        <div class="m-3"><input class="form-control rounded-pill py-2 border-right-0 border" type="search"
+            placeholder="search" id="example-search-input" [(ngModel)]="searchModel" (keyup)="fetchAssets()">
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-12">
+            <table class="table table-bordered table-hover table-sm">
+                <thead class="t-head">
+                    <tr>
+                        <th *ngFor="let head of headers" id="headers1"><a>{{head}}</a></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let asset of assetData | paginate
+                    : {
+                        itemsPerPage: itemsPerPage,
+                        currentPage: currentPage,
+                        totalItems: totalItems
+                      };let i=index">
+                        <td>{{asset.assetId}}</td>
+                        <td>{{asset.assetName}}</td>
+                        <td>{{asset.assetCode}}</td>
+                        <td>{{asset.description}}</td>
+                        <td>{{asset.approvalWorkflow.name}}</td>
+                        <td>{{asset.vendor.vendorName}}</td>
+                        <td>
+                            <a title="Edit" class="icon-margin" (click)="editAsset(asset)" data-toggle="modal"
+                                data-target="#myModal-add"><em class="fas fa-user-edit"></em></a>
+                            <a title="Delete" class="icon-margin" (click)="removeAsset(asset.assetId)"
+                                data-toggle="modal" data-target="#confirmDelete"><span class="fas fa-trash"></span></a>
+                        </td>
+                    </tr>
+                </tbody>
+
+            </table>
+            <div class="row" *ngIf="totalElements!=0">
+                <div class="col-md-6 pull-left"><span class="show-entry">Showing
+                        <span>{{showingFrom}} to {{showingTo}} of {{totalElements}} entries</span></span>&nbsp;
+                </div>
+  
+                <div class="col-md-6 pull-right" *ngIf="totalItems > 0">
+                    <pagination-controls (pageChange)="pageChanged($event)"></pagination-controls>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-12">
+            <button type="button" class="btn btn-primary btn-sm" data-toggle="modal" (click)="addClick()"
+                data-target="#myModal-add" *ngIf="!editStatusbtn">
+                <em class="fas fa-user-plus"></em> Add
+            </button>&nbsp;
+
+        </div>
+    </div>
+
+    <div class="modal fade common-model" id="myModal-add">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content model">
+                <!-- Modal Header -->
+                <div class="modal-header">
+                    <div class="modal-title"><i class="fas fa-plus"></i>/ <i class="fas fa-edit ml-1"></i> Asset
+                        Category Details
+                    </div>
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                </div>
+                <!-- Modal body -->
+                <div class="modal-body">
+
+                    <form [formGroup]="AssetForm">
+                        <div class="row col-12 padding-field-bottom">
+                            <div class="col-6">
+                                <label>Name <span class="color-red">* </span></label>
+                                <input type="text" class="form-control" placeholder="Please Enter Asset Name"
+                                    formControlName="assetName" (keyup)="checkForDuplicates()">
+                                <span class="color-red" *ngIf="submitted && form_.assetName.errors">Asseet Name
+                                    {{requiredErrorText}}</span>
+                                <span class="color-red" *ngIf="AssetNameExist">Asset Name Already Exist
+                                </span>
+                            </div>
+                            <div class="col-6">
+                                <label>Code <span class="color-red">* </span></label>
+                                <input type="text" class="form-control" placeholder="Please enter Code"
+                                    formControlName="assetCode" (keyup)="checkForDuplicates()">
+                                <span class="color-red" *ngIf="submitted && form_.assetCode.errors">Asset Code
+                                    {{requiredErrorText}}</span>
+                                <span class="color-red" *ngIf="AssetCodeExist">Asset Code Already Exist
+                                </span>
+                            </div>
+                            <div class="row col-12 padding-field-bottom">
+                            <div class="col-6">
+                                <label>Approval Workflow <span class="color-red">* </span></label>
+                                <select formControlName="approvalWorkflow" class="custom-select-box form-control">
+                                    <option value="" disabled>Select Workflow</option>
+                                    <option *ngFor="let data of workflowList" value={{data.id}}>{{data.name}}</option>
+                                </select>
+                                <span class="color-red" *ngIf="submitted && form_.approvalWorkflow.errors">Workflow
+                                    {{requiredErrorText}}</span>
+                            </div>
+                            <div class="col-6">
+                                <label>Vendor <span class="color-red">* </span></label>
+                                <select formControlName="vendorId" class="custom-select-box form-control">
+                                    <option value="" disabled>Select Vendor</option>
+                                    <option *ngFor="let data of vendorList" value={{data.vendorId}}>{{data.vendorName}}</option>
+                                </select>
+                                <span class="color-red" *ngIf="submitted && form_.vendorId.errors">Vendor
+                                    {{requiredErrorText}}</span>
+                            </div>
+                            </div>
+                        </div>
+                        <div class="row col-12 padding-field-bottom">
+                            <div class="col-12">
+                                <label for="description" class="col-form-label">Description<span
+                                        class="color-red">*</span></label>
+                                <textarea formControlName="description" class="form-control form-control-sm"
+                                    id="description"></textarea>
+                                <span class="color-red" *ngIf="submitted && form_.description.errors">Description
+                                    {{requiredErrorText}}
+                                </span>
+                            </div>
+                        </div>
+                        <hr>
+                        <div class="row">
+                            <div class="col-md-6 pull-left">
+                                <button type="button" class="button btn-primary btn-style" *ngIf="togglebtn"
+                                    [disabled]="submitProcessing" (click)="onSubmit()">Save <i
+                                        class="fa fa-spinner fa-spin" *ngIf="submitProcessing"
+                                        style="font-size:19px"></i></button>
+                                <button type="button" class="button btn-primary btn-style" *ngIf="!togglebtn"
+                                    [disabled]="submitProcessing" (click)="updateAsset()">Update <i
+                                        class="fa fa-spinner fa-spin" *ngIf="submitProcessing"
+                                        style="font-size:19px"></i></button>
+                            </div>
+                            <div class="col-md-6 pull-right" *ngIf="togglebtn">
+                                <button type="button" id="btnComponentSave" (click)="clear()"
+                                    class="button btn-warning btn-style" [disabled]="submitProcessing">
+                                    Clear</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade common-model xxxyyy" id="confirmDelete">
+    <div class="modal-dialog">
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-body"><button type="button" class="close" data-dismiss="modal">&times;</button>
+                <p>Are you sure you want to delete selected items?</p>
+            </div>
+            <div class="modal-footer" style="justify-content: flex-end;">
+                <button type="button" class="btn btn-default btn-sm" data-dismiss="modal">Close</button>
+                <button type="button" data-dismiss="modal" class="btn btn-primary btn-sm"
+                    (click)="deleteAsset()">Ok</button>
+            </div>
+        </div>
+    </div>
+</div>

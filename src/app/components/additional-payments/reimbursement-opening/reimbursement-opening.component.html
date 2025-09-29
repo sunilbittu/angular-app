@@ -1,0 +1,92 @@
+
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-3">        
+                <div class="h-size m-2" style="text-align: justify;"><b>Reimbursement Opening Year: </b></div>
+        </div>
+        <div class="col-2 dropdown" style="padding-top: 3px;">
+            <div class="form-group">
+                
+                  <select class="form-control form-control-sm" >
+                      <option value="">--Year--</option>
+                  <option *ngFor="let year of years" >{{year}}</option>
+                  
+                </select>
+              </div>
+        </div>  
+        <div class="col-3" style="padding-top: 5px;">
+            <em class="fa fa-search" ></em><span> Search </span><input type="text" value="">
+        </div>
+        <div class="clo-4">
+                <div class="h-size m-2" style="text-align: justify;"><strong>Reimbursement Setting</strong></div>
+        </div>
+    </div>
+            
+    
+    <div class="row">
+        <div class="col-md-8">
+            <table class="table table-bordered table-hover table-sm" style="margin-top: 5px; text-align: justify;">
+                <caption></caption>
+                <thead class="t-head">
+                    <tr>
+                        <th *ngFor="let head of headers1" id="h1"><a>{{head}}</a></th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                        
+                         <tr *ngFor="let employee of employees1">
+                             
+                             <td>{{employee.Code}}</td>
+                             <td>{{employee.name}}</td>
+                             <td>{{employee.branch}}</td>
+                             <td>{{employee.department}}</td>
+                             <td>{{employee.designation}}</td>
+                             <td>{{employee.grade}}</td>
+                            
+                            
+                             
+                             
+                         </tr>
+                    </tbody>
+
+                </table>
+            <button id="btn_add" type="button" class="btn btn-primary button btn-sm" disabled="disabled"><i
+                    class="fas fa-user-plus"></i> Add</button>
+            
+            
+
+        </div>
+        <div class="col-4">
+            <table class="table table-bordered table-hover table-sm" style="margin-top: 5px;">
+                <thead class="t-head">
+                    <tr>
+                        <th *ngFor="let head of headers2" ><a>{{head}}</a></th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                         <tr *ngFor="let employee of employees2">
+                             <td>{{employee.employeeCode}}</td>
+                             <td>{{employee.name}}</td>
+                             <td>{{employee.doj}}</td>
+                             <td>{{employee.noOfYears}}</td>
+                             <td>{{employee.lastSalary}}</td>
+                             <td>{{employee.calculatedSalary}}</td>
+                             <td>{{employee.calculatedGratuity}}</td>
+                             <td>{{employee.maximumGratuity}}</td>
+                             
+                             
+                         </tr>
+                    </tbody>
+
+                </table>
+            <button id="btn_add" type="button" class="btn btn-primary button btn-sm" disabled="disabled"><i
+                    class="fas fa-save"></i> Update</button>
+        </div>
+    </div>
+</div>
+
+
+
+
+
+ 

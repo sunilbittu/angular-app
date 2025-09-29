@@ -1,0 +1,10 @@
+.filters td{
+    padding: 0px !important;
+}
+tr{
+    cursor: pointer;
+}
+.table tr.active td {  
+    background-color: #9ABCEA!important;
+    color: white;  
+  }

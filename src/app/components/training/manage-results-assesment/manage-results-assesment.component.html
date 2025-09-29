@@ -1,0 +1,203 @@
+<div class="container-fluid">
+
+    <div>
+        <div class="d-flex align-items-center mt-2">
+            <div class="m-2">
+                <div class="h-size"><em class="fa fa-user"></em> <strong>Manage Results & Assessments</strong></div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-4">
+                <label for="branch"> Training Batch : <span class="color-red">*</span></label>
+                <select class="form-control" [(ngModel)]="technologyModel" name="technology" id="technology">
+                    <option disabled selected>Please Select Batch Name</option>
+                    <option *ngFor="let branch of technologyList" value={{branch}}>
+                        {{branch}}
+                    </option>
+                </select>
+
+            </div>
+            <div class="col-md-4 tttt ">
+                <button class="btn btn-primary btn-sm" (click)="fetchEmployees()">Search</button>&nbsp;
+
+                <button class="btn btn-danger btn-sm" (click)="clearData()">Cancel</button>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-12">
+                <table class="table table-bordered table-hover table-sm">
+                    <thead class="t-head">
+                        <tr>
+                            <th *ngFor="let head of headerLoan"><a>{{head}}</a></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let loan of loanData">
+
+                            <td>{{loan.technologyName}}</td>
+                            <td>{{loan.employeeCode}}</td>
+                            <td>{{loan.firstName}} {{loan.lastName}}</td>
+                            <td>{{loan.trainerName}}</td>
+                            <td>{{loan.startDate | date:'dd-MM-yyyy'}}</td>
+                            <td>{{loan.endDate | date:'dd-MM-yyyy'}}</td>
+                            <td>
+                                <span>
+                                    <a class="action" title="File Downlaod" (click)="viewDocument(loan)"><i
+                                            class="fa fa-download" aria-hidden="true"></i></a>&nbsp;
+                                </span>
+                            </td>
+                            <td>
+                                <button title="Upload" (click)="modelShowEdit(loan)" class="icon-margin">Upload <i
+                                        class="fa fa-upload"></i></button>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal alert-modal fade" id="donwload_doc" role="dialog" style="display: none;">
+    <div class="modal-dialog modal-md">
+        <div class="modal-content model">
+            <div class="modal-header " id="msg_header">
+                <h4 class="modal-title">Download</h4>
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-md-12">
+                        <table class="table table-bordered table-hover table-sm">
+                            <thead class="t-head">
+                                <tr>
+                                    <th *ngFor="let head of headerLoan2"><a>{{head}}</a></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr *ngFor="let loan of loanData2">
+
+                                    <td>{{loan.documentName}}</td>
+                                    <td>{{loan.documentType}}</td>
+                                    <td><button type="button" target="_blank"
+                                            (click)="downloadDocumentAttachment(loan.filePath, loan.fileName)"
+                                            class="fa fa-download" aria-hidden="true"></button> </td>
+
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <hr>
+                <div class="row col-12 padding-field-bottom">
+
+                    <button type="button" class="button btn-danger btn-style" data-dismiss="modal">
+                        Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade common-model" id="employeeModelPopup">
+    <div class="modal-dialog modal-xl">
+        <div class="modal-content model">
+            <form [formGroup]="documentForm" (ngSubmit)="submit()">
+                <!-- Modal Header -->
+                <div class="modal-header">
+                    <div class="modal-title"><i class="fas fa-plus"></i>/ <i class="fas fa-edit ml-1"></i> Material
+                        Upload </div>
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                </div>
+                <!-- Modal body -->
+                <div class="modal-body">
+                    <div class="row col-12 padding-field-bottom">
+                        <div class="col-2">
+                            <label for="cbo">Document Type:<span class="color-red">*</span></label>
+                        </div>
+                        <div class="col-4">
+                            <select class="form-control form-control-sm" id="cce" formControlName="documentType">
+                                <option value="">--Select Country--</option>
+                                <option value="Final Assesment">Final Assesment</option>
+                                <option value="Upload Results">Upload Results</option>
+                            </select>
+                            <span span class="color-red" *ngIf="submitted && form_.documentType.errors">Document Type
+                                Cant be blank</span>
+                        </div>
+                    </div>
+                    <div class="row col-12 padding-field-bottom">
+                        <div class="col-2">
+                            <label>Document Name <span class="color-red">* </span></label>
+                        </div>
+                        <div class="col-4">
+                            <input type="text" formControlName="documentName" id="type"
+                                class="text form-control pull-top-5" maxlength="50" />
+                            <span span class="color-red" *ngIf="submitted && form_.documentName.errors">Document Name
+                                Cant be blank</span>
+                        </div>
+                    </div>
+                    <div *ngIf="this.documentForm.value.documentType == 'Upload Results'" class="row col-12 padding-field-bottom">
+                        <div class="col-2">
+                            <label for="cbo">Grade:<span class="color-red">*</span></label>
+                        </div>
+                        <div class="col-4">
+                            <select class="form-control form-control-sm" id="grade" formControlName="grade">
+                                <option value="0.0">0.0</option>
+                                <option value="0.5">0.5</option>
+                                <option value="1.0">1.0</option>
+                                <option value="1.5">1.5</option>
+                                <option value="2.0">2.0</option>
+                                <option value="2.5">2.5</option>
+                                <option value="3.0">3.0</option>
+                                <option value="3.5">3.5</option>
+                                <option value="4.0">4.0</option>
+                                <option value="4.5">4.5</option>
+                                <option value="5.0">5.0</option>
+                            </select>
+                            <span span class="color-red" *ngIf="submitted && this.documentForm.value.grade ==''">Grade 
+                                Cant be blank</span>
+                        </div>
+                    </div>
+                    <div *ngIf="this.documentForm.value.documentType == 'Upload Results'" class="row col-12 padding-field-bottom">
+                        <div class="col-2">
+                            <label>Remarks :<span class="color-red">* </span></label>
+                        </div>
+                        <div class="col-4">
+                            <textarea formControlName="remarks" class="form-control form-control-sm"
+                            id="remarks"></textarea>
+                            <span span class="color-red" *ngIf="submitted && this.documentForm.value.remarks ==''">Remarks 
+                                Cant be blank</span>
+                        </div>
+                    </div>
+
+                    <div  class="row col-12 padding-field-bottom">
+                        <div class="col-2">
+                            <label>Add Attachment <span class="color-red">* </span></label>
+                        </div>
+                        <div class="col-4">
+                            <input type="file" formControlName="selectedFile" class="form-control height-45"
+                                (change)="onFileChanged($event)">
+                            <span class="color-red"
+                                *ngIf="submitted && (selectedFile == '' || selectedFile == undefined) && !fileSelected">Attachment
+                                {{requiredErrorText}}</span>
+                        </div>
+                    </div>
+                    <hr>
+                    <div class="row">
+                        <div class="col-md-6 pull-left">
+                            <button type="submit" id="btnComponentSave" [disabled]="submitProcessing"
+                                class="button btn-primary btn-style"><i class="fas fa-save"></i>
+                                Submit <i class="fa fa-spinner fa-spin" *ngIf="submitProcessing"
+                                    style="font-size:19px"></i></button>
+                        </div>
+                        <div class="col-md-6 pull-right">
+                            <button type="button" id="btnComponentSave" data-dismiss="modal"
+                                class="button btn-warning btn-style">
+                                Close</button>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

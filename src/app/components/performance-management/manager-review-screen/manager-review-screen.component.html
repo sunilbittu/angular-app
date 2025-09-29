@@ -1,0 +1,237 @@
+
+
+
+<div class="container-fluid" *ngIf="toggleScreen">
+    <div class="d-flex align-items-center mt-2">
+        <div class="m-2">
+            <div class="h-size"><em class="fa fa-user"></em> <strong>Manager Review Screen</strong></div>
+        </div>
+        <div class="flex-fill">
+        </div>
+       
+      
+    </div>
+    <div class="row">
+        <div class="col-md-12">
+            <table class="table table-bordered table-hover table-sm">
+                <thead class="t-head">
+                    <tr>
+                        <th *ngFor="let head of headers"><a>{{head}}</a></th>
+                    </tr>
+                    
+                    </thead>
+                    <tbody>
+                         <tr *ngFor="let employee of employeeList" (click)="employeeClick(employee)">
+                             <td>{{employee.employeeCode}}</td>
+                             <td>{{employee.firstName}} {{employee.lastName}}</td>
+                             <td>{{employee.branchName}}</td>
+                             <td>{{employee.departmentName}}</td>
+                             <td>{{employee.designationName}}</td>
+                             <td>{{employee.divisionName}}</td>
+                             <td>{{employee.gradeName}}</td>
+                             <td>{{employee.categoryName}}</td>
+                             <td>{{employee.projectName}}</td>
+                             
+                         </tr> 
+                    </tbody>
+
+            </table>
+        </div>
+    </div>
+
+    
+    <div class="model-block">
+
+        <div class="row">
+            <div class="col-md-2">
+                <button [disabled]="toggleButton" class="btn btn-success btn-sm" (click)="checkAppraisal()">check Emplopyee Appraisal</button>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+
+<div class="container-fluid" *ngIf="!toggleScreen">
+    <div class="d-flex align-items-center mt-2">
+        <div class="m-2">
+            <div class="h-size"><i class="fas fa-cogs"></i> <b>Manager Appraisal Review Screen</b></div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-12">
+            <table class="table table-bordered table-hover table-sm table-eg" >
+
+
+                      <tr>
+                        <th>Name:</th> 
+                        <td>{{employeeDetails.firstName}}</td>
+                        
+                        <th>Manager:</th> 
+                        <td>{{managerName}}</td>
+
+                      </tr>
+                      <tr>
+                          <th>Designation:</th> 
+                          <td>{{employeeDetails.designationName}}</td>
+                          
+                          <th>Department:</th> 
+                          <td>{{employeeDetails.departmentName}}</td>
+                        </tr>
+                        <tr>
+                          <th>Grade:</th> 
+                          <td>{{employeeDetails.gradeName}}</td>
+                          
+                          <th>Branch:</th> 
+                          <td>{{employeeDetails.branchName}}</td>
+                        </tr>
+                        <tr>
+                            <th>Days remaining for submission:</th> 
+                            <td>{{remainingDay}}</td>
+                            <th>Appraisal Year:</th> 
+                            <td>
+                                    <select class="form-control" [(ngModel)]="yearModel"  style="width: 30%;"
+                                        name="year" (change)="getKpaList()">
+                                            <option value="">Please Select Year</option>
+                                            <option *ngFor="let year of investmentYear" value={{year.financialYearId}}>{{year.financialYear}}</option>
+                                    </select>
+                            </td>
+                        </tr>
+          
+                    <tbody>
+                        
+                    </tbody> 
+        
+            </table>
+          
+        </div>
+    </div>
+
+    <div class="d-flex align-items-center mt-2">
+        <div class="m-2">
+            <div class="h-size"><i class="fas fa-cogs"></i> <b>Manager Appraisal Review</b></div>
+        </div>
+    </div>
+    
+   
+    <br>
+<form #form="ngForm">
+    <div class="row">
+        <div class="col-md-12">
+            
+            <div>
+                
+                <span class="badge badge-primary emp-rating">Employee Self Rating: 
+                    <input type="text"  style="width: 30%;display: inline" readonly name="rating" value={{employeeRating?.employeeRating}} class="form-control">
+
+                </span>
+                <span class="badge badge-primary emp-rating ml-380">Manager Final Rating: 
+                    <input type="text" name="rating" readonly style="width: 30%;display: inline" value={{employeeRating?.managerRating}} name="duration" class="form-control">
+
+                </span>
+            </div>
+            <br>
+            <div>
+                <span class="badge badge-primary emp-rating">Disscussion Duration: 
+                    <input type="text" [(ngModel)]="discussionDuration" style="width: 30%;display: inline"  name="duration" class="form-control">
+
+                </span>
+                <span class="badge badge-primary emp-rating ml-380" style="width: 406px;">Disscussion Date: 
+                    <input type="text"  bsDatepicker placeholder="Please Select Date" style="width:50%;display: inline" value={{discussionDate}}   readonly [bsConfig]="{ isAnimated: true, dateInputFormat: 'DD-MM-YYYY' }" bsDatepicker
+                    (bsValueChange)="onDateValueChange($event)" placement="bottom" class="text form-control pull-top-5" maxlength="50" />
+           
+                </span>
+            </div>
+            <div class="d-flex align-items-center mt-2">
+                <div class="m-2">
+                        <div class="h-size"><i class="fa fa-user"></i> <b>Assigned Ratings  And Comments</b></div>
+                </div>
+                <div class="flex-fill">
+                </div>
+               
+            </div>
+            <table class="table table-bordered table-hover table-sm">
+                <thead class="t-head">
+                    <tr>
+                        <th >S.No</th>
+                        <th >Key Performance Area</th>
+                        <th > Weightage in %</th> 
+                        <th >Targeted Results</th>
+                        <th >Self Rating</th>
+                        <th >Appraiser Rating (1-5)</th>
+                        <th >Appraiser's Comments</th>
+                    </tr>
+                   
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let data of kpaTableData;let i=index">
+                            <td>{{i+1}}</td>
+                            <td>{{data.kpaName}}</td>
+                            <td>{{data.kpaWeighttage}}</td>
+                            <td>{{data.targetedResults}}</td>
+                            <td>{{data.selfRating}}</td>
+                            <!-- <td style="width: 10%;">
+                                <input type="number" [(ngModel)]="data.selfRating"
+                                    [ngClass]="{ 'is-invalid': submitted &&(data.selfRating>5 || selfrating?.errors) }"
+                                    class="form-control" #selfrating="ngModel" name="selfrating{{i}}">
+                            </td> -->
+                            <td style="width: 10%;">
+                                <input  type="number"  class="form-control"  [ngClass]="{ 'is-invalid': submitted && (data.appraiserRating>5 || appraisalRating?.errors) }" 
+                                [(ngModel)]="data.appraiserRating" name="appraisalRating{{i}}"  #appraisalRating="ngModel">
+                                <!-- <span *ngIf="data.appraiserRating !=null">{{data.appraiserRating}}</span> -->
+                            </td>
+                            <td>
+                                <textarea  name="Comments{{i}}" #Comments="ngModel" class="form-control" [ngClass]="{ 'is-invalid': submitted && Comments?.errors }"  required [(ngModel)]="data.appraisersComments"></textarea>
+                                <!-- <span *ngIf="data.appraisersComments !=null">{{data.appraisersComments}}</span> -->
+
+                            </td>
+                        </tr>
+                    </tbody> 
+
+            </table>
+        </div>  
+
+        <div class="col-12" *ngIf="isnotFinalized">
+            <!-- <div class="alert alert-danger" *ngIf="RatingError">
+                <strong>Warning!</strong>Each Rating Should be 5 or less then 5 .
+              </div> -->
+              <br>
+            <button type="button" class="btn btn-primary btn-sm" (click)="onSubmit(form)">
+                <i class="fas fa-user-plus"></i> Submit
+            </button>
+        </div>
+    </div>
+</form>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

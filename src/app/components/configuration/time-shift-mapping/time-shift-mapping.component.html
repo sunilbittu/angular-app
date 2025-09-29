@@ -1,0 +1,214 @@
+<div class="container-fluid">
+    <div class="d-flex align-items-center mt-2">
+        <div class="m-2">
+            <div class="h-size"><em class="fa fa-user"></em> <strong> Time Shift Mapping</strong></div>
+        </div>
+        <div class="flex-fill">
+        </div>
+    </div>
+    <section class="content">
+        <div class="alert alert-danger" *ngIf="isFormValuesSame">
+            Source and destination form values are same, please check once.
+        </div>
+        <div class="row">
+            <div class="col-md-5 column-1">
+                <!-- <h4>Source</h4> -->
+                <form [formGroup]="form">
+                    <div class="row">
+                        <div class="drop-down-width  text-center">
+                            <label><b>Branch </b><span class="color-red">*</span></label>
+                            <select formControlName="branch" class="custom-select-box form-control text-center" [(ngModel)]="sourceBranch"
+                                (change)="changeBranch(sourceBranch)">
+                                <option value='' disabled>--Select Branch--</option>
+                                <option *ngFor="let branch of branchList" [ngValue]="branch">
+                                    {{branch.branchName}}
+                                </option>
+                            </select>
+                            <div class="align-center"><span class="color-red"
+                                    *ngIf="submitted && form_.branch.errors">Branch
+                                    {{requiredErrorText}}</span></div>
+                        </div>
+                        <div class="drop-down-width  text-center">
+                            <label><b>Department </b><span class="color-red">*</span></label>
+                            <select formControlName="department" [(ngModel)]="sourceDept"
+                                (change)="changeDepartment(sourceDept)" class="custom-select-box form-control text-center">
+                                <option value="" disabled>--Select Department--</option>
+                                <option *ngFor="let dept of departmentList" [ngValue]="dept">
+                                    {{dept.departmentName}}
+                                </option>
+                            </select>
+                            <div class="align-center"><span class="color-red"
+                                    *ngIf="submitted && form_.department.errors">Department
+                                    {{requiredErrorText}}</span></div>
+                        </div>
+                        <div class="drop-down-width  text-center">
+                            <label><b>Project </b></label>
+                            <select id="project" formControlName="project" [(ngModel)]="sourceProject"
+                                (change)="changeProject(sourceProject)" class="form-control custom-select-box text-center">
+                                <option value="" selected disabled>--Select Project--</option>
+                                <option *ngFor="let project of projectList" [ngValue]="project">
+                                    {{project.projectName}}
+                                </option>
+                            </select>
+                            <!-- <div class="align-center"><span class="color-red"
+                                    *ngIf="submitted && form_.project.errors">Project
+                                    {{requiredErrorText}}</span></div> -->
+                        </div>
+                    </div>
+                </form>
+                <div class="text-center">
+                    <b>Employee List :</b>
+                </div>
+                <div>
+                    <input type="text" class="form-control" [(ngModel)]="searchItem" placeholder="Search..." />
+                </div>
+                <div class="border-design over">
+                    <label class="margin-left-10 s-lable font-15 text-center"><b><u>Please select
+                                employee(s)</u></b></label>
+                    <table class="margin-left-10">
+                        <tr>
+                            <th>
+                                <input type="checkbox" class="select-all" name="allStudents"
+                                    [checked]="employeeList.length == 0" [value]="employeeList"
+                                    (change)="selectAll($event)" [disabled]="employeeList.length == 0">
+                            </th>
+                            <th>
+                                <label class="s-lable">&nbsp;Employee Name</label>
+                            </th>
+                        </tr>
+                        <tr *ngIf="toggleLoader">
+                            <td colspan="2">
+                                <img src="./assets/images/loader-icon.gif" class="loader-margin img-responsive"
+                                    alt="loading....">
+                            </td>
+                        </tr>
+                        <tr *ngFor="let emp of employeeList | search : searchItem">
+                            <td>
+                                <input type="checkbox" class="status-check select-all" [checked]="emp.selected"
+                                    (change)="onClickCheckBox(emp.employeeId)" name="status">
+                            </td>
+                            <td>&nbsp;{{emp.firstName}} {{emp.lastName}}</td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+            <div class="col-md-1 text-center column-2">
+                <div>
+                    <a (click)="addRight()" class="btn btn-success"><i class="fas fa-angle-double-right fa-lg"
+                            style="margin-top: 7px;"></i></a>
+                    <br><br>
+                    <!-- <a (click)="addLeft()" class="btn btn-danger"><i class="fas fa-angle-double-left fa-lg"
+                            style="margin-top: 7px;"></i></a> -->
+                </div>
+            </div>
+            <div class="col-md-5 column-1">
+                <!-- <h4>Destination</h4> -->
+                <form [formGroup]="form1">
+                    <div class="row">
+                        <div class="drop-down-width text-center">
+                            <label><b>Time Shift </b><span class="color-red">*</span></label>
+                            <select class="custom-select-box form-control" [(ngModel)]="destinationBranch"
+                                (change)="changeBranchDestination(destinationBranch)" formControlName="branch1">
+                                <option value='' disabled>--Select Shift--</option>
+                                <option *ngFor="let branch of shiftList" [ngValue]="branch">
+                                    {{branch.name}}
+                                </option>
+                            </select>
+                            <div class="align-center"><span class="color-red"
+                                    *ngIf="submitted && form_1.branch1.errors">Time Shift
+                                    {{requiredErrorText}}</span></div>
+                        </div>
+                        <div class="drop-down-width text-center">
+                            <label><b>Start Date </b><span class="color-red">*</span></label>
+                            <!-- <select formControlName="department1" [(ngModel)]="destinationDept"
+                                (change)="changeDepartmentDestination(destinationDept)"
+                                class="custom-select-box form-control">
+                                <option value="" disabled>--Select Department--</option>
+                                <option *ngFor="let dept of departmentListDestination" [ngValue]="dept">
+                                    {{dept.departmentName}}
+                                </option>
+                            </select> -->
+                            <input type="text" formControlName="department1" bsDatepicker [(ngModel)]="destinationDept"
+                            (change)="changeDepartmentDestination(destinationDept)" placeholder="Start Date"
+                                    [bsConfig]="{ isAnimated: true, dateInputFormat: 'DD-MM-YYYY' }"
+                                    class="text form-control" id="department1" maxlength="50" placement="bottom" />
+                           
+                            <div class="align-center"><span class="color-red"
+                                    *ngIf="submitted && form_1.department1.errors">Department
+                                    {{requiredErrorText}}</span></div>
+                        </div>
+                        <div class="drop-down-width text-center">
+                            <label><b>End Date </b><span class="color-red">*</span></label>
+                            <!-- <select id="project" formControlName="project1" [(ngModel)]="destinationProject"
+                                (change)="changeProjectDestination(destinationProject)"
+                                class="form-control custom-select-box">
+                                <option value="" selected disabled>--Select Project--</option>
+                                <option *ngFor="let project of projectList" [ngValue]="project">
+                                    {{project.projectName}}
+                                </option>
+                            </select> -->
+                            <input type="text" formControlName="project1" bsDatepicker [(ngModel)]="destinationProject"
+                            (change)="changeProjectDestination(destinationProject)" placeholder="End Date"
+                            [bsConfig]="{ isAnimated: true, dateInputFormat: 'DD-MM-YYYY' }"
+                            class="text form-control" id="project1" maxlength="50" 
+                            placement="bottom" />
+
+                            <div class="align-center"><span class="color-red"
+                                    *ngIf="submitted && form_1.project1.errors">EndDate
+                                    {{requiredErrorText}}</span></div>
+                        </div>
+                    </div>
+                </form>
+                <div class="text-center">
+                    <b>Employee List :</b>
+                </div>
+                <div>
+                    <input type="text" class="form-control" [(ngModel)]="searchInput" placeholder="Search..." />
+                </div>
+                <div class="border-design over">
+                    <label class="margin-left-10 s-lable font-15"><strong><u>Please select
+                                employee(s)</u></strong></label>
+                    <table class="margin-left-10">
+                        <tr>
+                            <th>
+                                <input type="checkbox" class="select-all" name="allStudents"
+                                    [checked]="destinationEmployeeList.length == 0" [value]="destinationEmployeeList"
+                                    (change)="selectAllDestination($event)"
+                                    [disabled]="destinationEmployeeList.length == 0">
+                            </th>
+                            <th>
+                                <label class="s-lable">&nbsp;Employee Name</label>
+                            </th>
+                        </tr>
+                        <tr *ngIf="toggleLoaderDestination">
+                            <td colspan="2">
+                                <img src="./assets/images/loader-icon.gif" class="loader-margin img-responsive"
+                                    alt="loading....">
+                            </td>
+                        </tr>
+                        <tr *ngFor="let emp of destinationEmployeeList | search : searchInput">
+                            <td>
+                                <input type="checkbox" class="status-check select-all" [checked]="emp.selected"
+                                    (change)="onClickCheckBoxDestination(emp.employeeId)" name="status">
+                            </td>
+                            <td>&nbsp;{{emp.firstName}} {{emp.lastName}}</td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+            <!-- </div> -->
+        </div>
+        <br>
+        <div class="row">
+            <div class="col-md-12 text-center">
+                <button type="submit" id="btnComponentSave" class="button btn-primary btn-style" (click)="update()"><i
+                        class="fas fa-save"></i>
+                    Update</button>
+                <button type="submit" id="btnComponentSave" class="button btn-warning btn-style" (click)="onClick()">
+                    Clear</button>
+                <!-- <button type="submit" id="btnComponentSave" class="button btn-danger btn-style" (click)="onClick()">
+                    Cancel</button> -->
+            </div>
+        </div>
+    </section>
+</div>

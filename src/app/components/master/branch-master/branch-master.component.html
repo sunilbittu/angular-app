@@ -1,0 +1,181 @@
+<div class="container-fluid">
+    <div class="d-flex align-items-center mt-2">
+        <div class="m-2">
+            <div class="h-size"><i class="fa fa-user mr-1"></i> <b>Branch Master</b></div>
+        </div>
+        <div class="flex-fill">
+        </div>
+        <div class="m-3"><input class="form-control rounded-pill py-2 border-right-0 border" type="search"
+            placeholder="search" id="example-search-input" value="" (keyup)="getBranchListBySearchParam($event)">
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-12">
+            <table class="table table-bordered table-hover table-sm">
+                <thead matSort (matSortChange)="sortData($event)" class="t-head">
+                    <tr>
+                        <!-- <th *ngFor="let head of headers"><a>{{head}}</a></th> -->
+                        <th mat-sort-header="branchCode" ><a> Branch Code</a></th>
+                        <th mat-sort-header="branchName" ><a> Branch Name</a></th>
+                        <th mat-sort-header="address" ><a> Address</a></th>
+                        <th mat-sort-header="profTaxApplication" ><a> PT Apply</a></th>
+                        <th mat-sort-header="profTaxRegNo" ><a> PT Reg. No</a></th>
+                        <th mat-sort-header="profTaxLocalOffice" ><a> PT Office</a></th>
+                        <th mat-sort-header="companyBranchType" ><a> PT Slab</a></th>
+                        <th mat-sort-header="currencyCode" ><a> Currency Code</a></th>
+                        <th ><a> Action</a></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let branch of sortedData | paginate
+                    : {
+                        itemsPerPage: itemsPerPage,
+                        currentPage: currentPage,
+                        totalItems: totalItems
+                      };let i=index">
+                        <td>{{branch.branchCode}}</td>
+                        <td>{{branch.branchName | titlecase}}</td>
+                        <td>{{branch.address}}</td>
+                        <td>{{branch.profTaxApplication}}</td>
+                        <td>{{branch.profTaxRegNo}}</td>
+                        <td>{{branch.profTaxLocalOffice}}</td>
+                        <td>{{branch.companyBranchType}}</td>
+                        <td>{{branch.currencyCode}}</td>
+                        <td>
+                            <a title="Edit" (click)="getBranchDetailsById(branch.companyBranchDetailsId)"
+                                data-toggle="modal" data-target="#employeeModelPopup" class="icon-margin"><i
+                                    class="fas fa-user-edit"></i></a>
+                            <a title="Delete" class="icon-margin" mwlConfirmationPopover [popoverTitle]="popoverTitle"
+                                [popoverMessage]="popoverMessage" placement="left"
+                                (confirm)="deleteBranchDetails(branch.companyBranchDetailsId)"
+                                (cancel)="cancelClicked = true"><span class="fas fa-trash"></span></a>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+            <div class="row" *ngIf="totalElements!=0">
+                <div class="col-md-6 pull-left"><span class="show-entry">Showing
+                        <span>{{showingFrom}} to {{showingTo}} of {{totalElements}} entries</span></span>&nbsp;
+                </div>
+
+                <div class="col-md-6 pull-right" *ngIf="totalItems > 0">
+                    <pagination-controls (pageChange)="pageChanged($event)"></pagination-controls>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-12">
+            <button type="button" (click)="modelShow()" class="btn btn-primary btn-sm" data-toggle="modal"
+                data-target="#employeeModelPopup">
+                <i class="fas fa-user-plus"></i> Add
+            </button>
+        </div>
+    </div>
+    <form [formGroup]=branchMasterForm (ngSubmit)="onSubmit()">
+        <app-employee-model-popup>
+            <h4 class="modal-title" head><i class="fas fa-plus mr-1"></i> / <i class="fas fa-edit mr-1"></i>Branch
+                Details </h4>
+            <div body>
+                <div class="container">
+                    <div class="row">
+                        <div class="col-md-6 offset-md-6">
+                            <h3 class="text-center add-title">Professional Tax Details</h3>
+                            <div class="form-check">
+                                <label class="form-check-label" for="defaultCheck1">
+                                    Professional Tax Application
+                                </label>
+                                <input class="form-check-input-reverse" formControlName="profTaxAppication"
+                                    type="checkbox" value="" id="defaultCheck1">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="branchCode" class="col-form-label">Branch Code</label>
+                                <input type="text" formControlName="branchCode"
+                                    (input)=checkIfalreadyExist2($event) required
+                                    class="form-control form-control-sm" id="branchCode">
+                                <span class="color-red" *ngIf="submitted && form_.branchCode.errors">Branch Code
+                                    {{requiredErrorText}}</span>
+                                <span class="color-red" *ngIf="exist2"> Branch Code Already Exist</span>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="profTaxSlab" class="col-form-label">Prof. Tax Slab </label>
+                                <input type="text" formControlName="profTaxSlab" class="form-control form-control-sm"
+                                    id="profTaxSlab">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="branchName" class="col-form-label">Branch Name <span
+                                        class="color-red">*</span>
+                                </label>
+                                <input type="text" formControlName="branchName" required
+                                    class="form-control form-control-sm" id="branchName"
+                                    (input)=checkIfalreadyExist($event)>
+                                <span class="color-red" *ngIf="submitted && form_.branchName.errors">Branch Name
+                                    {{requiredErrorText}}</span>
+                                <span class="color-red" *ngIf="exist"> Branch Name Already Exist</span>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="profTaxRegNo" class="col-form-label">Prof. Tax Reg. No</label>
+                                <input type="text" formControlName="profTaxRegNo" class="form-control form-control-sm"
+                                    id="profTaxRegNo">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="branchAddress" class="col-form-label">Branch Address</label>
+                                <textarea class="form-control form-control-sm textarea" formControlName="branchAddress"
+                                    rows="2" id="branchAddress"></textarea>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="ptLocalOffice" class="col-form-label">PT Local Office</label>
+                                <input type="text" formControlName="PtLocalOffice" class="form-control form-control-sm"
+                                    id="ptLocalOffice">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="currencyType" class="col-form-label">Currency Type<span
+                                    class="color-red">*</span></label>
+                                <select class="form-control form-control-sm" formControlName="currencyId">
+                                    <option value='' selected disabled>Select Currency Type</option>
+                                    <option *ngFor="let currency of currencyTypeList"
+                                        [value]="currency.currencyId">{{currency.currencyCode}}-{{currency.currencyName}}</option>
+                                </select>
+                                <span class="color-red" *ngIf="submitted && form_.currencyId.errors">Currency Type
+                                    {{requiredErrorText}}</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div footer>
+                <div *ngIf=editButtonEnable>
+                    <button type="button" class="btn btn-warning btn-sm" data-dismiss="modal">Cancel</button>
+                    <button type="button" class="btn btn-success btn-sm"
+                        (click)="updateBranchMasterDetails()">Update</button>
+                </div>
+                <div *ngIf=!editButtonEnable>
+                    <button type="button" class="btn btn-warning btn-sm" data-dismiss="modal">Cancel</button>
+                    <button type="submit" class="btn btn-primary btn-sm">Save</button>
+                </div>
+            </div>
+        </app-employee-model-popup>
+    </form>
+</div>

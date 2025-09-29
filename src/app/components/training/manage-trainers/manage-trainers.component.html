@@ -1,0 +1,206 @@
+<div class="container-fluid">
+    <div class="d-flex align-items-center mt-2">
+        <div class="m-2">
+            <div class="h-size"><em class="fa fa-user"></em> <strong> Manage Trainers</strong></div>
+        </div>
+        <div class="flex-fill">
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-12">
+            <table class="table table-bordered table-hover table-sm">
+                <thead class="t-head">
+                    <tr>
+                        <th *ngFor="let head of headers"><a>{{head}}</a></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let data of trainersList">
+                        <td>{{data.trainerDetails.trainerId}}</td>
+                        <td>{{data.trainerDetails.trainerName}}</td>
+                        <td>{{data.type}}</td>
+                        <td>{{data.trainerDetails.contactNumber}}</td>
+                        <td>{{data.trainerDetails.email}}</td>
+                        <td>{{data.technologyName}}</td>
+                        <td>{{data.trainerDetails.experience}} year(s)</td>
+                        <td>{{data.trainerDetails.companyName}}</td>
+                        <td>
+                            <a title="View" (click)="modelShowView(data)" class="icon-margin"><i
+                                    class="fa fa-eye"></i></a>
+                            <a title="Edit" (click)="modelShowEdit(data)" class="icon-margin"><i
+                                    class="fas fa-user-edit"></i></a>
+                            <!-- <a title="Delete" class="icon-margin" mwlConfirmationPopover [popoverTitle]="popoverTitle"
+                                [popoverMessage]="popoverMessage" placement="left" (confirm)="delete(data.trainerId)"
+                                (cancel)="cancelClicked = true"><span class="fas fa-trash"></span></a> -->
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+            <div class="row" *ngIf="totalElements!=0"> 
+                <div class="col-md-6 col-sm-6 col-6  pagination-area"><span class="show-entry">Showing
+                        <span>{{showingFrom}} to {{showingTo}} of {{totalElements}} entries</span></span>&nbsp;
+                </div>
+
+                <div class="col-md-6 pull-right" *ngIf="totalElements > pageSize">
+                    <pagination-controls (pageChange)="pageChanged($event)"></pagination-controls>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-12">
+            <button type="button" class="btn btn-primary btn-sm" (click)="modelShow()" data-toggle="modal"
+                data-target="#addPopup">
+                <i class="fas fa-user-plus"></i> Add
+            </button>
+        </div>
+    </div>
+</div>
+<div class="modal fade common-model" id="addPopup">
+    <div class="modal-dialog modal-xl">
+        <div class="modal-content model">
+            <form [formGroup]="trainersForm" (ngSubmit)="submit()">
+                <!-- Modal Header -->
+                <div class="modal-header">
+                    <div class="modal-title" *ngIf="!isForViewAndSubmitDisabled"><i class="fas fa-plus"></i>/ <i
+                            class="fas fa-edit ml-1"></i> Manage Trainer
+                    </div>
+                    <div class="modal-title" *ngIf="isForViewAndSubmitDisabled"><i class="fa fa-eye"></i> View Trainer
+                    </div>
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                </div>
+                <!-- Modal body -->
+                <div class="modal-body">
+                    <div class="row col-12 padding-field-bottom">
+                        <div class="col-6 radio-font">
+                            <span><input id="deny" class="radio-size" name="referencedType" type="radio"
+                                    value="External" (ngModelChange)="handleReferencedType('External')"
+                                    [ngModelOptions]="{standalone: true}" [(ngModel)]="type" style="cursor: pointer;"
+                                    checked [attr.disabled]="isForEdit || isForViewAndSubmitDisabled ? '' : null">
+                                <label>&nbsp;External</label></span>&nbsp;
+                            <span><input id="approve" class="radio-size" name="referencedType" type="radio"
+                                    value="Internal" (ngModelChange)="handleReferencedType('Internal')"
+                                    [ngModelOptions]="{standalone: true}" [(ngModel)]="type"
+                                    [attr.disabled]="isForEdit || isForViewAndSubmitDisabled ? '' : null">
+                                <label>&nbsp;Internal</label></span>
+                        </div>
+                        <div class="col-2" *ngIf="!showExternal">
+                            <label for="type">Employees<span class="color-red">*</span></label>
+                        </div>
+                        <div class="col-4" *ngIf="!showExternal">
+                            <select class="form-control" id="employee" formControlName="employee"
+                                (change)="changeName()"
+                                [ngClass]="{ 'is-invalid': submitted && form_.employee.errors }">
+                                <option value="" disabled>Please Select Employee</option>
+                                <option *ngFor="let emp of employeeList" [value]="emp.employeeId">
+                                    {{emp.employeeCode}} - {{emp.firstName}} {{emp.lastName}}
+                                </option>
+                            </select>
+                            <span class="color-red" *ngIf="submitted && form_.employee.errors">Employee
+                                {{requiredErrorText}}</span>
+                        </div>
+                    </div>
+                    <div class="row col-12 padding-field-bottom">
+                        <div class="col-2">
+                            <label>Trainer Id<span class="color-red">*</span></label>
+                        </div>
+                        <div class="col-4">
+                            <input type="text" class="form-control" placeholder="Please Enter Trainer Id"
+                                formControlName="trainerId" [readonly]="true">
+                        </div>
+                        <div class="col-2">
+                            <label>Trainer Name<span class="color-red">*</span></label>
+                        </div>
+                        <div class="col-4">
+                            <input type="text" class="form-control" placeholder="Please Enter Trainer Name"
+                                formControlName="trainerName" [readonly]="!showExternal">
+                            <span class="color-red" *ngIf="submitted && form_.trainerName.errors">Trainer Name
+                                {{requiredErrorText}}</span>
+                        </div>
+                    </div>
+                    <div class="row col-12 padding-field-bottom">
+                        <div class="col-2">
+                            <label for="type">Contact Number<span class="color-red">*</span></label>
+                        </div>
+                        <div class="col-4">
+                            <input type="text" class="form-control" placeholder="Please Enter Contact Number"
+                                formControlName="contactNo" [readonly]="!showExternal">
+                            <span class="color-red" *ngIf="submitted && form_.contactNo.errors">Contact Number
+                                {{requiredErrorText}}</span>
+                        </div>
+                        <div class="col-2">
+                            <label>Email<span class="color-red">*</span></label>
+                        </div>
+                        <div class="col-4">
+                            <input type="text" class="form-control" placeholder="Email (Ex - example@gmail.com)"
+                                formControlName="email" [readonly]="!showExternal" (keyup)="validateMail()">
+                            <span class="color-red" *ngIf="submitted && form_.email.errors">Email
+                                {{requiredErrorText}}</span>
+                            <span class="color-red" *ngIf="!form_.email.errors && !isValidEmail"> Please Enter Valid Email</span>
+                        </div>
+                    </div>
+                    <div class="row col-12 padding-field-bottom">
+                        <div class="col-2">
+                            <label>Technology<span class="color-red">*</span></label>
+                        </div>
+                        <div class="col-4">
+                            <select class="form-control" id="technology" formControlName="technology"
+                                [ngClass]="{ 'is-invalid': submitted && form_.technology.errors }">
+                                <option value=null disabled>Please Select Technology</option>
+                                <option *ngFor="let tech of technologies" [value]="tech.technologyId">
+                                    {{tech.technologyName}}
+                                </option>
+                            </select>
+                            <span class="color-red" *ngIf="submitted && form_.technology.errors">Technology
+                                {{requiredErrorText}}</span>
+                        </div>
+                        <div class="col-2">
+                            <label>Experience<span class="color-red">*</span></label>
+                        </div>
+                        <div class="col-3" *ngIf="showExternal">
+                            <input type="number" class="form-control" placeholder="Please Enter Experience"
+                                formControlName="experience" [readonly]="!showExternal">
+                            <span class="color-red" *ngIf="submitted && form_.experience.errors">Experience
+                                {{requiredErrorText}}</span>
+                        </div>
+                        <div class="col-3" *ngIf="!showExternal">
+                            <input type="number" class="form-control" placeholder="Please Enter Experience"
+                                formControlName="experience" [readonly]="!showExternal">
+                            <span class="color-red" *ngIf="submitted && form_.experience.errors">Experience
+                                {{requiredErrorText}}</span>
+                        </div>
+                        <div class="col-1">
+                            <label>Year(s)</label>
+                        </div>
+                    </div>
+                    <div class="row col-12 padding-field-bottom">
+                        <div class="col-2">
+                            <label for="type">Trainer Company<span class="color-red">*</span></label>
+                        </div>
+                        <div class="col-4">
+                            <input type="text" class="form-control" placeholder="Please Enter Trainer Company"
+                                formControlName="company" [readonly]="!showExternal">
+                            <span class="color-red" *ngIf="submitted && form_.company.errors">Trainer Company
+                                {{requiredErrorText}}</span>
+                        </div>
+                    </div>
+                    <hr>
+                    <div class="row" *ngIf="!isForViewAndSubmitDisabled">
+                        <div class="col-md-6 pull-left">
+                            <button type="submit" id="btnComponentSave" [disabled]="submitProcessing"
+                                class="button btn-primary btn-style"><i class="fas fa-save"></i>
+                                {{submitText}} <i class="fa fa-spinner fa-spin" *ngIf="submitProcessing"
+                                    style="font-size:19px"></i></button>
+                        </div>
+                        <div class="col-md-6 pull-right" *ngIf="submitText == 'Create'">
+                            <button type="button" id="btnComponentSave" (click)="clear()"
+                                class="button btn-warning btn-style" [disabled]="submitProcessing">
+                                Clear</button>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

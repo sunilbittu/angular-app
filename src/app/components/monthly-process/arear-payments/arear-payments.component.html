@@ -1,0 +1,64 @@
+
+<div class="container-fluid">
+    <div class="d-flex align-items-center mt-2">
+        <div class="d-flex align-items-center mt-2">
+            <div class="m-3">
+                <h3 style="color: #444; font-weight: bold;">Arrear Payment</h3>
+            </div>
+            
+            <div class="m-2 d-flex align-items-center">
+                <i class="fas fa-search mr-2"></i>
+                <span class="mr-2">Search</span>
+                <div class="text-box-with-icon">
+                    <input type="text" id="txtSearchText" style="width: 220px;">
+                    <button type="button" id="btnClearSearch"><i class="fas fa-undo"></i></button>
+                </div>
+            </div>
+        </div>
+
+            
+        </div>
+       
+        
+        
+    
+    <div class="row">
+        <div class="col-md-12">
+            <table class="table table-bordered table-hover table-sm">
+                <thead class="t-head">
+                    <tr>
+                        <th *ngFor="let head of headers"><a>{{head}}</a></th>
+                    </tr>
+                    
+                   
+                    </thead>
+                    <tbody>
+                         <tr *ngFor="let arrear of arrears">
+                            <td>{{arrear.dateOfProcess}}</td>
+                            <td>{{arrear.noOfEmployees}}</td>
+                            <td>{{arrear.fromDate}}</td>
+                            <td>{{arrear.toDate}}</td>
+                            <td>{{arrear.paidInMonth}}</td>
+                            <td>{{arrear.remarks}}</td>
+                            
+                         </tr>
+                    </tbody>
+
+            </table>
+        </div>
+    </div>
+    <div class="row">
+            <div class="col-12">
+                 <button id="btn_add" type="button" class="btn btn-primary button" disabled="disabled"> Calculate Arrear</button>
+
+                 <button id="btn_add" type="button" class="btn btn-primary button" disabled="disabled">Arrear Details</button>
+
+                 <button id="btn_add" type="button" class="btn btn-primary button" disabled="disabled">Delete</button>
+
+                <button id="btn_add" type="button" class="btn btn-primary button" disabled="disabled">Close</button>
+            
+        </div>
+    </div>
+</div>
+
+ 

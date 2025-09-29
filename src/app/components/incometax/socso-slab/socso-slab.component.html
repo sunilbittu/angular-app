@@ -1,0 +1,408 @@
+<div class="container-fluid">
+  <div class="d-flex align-items-center mt-2">
+    <div class="m-2">
+      <div class="h-size"><em class="fa fa-user"></em> <strong> SOCSO Slab Master</strong></div>
+    </div>
+    <div class="flex-fill"></div>
+  </div>
+  <br>
+  <div class="alert alert-success success-alert" *ngIf="saveAlert">
+    <h4><em class="icon fa fa-check"></em> Saved!</h4>
+    Record has been Saved successfully.
+  </div>
+  <div class="alert alert-success success-alert" *ngIf="updateAlert">
+    <h4><em class="icon fa fa-check"></em> Updated!</h4>
+    Record has been Updated successfully.
+  </div>
+  <div class="alert alert-danger success-alert" *ngIf="deleteAlert">
+    <h4><em class="icon fa fa-check"></em> Deleted!</h4>
+    Record has been Deleted successfully.
+  </div>
+  <div>
+    <table class="table table-striped table-bordered">
+      <thead class="t-head">
+        <tr>         
+          <th *ngFor="let head of incometaxHeaders" id="headers">
+            <a (click)="sortColumn()" style="cursor: pointer;">{{head}}</a>
+          </th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngIf="!toggleLoader">
+          <td colspan="6">
+            <img src="./assets/images/loader-icon.gif" class="loader-margin img-responsive" alt="loading....">
+          </td>
+        </tr>
+        <tr *ngFor="let data of slabData">
+          <!-- <td>{{data.slabId}}</td> -->
+          <td>{{data.fromSalary}}</td>
+          <td>{{data.toSalary}}</td>
+          <td>{{data.employerContribution}}</td>
+          <td>{{data.employeeContribution}}</td>
+          <td>{{data.totalContribution | number : '1.2-2'}}</td>
+          <td>{{data.expat}}</td>
+          <td class="action-width align-center">
+            <a title="Edit" class="icon-margin edit"><em class="fas fa-user-edit" data-toggle="modal" data-target="#add"
+                (click)="edit(data)"></em></a>
+            <a title="Delete" class="icon-margin"><em class="fa fa-trash" data-toggle="modal"
+                data-target="#confirmDelete" (click)="remove(data)"></em></a>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div>
+    <div class="row m-2">
+      <div class="col-12 p-0 pull-down-8">
+        <button id="btn_add" type="button" data-toggle="modal" data-target="#add" class="button btn-primary button"
+          (click)="addClick()"><em class="fas fa-user-plus"></em>
+          Add</button>
+          <button id="btn_add" type="button" class="button btn-primary button" data-toggle="modal"
+          data-target="#importModel"><i class="fas fa-file-excel-o"></i>Import SOCSO</button>
+          <button id="btn_add" type="button" class="button btn-primary button"
+          (click)="exportExcel()"><em class="fas fa-file-excel-o"></em>
+          Export SOCSO</button>
+          <button id="btn_add" type="button" class="button btn-primary button" data-toggle="modal"
+          data-target="#confirmDeleteAll"><i class="fas fa-trash"></i>Delete All SOCSO</button>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="modal fade common-model" id="add">
+  <div class="modal-dialog modal-md">
+    <div class="modal-content model">
+      <form [formGroup]="form" (ngSubmit)="check()">
+        <div class="modal-header">
+          <div class="modal-title"><em class="fas fa-plus"></em>/ <em class="fas fa-edit ml-1"></em>Add SOCSO Slab
+          </div>
+          <button type="button" class="close" data-dismiss="modal" (click)="resetTheForm()">&times;</button>
+        </div>
+        <div class="modal-body">
+          <div class="row">
+
+            <div class="col-md-12">
+              <div>
+                <table class="model-tbl">
+                  <tr>
+                    <td class="padding-top-5">
+                      <label>From Salary<span class="color-red">*</span></label>
+                    </td>
+                    <td><input type="Number" class="form-control pull-top-5" placeholder="Please Enter From Salary"
+                        formControlName="fromSalary">
+                      <span class="color-red" *ngIf="submitted && form_.fromSalary.errors">From Salary
+                          can't be blank
+                      </span>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td class="padding-top-5">
+                      <label>To Salary<span class="color-red">*</span></label>
+                    </td>
+                    <td><input type="Number" class="form-control pull-top-5" placeholder="Please Enter To Salary"
+                        formControlName="toSalary">
+                      <span class="color-red" *ngIf="submitted && form_.toSalary.errors">To Salary
+                          can't be blank
+                      </span>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td class="padding-top-5">
+                      <label>Employer Contribution<span class="color-red">*</span></label>
+                    </td>
+                    <td><input type="Number" class="form-control pull-top-5" placeholder="Please Enter Employer Contribution"
+                        formControlName="employerContribution" [(ngModel)]="employerContribution" (keyup)="totaleis()">
+                        <span class="color-red" *ngIf="submitted && form_.employerContribution.errors">Employer Contribution
+                          can't be blank
+                      </span></td>
+                  </tr>
+                  <tr>
+                    <td class="padding-top-5">
+                      <label>Employee Contribution<span class="color-red">*</span></label>
+                    </td>
+                    <td><input type="Number" class="form-control pull-top-5" placeholder="Please Enter Employee Contribution"
+                        formControlName="employeeContribution" [(ngModel)]="employeeContribution" (keyup)="totaleis()">
+                        <span class="color-red" *ngIf="submitted && form_.employeeContribution.errors">Employee Contribution
+                          can't be blank
+                      </span></td>  
+                  </tr>
+                  <tr>
+                    <td class="padding-top-5">
+                      <label>Total Contribution<span class="color-red">*</span></label>
+                    </td>
+                    <td><input readonly type="Number" class="form-control pull-top-5" placeholder=""
+                        formControlName="totalContribution" [(ngModel)]="totalContribution">
+                        <span class="color-red" *ngIf="submitted && form_.totalContribution.errors">Total Contribution
+                          can't be blank
+                      </span></td>
+                  </tr>
+                  <tr>
+                    <td class="padding-top-5">
+                      <label>EXPAT-SOCSO<span class="color-red">*</span></label>
+                    </td>
+                    <td><input type="Number" class="form-control pull-top-5" placeholder="Please Enter EXPAT-SOCSO"
+                        formControlName="expat" [(ngModel)]="expat">
+                        <span class="color-red" *ngIf="submitted && form_.employeeContribution.errors">EXPAT-SOCSO
+                          can't be blank
+                      </span></td>  
+                  </tr>
+                </table>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!-- Modal footer -->
+        <span class="color-red pull-left-5" *ngIf="isTaxSlabExist && submitText =='Save'">SOCSO Slab is already exist .</span>
+        <hr>
+        <div class="row btn-footer">
+          <div class="col-md-6 pull-left">
+            <button type="submit" id="btnComponentSave" class="button btn-primary btn-style"><em
+                class="fas fa-save"></em>
+              {{submitText}}</button>
+          </div>
+          <div class="col-md-6 pull-right"  *ngIf="submitText == 'Save'">
+            <button type="button" class="button btn-warning btn-style" (click)="resetTheForm()">Clear</button>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+<!-- <div class="modal fade common-model" id="add">
+  <div class="modal-dialog modal-md">
+    <div class="modal-content model">
+      <div class="modal-header">
+        <div class="modal-title"><em class="fas fa-plus"></em>/ <em class="fas fa-edit ml-1"></em>Add Income Tax Slab
+        </div>
+        <button type="button" class="close" data-dismiss="modal" (click)="resetTheForm()">&times;</button>
+      </div>
+      <div class="modal-body">
+        <div *ngFor="let slab of taxSlabList;let i=index">
+          <div class="row">
+            <div class="col-md-12">
+              <div>
+                <h3><u>Level {{i+1}} Income tax slab</u></h3>
+                <table class="model-tbl">
+                  <tr>
+                    <td class="td-width-1">
+                      <label>Financial Year<span class="color-red">*</span></label>
+                    </td>
+                    <td class="td-width">
+                      <select [(ngModel)]="taxSlabList[i].financialYear" [ngModelOptions]="{standalone: true}"
+                        class="custom-select-box form-control" (change)="financialYearChange($event)">
+                        <option value="" disabled>Please select financial year</option>
+                        <option *ngFor="let year of financialYearList" [value]=year.financialYearId>
+                          {{year.financialYear}}
+                        </option>
+                      </select>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td class="padding-top-5">
+                      <label>Lower Limit<span class="color-red">*</span></label>
+                    </td>
+                    <td><input type="text" class="form-control pull-top-5" placeholder="Please Enter Lower Limit"
+                        [(ngModel)]="taxSlabList[i].lowerLimit" name="name{{i}}"></td>
+                  </tr>
+                  <tr>
+                    <td class="padding-top-5">
+                      <label>Upper Limit<span class="color-red">*</span></label>
+                    </td>
+                    <td><input type="text" class="form-control pull-top-5" placeholder="Please Enter Upper Limit"
+                        [(ngModel)]="taxSlabList[i].upperLimit" name="name{{i}}"></td>
+                  </tr>
+                  <tr>
+                    <td class="padding-top-5">
+                      <label>Slab Percentage<span class="color-red">*</span></label>
+                    </td>
+                    <td><input type="text" class="form-control pull-top-5" placeholder="Please Enter Slab Percentage"
+                        [(ngModel)]="taxSlabList[i].slabPercentage" name="name{{i}}"></td>
+                  </tr>
+                  <tr>
+                    <td class="padding-top-5">
+                      <label>Order<span class="color-red">*</span></label>
+                    </td>
+                    <td><input type="text" class="form-control pull-top-5" placeholder="Please Enter Slab Order"
+                        [(ngModel)]="taxSlabList[i].remarks" name="name{{i}}"></td>
+                  </tr>
+                </table>
+                <hr>
+              </div>
+            </div>
+          </div>
+        </div>
+        <button id="btn_add" type="button" class="button btn-primary button" (click)="addNew()"><em
+            class="fas fa-user-plus"></em>
+          Add</button>
+      </div>
+      <hr>
+      <div class="row btn-footer">
+        <div class="col-md-6 pull-left">
+          <button type="submit" (click)="saveIncomeSlab()" id="btnComponentSave" class="button btn-primary btn-style"><em class="fas fa-save"></em>
+            {{submitText}}</button>
+        </div>
+        <div class="col-md-6 pull-right" *ngIf="submitText == 'Save'">
+          <button type="button" class="button btn-warning btn-style" (click)="resetTheForm()">Clear</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div> -->
+
+<!-- Delete model Pop up -->
+
+<div class="modal fade" id="confirmDelete" role="dialog">
+  <div class="modal-dialog">
+
+    <!-- Modal content-->
+    <div class="modal-content">
+      <div class="modal-body"><button type="button" class="close" data-dismiss="modal">&times;</button>
+        <p>Are you sure you want to delete selected items?</p>
+      </div>
+      <div class="modal-footer" style="justify-content: flex-end;">
+        <button type="button" class="btn btn-default btn-sm" data-dismiss="modal">Close</button>
+        <button type="button" data-dismiss="modal" class="btn btn-primary btn-sm" (click)="deleteSlab()">Ok</button>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="modal fade" id="confirmDeleteAll" role="dialog">
+  <div class="modal-dialog">
+
+    <!-- Modal content-->
+    <div class="modal-content">
+      <div class="modal-body"><button type="button" class="close" data-dismiss="modal">&times;</button>
+        <p>Are you sure you want to delete all items?</p>
+      </div>
+      <div class="modal-footer" style="justify-content: flex-end;">
+        <button type="button" class="btn btn-default btn-sm" data-dismiss="modal">Close</button>
+        <button type="button" data-dismiss="modal" class="btn btn-primary btn-sm" (click)="deleteAllSlab()">Ok</button>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="modal fade common-model" id="importModel">
+  <div class="modal-dialog modal-xl">
+      <div class="modal-content">
+          <!-- Modal Header -->
+          <div class="modal-header">
+              <h1> <i class="fa fa-upload"></i> Import SOCSO</h1>
+              <button type="button" class="close" data-dismiss="modal">&times;</button>
+          </div>
+          <!-- Modal body -->
+          <div class="container-fluid">
+              <section class="content">
+                  <form id="import-student" action="/student/student-import/index" method="post"
+                      enctype="multipart/form-data">
+                      <div class="box box-primary">
+                          <div class="box-header with-border">
+                              <h3 class="box-title"><i class="fa fa-file-excel-o"></i> Select File</h3>
+                          </div>
+                          <!--./box-header-->
+                          <div class="box-body">
+                              <div class="row">
+                                  <div class="col-sm-4">
+                                      <div class="form-group field-stumaster-importfile">
+
+                                          <input type="file" id="stumaster-importfile" #inputFile name="importFile"
+                                              (change)="importFile($event)" title="Browse Excel File"
+                                              accept=".xlsx, .xls">
+
+                                          <div class="help-block"></div>
+                                      </div>
+                                  </div>
+                              </div>
+                              <div class="row">
+                                  <div class="col-sm-12">
+                                      <div class="callout callout-info" style="background-color: #92b9e9 !important;">
+                                          <h4>Please follow these instructions at the time of importing data</h4>
+                                          <ol>
+                                              <li><b>The fields with red color are required and cannot be blank.</b>
+                                              </li>
+                                              <!-- <li>Employee Id/Unique ID is auto generated.</li> -->
+                                              <!-- <li>Employee Code must be unique.</li>
+                                              <li>Date of birth must be less than current date.</li> -->
+                                          </ol>
+                                          <h3>Download the sample Excel sheet format.
+                                              <b><a class="fas fa-download"
+                                                      href="./assets/excel/SOCSOImportSample.xlsx"
+                                                      target="_blank">Download</a>
+                                              </b>
+                                          </h3>
+                                      </div>
+                                      <!--./callout-->
+                                  </div>
+                                  <!--./col-->
+                              </div>
+                              <!--./row-->
+                          </div>
+                          <!--./box-body-->
+                          <div class="box-footer">
+                              <button type="submit" (click)="submitImport()" class="btn btn-primary"><i
+                                      class="fa fa-upload"></i> Import</button>
+                          </div>
+                      </div>
+                      <!--./box-->
+                  </form>
+                  <div class="box box-solid" *ngIf="listOfEmployeeResults.length != 0">
+                      <div class="box-header with-border">
+                          <h3 class="box-title"><i class="fa fa-upload"></i> Import SOCSO Result</h3>
+                      </div>
+                      <div class="alert alert-success alert-dismissable flash-msg-hide" id="flash-msg"
+                          *ngIf="showSuccessMsg">
+                          <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+                          <h4><i class="icon fa fa-check"></i> Imported!</h4> {{successCount}} SOCSO successfully.
+                      </div>
+                      <div *ngIf="showErrorMsg" class="alert alert-danger alert-dismissable flash-msg-hide">
+                          <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+                          <h4><i class="icon fa fa-check"></i> Error!</h4> {{errorCount}} SOCSO importing error.
+                      </div>
+                      <div class="box-body table-responsive table-wrapper-scroll-y table-wrapper-scroll-x"
+                          style="max-height: 300px;">
+                          <div id="w1">
+                              <div id="w2" class="grid-view">
+                                  <div id="loader-img">
+
+                                      <img *ngIf="listOfEmployeeResults.length == 0" src="./assets/images/loader.gif"
+                                          class="loader img-responsive" alt="loading....">
+
+                                  </div>
+                                  <table class="table table-striped table-borders myTable">
+                                      <thead>
+                                          <tr>
+                                              <th>Sr No</th>
+                                              <!-- <th>Employee Code</th>
+                                              <th>Employee Name</th> -->
+                                              <th>Status</th>
+                                              <th>Remarks/Message(s)</th>
+                                          </tr>
+                                      </thead>
+                                      <tbody>
+                                          <ng-container *ngFor="let employee of listOfEmployeeResults;let i=index;">
+                                              <tr [class.danger]="employee.errorList.length != 0"
+                                                  [class.success]="employee.errorList.length == 0">
+                                                  <td>{{i+1}}</td>
+                                                  <!-- <td>{{employee.employeeCode}}</td>
+                                                  <td>{{employee.firstname}} {{employee.lastName}}</td> -->
+                                                  <td>{{employee.status}}</td>
+                                                  <td [class.success]="employee.errorList.length == 0">
+                                                      <ng-container *ngIf="employee.errorList.length != 0">
+                                                          Please fix the following errors:
+                                                          <ul *ngFor="let error of employee.errorList">
+                                                              <li> {{error}}</li>
+                                                          </ul>
+                                                      </ng-container>
+                                                  </td>
+                                              </tr>
+                                          </ng-container>
+                                      </tbody>
+                                  </table>
+                              </div>
+                          </div>
+                      </div>
+                  </div>
+              </section>
+          </div>
+      </div>
+  </div>
+</div>

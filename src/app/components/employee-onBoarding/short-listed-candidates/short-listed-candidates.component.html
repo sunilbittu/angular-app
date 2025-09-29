@@ -1,0 +1,115 @@
+<div class="container-fluid">
+    <div class="d-flex align-items-center mt-2">
+    <div class="m-2">
+    <div class="h-size"><em class="fa fa-user mr-1"></em> <strong>Offer Letter Accepted Candidates</strong></div>
+    </div>
+    <div class="flex-fill">
+    </div>
+    <div class="m-3"><input class="form-control rounded-pill py-2 border-right-0 border" type="search"
+        placeholder="search" id="example-search-input" >
+</div>
+    </div>
+    <div class="row">
+    <div class="col-md-12">
+        <table class="table table-bordered table-hover table-sm">
+            <thead class="t-head">
+                 <tr>
+                    <th *ngFor="let head of headers" id="headers1"><a>{{head}}</a></th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let candidate of candidateData">
+                    <td>{{candidate.candidetId}}</td>
+                    <td>{{candidate.candidetName}}</td>
+                    <td>{{candidate.phonenumber}}</td>
+                    <td>{{candidate.emailId}}</td>
+                    <td><a title="View JD" (click)="viewJD(candidate.jobId)"
+                        class="icon-margin edit">{{candidate.jobId}}
+                    </a>
+                </td>
+                    <td>
+                    <button type="button" class="btn btn-primary btn-sm" (click)="sendMail(candidate)" >Send Mail</button>
+                    </td>
+                </tr>
+            </tbody>
+    
+        </table>
+    </div>
+</div>
+
+<div class="modal fade common-model" id="view-jd">
+    <div class="modal-dialog modal-xl">
+        <div class="modal-content model width">
+            <!-- Modal Header -->
+            <div class="modal-header">
+                <div class="modal-title"><i class="fa fa-eye" aria-hidden="true"></i> View JD
+                </div>
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+            </div>
+            <!-- Modal body -->
+            <div class="modal-body sample">
+                <div *ngFor="let data of newResourceIndent">
+                    <div class="row col-12 padding-field-bottom">
+                        <div class="col-2">
+                            <label>Resource Title :</label>
+                        </div>
+                        <div class="col-10">
+                            {{data.resourceTitle}}
+                        </div>
+
+                    </div>
+                    <div class="row col-12 padding-field-bottom">
+                        <div class="col-2">
+                            <label>For which project :</label>
+                        </div>
+                        <div class="col-10">
+                            {{data.projectName}}
+                        </div>
+                    </div>
+                    <div class="row col-12 padding-field-bottom">
+                        <div class="col-2">
+                            <label>Number Required :</label>
+                        </div>
+                        <div class="col-10">
+                            {{data.numberRequired}}
+                        </div>
+                    </div>
+                    <div class="row col-12 padding-field-bottom">
+                        <div class="col-2">
+                            <label>Request Reason :</label>
+                        </div>
+                        <div class="col-10">
+                            {{data.requestReason}}
+                        </div>
+                    </div>
+
+                    <div class="row col-12 padding-field-bottom">
+                        <div class="col-2">
+                            <label>Hiring Start Date :</label>
+                        </div>
+                        <div class="col-10">
+                            {{data.hiringStartDate}}
+                        </div>
+                    </div>
+                    <div class="row col-12 padding-field-bottom">
+                        <div class="col-2">
+                            <label>Job Description :</label>
+                        </div>
+                        <div class="col-10 align-justify">{{data.jobDescription}}</div>
+                    </div>
+                    <div class="row col-12 padding-field-bottom">
+                        <div class="col-2">
+                            <label>Attachment :</label>
+                        </div>  
+                        <div class="col-10">
+                            <a title="Download to View" class="icon-margin"
+                                (click)="downloadDocumentAttachment(data.filePath, data.fileName)" target="_blank"><em
+                                    class="fas fa-download"></em></a>
+                            {{data.fileName}}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

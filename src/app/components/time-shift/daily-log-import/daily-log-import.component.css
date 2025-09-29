@@ -1,0 +1,37 @@
+.mt-5 {
+    margin-left: 3rem!important;
+}
+.legend {
+    width: 100px;
+    border: none;
+    font-size: 15px;
+}
+.field-set {
+    border: 1px solid #afafaf;
+    height: 75%;
+    padding-left: 2%;
+    margin-left: 20px;
+    margin-top: 10px;
+    width: 100%;
+}
+.mt-3 {
+    margin-top: 0.75rem!important;
+}
+.btn-group {
+    align-items: flex-start;
+    justify-content: center;
+}
+.btn-group .btn {
+    display: block;
+    width: 100%;
+    text-align: center;
+    margin-bottom: 0.25em;
+}
+.margin {
+    margin-bottom: 10px;
+}
+.legend-2 {
+    width: 131px;
+    border: none;
+    font-size: 15px;
+}

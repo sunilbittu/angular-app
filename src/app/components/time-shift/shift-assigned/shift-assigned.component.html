@@ -1,0 +1,50 @@
+
+<div class="container-fluid">
+    <div class="d-flex align-items-center mt-2">
+        <div class="m-2">
+            <div class="h-size"><i class="fa fa-user"></i> <b>Time Shift Assign</b></div>
+        </div>
+        <div class="flex-fill">
+        </div>
+        <div class="m-3"><i class="fa fa-search"></i>
+            <span> Search </span><input type="text" value="">
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-12">
+            <table class="table table-bordered table-hover table-sm">
+                <thead class="t-head">
+                    <tr>
+                        <th *ngFor="let head of headers"><a>{{head}}</a></th>
+                    </tr>
+
+                    </thead>
+                    <tbody>
+                         <tr *ngFor="let employee of employees">
+                             <td>{{employee.code}}</td>
+                             <td>{{employee.name}}</td>
+                             <td>{{employee.branch}}</td>
+                             <td>{{employee.department}}</td>
+                             <td>{{employee.designation}}</td>
+                             <td>{{employee.category}}</td>
+                             <td>{{employee.division}}</td>
+                             <td>{{employee.project}}</td>
+                             <td>{{employee.costcenter}}</td>
+                             
+                             <td>
+                                <a  title="View" class="icon-margin"><span class="fas fa-eye"></span></a>
+                             </td>
+                         </tr>
+                    </tbody>
+
+            </table>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-12">
+            <button id="btn_add" type="button" class="btn btn-primary button" disabled="disabled"><i
+                    class="fas fa-user-plus"></i>Assign Shift</button>
+             <button id="btn_add" type="button" class="btn btn-primary button" disabled="disabled">View Shift</button>
+        </div>
+    </div>
+</div>

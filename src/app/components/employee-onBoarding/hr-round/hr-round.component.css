@@ -1,0 +1,38 @@
+
+
+.modal-title {
+    font-size: 20px;
+    font-weight: 500;
+    text-align: center;
+    flex: 1;
+    color: #000;
+  }
+  .width {
+    width: 88%;
+  }
+
+  .align-justify {
+    text-align: justify;
+      height: 125px;
+      overflow-y: scroll;
+      border: 1px;
+      background-color: #e7e1e1;
+      padding: 8px;
+  }
+
+  .padding-field-bottom {
+    padding-bottom: 7px;
+  }
+
+  .col-10 {
+    font-size: 15px;
+  }
+
+  .col-2 {
+    flex: 0 0 16.666667%;
+    max-width: 16.666667%;
+  }
+
+  
+
+ 

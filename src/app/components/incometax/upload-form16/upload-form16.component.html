@@ -1,0 +1,94 @@
+<div class="container-fluid">
+  <div class="d-flex align-items-center mt-2">
+    <div class="m-2">
+      <div class="h-size"><i class="fa fa-user"></i> <b>Form 16 Uploads</b></div>
+    </div>
+    <div class="flex-fill">
+    </div>
+
+  </div>
+  <br>
+  <div class="row">
+    <div class="col-md-12">
+      <table class="table table-bordered table-hover table-sm">
+        <thead class="t-head">
+          <tr>
+            <th *ngFor="let head of headers"><a>{{head}}</a></th>
+          </tr>
+
+        </thead>
+        <tbody>
+          <tr *ngFor="let employee of employeeList;let i=index">
+            <td>{{employee.employeeCode}}</td>
+            <td>{{employee.firstName}} {{employee.lastName}}</td>
+            <td>{{employee.branchName}}</td>
+            <td>{{employee.department}}</td>
+            <td>{{employee.designationName}}</td>
+            <td>{{employee.divisionName}}</td>
+            <td>{{employee.gradeName}}</td>
+            <td>{{employee.categoryName}}</td>
+            <td>{{employee.projectName}}</td>
+            <td>
+              <!-- employeeId -->
+              <!-- <div *ngFor="let emp of empData;let j=index"> -->
+              <!-- {{emp.employeeId==employee.employeeId}} -->
+              <!-- <button class="btn btn-warning btn-sm" *ngIf="emp.employeeId==employee.employeeId" [disabled]="emp.employeeId==employee.employeeId" (click)="uploadform(employee.employeeId)" data-toggle="modal" data-target="#myModal-add">Upload <i class="fa fa-upload" aria-hidden="true"></i></button> -->
+              <button class="btn btn-warning btn-sm" (click)="uploadform(employee.employeeId)" data-toggle="modal"
+                data-target="#myModal-add">Upload <i class="fa fa-upload" aria-hidden="true"></i></button>
+              <!-- </div> -->
+              <!-- <a title="Edit" class="icon-margin" (click)="viewEmployee(employee.employeeId)"><i class="fas fa-user-edit"></i></a> -->
+              <!-- <a title="Delete" class="icon-margin"><i class="fas fa-trash-alt"></i></a> -->
+            </td>
+          </tr>
+        </tbody>
+
+      </table>
+    </div>
+  </div>
+
+</div>
+
+
+
+<div class="modal fade common-model" id="myModal-add">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+
+      <!-- Modal Header -->
+      <div class="modal-header">
+        <h4 class="modal-title" head><em class="fas fa-plus mr-1"></em> / <em class="fas fa-edit mr-1"></em>Upload
+          Form16</h4>
+
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+      </div>
+
+      <!-- Modal body -->
+
+
+      <div class="form-group ml-5">
+        <label for="city">Form16:<span class="color-red">*</span></label>
+        <input type="file" #attachFile class="form-control" (change)="onFileChanged($event)"
+          [(ngModel)]="evidanceModel" style="width: 50%;" >
+        <span class="color-red" *ngIf="submittedDoc && evidanceModel == ''">Please Select File
+        </span>
+      </div>
+      <div class="form-group ml-5">
+        <label>Investment Year</label>
+        <select class="form-control" [(ngModel)]="yearModel" style="width: 30%;" name="year"
+          (change)="getTdsInvestmentList()">
+          <option value="">Please Select Year</option>
+          <option *ngFor="let year of investmentYear" value={{year.financialYearId}}>{{year.financialYear}}</option>
+        </select>
+        <span span class="color-red" *ngIf="submittedDoc && yearModel == 0">Financial Year can't be blank.</span>
+      </div>
+      <!-- Modal footer -->
+
+      <div class="modal-footer">
+        <button type="button" class="btn btn-warning btn-sm">Clear</button>
+        <button type="button" class="btn btn-success btn-sm" (click)="saveForm16()">Save</button>
+      </div>
+
+
+    </div>
+  </div>
+</div>

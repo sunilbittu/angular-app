@@ -1,0 +1,34 @@
+.modal{
+    margin-top:7vw;
+}
+/* 
+.btn {
+    font-size: 1em!important;
+    margin-top:24px;
+}
+
+
+.btn {
+    border: solid 1px #ddd;
+    outline: none;
+    
+    padding: 0.5rem 1rem;
+    border-radius: 0.5rem;
+    cursor: pointer;
+} */
+
+.btn-primary:hover {
+    background-color: #0035f3;
+}
+
+.btn .fas, .btn .far, .btn .fa {
+    margin-right: 0.5rem;
+}
+.card-style { 
+    padding: 5px;
+    border: 5px solid rgb(209 225 250);
+}
+label {
+    display: inline-block;
+    font-size: 16px;
+  }

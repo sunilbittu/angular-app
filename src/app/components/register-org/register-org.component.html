@@ -1,0 +1,477 @@
+<div class="container mt-3">
+    <form [formGroup]="signUpForm" (ngSubmit)="onRegister()">
+        <div class="row">
+            <div class="col-md-12 heading">
+                <h2 class="text-center ">External User Registration</h2>
+            </div>
+        </div>
+
+
+        <!-- <div class="row">
+
+        </div> -->
+
+
+        <div class="row jumbotron">
+
+
+
+            <!-- <div class="col-sm-6 form-group">
+                <label for="name-f">Organisation Name</label>
+                <input type="text" class="form-control" formControlName="organisationName" name="fname" id="name-f"
+                    placeholder="Enter your Organisation name."
+                    [ngClass]="{ 'is-invalid': submitted && form.organisationName.errors }">
+
+                <div *ngIf="submitted && form.organisationName.errors" class="invalid-feedback">
+                    <div *ngIf="form.organisationName.errors.required">Organisation name is required</div>
+                    <div *ngIf="!form.organisationName.errors.whitespace && form.organisationName.errors.minlength">Organisation Name must be 5 letters</div>
+                    <div *ngIf="!form.organisationName.errors.required && form.organisationName.errors.whitespace">Enter valid text</div>
+
+                </div>
+
+            </div> -->
+
+
+
+
+
+
+            <!-- <div class="col-sm-6 form-group">
+                <label for="email">Organisation Email</label>
+                <input type="email" class="form-control" name="email" id="email" (change)="isEmailCheck()"
+                    placeholder="Enter your organisation email." formControlName="orgEmail"
+                    [ngClass]="{ 'is-invalid': submitted || form.orgEmail.touched && form.orgEmail.errors }">
+
+                <div *ngIf="form.orgEmail.touched && form.orgEmail.errors" class="invalid-feedback">
+                    <div *ngIf="form.orgEmail.errors.required">Email is required</div>
+                    <div *ngIf="form.orgEmail.errors.email">Email must be a valid email address</div>
+                    
+                </div>  
+       
+  
+                <div *ngIf="form.orgEmail.touched && form.orgEmail.errors" class="invalid-feedback">
+                    
+                    <div *ngIf="form.orgEmail.errors.errorFlag">Email address already exits</div>
+                </div>     
+
+               
+                
+ 
+            </div> -->
+
+
+
+            <!-- <div class="col-sm-6 form-group">
+                <label for="orgAddress">Address</label>
+
+                <input type="text" class="form-control" name="orgAddress" id="orgAddress"
+                    placeholder="Locality/House" formControlName="orgAddress"
+                    [ngClass]="{ 'is-invalid': submitted && form.orgAddress.errors }">
+
+                <div *ngIf="submitted && form.orgAddress.errors" class="invalid-feedback">
+                    <div *ngIf="form.orgAddress.errors.required">Address is required</div>
+
+                </div>
+            </div> -->
+
+
+            
+
+            <!-- <div class="col-sm-3 form-group">
+                <label for="address-2">Address Line-2</label>
+                <input type="address" class="form-control" name="address" id="address-2"
+                    placeholder="Landmark" formControlName="addressLane2"
+                    [ngClass]="{ 'is-invalid': submitted && form.addressLane2.errors }">
+
+                <div *ngIf="submitted && form.addressLane2.errors" class="invalid-feedback">
+                    <div *ngIf="form.addressLane2.errors.required">Address is required</div>
+
+                </div>
+            </div> -->
+
+
+            
+
+
+
+            <!-- <div class="col-sm-6 form-group">
+                <label class="col-8" for="Country">Country</label>
+
+                
+                <select class="form-control custom-select browser-default" (change)="getStatesList($event)"
+                    formControlName="country" [ngClass]="{ 'is-invalid': submitted && form.country.errors }">
+                    
+
+                    <option value="">Select Your Country</option>
+                   
+                    <option *ngFor="let country of countryList" [value]="country.id">{{country.name}}</option>
+
+                </select>
+
+                <div *ngIf="submitted && form.country.errors" class="invalid-feedback">
+                    <div *ngIf="form.country.errors.required">Select Your Country</div>
+
+                </div>
+
+            </div> -->
+
+
+            <!-- <div class="col-sm-6 form-group">
+                <label for="state">State</label>
+
+                <select class="form-control custom-select browser-default" (change)="getCityList($event)"
+                    formControlName="state" [ngClass]="{ 'is-invalid': submitted && form.state.errors }">
+                    <option value="">Select Your State</option>
+
+                    <option *ngFor="let states of statesList" [value]="states.id">{{states.name}}</option>
+
+                </select>
+
+                <div *ngIf="submitted && form.state.errors" class="invalid-feedback">
+                    <div *ngIf="form.state.errors.required">Select Your State</div>
+
+                </div>
+
+            </div> -->
+
+
+
+            <!-- <div class="col-sm-4 form-group">
+                <label for="city">City</label>
+
+
+                <select class="form-control custom-select browser-default" (change)="setPostCode($event)"
+                    formControlName="city" [ngClass]="{ 'is-invalid': submitted && form.city.errors }">
+                    <option value="">Select Your City</option>
+
+                    <option *ngFor="let cities of citiesList" [value]="cities.pincode">{{cities.name}}</option>
+
+                </select>
+
+                <div *ngIf="submitted && form.city.errors" class="invalid-feedback">
+                    <div *ngIf="form.city.errors.required">Select Your City</div>
+
+                </div>
+
+            </div> -->
+
+
+            <!-- <div class="col-sm-2 form-group">
+                <label for="zip">Postal-Code</label>
+                <input type="zip" readonly class="form-control" name="Zip" id="zip" placeholder="Postal-Code."
+                    formControlName="postalCode" [ngClass]="{ 'is-invalid': submitted && form.postalCode.errors }">
+
+                <div *ngIf="submitted && form.postalCode.errors" class="invalid-feedback">
+                    <div *ngIf="form.postalCode.errors.required">Postal-Code is required</div>
+
+                </div>
+
+
+            </div> -->
+
+
+            <!-- <div class="col-sm-6 form-group">
+                <label for="Date">Date Of Birth</label>
+                <input type="Date" name="dob" class="form-control" id="Date" placeholder="" required>
+            </div>
+
+
+
+
+            <div class="col-sm-6 form-group">
+                <label for="sex">Gender</label>
+                <select id="sex" class="form-control browser-default custom-select">
+                    <option value="male">Male</option>
+                    <option value="female">Female</option>
+                    <option value="unspesified">Unspecified</option>
+                </select>
+            </div> -->
+
+
+
+            <!-- <div class="col-sm-2 form-group">
+                <label for="cod">Country code</label>
+                <select class="form-control browser-default custom-select" formControlName="CountryCode"
+                    [ngClass]="{ 'is-invalid': submitted && form.CountryCode.errors }" >
+                    
+                    <option value="">Country Code</option>
+
+                    <option data-countryCode="IND" value="+91">India (+91)</option>
+
+
+                </select>
+
+
+                <div *ngIf="submitted && form.CountryCode.errors" class="invalid-feedback">
+                    <div *ngIf="form.CountryCode.errors.required">Country-Code is required</div>
+
+                </div>
+
+            </div> -->
+
+            <!-- <div class="col-sm-4 form-group">
+                <label for="phoneNumber">Phone Number</label>
+                <input type="text" name="phoneNumber" class="form-control" id="phoneNumber" placeholder="Enter Your Contact Number."
+                    formControlName="phoneNumber" [ngClass]="{ 'is-invalid': submitted && form.phoneNumber.errors }">
+
+                <div *ngIf="submitted && form.phoneNumber.errors" class="invalid-feedback">
+                    <div *ngIf="form.phoneNumber.errors.required">Phone Number is required</div>
+                    
+                    <div *ngIf="!form.phoneNumber.hasError('pattern')">
+                        <div *ngIf="form.phoneNumber.hasError('minlength')">Phone Number must be 10 letters</div>
+                    </div>
+
+                    <div *ngIf="!form.phoneNumber.hasError('pattern')">
+                        <div *ngIf="form.phoneNumber.hasError('maxlength')">Phone Number must be 10 letters</div>
+                    </div>
+                    
+                    <div *ngIf="form.phoneNumber.hasError('pattern')">Please Enter Valid number</div>
+
+                </div>
+
+            </div> -->
+
+
+           
+
+
+
+            <div class="col-sm-6 form-group">
+                <label for="name-l">Name <span class="color-red">*</span></label>
+                <input type="text" class="form-control" name="lname" id="name-l" placeholder="Enter your name."
+                    formControlName="contactName" [ngClass]="{ 'is-invalid': submitted || form.contactName.touched && form.contactName.errors }">
+
+                <div *ngIf="form.contactName.touched && form.contactName.errors" class="invalid-feedback">
+                    <div *ngIf="form.contactName.errors.required">Name is required</div>
+                </div>
+
+                 
+
+
+
+            </div>
+            <div class="col-sm-6 form-group">
+                <label for="address-1">Place <span class="color-red">*</span></label>
+                <input type="address" class="form-control" name="Locality" id="address-1"
+                    placeholder="Enter place" formControlName="addressLane1"
+                    [ngClass]="{ 'is-invalid': submitted && form.addressLane1.errors }">
+
+                <div *ngIf="submitted && form.addressLane1.errors" class="invalid-feedback">
+                    <div *ngIf="form.addressLane1.errors.required">Place is required</div>
+
+                </div>
+            </div>
+
+
+            <div class="col-sm-6 form-group">
+                <label for="contactEmail">Email/Username <span class="color-red">*</span></label>
+                <input type="contactEmail" class="form-control" name="email" id="contactEmail"
+                    placeholder="Enter your email." formControlName="contactEmail" (change)="isContactEmailExits()"
+                    [ngClass]="{ 'is-invalid': submitted || form.contactEmail.touched && form.contactEmail.errors }">
+
+                <div *ngIf=" form.contactEmail.touched && form.contactEmail.errors" class="invalid-feedback">
+                    <div *ngIf="form.contactEmail.errors.required">Email is required</div>
+                    <div *ngIf="form.contactEmail.errors.email">Email must be a valid email address</div>
+                    <div *ngIf="form.contactEmail.errors.errorFlag">Email already exits</div>
+                </div>
+
+            </div>
+            <div class="col-sm-6 form-group">
+                <label for="Date">Date Of Birth <span class="color-red">*</span></label>
+                <input type="Date" name="dob" class="form-control" id="Date" placeholder="" required>
+            </div>
+
+            <div class="col-sm-6 form-group">
+                <label for="pass">Password <span class="color-red">*</span></label>
+                <input type="text" name="password" class="form-control" id="pass" placeholder="Enter your password."
+                    formControlName="password" [ngClass]="{ 'is-invalid': submitted && form.password.errors }">
+
+                <div *ngIf="submitted && form.password.errors" class="invalid-feedback">
+                    <div *ngIf="form.password.errors.required">Password is required</div>
+
+                </div>
+
+            </div>
+
+           
+            <div class="col-sm-6 form-group">
+                <label for="contactNumber">Phone Number <span class="color-red">*</span></label>
+                <input type="text" name="phone" class="form-control" id="contactNumber"
+                    placeholder="Enter Your Phone Number." formControlName="contactNumber" (change)="isContactNumberExits()"
+                    [ngClass]="{ 'is-invalid': submitted || form.contactNumber.touched && form.contactNumber.errors }">
+
+                <div *ngIf="form.contactNumber.touched && form.contactNumber.errors" class="invalid-feedback">
+                    <div *ngIf="form.contactNumber.errors.required">Phone Number is required</div>
+
+                    <div *ngIf="!form.contactNumber.hasError('pattern')">
+                        <div *ngIf="form.contactNumber.hasError('minlength')">Phone Number must be 10 letters</div>
+                    </div>
+
+                    <div *ngIf="!form.contactNumber.hasError('pattern')">
+                        <div *ngIf="form.contactNumber.hasError('maxlength')">Phone Number must be 10 letters</div>
+                    </div>
+                    
+                    <div *ngIf="form.contactNumber.hasError('pattern')">Please Enter Valid number</div>
+
+                    <div *ngIf="form.contactNumber.errors.errorFlag">Contact number already exits</div>
+
+                </div>
+
+            </div>
+            <div class="col-sm-6 form-group">
+                <label for="pass2">Confirm Password <span class="color-red">*</span></label>
+                <input type="Password" name="cnf-password" class="form-control" id="pass2"
+                    placeholder="Re-enter your password." formControlName="conformPassword"
+                    [ngClass]="{ 'is-invalid': submitted && form.conformPassword.errors }">
+
+                <div *ngIf="submitted && form.conformPassword.errors" class="invalid-feedback">
+                    <div *ngIf="form.conformPassword.errors.required">Confirm Password is required</div>
+                    <div *ngIf="form.conformPassword.errors.mustMatch">Passwords must match</div>
+
+                </div>
+            </div>
+            <div class="col-sm-6 form-group">
+                <label for="address-2">Roles <span class="color-red">*</span></label>
+                <input type="address" class="form-control" name="address" id="address-2"
+                    placeholder="Enter Roles" formControlName="addressLane2"
+                    [ngClass]="{ 'is-invalid': submitted && form.addressLane2.errors }">
+
+                <div *ngIf="submitted && form.addressLane2.errors" class="invalid-feedback">
+                    <div *ngIf="form.addressLane2.errors.required">Roles is required</div>
+
+                </div>
+            </div>
+
+            <div class="col-sm-6 form-group">
+                <label for="gst-number">IC/Passport No <span class="color-red">*</span></label>
+                <input type="text" class="form-control" name="gst-number" id="gst-number" placeholder="IC/Passport No"
+                    formControlName="gstNumber" [ngClass]="{ 'is-invalid': submitted && form.gstNumber.errors }">
+
+                <div *ngIf="submitted && form.gstNumber.errors" class="invalid-feedback">
+                    <div *ngIf="form.gstNumber.errors.required">IC/Passport No is required</div>
+
+                </div>
+
+            </div>
+
+           
+
+           
+
+
+
+           
+
+           
+
+            <div class="col-sm-6 form-group">
+                <label for="state">Availability <span class="color-red">*</span></label>
+
+                <select class="form-control custom-select browser-default" (change)="getCityList($event)"
+                    formControlName="state" [ngClass]="{ 'is-invalid': submitted && form.state.errors }">
+                    <option value="">Select Your Availability</option>
+                    <option value="Regular">Regular</option>
+                    <option value="Part time">Part time</option>
+
+                    <!-- <option *ngFor="let states of statesList" [value]="states.id">{{states.name}}</option> -->
+
+                </select>
+
+                <div *ngIf="submitted && form.state.errors" class="invalid-feedback">
+                    <div *ngIf="form.state.errors.required">Select Your Availability</div>
+
+                </div>
+
+            </div>
+
+
+            <!-- <div class="col-sm-6 form-group">
+                <label for="username">User name</label>
+                <input type="text" name="username" class="form-control" id="username" placeholder="Enter your username." (change)="isUsernameExits()"
+                    formControlName="username" [ngClass]="{ 'is-invalid': submitted || form.username.touched && form.username.errors }">
+
+                <div *ngIf="form.username.touched && form.username.errors" class="invalid-feedback">
+                    <div *ngIf="form.username.errors.required">User name is required</div>
+
+                </div>
+
+                
+                <div *ngIf="form.username.touched && form.username.errors" class="invalid-feedback">
+                    
+                    <div *ngIf="form.username.errors.errorFlag">Username already exits</div>
+                </div> 
+
+            </div> -->
+
+
+            
+
+
+            <!-- <div class="col-sm-12">
+                <input type="checkbox" class="form-check d-inline" id="chb" formControlName="acceptTerms"
+                    [ngClass]="{ 'is-invalid': submitted && form.acceptTerms.errors }">
+                <label for="chb" class="form-check-label">&nbsp;I accept all terms and conditions.
+                </label>
+
+
+                <div *ngIf="submitted && form.acceptTerms.errors" class="invalid-feedback">
+                    <div *ngIf="form.acceptTerms.errors.required">Confirm Password is required</div>
+
+
+                </div>
+
+            </div> -->
+
+            <div class="col-sm-6">
+                <!-- <button class="btn btn-secondary float-right">Create User</button>
+                <button class="btn btn-secondary ">Cancel</button> -->
+                
+                <button class="btn btnmargin btn-success btn-sm">Create User</button>
+                <button type="button" class="btn btnmargin btn-warning btn-sm" (click)="cancel()" >Cancel</button>
+            </div>
+
+        </div>
+    </form>
+</div>
+
+
+<!-- <div class="bd-example">
+    <button type="button" id="openModalButton" class="btn btn-primary" data-backdrop="static" data-toggle="modal"
+        data-target="#exampleModalLong" (click)="openModal()">
+        Launch demo modal
+    </button>
+</div> -->
+
+
+
+<!-- Modal -->
+<div class="modal fade" id="exampleModalLong" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle"
+    aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header bg-success">
+
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+
+
+                    <div class="col-md-12">
+
+                        <h1 class="text-center"> <i class="fa fa-check-circle registerIcon"></i> Successfully Registered
+                        </h1>
+
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <a href="/login" class="btn btn-warning">Login</a>
+            </div>
+        </div>
+    </div>
+</div>
+

@@ -1,0 +1,218 @@
+<div class="container-fluid">
+    <div class="d-flex align-items-center mt-2">
+        <div class="m-2">
+            <div class="h-size"><em class="fa fa-user mr-1"></em> <strong>List of Screening Candidates</strong></div>
+        </div>
+        <div class="flex-fill">
+        </div>
+        <div class="m-3"><input class="form-control rounded-pill py-2 border-right-0 border" type="search"
+                placeholder="search" id="example-search-input">
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-12">
+            <table class="table table-bordered table-hover table-sm">
+                <thead class="t-head">
+                    <tr>
+                        <th *ngFor="let head of headers" id="headers1"><a>{{head}}</a></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let candidate of candidateData | paginate: {
+                        itemsPerPage: itemsPerPage,
+                        currentPage: currentPage,
+                        totalItems: totalItems
+                      };let i=index">
+                        <td>{{candidate.candidetId}}</td>
+                        <td>{{candidate.candidetName}}</td>
+                        <td>{{candidate.phonenumber}}</td>
+                        <td>{{candidate.emailId}}</td>
+                        <td> <a title="View JD" (click)="viewJD(candidate.jobId)"
+                                class="icon-margin edit">{{candidate.jobId}}
+                            </a>
+                        </td>
+                        <td>{{candidate.referencedPersonName}}</td>
+                        <td>{{candidate.screeningDate | date:"dd-MM-yyyy" }}</td>
+                        <td>{{candidate.result}}</td>
+                        <td>{{candidate.remarks}}</td>
+                        <td>
+                            <a title="Edit" class="icon-margin" (click)="editCandidate(candidate)" data-toggle="modal"
+                                data-target="#myModal-add"><em class="fas fa-user-edit"></em></a>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+            <div class="row" *ngIf="totalElements!=0">
+                <div class="col-md-6 col-sm-6 col-6"><span class="show-entry">Showing
+                        <span>{{showingFrom}} to {{showingTo}} of {{totalElements}} entries</span></span>&nbsp;
+                </div>
+
+                <div class="col-md-6" *ngIf="totalItems > 0">
+                    <pagination-controls (pageChange)="pageChanged($event)"></pagination-controls>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal fade common-model" id="myModal-add">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content model">
+            <!-- Modal Header -->
+            <div class="modal-header">
+                <div class="modal-title"><i class="fas fa-plus"></i>/ <i class="fas fa-edit ml-1"></i> Candidate Details
+                </div>
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+            </div>
+            <!-- Modal body -->
+            <div class="modal-body">
+                <div>
+                    <div class="row col-12 padding-field-bottom">
+                        <div class="col-4">
+                            <label>Candidate Id </label>
+                            <input type="text" class="form-control" placeholder="Please Enter Candidate Name"
+                                [(ngModel)]="candidateViewData.candidateId" [ngModelOptions]="{standalone: true}"
+                                readonly>
+                        </div>
+                        <div class="col-4">
+                            <label>Candidate Name </label>
+                            <input type="text" class="form-control" placeholder="Please Enter Candidate Name"
+                                [(ngModel)]="candidateViewData.candidateName" [ngModelOptions]="{standalone: true}"
+                                readonly>
+                        </div>
+                        <div class="col-4">
+                            <label>JD Id </label>
+                            <input type="text" class="form-control" (click)="viewJD(candidateViewData.jobId)"
+                                [(ngModel)]="candidateViewData.jobId" [ngModelOptions]="{standalone: true}" readonly>
+                        </div>
+                    </div>
+                    <div class="row col-12 padding-field-bottom">
+                        <div class="col-4">
+                            <label>By Whom</label>
+                            <input type="text" class="form-control" [(ngModel)]="candidateViewData.referencedPersonName"
+                                [ngModelOptions]="{standalone: true}" readonly>
+                        </div>
+                        <div class="col-4">
+                            <label>Screening Date <span class="color-red">* </span></label>
+                            <input title="Screening Date" type="text" bsDatepicker placeholder="Please Select Date"
+                                [minDate]="toDay" (bsValueChange)="onDateValueChange($event)" readonly
+                                [bsConfig]="{ isAnimated: true, dateInputFormat: 'DD-MM-YYYY' }" bsDatepicker
+                                placement="bottom" class="text form-control" maxlength="50"
+                                [(ngModel)]="screeningDate" />
+                            <span class="color-red" *ngIf="submitted && screeningDate == ''">Screening Date
+                                {{requiredErrorText}}</span>
+                        </div>
+                        <div class="col-4">
+                            <label>Results <span class="color-red">* </span></label>
+                            <select [(ngModel)]="result" class="custom-select-box form-control">
+                                <option value="" disabled>Please Select Result</option>
+                                <option *ngFor="let status of results" [value]="status">{{status}}
+                                </option>
+                            </select>
+                            <span class="color-red" *ngIf="submitted && result == ''">Result
+                                {{requiredErrorText}}</span>
+                        </div>
+                    </div>
+                    <div class="row col-12 padding-field-bottom">
+                        <div class="col-6">
+                            <label>Remarks </label>
+                            <input type="text" class="form-control" placeholder="Please Enter Remarks"
+                                [(ngModel)]="remarks">
+                        </div>
+                    </div>
+                    <hr>
+                    <div class="row">
+                        <div class="col-md-6 pull-left">
+                            <button type="button" class="button btn-primary btn-style" [disabled]="submitProcessing"
+                                (click)="onSubmit()">Save <i class="fa fa-spinner fa-spin" *ngIf="submitProcessing"
+                                    style="font-size:19px"></i></button>
+                        </div>
+                        <div class="col-md-6 pull-right">
+                            <button type="button" id="btnComponentSave" (click)="clear()"
+                                class="button btn-warning btn-style" [disabled]="submitProcessing">
+                                Clear</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal fade common-model" id="view-jd">
+    <div class="modal-dialog modal-xl">
+        <div class="modal-content model width">
+            <!-- Modal Header -->
+            <div class="modal-header">
+                <div class="modal-title"><i class="fa fa-eye" aria-hidden="true"></i> View JD
+                </div>
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+            </div>
+            <!-- Modal body -->
+            <div class="modal-body sample">
+                <div>
+                    <div class="row col-12 padding-field-bottom">
+                        <div class="col-2">
+                            <label>Resource Title :</label>
+                        </div>
+                        <div class="col-10">
+                            {{newResourceIndent.resourceTitle}}
+                        </div>
+
+                    </div>
+                    <div class="row col-12 padding-field-bottom">
+                        <div class="col-2">
+                            <label>For which project :</label>
+                        </div>
+                        <div class="col-10" *ngIf="newResourceIndent.project == null">
+                            -
+                        </div>
+                        <div class="col-10" *ngIf="newResourceIndent.project != null">
+                            {{newResourceIndent.project.projectName}}
+                        </div>
+                    </div>
+                    <div class="row col-12 padding-field-bottom">
+                        <div class="col-2">
+                            <label>Number Required :</label>
+                        </div>
+                        <div class="col-10">
+                            {{newResourceIndent.numberRequired}}
+                        </div>
+                    </div>
+                    <div class="row col-12 padding-field-bottom">
+                        <div class="col-2">
+                            <label>Request Reason :</label>
+                        </div>
+                        <div class="col-10">
+                            {{newResourceIndent.requestReason}}
+                        </div>
+                    </div>
+
+                    <div class="row col-12 padding-field-bottom">
+                        <div class="col-2">
+                            <label>Hiring Start Date :</label>
+                        </div>
+                        <div class="col-10">
+                            {{newResourceIndent.hiringStartDate}}
+                        </div>
+                    </div>
+                    <div class="row col-12 padding-field-bottom">
+                        <div class="col-2">
+                            <label>Job Description :</label>
+                        </div>
+                        <div class="col-10 align-justify">{{newResourceIndent.jobDescription}}</div>
+                    </div>
+                    <div class="row col-12 padding-field-bottom">
+                        <div class="col-2">
+                            <label>Attachment :</label>
+                        </div>
+                        <div class="col-10">
+                            <a title="Download to View" class="icon-margin"
+                                (click)="downloadDocumentAttachment(newResourceIndent.filePath, newResourceIndent.fileName)"
+                                target="_blank"><em class="fas fa-download"></em></a>
+                            {{newResourceIndent.fileName}}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

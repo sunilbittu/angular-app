@@ -1,0 +1,163 @@
+<div class="panel" style=" overflow:hidden;">
+    <div class="container-fluid">
+        <div class="col-12 row" style="margin-top:10px;" >
+           
+            <div id="updt_pnl" style="min-width: -webkit-fill-available;">
+
+                    <div class="row" style="min-width: -webkit-fill-available;"  >
+                    <div class="col-3 col-3" style=" border: 1px solid #efefef; height: 78%;">
+                    <div class="row">
+                            <div class="col-12"   style="border-bottom: 1px solid #efefef;padding-top:4px;padding-bottom:4px;">
+                                <span id="Label4" style="font-weight:bold;font-size: 20px; float: left;">Asset Issue Import</span>
+                            </div>
+                        </div>  
+                         <div class="row" style="border-bottom: 1px solid #efefef;" >
+                            <div class="col-12" >
+                                <table style="width: 100%; height: 20px;margin-top:5px;margin-bottom:5px;">
+                                    <tr>
+                                        <td style="width:100px !important;" ><b>Upload Excel :</b></td></tr>
+                                    <tr>
+                                        <td style="width:45px;" >
+                                            <input type="file" name="ctl00$ContentPlaceHolder1$FileUpload1" id="FileUpload1" accept="application/vnd.ms-excel,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" style="width:170px;" />
+                                        </td>
+                                        <td>
+                                             <input type="submit" name="ctl00$ContentPlaceHolder1$Button2" value="Upload" id="Button2" class="btn btn-primary" style="height:23px;padding:0px 7px; margin-left: 20px;" /></td>
+                                    </tr>
+                                </table>
+                            </div>
+                        </div>    
+                        <div class="row" style="border-bottom: 1px solid #efefef; padding-bottom:0px;margin-top:6px; margin-left: -15px;">
+                          <div style=" margin-left:7px;">
+                            <select id="ddlsheetname" style="height:25px;width:140px;">
+             <option selected="selected" value="Select Your Sheet">Select Your Sheet</option>
+              <option  value="002"> Sheet-1</option>
+                 </select>
+                         
+                            <!-- <span id="RequiredFieldValidator1" style="color:Red;font-size:15pt;visibility:hidden;">*</span>-->
+                            </div> 
+                         
+                            <input type="submit" name="ctl00$ContentPlaceHolder1$btn_import" value="Import" id="btn_import" disabled="disabled" class="aspNetDisabled btn btn-primary  btn-sm" style="padding: 0px 8px;height: 25px;margin-left: 10px;margin-top: 0px;border-radius: 5px;" />
+                            <span style="margin-top:3px;margin-left: 10px;"><input id="chk_auto" type="checkbox" name="ctl00$ContentPlaceHolder1$chk_auto" checked="checked" /><label for="chk_auto">Auto</label></span>
+                                
+                        </div>
+                        <div class="col-12" style="height: 90%;">
+                       
+                      
+          <div class="col-13" style="margin-top:4px; margin-left:-16px;">
+            <form [formGroup]="assetissue_importform">
+                <table class="tablems" id="tblupload" style="font-size:13px; width:107%;margin-bottom:35px">
+                  
+                    <tr>
+                        <td>
+                        <span id="Label1">Employee Code</span> &nbsp;<span class="mandatory">*</span>
+                        </td>
+                        <td>
+                            <select    formControlName="assetissue_empcode" id="ddlemp" class="form-control">
+                                <option value="01">001</option>
+                                <option value="02">002</option>
+
+                            </select>
+                        </td>
+                    </tr>
+                 
+                       <tr>
+                        <td>
+                            <span id="Label2">Asset Code</span> &nbsp;<span class="mandatory">*</span>
+                        </td>
+                        <td>
+                            <select formControlName="assetissue_assestcode"  class="form-control" id="ddlAcode">
+                                <option value="01">LP-001</option>
+                                <option value="02">Phone-002</option>
+
+                                 </select>
+                        </td>
+                    </tr>
+                     <tr>
+                        <td>
+                          <span id="LblPur">Issue Date</span> &nbsp;<span class="mandatory">*</span>
+                        </td>
+                        <td>
+                            <select  formControlName="assetissue_issuedate"  class="form-control" id="ddlpur">
+                                <option value="01">01-06-2021</option>
+                                <option value="02">01-06-2021</option>
+                                 </select>
+                        </td>
+                    </tr>
+                     <tr>
+                        <td>
+                           <span id="Label5">Due Date</span> &nbsp;<span class="mandatory">*</span>
+                        </td>
+                        <td>
+                            <select  formControlName="assetissue_duedate" class="form-control" id="ddlassetval">
+                                <option value="01">01-06-2021</option>
+                                <option value="02">02-06-2021</option>         
+
+                                </select>
+                        </td>
+                    </tr>
+                     <tr>
+                        <td>
+                           <span id="Label6">Received Date</span> &nbsp;<span class="mandatory">*</span>
+                        </td>
+                        <td>
+                            <select   formControlName="assetissue_receivedate" class="form-control" id="ddlIn">
+                                <option value="01">01-06-2021</option>
+                                <option value="02">02-06-2021</option>
+
+                                  </select>
+                        </td>
+                    </tr>
+                      <tr>
+                        <td>
+                           <span id="Label7">Remarks</span> &nbsp;<span class="mandatory">*</span>
+                        </td>
+                        <td>
+                            <select   formControlName="assetissue_remarks"  class="form-control" id="ddlrem">
+                                <option value="01">Good</option>
+                                <option value="02">Break</option>
+
+                                </select>
+                        </td>
+                    </tr>
+                 
+                </table>
+
+            </form>
+             <div class="row" style="width:109%; margin-top:7px; padding-left:0px;">
+             
+                              <fieldset style="border: 1px solid #efefef; padding-left: 2%; width:139%;">
+                                <legend style="width: 100px; border: none; font-size: 12px;">Format For Import</legend>
+                                <span id="lbl_exl_frmt" style="font-size:13px;">Employee Code,Asset Code,Issue Date,Due Date,Received Date,Remarks</span>
+                            </fieldset>
+                            </div>
+                      </div>
+                     
+                        </div>
+                         
+                    </div>
+
+                    <div class="col-9 col-9" style="border: 1px solid #efefef; height: 99.5%; overflow: auto;">
+                        <div class="row" style="height: 86%; overflow: auto;">
+                            <div>
+<table class="table" cellspacing="0" cellpadding="4" rules="all" id="GridView2" style="font-size:Small;font-weight:normal;border-collapse:collapse;min-width: -webkit-fill-available;">
+<tr>
+    <td>Record not found</td>
+</tr>
+</table>
+</div>
+                               
+                           
+                        </div>
+                        <div class="but btn-group" style="margin-top: 25px;" >
+                            <input type="button"  value="Save" id="btn_save"  (click)="importassest_save()" class="aspNetDisabled btn btn-primary btn-sm" style="border-radius:5px;" />
+                            <input type="submit" name="ctl00$ContentPlaceHolder1$Button4" value="Close" onclick="javascript:window.history.back();" id="Button4" class="btn btn-warning btn-sm" style="border-radius:5px;margin-left:10px;" />
+                          
+                        </div> 
+                         <!-- <div style="float:right; margin-top:0px;font-size:12px">
+                        <input name="ctl00$ContentPlaceHolder1$ctl01" type="text" readonly="" style="margin: -14px -26px;background:Bisque; width:20px; height:13px;" /><b> Asset Already Assigned to User </b> <br />
+                       <div style="margin-top:15px;" > <input name="ctl00$ContentPlaceHolder1$Text1" type="text" id="Text1" readonly="" style="margin: -14px -26px;background:Red; width:20px; height:13px;" /> <b> Incorrect Asset Code/ Employee Code </b></div>
+                         
+                        </div> -->
+                            
+                    </div>
+                   </div>

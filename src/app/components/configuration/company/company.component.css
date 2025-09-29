@@ -1,0 +1,26 @@
+
+.form-control::-webkit-input-placeholder { 
+  font-family: FontAwesome;
+  font-weight: normal;
+  overflow: visible;
+  vertical-align: top;
+  display: inline-block !important;
+  padding-left: 1px;
+  padding-top: 2px;
+  color: hsl(9, 17%, 24%);
+}
+
+.read-only {
+    background-color: #eeeeef;
+    cursor: auto;
+}
+  
+.table tr th {
+    font-size: 14px;
+}
+input {
+  cursor: text;
+}
+.edit {
+  cursor: pointer;
+}

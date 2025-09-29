@@ -1,0 +1,55 @@
+label {
+    font-weight: 600;
+    color: rgb(32, 31, 31);
+}
+
+
+.container{
+    border: 1px solid  rgb(14, 123, 196);
+    font-family: Arial, Helvetica, sans-serif;
+    height:590px;
+    overflow: scroll;
+}
+
+.heading{
+    background-color:rgb(14, 110, 189);
+    background: linear-gradient(rgb(54, 139, 209), rgb(29, 116, 187), rgb(7, 93, 163));
+    margin: 0%;
+    padding: 0%;
+    color: #fff;
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: larger;
+    border-left: 5px solid rgb(14, 110, 189);
+    border-left-color: #04478f;
+}
+
+.registerIcon{
+    color: rgb(15, 102, 15);
+    font-size: 40px;
+}
+
+.invalid-feedback{
+    font-size: medium;
+    font-family: Arial, Helvetica, sans-serif;
+}
+.btnmargin{
+    margin: 10px;
+}
+
+.jumbotron{
+
+    margin-bottom: 0%;
+}
+
+
+/* Chrome, Safari, Edge, Opera */
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+/* Firefox */
+input[type=number] {
+  -moz-appearance: textfield;
+}

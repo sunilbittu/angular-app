@@ -1,0 +1,31 @@
+
+
+.h-size {
+    font-size: 17px;
+    color: #555;
+} 
+
+.model-button{
+
+    color: rgb(24, 131, 173);
+    font-weight: bold;
+    cursor: pointer; 
+}
+
+.btn-label {position: relative;left: -12px;display: inline-block;padding: 6px 12px;background: rgba(0,0,0,0.15);border-radius: 3px 0 0 3px;}
+.btn-labeled {padding-top: 0;padding-bottom: 0;}
+.btn { margin-bottom:10px; }
+
+
+.tomarrow{
+    background-color: rgb(148, 245, 148);
+    color: #fff;
+    font-weight: 700;
+}
+
+
+.daysToGo{
+    background-color: rgb(112, 209, 247);
+    color: #fff;
+    font-weight: 700;
+}

@@ -1,0 +1,126 @@
+<div class="container-fluid">
+    <div class="d-flex align-items-center mt-2">
+        <div class="m-2">
+            <div class="h-size"><i class="fa fa-user"></i> <b>Technology Master</b></div>
+        </div>
+        <div class="flex-fill">
+        </div>
+        <div class="m-3"><i class="fa fa-search"></i>
+            <span> Search </span><input type="text" value="" (keyup)="getCurrencyListBySearchParam($event)">
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-12">
+            <table class="table table-bordered table-hover table-sm">
+                <thead class="t-head">
+                    <tr>
+                        <th *ngFor="let head of headers"><a>{{head}}</a></th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                         <tr *ngFor="let currency of currencyList">
+                             <td>{{currency.technologyCode}}</td>
+                             <td>{{currency.technologyName}}</td>
+                             
+            
+                             <td>
+                                
+                                <a title="Edit" class="icon-margin" (click)="editCurrency(currency.technologyId)" data-toggle="modal" data-target="#employeeModelPopup"><i class="fas fa-user-edit"></i></a>
+
+                                <a title="Delete" class="icon-margin"
+                                  mwlConfirmationPopover [popoverTitle]="popoverTitle" 
+                                  [popoverMessage]="popoverMessage" placement="left" (confirm)="deleteCurrencyById(currency.technologyId)"
+                                  (cancel)="cancelClicked = true"><span
+                                    class="fas fa-trash"></span></a>
+
+                             </td>
+                         </tr>
+                    </tbody>
+
+            </table>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-12">
+            <button type="button" class="btn btn-primary btn-sm" (click)="modelShow()" data-toggle="modal" data-target="#employeeModelPopup">
+                <i class="fas fa-user-plus"></i> Add
+            </button>
+        </div>
+    </div>
+
+    <form [formGroup]= technologyMastersForm (ngSubmit)="onSubmit()">
+        <div class="modal fade" id="employeeModelPopup" tabindex="-1" role="dialog" aria-labelledby="employeeModelPopupTitle" aria-hidden="true">
+            <div class="modal-dialog modal-lg" role="document">
+              <div class="modal-content">
+                <div class="modal-header">
+            <h4 class="modal-title" ><i class="fas fa-plus mr-1"></i> / <i class="fas fa-edit mr-1"></i>Technology Details </h4>
+                   
+                  <button type="button" class="close" #closebutton data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                  </button>
+                </div>
+                <div class="modal-body"> 
+                    
+                    
+                <div class="container">
+        
+                  
+        
+                  <div class="row">
+                      <div class="col-md-6">
+                          <div class="form-group">
+                              <label for="technologyCode" class="col-form-label">Technology Code<span class="color-red">*</span></label>
+                              <input type="text" formControlName="technologyCode" (input)=checkIfalreadyExist2($event.target.value) class="form-control form-control-sm"  id="technologyCode">
+                              <span class="color-red" *ngIf="submitted && form_.technologyCode.errors">Technology Code
+                                  {{requiredErrorText}}</span>
+                                  <span  class="color-red" *ngIf="exist2"> Technology Code Already Exist</span>
+                          </div>
+                      </div>
+      
+                      <div class="col-md-6">
+                          <div class="form-group">
+                              <label for="technologyName" class="col-form-label">Technology Name <span class="color-red">*</span>
+      
+                              </label>
+                              <input type="text" formControlName="technologyName" (input)=checkIfalreadyExist($event.target.value) class="form-control form-control-sm" id="technologyName">
+                              <span class="color-red" *ngIf="submitted && form_.technologyName.errors">Technology Name
+                                  {{requiredErrorText}}</span>
+                                  <span  class="color-red" *ngIf="exist"> Technology Name Already Exist</span>
+                          </div>
+                      </div>
+                  </div>
+      
+                
+      
+                 
+      
+      
+              </div>
+                </div>
+                <div class="modal-footer">
+    
+                  <div *ngIf=editButtonEnable>
+        
+                    <button type="button" class="btn btn-warning btn-sm" data-dismiss="modal">Cancel</button>
+                    <button type="button" class="btn btn-success btn-sm" (click)="updateCurrencyMaster(0)" >Update</button>
+                     
+           
+                </div>
+           
+                <div *ngIf=!editButtonEnable>
+                    
+                <button type="button" class="btn btn-warning btn-sm" data-dismiss="modal">Cancel</button>
+                <button type="submit" class="btn btn-primary btn-sm"  >Save</button>
+                 
+                
+                </div>
+                
+    
+                  
+                </div>
+              </div>
+            </div>
+          </div>
+</form>
+
+</div>

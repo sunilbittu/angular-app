@@ -1,0 +1,185 @@
+<div class="container-fluid" >
+    <div class="d-flex align-items-center mt-2">
+    <div class="flex-fill">
+    
+    </div>
+    <div class="m-3"><a href="#" data-action="live-emp" class="tab-lnk active"><i class="fas fa-user"></i><span
+    class="info-text font-bold fnt-5 ml-2 mr-1" id="spnLiveEmployeeCount">132</span>Total Employees</a>
+    </div>
+    <div class="m-3"><a href="#" data-action="left-emp" class="tab-lnk"><i class="fas fa-user"></i><span
+    class="danger-text font-bold fnt-5 ml-2 mr-1" id="spnLeftEmployeeCount">32</span>Supplementary Payment</a>
+    </div>
+    <div class="m-3"><a href="#" data-action="total-emp" class="tab-lnk"><i class="fas fa-users"></i><span
+    class="warning-text font-bold fnt-5 ml-2 mr-1" id="spnTotalEmployeeCount">164</span>Arrear Payment</a>
+    </div>
+    <div class="m-3"><a href="#" data-action="no-ss" class="tab-lnk"><i class="fas fa-users"></i><span
+    class="warning-text font-bold fnt-5 ml-2 mr-1" id="spnSSNotFound">6</span>Reimbursement Payment</a></div>
+    </div>
+    <!-- Nav tabs -->
+    <ul class="nav nav-tabs menu-tabs" role="tablist">
+    <li class="nav-item">
+    <a class="nav-link active" data-toggle="tab" href="#supplementaryPayment"><i class="fas fa-building"></i> Supplementary Payment </a>
+    </li>
+    <li class="nav-item">
+    <a class="nav-link" data-toggle="tab" href="#arrearPayment"><i class="fas fa-house-user"></i> Arrear Payment</a>
+    </li>
+    <li class="nav-item">
+    <a class="nav-link" data-toggle="tab" href="#reimbursementPayment"><i class="fas fa-file-word"></i> Reimbursement Payment</a>
+    </li>
+    </ul>
+    <!-- supplementaryPayment -->
+    <div class="tab-content">
+    <div id="supplementaryPayment" class="container tab-pane active"><br>
+    <div class="row">
+    <div class="col-md-12">
+    <table class="table table-bordered table-hover table-sm">
+    <thead class="t-head">
+    <tr>
+    <th id="head1" *ngFor="let head of headers"><a>{{head}}</a></th>
+    </tr>
+    <tr >
+    <td>
+    <input type="text" class="form-control emp-no" name="employeeCode" >
+    </td>
+    <td>
+    <input type="text" class="form-control" name="employeeName" >
+    </td>
+    <td>
+    <input type="text" class="form-control" name="employeeBranch" >
+    </td>
+    <td>
+    <input type="text" class="form-control" name="employeeDepartment" >
+    </td>
+    <td>
+    <input type="text" class="form-control" name="employeeDesignation" >
+    </td>
+    <td>
+    <input type="text" class="form-control" name="employeeDivision" >
+    </td>
+    </tr>
+    </thead>
+    <tbody>
+    <tr *ngFor="let employee of supplementaryEmployees">
+    <td>{{employee.code}}</td>
+    <td>{{employee.name}}</td>
+    <td>{{employee.branch}}</td>
+    <td>{{employee.department}}</td>
+    <td>{{employee.designation}}</td>
+    <td>{{employee.division}}</td>
+    <td>
+    <a title="View" class="icon-margin"><img id="img_icon" src="/Image/no.png"></a>
+    </td>
+    </tr>
+    </tbody>
+    </table>
+    </div>
+    </div>
+    
+    <div class="row">
+    <button type="button" class="btn btn-primary btn-sm" style="margin:5px"><i class="fa fa-money" aria-hidden="true" ></i>Payment</button>
+    <button type="button" class="btn btn-primary btn-sm" style="margin:5px"><i class="fa fa-list-ol" aria-hidden="true"></i>Payment For Multiple</button>
+    <button type="button" class="btn btn-primary btn-sm" style="margin:5px"><i class="fas fa-trash"></i>Delete Payment</button>
+    <button type="button" class="btn btn-primary btn-sm" style="margin:5px"><i class="fas fa-trash"></i>Delete All Payments</button>
+    </div>
+    </div>
+    <!-- arrearPayment -->
+    <div id="arrearPayment" class="container tab-pane fade"><br>
+    <div class="row">
+    <div class="col-md-12">
+    <table class="table table-bordered table-hover table-sm">
+    <thead class="t-head">
+    <tr>
+    <th id="head1" *ngFor="let head of headers2"><a>{{head}}</a></th>
+    </tr>
+    <tr >
+    <td>
+    <input type="text" class="form-control emp-no" name="employeeCode" >
+    </td>
+    <td>
+    <input type="text" class="form-control" name="employeeName" >
+    </td>
+    <td>
+    <input type="text" class="form-control" name="employeeBranch" >
+    </td>
+    <td>
+    <input type="text" class="form-control" name="employeeDepartment" >
+    </td>
+    <td>
+    <input type="text" class="form-control" name="employeeDesignation" >
+    </td>
+    <td>
+    <input type="text" class="form-control" name="employeeDivision" >
+    </td>
+    </tr>
+    </thead>
+    <tbody>
+    <tr *ngFor="let employee of arrearEmployees">
+    <td>{{employee.code}}</td>
+    <td>{{employee.name}}</td>
+    <td>{{employee.branch}}</td>
+    <td>{{employee.department}}</td>
+    <td>{{employee.designation}}</td>
+    <td>{{employee.division}}</td>
+    </tr>
+    </tbody>
+    </table>
+    </div>
+    </div>
+    <div class="row">
+    <button type="button" class="btn btn-primary btn-sm" style="margin:5px"><i class="fa fa-money" aria-hidden="true" ></i>Show Payment</button>
+    <button type="button" class="btn btn-primary btn-sm" style="margin:5px"><i class="fas fa-trash"></i>Delete Payment</button>
+    <button type="button" class="btn btn-primary btn-sm" style="margin:5px"><i class="fas fa-trash"></i>Delete All Payments</button>
+    </div>
+    </div>
+    <!-- reimbursementPayment -->
+    <div id="reimbursementPayment" class="container tab-pane fade"><br>
+    <div class="row">
+    <div class="col-md-12">
+    <table class="table table-bordered table-hover table-sm">
+    <thead class="t-head">
+    <tr>
+    <th id="head1" *ngFor="let head of headers2"><a>{{head}}</a></th>
+    </tr>
+    <tr >
+    <td>
+    <input type="text" class="form-control emp-no" name="employeeCode" >
+    </td>
+    <td>
+    <input type="text" class="form-control" name="employeeName" >
+    </td>
+    <td>
+    <input type="text" class="form-control" name="employeeBranch" >
+    </td>
+    <td>
+    <input type="text" class="form-control" name="employeeDepartment" >
+    </td>
+    <td>
+    <input type="text" class="form-control" name="employeeDesignation" >
+    </td>
+    <td>
+    <input type="text" class="form-control" name="employeeDivision" >
+    </td>
+    </tr>
+    </thead>
+    <tbody>
+    <tr *ngFor="let employee of reimbursementEmployees">
+    <td>{{employee.code}}</td>
+    <td>{{employee.name}}</td>
+    <td>{{employee.branch}}</td>
+    <td>{{employee.department}}</td>
+    <td>{{employee.designation}}</td>
+    <td>{{employee.division}}</td>
+    </tr>
+    </tbody>
+    </table>
+    </div>
+    </div>
+    <div class="row">
+    <button type="button" class="btn btn-primary btn-sm" style="margin:5px"><i class="fa fa-money" aria-hidden="true" ></i>Payment</button>
+    <button type="button" class="btn btn-primary btn-sm" style="margin:5px"><i class="fas fa-trash"></i>Delete Payment</button>
+    <button type="button" class="btn btn-primary btn-sm" style="margin:5px"><i class="fas fa-trash"></i>Delete All Payments</button>
+    </div>
+    
+    </div>
+    </div>
+    

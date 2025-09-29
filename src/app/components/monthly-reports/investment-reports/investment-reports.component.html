@@ -1,0 +1,65 @@
+<div class="container-fluid h-100">
+    <div class="row h-100 margin-top-5" style="overflow: hidden;">
+        <div class="col-2 light-bg side-rpt-menu h-100">
+
+            <h2 class="main-head">Investment Report</h2>
+            <div class="mt-3 btn-group-vertical">
+                <h5 class="left-content"> Financial Year </h5>
+                <select name="ds_year" [(ngModel)]="yearModel" class="form-control">
+                    <option value="">Please Select Financial Year</option>
+                    <option *ngFor="let year of investmentYear" value={{year.financialYearId}}>{{year.financialYear}}
+                    </option>
+                </select>
+                <br />
+                <button type="button" data-target="#empfilter" data-toggle="modal" (click)="getreports()"
+                    class="btn btn-outline fnt-3" value="Filter"><i class="fas fa-file-alt text-primary"></i>Show
+                    Report
+                </button>
+                <br />
+                <a class="btn btn-outline fnt-3" target="_blank" (click)="exportExcel()"> <i
+                        class="fas fa-file-excel excel-icon-text text-success"></i>Export To
+                    Excel
+                </a>
+            </div>
+        </div>
+        <div class="col-10 p-0 h-100" style="margin-top: 5px;">
+            <div id="dv_tbl_rpt_content">
+                <div class="m-2">
+                    <table id="rpt_tbl" class="table scrollable table-bordered table-sm">
+                        <thead>
+                            <tr>
+                                <th colspan="6" style="background-color:#e5e6e8;position:sticky;top:-1px">
+                                    <b>Company Name :</b> {{companyName}}
+                                </th>
+                            </tr>
+                            <tr>
+                                <th style="text-align: left;background-color:#e5e6e8;">Emp-Code
+                                </th>
+                                <th style="text-align: left;background-color:#e5e6e8;">Name
+                                </th>
+                                <th style="text-align: left;background-color:#e5e6e8;">Investment Type
+                                </th>
+                                <th style="text-align: left;background-color:#e5e6e8;">Date
+                                </th>
+                                <th style="text-align: left;background-color:#e5e6e8;">Declared Amount
+                                </th>
+                                <th style="text-align: left;background-color:#e5e6e8;">Made Amount
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr *ngFor="let data of reports">
+                                <td>{{data.employeeCode}}</td>
+                                <td>{{data.firstName}}</td>
+                                <td>{{data.investmentType}}</td>
+                                <td>{{data.investmentDate | date:'dd/MM/yyyy'}}</td>
+                                <td>{{data.declared}}</td>
+                                <td>{{data.made}}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

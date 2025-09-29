@@ -1,0 +1,135 @@
+.reports-box{
+    height: 100%;
+    background-color: rgb(231, 225, 225);
+    width: 227px;
+}
+.reports-box h2{
+   color: #707070;
+   font-size: 20px;
+}
+.reports-box ul li{
+    list-style: none;
+    color:#55799A ;
+    padding-bottom: 8px;
+    font-size: 16px;
+    cursor: pointer;
+    margin-left: -23px;
+}
+.repoprt-select{
+    width: 80% !important;
+    padding:0px;
+    background-color: #cbc6c6 !important;
+    margin-left: 24px;
+}
+
+.btn-outline-secondary{
+    margin-left: 54px;
+    background: white;
+}
+.select-all{
+    /* width: 25% !important; */
+    width: 20px;
+    height: 15px
+}
+.s-lable{
+    padding-left: 1px;
+
+}
+.modal-title{
+    margin-left: 200px;
+}
+.model-table td{
+    vertical-align: middle !important;
+    padding: 6px !important;
+}
+.head-margin {
+    margin-left: 15px;
+}
+
+.align-center{
+    margin-left: 300px !important;
+}
+
+.btn-header{
+    color: white;
+    margin-left: 10px;
+
+}
+.title-headers h2{
+  display: contents;
+
+}
+.ml-40{
+    margin-left: 40px;
+}
+.title-headers button{
+}
+.model-tbl tr td h4{
+    padding-right: 50px;
+}
+.model-tbl tr td input{
+    height: 32px;
+    width: 230px;
+}
+.mt-10{
+    margin-top: 10px;
+}
+.modal-header{
+    padding: 8px 18px !important;
+}
+.modal-dialog {
+    margin-top: 0px  !important;
+}
+.error-msg {
+    margin: 10px 0;
+    padding: 10px;
+    border-radius: 3px 3px 3px 3px;
+    color: #D8000C;
+    background-color: #FFBABA;
+}
+b, strong {
+    font-weight: 500;
+}
+.btn-footer {
+    margin: 1px;
+    margin-bottom: 15px;
+}
+button:disabled,
+button[disabled]{
+  border: 1px solid #999999;
+  background-color: #cccccc;
+  color: #666666;
+}
+
+.pull-left-5 {
+    margin-left: 5px;
+}
+
+.q-style {
+    margin-bottom: 0px;
+    border-color: #adadad;
+    height: 35px;
+}
+
+label {
+    padding-right: 40px;
+    font-size: 15px;
+}
+
+.td-width {
+    width: 70%;
+    padding-bottom: 4px;
+}
+.emp-scroll {
+    height: 380px;
+    overflow-x: scroll;
+}
+.select-year {
+    margin-left: 14px;
+    width: 103%;
+    font-size: 16px;
+}
+.scroll-tab {
+    overflow-x: scroll;
+    overflow-y: scroll;
+}

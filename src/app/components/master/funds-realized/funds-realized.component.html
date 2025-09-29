@@ -1,0 +1,227 @@
+
+<div class="container-fluid">
+    <div class="d-flex align-items-center mt-2">
+        <div class="m-2">
+            <div class="h-size"><i class="fa fa-user"></i> <b>Manage Funds Realized</b></div>
+        </div>
+        <div class="flex-fill">
+        </div>
+        <!-- <div class="m-3"><i class="fa fa-search"></i>
+            <span> Search </span><input type="text" value="">
+        </div> -->
+    </div>
+    <div class="row">
+        <div class="col-md-12">
+            <table class="table table-bordered table-hover table-sm">
+                <thead class="t-head">
+                    <tr>
+                        <th *ngFor="let head of headers"><a>{{head}}</a></th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                         <tr *ngFor="let invoice of fundsList">
+                             <td>{{invoice.invoiceNo}}</td>
+                             <td>{{invoice.candidateId.candidateName}}</td>
+                             <td>{{invoice.jobId.positionName}}</td>
+                             <td>{{invoice.jobId.clientId.clientName}}</td>
+                             <td>{{invoice.salaryOffered}}</td>
+                             <td>{{invoice.fee}}</td>
+                             <td>{{invoice.fundsRealizedOn}}</td>
+            
+                             <!-- <td>
+                                <a title="Edit" class="icon-margin" (click)="editGradeMaster(grade.gradeId)" data-toggle="modal" data-target="#employeeModelPopup"><i class="fas fa-user-edit"></i></a>
+
+                                
+                                <a title="Delete" class="icon-margin"
+                                  mwlConfirmationPopover [popoverTitle]="popoverTitle" 
+                                  [popoverMessage]="popoverMessage" placement="left" (confirm)="deleteGradeById(grade.gradeId)"
+                                  (cancel)="cancelClicked = true"><span
+                                    class="fas fa-trash"></span></a>
+
+                             </td> -->
+                         </tr>
+                    </tbody>
+
+            </table>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-12">
+            <button type="button" class="btn btn-primary btn-sm" (click)="modelShow()">
+                <i class="fas fa-user-plus"></i> Add
+            </button>
+        </div>
+    </div>
+
+    
+
+<div class="modal fade common-model" id="candidate-invoice-modal">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content model">
+            <!-- Modal Header -->
+            <div class="modal-header">
+                <div class="modal-title">
+                    Details of Funds Realized
+                </div>
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+            </div>
+            <!-- Modal body -->
+            <div class="modal-body">
+
+                <div class="row col-12 padding-field-bottom">
+                    
+                    <div class="col-2">
+                        <label for="type">Invoice No.</label>
+                    </div>
+                    <div class="col-4">
+                        <!-- <input type="text" class="form-control" [(ngModel)]="invoiceNo"
+                            > -->
+
+                        <select class="form-control form-control-sm" required id="invoiceNo"
+                        [(ngModel)]="invoiceNo" (change)="changeInvoice()">
+                            <option [value]="">Select Invoice No</option>
+                            <option *ngFor="let invoice of gradeList"
+                                [value]="invoice.invoiceNo">{{invoice.invoiceNo}}</option>
+                        </select>
+                    </div>
+                    <div class="col-2">
+                        <label for="type">Recuriter Name</label>
+                    </div>
+                    <div class="col-4">
+                        <input type="text" class="form-control" [(ngModel)]="ownerName"
+                            readonly>
+                    </div>
+                </div>
+               
+                <div class="row col-12 padding-field-bottom">
+                    <div class="col-2">
+                        <label for="type">Candidate Name</label>
+                    </div>
+                    <div class="col-4">
+                        <input type="text" class="form-control" [(ngModel)]="candidateName"
+                            readonly>
+                    </div>
+                    <!-- <div class="col-2">
+                        <label for="type">Invoice No.</label>
+                    </div>
+                    <div class="col-4">
+                        <input type="text" class="form-control" [(ngModel)]="invoiceNo"
+                            readonly>
+                    </div> -->
+                    <div class="col-2">
+                        <label for="type">Invoice Date</label>
+                    </div>
+                    <div class="col-4">
+                        <input type="date" class="form-control" [(ngModel)]="invoiceDate"
+                            readonly>
+                    </div>
+                </div>
+
+                <div class="row col-12 padding-field-bottom">
+                    <div class="col-2">
+                        <label for="type">Position Title</label>
+                    </div>
+                    <div class="col-4">
+                        <input type="text" class="form-control" [(ngModel)]="positionTitle"
+                            readonly>
+                    </div>
+                    <div class="col-2">
+                        <label for="type">Attention To</label>
+                    </div>
+                    <div class="col-4">
+                        <input type="text" class="form-control" [(ngModel)]="attentionTo"
+                            readonly>
+                    </div>
+                </div>
+
+                <div class="row col-12 padding-field-bottom">
+                    <div class="col-2">
+                        <label for="type">Client Name</label>
+                    </div>
+                    <div class="col-4">
+                        <input type="text" class="form-control" [(ngModel)]="clientTitle"
+                            readonly>
+                    </div>
+                    <div class="col-2">
+                        <label for="type">Salary Offered</label>
+                    </div>
+                    <div class="col-4">
+                        <input type="text" class="form-control" [(ngModel)]="salaryOffered"
+                            readonly>
+                    </div>
+                </div>
+
+                <div class="row col-12 padding-field-bottom">
+                    <div class="col-2">
+                        <label for="type">Client Address</label>
+                    </div>
+                    <div class="col-4">
+                        <input type="text" class="form-control" [(ngModel)]="clientAddress"
+                            readonly>
+                    </div>
+                    <div class="col-2">
+                        <label for="type">Funds Realized On</label>
+                    </div>
+                    <div class="col-4">
+                        <input type="date" class="form-control" [(ngModel)]="fundsRealizedOn"
+                           >
+                    </div>
+                   
+                </div>
+
+                <!-- <div class="row col-12 padding-field-bottom">
+                    <div class="col-2">
+                        <label for="type">Client Email ID</label>
+                    </div>
+                    <div class="col-4">
+                        <input type="text" class="form-control" [(ngModel)]="clientEmailId"
+                            readonly>
+                    </div>
+                    <div class="col-2">
+                        <label for="type">Fee %</label>
+                    </div>
+                    <div class="col-4">
+                        <input type="text" class="form-control" [(ngModel)]="Fee"
+                            readonly>
+                    </div>
+                </div> -->
+
+                <!-- <div class="row col-12 padding-field-bottom">
+                    <div class="col-2">
+                        <label for="type">Job Started Date</label>
+                    </div>
+                    <div class="col-4">
+                        <input type="text" class="form-control" [(ngModel)]="jobStartedDate"
+                           readonly>
+                    </div>
+
+                    <div class="col-2">
+                        <label for="type">Funds Realized On</label>
+                    </div>
+                    <div class="col-4">
+                        <input type="date" class="form-control" [(ngModel)]="fundsRealizedOn"
+                           >
+                    </div>
+                    
+                </div> -->
+
+                <hr>
+                <div class="row">
+                    <div class="col-md-6 pull-left">
+                        <button type="button" (click)="saveInvoice()" id="btnComponentSave"
+                            class="button btn-primary btn-style"><i
+                                class="fas fa-save"></i>
+                            Save <i class="fa fa-spinner fa-spin" 
+                                style="font-size:19px"></i></button>
+                    </div>
+                    <div class="col-md-6 pull-right">
+                        <button type="button" id="btnComponentSave" (click)="clearDropCandidate()"
+                            class="button btn-warning btn-style" >
+                            Clear</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</div>

@@ -1,0 +1,28 @@
+.type-list{
+    list-style: none;
+    border: 1px solid gray;
+    width: 90%;
+    height: 86%;
+    padding: 0px;
+}
+.type-list li{
+    padding:8px;
+    border-bottom: 1px solid gray;
+    background-color: #d0e5f9;
+    cursor: pointer;
+}
+.type-list li label{
+    padding-left: 10px;
+    cursor: pointer;
+}
+.type-list li input{
+    cursor: pointer;
+
+}
+button{
+    margin-left: 15px;
+}
+
+.search-ip{
+    width: 90%;
+}

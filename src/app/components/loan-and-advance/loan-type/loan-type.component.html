@@ -1,0 +1,188 @@
+<div class="container-fluid">
+    <div class="d-flex align-items-center mt-2">
+        <div class="m-2">
+            <div class="h-size"><em class="fa fa-user mr-1"></em> <strong>List of Loans/Advances</strong></div>
+        </div>
+        <div class="flex-fill">
+        </div>
+        <!-- <div class="m-3"><input class="form-control rounded-pill py-2 border-right-0 border" type="search"
+                placeholder="search" id="example-search-input">
+        </div> -->
+    </div>
+    <div class="row">
+        <div class="col-md-12">
+            <table class="table table-bordered table-hover table-sm">
+                <thead class="t-head">
+                    <tr>
+                        <th *ngFor="let head of headers" id="headers1"><a>{{head}}</a></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let candidate of candidateData">
+                        <td>{{candidate.loanId}}</td>
+                        <td>{{candidate.loanName}}</td>
+                        <td>{{candidate.typeOfLoan}}</td>
+                        <td>{{candidate.loanLimit}}</td>
+                        <td>{{candidate.repaymentMode}}</td>
+                        <td> {{candidate.retentionYears}}</td>
+                        <td>
+                            <a title="Edit" class="icon-margin" (click)="editCandidate(candidate)" data-toggle="modal"
+                                data-target="#myModal-add"><em class="fas fa-user-edit"></em></a>
+                            <a title="Delete" class="icon-margin" (click)="removeCandidate(candidate.loanId)"
+                                data-toggle="modal" data-target="#confirmDelete"><span class="fas fa-trash"></span></a>
+                        </td>
+                    </tr>
+                </tbody>
+
+            </table>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-12">
+            <button type="button" class="btn btn-primary btn-sm" data-toggle="modal" (click)="addClick()"
+                data-target="#myModal-add" *ngIf="!editStatusbtn">
+                <em class="fas fa-user-plus"></em> Add
+            </button>&nbsp;
+
+        </div>
+    </div>
+
+    <div class="modal fade common-model" id="myModal-add">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content model">
+                <!-- Modal Header -->
+                <div class="modal-header">
+                    <div class="modal-title"><i class="fas fa-plus"></i>/ <i class="fas fa-edit ml-1"></i> Loan/Advance
+                        Details
+                    </div>
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                </div>
+                <!-- Modal body -->
+                <div class="modal-body">
+
+                    <form [formGroup]="LoanForm">
+                        <div class="row col-12 padding-field-bottom">
+                            <div class="col-4">
+                                <label>Name <span class="color-red">* </span></label>
+                                <input type="text" class="form-control" placeholder="Please Enter Loan Name"
+                                    formControlName="loanName">
+                                <span class="color-red" *ngIf="submitted && form_.loanName.errors">Loan Name
+                                    {{requiredErrorText}}</span>
+                            </div>
+                            <div class="col-4">
+                                <label>Loan Limit <span class="color-red">* </span></label>
+                                <input type="number" [min]="1000" [max]="99999999999999"
+                                class="form-control" step="1" placeholder="Please enter Loan Limit"
+                                    formControlName="loanLimit" (ngModelChange)="changeLimit()">
+                                <span class="color-red" *ngIf="submitted && form_.loanLimit.errors">Loan Limit
+                                    {{requiredErrorText}}<br></span>
+                                <span class="color-red" *ngIf="submitted && isLoanLimitInValid">Loan Limit
+                                    should not be less than 1000</span>
+                            </div>
+                            <div class="col-4">
+                                <label>Type <span class="color-red">* </span></label>
+                                <select formControlName="typeOfLoan" class="custom-select-box form-control"
+                                    [ngClass]="{ 'is-invalid': submitted && form_.typeOfLoan.errors }"
+                                    (change)="checkthemodeOfRepayment()">
+                                    <option value="Loan">Loan</option>
+                                    <option value="Advance">Advance</option>
+                                </select>
+                                <span class="color-red" *ngIf="submitted && form_.typeOfLoan.errors">Type
+                                    {{requiredErrorText}}</span>
+                            </div>
+                        </div>
+                        <div class="row col-12 padding-field-bottom">
+                            <div class="col-6">
+                                <label>Repayment Mode <span class="color-red">* </span></label>
+                                <select formControlName="repaymentMode" class="custom-select-box form-control"
+                                    [ngClass]="{ 'is-invalid': submitted && form_.repaymentMode.errors }"
+                                    (change)="checkthemodeOfRepayment()">
+                                    <option value="One Time">One Time</option>
+                                    <option value="Installments">Installments</option>
+                                </select>
+                                <span class="color-red" *ngIf="submitted && form_.repaymentMode.errors">Repayment mode
+                                    {{requiredErrorText}}</span>
+                            </div>
+                            <div class="col-6">
+                                <label>No. of Installments <span class="color-red">* </span></label>
+                                <input type="number" formControlName="installmentsNumber" [min]="1" [max]="60"
+                                    class="form-control" step="1" placeholder="Please enter Installments">
+                                <span class="color-red" *ngIf="submitted && form_.installmentsNumber.errors">No of
+                                    Installments
+                                    {{requiredErrorText}}</span>
+                            </div>
+
+                        </div>
+                        <div class="row col-12 padding-field-bottom">
+                            <div class="col-6">
+                                <label>Approval Workflow <span class="color-red">* </span></label>
+                                <select formControlName="approvalWorkflow" class="custom-select-box form-control">
+                                    <option value="">Select Workflow</option>
+                                    <option *ngFor="let data of workflowList" value={{data.id}}>{{data.name}}</option>
+                                </select>
+                                <span class="color-red" *ngIf="submitted && form_.approvalWorkflow.errors">Workflow
+                                    {{requiredErrorText}}</span>
+                            </div>
+                            <div class="col-6">
+                                <label>Employee Retention(Years) <span class="color-red">*&nbsp;&nbsp;
+                                    </span></label>
+                                <input type="number" formControlName="retentionYears" [min]="1" [max]="20"
+                                    class="form-control" step="1" placeholder="Please enter Retention years"
+                                    [ngClass]="{ 'is-invalid': submitted && form_.retentionYears.errors }">
+                                <span class="color-red" *ngIf="submitted && form_.retentionYears.errors">Employee
+                                    Retention Years
+                                    {{requiredErrorText}}</span>
+                            </div>
+                        </div>
+                        <div class="row col-12 padding-field-bottom">
+                            <div class="col-12">
+                                <label for="description" class="col-form-label">Description<span
+                                        class="color-red">*</span></label>
+                                <textarea formControlName="description" class="form-control form-control-sm"
+                                    id="description"></textarea>
+                                <span class="color-red" *ngIf="submitted && form_.description.errors">Description
+                                    {{requiredErrorText}}
+                                </span>
+                            </div>
+                        </div>
+                        <hr>
+                        <div class="row">
+                            <div class="col-md-6 pull-left">
+                                <button type="button" class="button btn-primary btn-style" *ngIf="togglebtn"
+                                    [disabled]="submitProcessing" (click)="onSubmit()">Save <i
+                                        class="fa fa-spinner fa-spin" *ngIf="submitProcessing"
+                                        style="font-size:19px"></i></button>
+                                <button type="button" class="button btn-primary btn-style" *ngIf="!togglebtn"
+                                    [disabled]="submitProcessing" (click)="updateReferalRecruitment()">Update <i
+                                        class="fa fa-spinner fa-spin" *ngIf="submitProcessing"
+                                        style="font-size:19px"></i></button>
+                            </div>
+                            <div class="col-md-6 pull-right" *ngIf="togglebtn">
+                                <button type="button" id="btnComponentSave" (click)="clear()"
+                                    class="button btn-warning btn-style" [disabled]="submitProcessing">
+                                    Clear</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade common-model xxxyyy" id="confirmDelete">
+    <div class="modal-dialog">
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-body"><button type="button" class="close" data-dismiss="modal">&times;</button>
+                <p>Are you sure you want to delete selected items?</p>
+            </div>
+            <div class="modal-footer" style="justify-content: flex-end;">
+                <button type="button" class="btn btn-default btn-sm" data-dismiss="modal">Close</button>
+                <button type="button" data-dismiss="modal" class="btn btn-primary btn-sm"
+                    (click)="deleteCandidate()">Ok</button>
+            </div>
+        </div>
+    </div>
+</div>

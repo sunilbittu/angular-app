@@ -1,0 +1,562 @@
+<div class="container-fluid">
+
+    <form [formGroup]=tabDetailsForm >
+        <div class="formContainer">
+
+            <div class="row">
+                <div class="col-4 pb-0">
+                      <div class="form-section">
+                          <div class="title">
+                              <i class="fas fa-user-check"></i>Tan Details
+                          </div>
+                          <div class="form-field field">
+                              <div class="row">
+                                  <div class="col-4 pb-0">
+                                      <label>TAN No.<i class="req-field"></i></label>
+                                  </div>
+                                  <div class="col-8 pb-0">
+      
+                                      <input type="text" formControlName="tanNo" id="txt_tan_no" maxlength="50">
+                                  </div>
+                              </div>
+      
+      
+                          </div>
+                          <div class="form-field field">
+                              <div class="row">
+                                  <div class="col-4 pb-0">
+                                      <label>TAN Register At<i class="req-field"></i></label>
+                                  </div>
+                                  <div class="col-8 pb-0">
+                                      <input type="text" formControlName="tanRegisterAt" id="txt_tan_register_at" maxlength="50">
+                                  </div>
+                              </div>
+      
+      
+                          </div>
+                          <div class="form-field field">
+                              <div class="row">
+                                  <div class="col-4 pb-0">
+                                      <label>TDS Circle</label>
+                                  </div>
+                                  <div class="col-8 pb-0">
+                                      <input type="text" formControlName="tdsCircle" id="txt_tds_circle" maxlength="50">
+                                  </div>
+                              </div>
+      
+      
+                          </div>
+                          <div class="form-field field">
+                              <div class="row">
+                                  <div class="col-4 pb-0">
+                                      <label>Deductor Type<i class="req-field"></i></label>
+                                  </div>
+                                  <div class="col-8 pb-0">
+                                      <select id="ddl_deductor_type" formControlName="deDuctorType" style="color: black;">
+                                          <option>--Select Deductor--</option>
+                                          <option>Central Government-A </option>
+                                          <option>State Government-S </option>
+                                          <option>Statutory body (Central Govt.)-D </option>
+                                          <option>Statutory body (State Govt.)-E </option>
+                                          <option>Autonomous body (Central Govt.)-G </option>
+                                          <option>Autonomous body (State Govt.)-H </option>
+                                          <option>Local Authority (Central Govt.)-L </option>
+                                          <option>Local Authority (State Govt.)-N </option>
+                                          <option>Company-K </option>
+                                          <option>Branch / Division of Company-M </option>
+                                          <option>Association of Person (AOP)-P </option>
+                                          <option>Association of Person (Trust)-T </option>
+                                          <option>Artificial Juridical Person-J </option>
+                                          <option>Body of Individuals-B </option>
+                                          <option>Individual/HUF-Q </option>
+                                          <option>Firm-F </option>
+                                      </select>
+                                  </div>
+                              </div>
+      
+      
+                          </div>
+                      </div>
+                      <div class="form-section">
+                          <div class="title">
+                              <i class="fas fa-user-check"></i>Tan Registration Details
+                          </div>
+                          <div class="form-field field">
+                              <div class="row">
+                                  <div class="col-4 pb-0">
+                                      <label>Address1<i class="req-field"></i></label>
+                                  </div>
+                                  <div class="col-8 pb-0">
+                                      <input type="text" formControlName="Address1" id="txt_address1" maxlength="50">
+                                  </div>
+                              </div>
+      
+      
+                          </div>
+                          <div class="form-field field">
+                              <div class="row">
+                                  <div class="col-4 pb-0">
+                                      <label>Address2<i class="req-field"></i></label>
+                                  </div>
+                                  <div class="col-8 pb-0">
+                                      <input type="text" formControlName="Address2" id="txt_address2" maxlength="50">
+                                  </div>
+                              </div>
+      
+      
+                          </div>
+                          <div class="form-field field">
+                              <div class="row">
+                                  <div class="col-4 pb-0">
+                                      <label>Address3</label>
+                                  </div>
+                                  <div class="col-8 pb-0">
+                                      <input type="text" formControlName="Address3" id="txt_address3" maxlength="50">
+                                  </div>
+                              </div>
+      
+      
+                          </div>
+                         
+                         
+    
+                          <div class="form-field field">
+                            <div class="row">
+                                <div class="col-4 pb-0">
+                                    <label>Country <i class="req-field"></i></label>
+                                </div>
+                                <div class="col-8 pb-0">
+                                    <select id="ddl_country" formControlName="country1" style="color: black;" (change)="fetchStates1()">
+                                        <option>- Select country -</option>
+                                        <option *ngFor="let country of countryList1" [value]="country.countryId">{{country.countryName}}</option>
+                                       
+                                    </select>
+                                </div>
+                            </div>
+    
+    
+                        </div>
+    
+    
+    
+                        <div class="form-field field">
+                            <div class="row">
+                                <div class="col-4 pb-0">
+                                    <label>State <i class="req-field"></i></label>
+                                </div>
+                                <div class="col-8 pb-0">
+                                    <select id="ddl_state" formControlName="state1" style="color: black;" (change)="fetchCityList1()">
+                                        <option>- Select State -</option>
+                                        <option *ngFor="let states of statesList1" [value]="states.stateId">{{states.stateName}}</option>
+
+                                       
+                                    </select>
+                                </div>
+                            </div>
+    
+    
+                        </div>
+    
+                          <div class="form-field field">
+                              <div class="row">
+                                  <div class="col-4 pb-0">
+                                      <label>City <i class="req-field"></i></label>
+                                  </div>
+                                  <div class="col-8 pb-0">
+
+                                    <select id="ddl_state" formControlName="city1"  style="color: black;">
+                                        <option>- Select City -</option>
+                                        <option *ngFor="let city of cityList1"  [ngValue]="city.cityId">{{city.cityName}}</option>
+
+                                       
+                                    </select>
+                                  </div>
+                              </div>
+      
+      
+                          </div>
+                       
+      
+                         
+                          <div class="form-field field">
+                              <div class="row">
+                                  <div class="col-4 pb-0">
+                                      <label>Email Id <i class="req-field"></i></label>
+                                  </div>
+                                  <div class="col-8 pb-0">
+      
+                                      <input type="text" formControlName="emailId1" id="txt_emailid" maxlength="50">
+                                  </div>
+                              </div>
+      
+                          </div>
+                         
+                          <div class="form-field field">
+                              <div class="row">
+                                  <div class="col-4 pb-0">
+                                      <label>Phone <i class="req-field"></i></label>
+                                  </div>
+                                  <div class="col-8 pb-0">
+      
+                                      <input type="text" formControlName="phone1" id="txt_std" />
+                                  </div>
+                                 
+                              </div>
+      
+      
+      
+                          </div>
+                         
+      
+                      </div>
+                     
+                  </div>
+      
+              
+                  <div class="col-4 pb-0">
+                      <div class="form-section">
+      
+                          <div class="title">
+                              <i class="fas fa-id-badge"></i>Responsible Person
+                          </div>
+      
+                          <div class="form-field field">
+                              <div class="row">
+                                  <div class="col-4 pb-0">
+                                      <label>Name<i class="req-field"></i></label>
+                                  </div>
+                                  <div class="col-8 pb-0">
+      
+                                      <input type="text" formControlName="name" id="txt_name" maxlength="50">
+                                  </div>
+                              </div>
+      
+      
+                          </div>
+                          <div class="form-field field">
+                              <div class="row">
+                                  <div class="col-4 pb-0">
+                                      <label>Tax No.<i class="req-field"></i></label>
+                                  </div>
+                                  <div class="col-8 pb-0">
+      
+                                      <input type="text" formControlName="panNo" id="txt_pan" maxlength="50">
+                                  </div>
+                              </div>
+      
+      
+                          </div>
+                          <div class="form-field field">
+                              <div class="row">
+                                  <div class="col-4 pb-0">
+                                      <label>Designation<i class="req-field"></i></label>
+                                  </div>
+                                  <div class="col-8 pb-0">
+      
+                                      <input type="text" formControlName="designnation" id="txt_designation" maxlength="50">
+                                  </div>
+                              </div>
+      
+      
+                          </div>
+                          <div class="form-field field">
+                              <div class="row">
+                                  <div class="col-4 pb-0">
+                                      <label>Father's Name <i class="req-field"></i></label>
+                                  </div>
+                                  <div class="col-8 pb-0">
+      
+                                      <input type="text" formControlName="fathersName" id="txt_father_name" maxlength="50">
+                                  </div>
+                              </div>
+      
+      
+                          </div>
+                          <div class="form-field field">
+                              <div class="row">
+                                  <div class="col-4 pb-0">
+                                      <label>Mobile No<i class="req-field"></i></label>
+                                  </div>
+                                  <div class="col-8 pb-0">
+      
+                                      <input type="text" formControlName="mobileNo" id="txt_mobno" maxlength="50">
+                                  </div>
+                              </div>
+      
+      
+                          </div>
+                          <div class="form-field field">
+                              <div class="row">
+                                  <div class="col-4 pb-0">
+                                      <label>Email Id<i class="req-field"></i></label>
+                                  </div>
+                                  <div class="col-8 pb-0">
+      
+                                      <input type="text" formControlName="emailId2" id="txt_res_email" maxlength="50">
+                                  </div>
+                              </div>
+      
+      
+                          </div>
+                         
+                          <div class="form-field field">
+                              <div class="row">
+                                  <div class="col-4 pb-0">
+                                      <label>Phone<i class="req-field"></i> </label>
+                                  </div>
+                                  <div class="col-8 pb-0">
+      
+                                      <input type="text" formControlName="phone2" id="txt_res_std" maxlength="50">
+                                  </div>
+                                  
+                              </div>
+      
+      
+                          </div>
+                          
+                      </div>
+      
+      
+                  </div>
+      
+                  <div class="col-4 pb-0">
+                      <div class="form-section">
+      
+                          <div class="title">
+                              <i class="fas fa-user-cog"></i>For Government Deductor
+                          </div>
+                          <div class="form-field field">
+                              <div class="row">
+                                  <div class="col-12 pb-0">
+                                      <input type="checkbox" formControlName="isGovtDeductor" (click)="disbaleIsGovtDeductor()" class="mr-2" id="emp_bran" />Is Government Deductor
+                                  </div>
+                              </div>
+                          </div>
+                          <div class="form-field field">
+                              <div class="row">
+                                  <div class="col-4 pb-0">
+      
+                                      <label>PAO Code<i class="req-field"></i></label>
+                                  </div>
+                                  <div class="col-8 pb-0">
+                                      <input type="text" formControlName="paoCode" id="txt_pao_code" />
+                                  </div>
+                              </div>
+                          </div>
+                          <div class="form-field field">
+                              <div class="row">
+                                  <div class="col-4 pb-0">
+      
+                                      <label>PAO Reg. No.<i class="req-field"></i></label>
+                                  </div>
+                                  <div class="col-8 pb-0">
+      
+      
+                                      <input type="text" formControlName="paoRegNo" id="txt_pao_regno" />
+                                  </div>
+                              </div>
+      
+      
+                          </div>
+                          <div class="form-field field">
+                              <div class="row">
+                                  <div class="col-4 pb-0">
+      
+                                      <label>DDO Code<i class="req-field"></i></label>
+                                  </div>
+                                  <div class="col-8 pb-0">
+      
+      
+                                      <input type="text" formControlName="daooCode" id="txt_ddo_code" />
+                                  </div>
+                              </div>
+      
+      
+                          </div>
+                          <div class="form-field field">
+                              <div class="row">
+                                  <div class="col-4 pb-0">
+      
+                                      <label>DDO Reg. No.<i class="req-field"></i></label>
+                                  </div>
+                                  <div class="col-8 pb-0">
+      
+      
+                                      <input type="text" formControlName="daoRegNo" id="txt_ddo_regno" />
+                                  </div>
+                              </div>
+      
+      
+                          </div>
+                          <div class="form-field field">
+                            <div class="row">
+                                <div class="col-4 pb-0">
+                                    <label>Country <i class="req-field"></i></label>
+                                </div>
+                                <div class="col-8 pb-0">
+                                    <select id="ddl_country" formControlName="country2" style="color: black;" (change)="fetchStates2()">
+                                        <option>- Select country -</option>
+                                        <option *ngFor="let country of countryList2" [value]="country.countryId">{{country.countryName}}</option>
+                                       
+                                    </select>
+                                </div>
+                            </div>
+    
+    
+                        </div>
+    
+    
+    
+                        <div class="form-field field">
+                            <div class="row">
+                                <div class="col-4 pb-0">
+                                    <label>State <i class="req-field"></i></label>
+                                </div>
+                                <div class="col-8 pb-0">
+                                    <select id="ddl_state" formControlName="state2" style="color: black;" (change)="fetchCityList2()">
+                                        <option>- Select State -</option>
+                                        <option *ngFor="let states of statesList2" [value]="states.stateId">{{states.stateName}}</option>
+
+                                       
+                                    </select>
+                                </div>
+                            </div>
+    
+    
+                        </div>
+    
+                          <div class="form-field field">
+                              <div class="row">
+                                  <div class="col-4 pb-0">
+                                      <label>City <i class="req-field"></i></label>
+                                  </div>
+                                  <div class="col-8 pb-0">
+
+                                    <select id="ddl_state" formControlName="city2"  style="color: black;">
+                                        <option>- Select City -</option>
+                                        <option *ngFor="let city of cityList2"  [ngValue]="city.cityId">{{city.cityName}}</option>
+
+                                       
+                                    </select>
+                                  </div>
+                              </div>
+      
+      
+                          </div>
+                       
+    
+                          <div class="form-field field">
+                              <div class="row">
+                                  <div class="col-4 pb-0">
+      
+                                      <label>Select Ministry<i class="req-field"></i></label>
+                                  </div>
+                                  <div class="col-8 pb-0">
+      
+      
+                                      <select id="ddl_select_ministry" formControlName="selectministry" style="color: black;">
+                                          <option>-Select Ministry- </option>
+                                          <option>Agriculture-01</option>
+                                          <option>Atomic Energy-02</option>
+                                          <option>Fertilizers-03</option>
+                                          <option>Chemicals and Petrochemicals-04</option>
+                                          <option>Civil Aviation and Tourism-05</option>
+                                          <option>Coal-06</option>
+                                          <option>Consumer Affairs, Food and Public Distribution-07</option>
+                                          <option>Commerce and Textiles-08</option>
+                                          <option>Environment and Forests and Ministry of Earth Science-09</option>
+                                          <option>External Affairs and Overseas Indian Affairs-10</option>
+                                          <option>Finance-11</option>
+                                          <option>Central Board of Direct Taxes-12</option>
+                                          <option>Central Board of Excise and Customs-13</option>
+                                          <option>Contoller of Aid Accounts and Audit-14</option>
+                                          <option>Central Pension Accounting Office-15</option>
+                                          <option>Food Processing Industries-16</option>
+                                          <option>Health and Family Welfare-17</option>
+                                          <option>Home Affairs and Development of North Eastern Region-18</option>
+                                          <option>Human Resource Development-19</option>
+                                          <option>Industry-20</option>
+                                          <option>Information and Broadcasting-21</option>
+                                          <option>Telecommunication and Information Technology-22</option>
+                                          <option>Labour-23</option>
+                                          <option>Law and Justice and Company Affairs-24</option>
+                                          <option>Personnel, Public Grievances and Pensions-25</option>
+                                          <option>Petroleum and Natural Gas-26</option>
+                                          <option>Plannning, Statistics and Programme Implementation-27</option>
+                                          <option>Power-28</option>
+                                          <option>New and Renewable Energy-29</option>
+                                          <option>Rural Development and Panchayati Raj-30</option>
+                                          <option>Science And Technology-31</option>
+                                          <option>Space-32</option>
+                                          <option>Steel-33</option>
+                                          <option>Mines-34</option>
+                                          <option>Social Justice and Empowerment-35</option>
+                                          <option>Tribal Affairs-36</option>
+                                          <option>D/o Commerce (Supply Division)-37</option>
+                                          <option>Shipping and Road Transport and Highways-38</option>
+                                          <option>Urban Development, Urban Employment and Poverty Alleviation-39</option>
+                                          <option>Water Resources-40</option>
+                                          <option>President's Secretariat-41</option>
+                                          <option>Lok Sabha Secretariat-42</option>
+                                          <option>Rajya Sabha secretariat-43</option>
+                                          <option>Election Commission-44</option>
+                                          <option>Ministry of Defence (Controller General of Defence Accounts)-45</option>
+                                          <option>Ministry of Railways-46</option>
+                                          <option>Department of Posts-47</option>
+                                          <option>Department of Telecommunications-48</option>
+                                          <option>Andaman and Nicobar Islands Administration-49</option>
+                                          <option>Chandigarh Administration-50</option>
+                                          <option>Dadra and Nagar Haveli-51</option>
+                                          <option>Goa, Daman and Diu-52</option>
+                                          <option>Lakshadweep-53</option>
+                                          <option>Pondicherry Administration-54</option>
+                                          <option>Pay and Accounts Officers (Audit)-55</option>
+                                          <option>Ministry of Non-conventional energy sources-56</option>
+                                          <option>Government Of NCT of Delhi-57</option>
+                                          <option>Others-99</option>
+                                      </select>
+                                  </div>
+                              </div>
+      
+      
+                          </div>
+                          <div class="form-field field">
+                              <div class="row">
+                                  <div class="col-4 pb-0">
+      
+      
+                                      <label>Other Ministry</label>
+                                  </div>
+                                  <div class="col-8 pb-0">
+      
+      
+                                      <input type="text" formControlName="otherMinistry" id="txt_other_ministry" />
+                                  </div>
+                              </div>
+      
+                          </div>
+      
+                      </div>
+      
+                      </div>
+      
+          </div>
+        </div>
+
+
+        <div class="form-section">
+            <div class="btn-group left-content">
+                <div *ngIf="!editButton">
+                    <button type="button" id="btn_save" class="btn btn-secondary btn-sm" (click)="onSubmit()" ><i class="fas fa-save"></i> Send</button>
+                </div>
+
+                <div *ngIf="editButton">
+                    <button type="button" id="btn_save" class="btn btn-secondary btn-sm" (click)="updateTandetails()" ><i class="fas fa-save"></i> Update</button>
+                </div>
+               
+            </div>
+        </div>
+
+    </form>
+   
+</div>

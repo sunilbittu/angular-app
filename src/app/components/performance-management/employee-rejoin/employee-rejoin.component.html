@@ -1,0 +1,214 @@
+<div class="container-fluid">
+    <div class="d-flex align-items-center mt-2">
+        <div class="m-2">
+            <div class="h-size"><i class="fas fa-user-edit"></i> <b>Manage Rejoin Employees</b></div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-4">
+            <label for="branch"> Branch : <span class="color-red">*</span></label>
+            <select class="form-control" [(ngModel)]="branchModel" name="year" (change)="fetchDepartments()"
+                id="branch">
+                <option disabled selected>Please Select Branch</option>
+                <option *ngFor="let branch of branchData" value={{branch.companyBranchDetailsId}}>{{branch.branchName}}
+                </option>
+            </select>
+
+        </div>
+        <div class="col-md-4">
+            <label for="department">Department : <span class="color-red">*</span></label>
+            <select class="form-control" [(ngModel)]="departmentModel" name="department" id="department">
+                <option disabled selected>Please Select Department</option>
+                <option *ngFor="let dep of departmentData" value={{dep.departmentId}}>{{dep.departmentName}}</option>
+            </select>
+
+        </div>
+        <div class="col-md-4 tttt ">
+            <button class="btn btn-primary btn-sm" (click)="fetchEmployees()">Search</button>&nbsp;
+
+            <button class="btn btn-danger btn-sm" (click)="clearData()">Cancel</button>
+        </div>
+    </div>
+    <br>
+    <div class="container-fluid" *ngIf="toggleScreen == true">
+
+        <div class="row">
+            <div class="col-md-12">
+                <table class="table table-bordered table-hover table-sm">
+                    <th class="t-head" *ngFor="let head of headers2" id="headers2">
+                        <tr>
+                            {{head}}
+                        </tr>
+                    </th>
+
+                    <tbody>
+                        <tr *ngFor="let employee of employeeList">
+                            <td>{{employee.employeeCode}}</td>
+                            <td>{{employee.firstName}} {{employee.lastName}}</td>
+                            <td>{{employee.project}}</td>
+                            <td>{{employee.department}}</td>
+                            <td>{{employee.resignationDate}}</td>
+                            <td>{{employee.lastWorkingDate}}</td>
+                            <td>{{employee.message}}</td>
+                            <td>{{employee.status}}</td>
+
+                            <td>
+
+                                <a title="Promote/Demote" class="icon-margin" (click)="editPromotion(employee)"><span
+                                        class="fas fa-user-edit" data-toggle="modal"
+                                        data-target="#promotions"></span></a>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade common-model" id="promotions">
+    <div class="modal-dialog modal-xl">
+        <div class="modal-content model width">
+            <!-- Modal Header -->
+            <div class="modal-header">
+                <div class="modal-title"><i class="fa fa-eye" aria-hidden="true"></i> Rejoin Employee
+                </div>
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+            </div>
+            <!-- Modal body -->
+            <form [formGroup]="form">
+            <div class="modal-body sample">
+                <div class="row col-12 padding-field-bottom">
+                    <div class="row col-md-12">
+                        <div class="col-3">
+                            <label><strong>Employee Code :</strong></label>
+                        </div>
+                        <div class="col-3">
+                            {{employeeCode}}
+                        </div>
+                        <div class="col-3">
+                            <label><strong>Employee Name :</strong></label>
+                        </div>
+                        <div class="col-3">
+                            {{firstName}} {{lastName}}
+                        </div>
+                    </div>
+                    <div class="row col-md-12">
+                        <div class="col-3">
+                            <label><strong>Branch :</strong></label>
+                        </div>
+                        <div class="col-3">
+                            {{branchName}}
+                        </div>
+                        <div class="col-3">
+                            <label><strong>Department :</strong></label>
+                        </div>
+                        <div class="col-3">
+                            {{departmentName}}
+                        </div>
+
+                    </div>
+                    <div class="row col-md-12">
+                        <div class="col-3">
+                            <label><strong>Grade :</strong></label>
+                        </div>
+                        <div class="col-3">
+                            {{gradeName}}
+                        </div>
+                        <div class="col-3">
+                            <label><strong>Designation:</strong></label>
+                        </div>
+                        <div class="col-3">
+                            {{designationName}}
+                        </div>
+                    </div>
+                    <div class="row col-md-12">
+                        <div class="col-3">
+                            <label><strong>Category :</strong></label>
+                        </div>
+                        <div class="col-3">
+                            {{categoryName}}
+                        </div>
+                        <div class="col-3">
+                            <label><strong>Project :</strong></label>
+                        </div>
+                        <div class="col-3">
+                            {{projectName}}
+                        </div>
+                    </div>
+                    <div class="row col-md-12">
+                        <strong>Loan Summary :</strong>
+                        <table class="table table-bordered table-hover table-sm">
+                            <thead class="t-head">
+                                <tr>
+                                    <th *ngFor="let head of headers3"><a>{{head}}</a></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr *ngFor="let employee of employeesLoansData">
+                                    <td>{{employee.loanType}}</td>
+                                    <td>{{employee.loanDate}}</td>
+                                    <td>{{employee.loanAmount}}</td>
+                                    <td>{{employee.installmentAmount}}</td>
+                                    <td>{{employee.installmentMonths}}</td>
+                                    <td>{{employee.startrecoveryfrom.month}}</td>
+                                    <td>{{employee.startrecoveryfrom.year}}</td>
+                                    <td>{{employee.status}}</td>
+
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="row col-md-12">
+                        <strong>Leave Summary :</strong>
+                        <table class="table table-bordered table-hover table-sm">
+
+                            <tr>
+                                <th>Headers</th>
+                                <th *ngFor="let leaveInfo of leavesList">{{leaveInfo.leaveType}}</th>
+
+                            </tr>
+                            <tr>
+                                <th>Opening</th>
+                                <td *ngFor="let leaveInfo of leavesList;let i=index">
+                                    {{leaveInfo.currentBal | json}}
+                                    <!-- <input type="text" [(ngModel)]="leaveInfo.currentBal" name="name1{{i}}" class="form-control" #name1="ngModel" required /> -->
+                                </td>
+
+                            </tr>
+                            <tr>
+                                <th>Current</th>
+                                <td *ngFor="let leaveInfo1 of leavesList;let j=index">
+                                    <!-- <input type="text" [(ngModel)]="leaveInfo1.openingBal" name="name{{j}}" class="form-control" #name="ngModel" required /> -->
+                                    {{leaveInfo1.openingBal}}
+                                </td>
+                            </tr>
+                        </table>
+
+                    </div>
+                        <div class="row col-md-12">
+
+                            <div class="col-2">
+                                <label><strong>Rejoin Date :</strong><span class="color-red">* </span></label>
+                            </div>
+                            <div class="col-4">
+                                <input type="text" formControlName="rejoinDate" bsDatepicker
+                                    placeholder="Please Select Date"
+                                    [ngClass]="{ 'is-invalid': submitted && form.controls.rejoinDate.errors }"
+                                    readonly
+                                    [bsConfig]="{ isAnimated: true, dateInputFormat: 'DD-MM-YYYY' }" bsDatepicker
+                                    (bsValueChange)="onHiringStartDateValueChange($event)" placement="bottom"
+                                    class="text form-control pull-top-5" maxlength="50" />
+                                <span class="color-red" *ngIf="submitted && form_.rejoinDate.errors">Rejoin Date Cant Be Blank
+                                    </span>
+                            </div>
+                    </div>
+                </div>
+
+                <button class="btn btn-primary btn-sm" 
+                    (click)="relieveEmployee(employeeData)">Rejoin</button>&nbsp;
+            </div>
+            </form>
+        </div>
+    </div>
+</div>

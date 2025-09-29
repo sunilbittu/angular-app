@@ -1,0 +1,365 @@
+<div class="container-fluid">
+    <div class="d-flex align-items-center padding-top">
+        <div class="m-2">
+            <div class="h-size"><i class="fa fa-user"></i> <b> {{title}} Company</b></div>
+        </div>
+        <div class="flex-fill">
+        </div>
+        <div class="m-2">
+            <button class="btn btn-default btn-sm back-btn" (click)="backClicked()"> Back <i
+                    class="fas fa-long-arrow-alt-left"></i></button>
+        </div>
+    </div>
+    <div class="alert alert-success success-alert" *ngIf="updateAlert">
+        <h4><i class="icon fa fa-check"></i> Success!</h4>
+        Record has been Updated successfully.
+    </div>
+    <div class="alert alert-success success-alert" *ngIf="saveAlert">
+        <h4><i class="icon fa fa-check"></i> Success!</h4>
+        Record has been Saved successfully.
+    </div>
+    <hr class="line_break margin-top">
+    <div class="container">
+        <form [formGroup]="form" (ngSubmit)="submitCompany()">
+            <div class="row margin-field">
+                <div class="col-12 pb-0">
+                    <div class="form-section">
+                        <div class="form-field field">
+                            <div class="row">
+                                <div class="col-3 pb-0">
+                                    <label>Company Name<span class="color-red">*</span><i class="req-field"></i></label>
+                                </div>
+                                <div class="col-9 pb-0">
+                                    <input type="text" class="form-control" formControlName="companyName" maxlength="50" (ngModelChange)="check()">
+                                    <span class="color-red" *ngIf="isCompanyExist">Company is already exist in DB.</span>
+                                    <span class="color-red" *ngIf="submitted && form_.companyName.errors">Company Name
+                                        {{requiredErrorText}}</span>
+                                </div>
+                            </div><br>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-6 pb-0">
+                    <div class="form-section">
+                        <div class="form-field field">
+                            <div class="row">
+                                <div class="col-6 pb-0">
+                                    <label>Address1<span class="color-red">*</span><i class="req-field"></i></label>
+                                </div>
+                                <div class="col-6 pb-0">
+                                    <input type="text" class="form-control" formControlName="line1" maxlength="50">
+                                    <span class="color-red" *ngIf="submitted && form_.line1.errors">Address1
+                                        {{requiredErrorText}}</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-field field">
+                            <div class="row">
+                                <div class="col-6 pb-0">
+                                    <label>Country<span class="color-red">*</span></label>
+                                </div>
+                                <div class="col-6 pb-0">
+                                    <select [(ngModel)]="countryId" class="custom-select-box form-control" (change)="changeCountry()"
+                                        formControlName="country">
+                                        <option value="" disabled>Please select country</option>
+                                        <option *ngFor="let country of countryList" [ngValue]="country.countryId">
+                                            {{country.countryName}}
+                                        </option>
+                                    </select>
+                                    <span class="color-red" *ngIf="submitted && form_.country.errors">Country
+                                        {{requiredErrorText}}</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-field field">
+                            <div class="row">
+                                <div class="col-6 pb-0">
+                                    <label>State<span class="color-red">*</span><i class="req-field"></i></label>
+                                </div>
+                                <div class="col-6 pb-0">
+                                    <select [(ngModel)]="stateId" class="custom-select-box form-control" (change)="changeState()"
+                                        formControlName="state">
+                                        <option value="" disabled>Please select state</option>
+                                        <option *ngFor="let state of stateList" [ngValue]="state.stateId">{{state.stateName}}
+                                        </option>
+                                    </select>
+                                    <span class="color-red" *ngIf="submitted && form_.state.errors">State
+                                        {{requiredErrorText}}</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-field field">
+                            <div class="row">
+                                <div class="col-6 pb-0">
+                                    <label>City<span class="color-red">*</span></label>
+                                </div>
+                                <div class="col-6 pb-0">
+                                    <select [(ngModel)]="cityId" class="custom-select-box form-control" (change)="changeCity()"
+                                        formControlName="city">
+                                        <option value="" disabled>Please select city</option>
+                                        <option *ngFor="let city of cityList" [ngValue]="city.cityId">{{city.cityName}}
+                                        </option>
+                                    </select>
+                                    <span class="color-red" *ngIf="submitted && form_.city.errors">City
+                                        {{requiredErrorText}}</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-field field">
+                            <div class="row">
+                                <div class="col-6 pb-0">
+                                    <label>Pin Code<span class="color-red">*</span></label>
+                                </div>
+                                <div class="col-6 pb-0">
+                                    <input type="text" class="form-control" formControlName="pinCode" maxlength="50" readonly>
+                                    <span class="color-red" *ngIf="submitted && form_.pinCode.errors">Pin Code
+                                        {{requiredErrorText}}</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-field field">
+                            <div class="row">
+                                <div class="col-6 pb-0">
+                                    <label>Attendance Month<i class="req-field"></i></label>
+                                </div>
+                                <div class="col-6 pb-0">
+                                    <select [(ngModel)]="attendenceMonthModel" class="custom-select-box form-control" (change)="changeAttendanceMonth()"
+                                        formControlName="attendenceMonth">
+                                        <option *ngFor="let month of attendanceMonths" [ngValue]="month">{{month}}
+                                        </option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-field field">
+                            <div class="row">
+                                <div class="col-6 pb-0">
+                                    <label>Software Start Month<span class="color-red">*</span><i class="req-field"></i></label>
+                                </div>
+                                <div class="col-4 pb-0">
+                                    <select [(ngModel)]="softwareStartMonthModel" class="custom-select-box form-control" (change)="changeSoftwareStartMonth()"
+                                        formControlName="softwareStartMonth">
+                                        <option *ngFor="let month of softwareStartMonths" [ngValue]="month">
+                                            {{month}}</option>
+                                    </select>
+                                    <span class="color-red" *ngIf="submitted && form_.softwareStartMonth.errors">Software Start Month
+                                        {{requiredErrorText}}</span>
+                                </div>
+                                <div class="col-2 pb-0">
+                                    <input type="text" class="form-control" formControlName="softwareStartYear" maxlength="4">
+                                    <span class="color-red" *ngIf="submitted && form_.softwareStartYear.errors">Year
+                                        {{requiredErrorText}}</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-field field">
+                            <div class="row">
+                                <div class="col-6 pb-0">
+                                    <label>PF Registration No.<i class="req-field"></i></label>
+                                </div>
+                                <div class="col-6 pb-0">
+                                    <input type="text" class="form-control" formControlName="pfRegistrationNumber" maxlength="50">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-field field">
+                            <div class="row">
+                                <div class="col-6 pb-0">
+                                    <label>Regional Office<i class="req-field"></i></label>
+                                </div>
+                                <div class="col-6 pb-0">
+                                    <input type="text" class="form-control" formControlName="regionalOffice" maxlength="50">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-field field">
+                            <div class="row">
+                                <div class="col-6 pb-0">
+                                    <label>PF Group</label>
+                                </div>
+                                <div class="col-6 pb-0">
+                                    <input type="text" class="form-control" formControlName="pfGroup" maxlength="50">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-field field">
+                            <div class="row">
+                                <div class="col-6 pb-0">
+                                    <input type="checkbox" formControlName="cbaeCode" maxlength="50">
+                                    <label>Company Based Auto Employee Code</label>
+                                </div>
+                                <div class="col-6 pb-0">
+                                    <input type="checkbox" formControlName="mbaeCode" maxlength="50">
+                                    <label> Master Based Auto Employee Code</label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-field field">
+                            <div class="row">
+                                <div class="col-6 pb-0">
+                                    <label>Code Start At</label>
+                                </div>
+                                <div class="col-6 pb-0">
+                                    <input type="text" class="form-control" formControlName="codeStartAt" maxlength="15">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-field field">
+                            <div class="row">
+                                <div class="col-6 pb-0">
+                                    <label>Suffix <i class="req-field"></i></label>
+                                </div>
+                                <div class="col-6 pb-0">
+                                    <input type="text" class="form-control" formControlName="suffix" maxlength="50">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-field field">
+                            <div class="row">
+                                <div class="col-6 pb-0">
+                                    <label>Prefix <i class="req-field"></i></label>
+                                </div>
+                                <div class="col-6 pb-0">
+                                    <input type="text" class="form-control" formControlName="prefix" maxlength="50">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-6 pb-0">
+                    <div class="form-section">
+                        <div class="form-field field">
+                            <div class="row">
+                                <div class="col-6 pb-0">
+                                    <label>Address2<i class="req-field"></i></label>
+                                </div>
+                                <div class="col-6 pb-0">
+                                    <input type="text" class="form-control" formControlName="line2" maxlength="50">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-field field">
+                            <div class="row">
+                                <div class="col-6 pb-0">
+                                    <label>Contact No.<span class="color-red">*</span></label>
+                                </div>
+                                <div class="col-6 pb-0">
+                                    <input type="text" class="form-control" formControlName="contactNumber" maxlength="50">
+                                    <span class="color-red" *ngIf="submitted && form_.contactNumber.errors">Contact No
+                                        {{requiredErrorText}}</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-field field">
+                            <div class="row">
+                                <div class="col-6 pb-0">
+                                    <label>Tax No.</label>
+                                </div>
+                                <div class="col-6 pb-0">
+                                    <input type="text" class="form-control" formControlName="panNumber" maxlength="50">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-field field">
+                            <div class="row">
+                                <div class="col-6 pb-0">
+                                    <label>Email ID</label>
+                                </div>
+                                <div class="col-6 pb-0">
+                                    <input type="text" class="form-control" formControlName="email" maxlength="50">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-field field">
+                            <div class="row">
+                                <div class="col-6 pb-0">
+                                    <label>Website<span class="color-red">*</span></label>
+                                </div>
+                                <div class="col-6 pb-0">
+                                    <input type="text" class="form-control" formControlName="companyWebsite" maxlength="50">
+                                    <span class="color-red" *ngIf="submitted && form_.companyWebsite.errors">Website
+                                        {{requiredErrorText}}</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-field field">
+                            <div class="row">
+                                <div class="col-6 pb-0">
+                                    <label>Attendance year<span class="color-red">*</span><i class="req-field"></i></label>
+                                </div>
+                                <div class="col-6 pb-0">
+                                    <select [(ngModel)]="attendenceYearModel" class="custom-select-box form-control" (change)="changeSoftwareStartMonth()"
+                                        formControlName="attendenceYear">
+                                        <option *ngFor="let year of attendanceYears" [ngValue]="year">{{year}}
+                                        </option>
+                                    </select>
+                                    <span class="color-red" *ngIf="submitted && form_.attendenceYear.errors">Attendance year
+                                        {{requiredErrorText}}</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-field field">
+                            <div class="row">
+                                <div class="col-6 pb-0">
+                                    <label>Company Code<span class="color-red">*</span><i class="req-field"></i></label>
+                                </div>
+                                <div class="col-6 pb-0">
+                                    <input type="text" class="form-control" formControlName="companyCode" maxlength="50">
+                                    <span class="color-red" *ngIf="submitted && form_.companyCode.errors">Company Code
+                                        {{requiredErrorText}}</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-field field">
+                            <div class="row">
+                                <div class="col-6 pb-0">
+                                    <label>ESIC Registration No.<i class="req-field"></i></label>
+                                </div>
+                                <div class="col-6 pb-0">
+                                    <input type="text" class="form-control" formControlName="esicRegistrationNo" maxlength="50">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-field field">
+                            <div class="row">
+                                <div class="col-6 pb-0">
+                                    <label>Local Office</label>
+                                </div>
+                                <div class="col-6 pb-0">
+                                    <input type="text" class="form-control" formControlName="localOffice" maxlength="50">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-field field">
+                            <div class="row">
+                                <div class="col-6 pb-0">
+                                    <label> Principal Employer</label>
+                                </div>
+                                <div class="col-6 pb-0">
+                                    <input type="text" class="form-control" formControlName="principleEmployer" maxlength="50">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-field field">
+                            <div class="row">
+                                <div class="col-6 pb-0">
+                                    <label>Designation</label>
+                                </div>
+                                <div class="col-6 pb-0">
+                                    <input type="text" class="form-control" formControlName="designation" maxlength="50">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-12 pb-0">
+                    <div class="btn-middle">
+                        <button type="submit" class="btn btn-success">{{submitText}}</button>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>

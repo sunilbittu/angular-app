@@ -1,0 +1,1333 @@
+<div class="container-fluid">
+    <h2 class="company-title"><i class="fas fa-user"></i><b> Edit Company</b></h2>
+    <!-- Nav tabs -->
+    <ul class="nav nav-tabs menu-tabs" role="tablist">
+        <li class="nav-item">
+            <a class="nav-link active" data-toggle="tab" href="#companyInfo"><i class="fas fa-building"></i> Company
+                Information</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" data-toggle="tab" href="#logo"><i class="fas fa-house-user"></i> Logo</a>
+        </li>
+        <li class="nav-item" (click)="documentsUpload()">
+            <a class="nav-link" data-toggle="tab" href="#documents"><i class="fas fa-file-word"></i> Documents
+                Upload</a>
+        </li>
+        <li class="nav-item" (click)="setting()">
+            <a class="nav-link" data-toggle="tab" href="#settings"><i class="fas fa-cogs"></i> Settings</a>
+        </li>
+        <li class="nav-item" (click)="advSetting()">
+            <a class="nav-link" data-toggle="tab" href="#advsettings"><i class="fas fa-cogs"></i>Advanced Settings</a>
+        </li>
+    </ul>
+    <div class="alert alert-success success-alert" *ngIf="updateAlert">
+        <h4><i class="icon fa fa-check"></i> Success!</h4>
+        Record has been Updated successfully.
+    </div>
+    <!-- Tab panes -->
+    <div class="tab-content">
+        <div id="companyInfo" class="container tab-pane active">
+            <br>
+            <form [formGroup]="form" (ngSubmit)="saveCompany()">
+                <div class="row margin-field">
+                    <div class="col-12 pb-0">
+                        <div class="form-section">
+                            <div class="form-field field">
+                                <div class="row">
+                                    <div class="col-3 pb-0">
+                                        <label>Company Name<span class="color-red">*</span><i
+                                                class="req-field"></i></label>
+                                    </div>
+                                    <div class="col-9 pb-0">
+                                        <input type="text" class="form-control" formControlName="companyName"
+                                            maxlength="50" (ngModelChange)="check()">
+                                        <span class="color-red" *ngIf="isCompanyExist">Company is already exist in
+                                            DB.</span>
+                                        <span class="color-red" *ngIf="submitted && form_.companyName.errors">Company
+                                            Name
+                                            {{requiredErrorText}}</span>
+                                    </div>
+                                </div><br>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-6 pb-0">
+                        <div class="form-section">
+                            <div class="form-field field">
+                                <div class="row">
+                                    <div class="col-6 pb-0">
+                                        <label>Address1<span class="color-red">*</span><i class="req-field"></i></label>
+                                    </div>
+                                    <div class="col-6 pb-0">
+                                        <input type="text" class="form-control" formControlName="line1" maxlength="50">
+                                        <span class="color-red" *ngIf="submitted && form_.line1.errors">Address1
+                                            {{requiredErrorText}}</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-field field">
+                                <div class="row">
+                                    <div class="col-6 pb-0">
+                                        <label>Country<span class="color-red">*</span></label>
+                                    </div>
+                                    <div class="col-6 pb-0">
+                                        <select [(ngModel)]="countryId" class="custom-select-box form-control"
+                                            (change)="changeCountry()" formControlName="country">
+                                            <option value="" disabled>Please select country</option>
+                                            <option *ngFor="let country of countryList" [ngValue]="country.countryId">
+                                                {{country.countryName}}
+                                            </option>
+                                        </select>
+                                        <span class="color-red" *ngIf="submitted && form_.country.errors">Country
+                                            {{requiredErrorText}}</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-field field">
+                                <div class="row">
+                                    <div class="col-6 pb-0">
+                                        <label>State<span class="color-red">*</span><i class="req-field"></i></label>
+                                    </div>
+                                    <div class="col-6 pb-0">
+                                        <select [(ngModel)]="stateId" class="custom-select-box form-control"
+                                            (change)="changeState()" formControlName="state">
+                                            <option value="" disabled>Please select state</option>
+                                            <option *ngFor="let state of stateList" [ngValue]="state.stateId">
+                                                {{state.stateName}}
+                                            </option>
+                                        </select>
+                                        <span class="color-red" *ngIf="submitted && form_.state.errors">State
+                                            {{requiredErrorText}}</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-field field">
+                                <div class="row">
+                                    <div class="col-6 pb-0">
+                                        <label>City<span class="color-red">*</span></label>
+                                    </div>
+                                    <div class="col-6 pb-0">
+                                        <select [(ngModel)]="cityId" class="custom-select-box form-control"
+                                            (change)="changeCity()" formControlName="city">
+                                            <option value="" disabled>Please select city</option>
+                                            <option *ngFor="let city of cityList" [ngValue]="city.cityId">
+                                                {{city.cityName}}
+                                            </option>
+                                        </select>
+                                        <span class="color-red" *ngIf="submitted && form_.city.errors">City
+                                            {{requiredErrorText}}</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-field field">
+                                <div class="row">
+                                    <div class="col-6 pb-0">
+                                        <label>Pin Code<span class="color-red">*</span></label>
+                                    </div>
+                                    <div class="col-6 pb-0">
+                                        <input type="text" class="form-control" formControlName="pinCode" maxlength="50"
+                                            readonly>
+                                        <span class="color-red" *ngIf="submitted && form_.pinCode.errors">Pin Code
+                                            {{requiredErrorText}}</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-field field">
+                                <div class="row">
+                                    <div class="col-6 pb-0">
+                                        <label>Attendance Month<i class="req-field"></i></label>
+                                    </div>
+                                    <div class="col-6 pb-0">
+                                        <select [(ngModel)]="attendenceMonthModel"
+                                            class="custom-select-box form-control" (change)="changeAttendanceMonth()"
+                                            formControlName="attendenceMonth">
+                                            <option *ngFor="let month of attendanceMonths" [ngValue]="month">{{month}}
+                                            </option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="form-field field">
+                                <div class="row">
+                                    <div class="col-6 pb-0">
+                                        <label>Software Start Month<span class="color-red">*</span><i
+                                                class="req-field"></i></label>
+                                    </div>
+                                    <div class="col-4 pb-0">
+                                        <select [(ngModel)]="softwareStartMonthModel"
+                                            class="custom-select-box form-control" (change)="changeSoftwareStartMonth()"
+                                            formControlName="softwareStartMonth">
+                                            <option *ngFor="let month of softwareStartMonths" [ngValue]="month">
+                                                {{month}}</option>
+                                        </select>
+                                        <span class="color-red"
+                                            *ngIf="submitted && form_.softwareStartMonth.errors">Software Start Month
+                                            {{requiredErrorText}}</span>
+                                    </div>
+                                    <div class="col-2 pb-0">
+                                        <input type="text" class="form-control" formControlName="softwareStartYear"
+                                            maxlength="4">
+                                        <span class="color-red" *ngIf="submitted && form_.softwareStartYear.errors">Year
+                                            {{requiredErrorText}}</span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="form-field field">
+                                <div class="row">
+                                    <div class="col-6 pb-0">
+                                        <label>PF Registration No.<i class="req-field"></i></label>
+                                    </div>
+                                    <div class="col-6 pb-0">
+                                        <input type="text" class="form-control" formControlName="pfRegistrationNumber"
+                                            maxlength="50">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-field field">
+                                <div class="row">
+                                    <div class="col-6 pb-0">
+                                        <label>Regional Office<i class="req-field"></i></label>
+                                    </div>
+                                    <div class="col-6 pb-0">
+                                        <input type="text" class="form-control" formControlName="regionalOffice"
+                                            maxlength="50">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-field field">
+                                <div class="row">
+                                    <div class="col-6 pb-0">
+                                        <label>PF Group</label>
+                                    </div>
+                                    <div class="col-6 pb-0">
+                                        <input type="text" class="form-control" formControlName="pfGroup"
+                                            maxlength="50">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-field field">
+                                <div class="row">
+                                    <div class="col-6 pb-0">
+                                        <input type="checkbox" formControlName="cbaeCode" maxlength="50">
+                                        <label>Company Based Auto Employee Code</label>
+                                    </div>
+                                    <div class="col-6 pb-0">
+                                        <input type="checkbox" formControlName="mbaeCode" maxlength="50">
+                                        <label> Master Based Auto Employee Code</label>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-field field">
+                                <div class="row">
+                                    <div class="col-6 pb-0">
+                                        <label>Code Start At</label>
+                                    </div>
+                                    <div class="col-6 pb-0">
+                                        <input type="text" class="form-control" formControlName="codeStartAt"
+                                            maxlength="15">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-field field">
+                                <div class="row">
+                                    <div class="col-6 pb-0">
+                                        <label>Suffix <i class="req-field"></i></label>
+                                    </div>
+                                    <div class="col-6 pb-0">
+                                        <input type="text" class="form-control" formControlName="suffix" maxlength="50">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-field field">
+                                <div class="row">
+                                    <div class="col-6 pb-0">
+                                        <label>Prefix <i class="req-field"></i></label>
+                                    </div>
+                                    <div class="col-6 pb-0">
+                                        <input type="text" class="form-control" formControlName="prefix" maxlength="50">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-6 pb-0">
+                        <div class="form-section">
+                            <div class="form-field field">
+                                <div class="row">
+                                    <div class="col-6 pb-0">
+                                        <label>Address2<i class="req-field"></i></label>
+                                    </div>
+                                    <div class="col-6 pb-0">
+                                        <input type="text" class="form-control" formControlName="line2" maxlength="50">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-field field">
+                                <div class="row">
+                                    <div class="col-6 pb-0">
+                                        <label>Contact No.<span class="color-red">*</span></label>
+                                    </div>
+                                    <div class="col-6 pb-0">
+                                        <input type="text" class="form-control" formControlName="contactNumber"
+                                            maxlength="50">
+                                        <span class="color-red" *ngIf="submitted && form_.contactNumber.errors">Contact
+                                            No
+                                            {{requiredErrorText}}</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-field field">
+                                <div class="row">
+                                    <div class="col-6 pb-0">
+                                        <label>Tax No.</label>
+                                    </div>
+                                    <div class="col-6 pb-0">
+                                        <input type="text" class="form-control" formControlName="panNumber"
+                                            maxlength="50">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-field field">
+                                <div class="row">
+                                    <div class="col-6 pb-0">
+                                        <label>Email ID</label>
+                                    </div>
+                                    <div class="col-6 pb-0">
+                                        <input type="text" class="form-control" formControlName="email" maxlength="50">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-field field">
+                                <div class="row">
+                                    <div class="col-6 pb-0">
+                                        <label>Website<span class="color-red">*</span></label>
+                                        <i class="icon fa fa-question-circle text-info fa-fw " title="Website should contain . value"></i>
+                                    </div>
+                                    <div class="col-6 pb-0">
+                                        <input type="text" class="form-control" formControlName="companyWebsite"
+                                            maxlength="50">
+                                        <span class="color-red" *ngIf="submitted && form_.companyWebsite.errors">Website
+                                            {{requiredErrorText}}</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-field field">
+                                <div class="row">
+                                    <div class="col-6 pb-0">
+                                        <label>Attendance year<span class="color-red">*</span><i
+                                                class="req-field"></i></label>
+                                    </div>
+                                    <div class="col-6 pb-0">
+                                        <select [(ngModel)]="attendenceYearModel" class="custom-select-box form-control"
+                                            (change)="changeSoftwareStartMonth()" formControlName="attendenceYear">
+                                            <option *ngFor="let year of attendanceYears" [ngValue]="year">{{year}}
+                                            </option>
+                                        </select>
+                                        <span class="color-red"
+                                            *ngIf="submitted && form_.attendenceYear.errors">Attendance year
+                                            {{requiredErrorText}}</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-field field">
+                                <div class="row">
+                                    <div class="col-6 pb-0">
+                                        <label>Company Code<span class="color-red">*</span><i
+                                                class="req-field"></i></label>
+                                    </div>
+                                    <div class="col-6 pb-0">
+                                        <input type="text" class="form-control" formControlName="companyCode"
+                                            maxlength="50">
+                                        <span class="color-red" *ngIf="submitted && form_.companyCode.errors">Company
+                                            Code
+                                            {{requiredErrorText}}</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-field field">
+                                <div class="row">
+                                    <div class="col-6 pb-0">
+                                        <label>ESIC Registration No.<i class="req-field"></i></label>
+                                    </div>
+                                    <div class="col-6 pb-0">
+                                        <input type="text" class="form-control" formControlName="esicRegistrationNo"
+                                            maxlength="50">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-field field">
+                                <div class="row">
+                                    <div class="col-6 pb-0">
+                                        <label>Local Office</label>
+                                    </div>
+                                    <div class="col-6 pb-0">
+                                        <input type="text" class="form-control" formControlName="localOffice"
+                                            maxlength="50">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-field field">
+                                <div class="row">
+                                    <div class="col-6 pb-0">
+                                        <label> Principal Employer</label>
+                                    </div>
+                                    <div class="col-6 pb-0">
+                                        <input type="text" class="form-control" formControlName="principleEmployer"
+                                            maxlength="50">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-field field">
+                                <div class="row">
+                                    <div class="col-6 pb-0">
+                                        <label>Designation</label>
+                                    </div>
+                                    <div class="col-6 pb-0">
+                                        <input type="text" class="form-control" formControlName="designation"
+                                            maxlength="50">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-12 pb-0">
+                        <div class="btn-middle">
+                            <button type="submit" class="btn btn-primary">Update</button>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+        <!-- Logo -->
+        <div id="logo" class="container tab-pane fade"><br>
+            <div class="row form-group">
+                <div class="col-md-6">
+                    <label>Select Company Logo:<span class="color-red">*</span></label>
+                    <input type="file" #fileInput class="form-control logo-form" [(ngModel)]="logoModel">&nbsp;
+                    <button type="button" class="btn btn-primary btn-sm" (click)="uploadLogo()"> Upload</button>
+                    <span class="color-red" *ngIf="submittedLogo && logoModel == ''">Please Select Company Logo
+                    </span>
+                </div>
+                <div class="col-md-6">
+                    <img class="center-block img-circle img-thumbnail img-responsive profile-img"
+                        [src]="companyLogoImage" alt="No Image">
+                    <div>({{companyLogoImageName}})</div>
+                </div>
+            </div>
+        </div>
+        <!-- documents -->
+        <div id="documents" class="container tab-pane fade">
+            <br>
+            <form [formGroup]="docform" (ngSubmit)="saveDocument()">
+                <div class="row margin-field">
+                    <div class="col-4 pb-0">
+                        <div class="form-section">
+                            <h3 class="doc-heading"><i class="fas fa-user"></i> Add Document </h3>
+                            <div class="form-field field">
+                                <div class="row">
+                                    <div class="col-6 pb-0">
+                                        <label>Document Name<i class="req-field">*</i></label>
+                                    </div>
+                                    <div class="col-6 pb-0">
+                                        <input type="text" class="form-control" formControlName="companyDocumentName"
+                                            maxlength="50">
+                                        <span class="color-red"
+                                            *ngIf="submittedDoc && docform_.companyDocumentName.errors">
+                                            Document Name
+                                            {{requiredErrorText}}</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-field field">
+                                <div class="row">
+                                    <div class="col-6 pb-0">
+                                        <label>Document Type<i class="req-field">*</i></label>
+                                    </div>
+                                    <div class="col-6 pb-0">
+                                        <input type="text" class="form-control" formControlName="documentTypeName"
+                                            maxlength="50">
+                                        <span class="color-red"
+                                            *ngIf="submittedDoc && docform_.documentTypeName.errors">
+                                            Document Type
+                                            {{requiredErrorText}}</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-field field">
+                                <div class="row">
+                                    <div class="col-6 pb-0">
+                                        <label>Remarks</label>
+                                    </div>
+                                    <div class="col-6 pb-0">
+                                        <input type="text" formControlName="companyDocumentsRemarks" maxlength="50">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-field field">
+                                <div class="row">
+                                    <div class="col-6 pb-0">
+                                        <label>Attach File<span class="color-red">*</span></label>
+                                    </div>
+                                    <div class="col-6 pb-0">
+                                        <input type="file" #attachFile class="form-control logo-form" [(ngModel)]="logoModel">
+                                        <input type="file" #attachFile [(ngModel)]="docModel">
+                                        <span class="color-red" *ngIf="submittedDoc && docModel == ''">Please Select File
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-field field">
+                                <div class="row">
+                                    <div class="col-12 pb-0">
+                                        <div class="btn-doc-middle">
+                                            <button type="submit" class="btn btn-primary btn-sm">Update</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                    <div class="col-8 pb-0">
+                        <div class="form-section">
+                            <h3 class="doc-heading"><i class="fas fa-user"></i> Documents List</h3>
+                            <table class="table table-bordered">
+                                <thead class="thead-light">
+                                    <tr>
+                                        <th>SNo.</th>
+                                        <th>Document Type</th>
+                                        <th>Document Name</th>
+                                        <th>View</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr *ngIf="toggleLoader">
+                                        <td colspan="4">
+                                            <img src="./assets/images/loader-icon.gif"
+                                                class="loader-margin img-responsive" alt="loading....">
+                                        </td>
+                                    </tr>
+                                    <tr *ngFor="let doc of companyDocuments; let i=index">
+                                        <td class="action-width align-center">{{i + 1}}</td>
+                                        <td>{{doc.documentTypeName}}</td>
+                                        <td>{{doc.companyDocumentName}}</td>
+                                        <td class="action-width align-center">
+                                            <a title="View" data-toggle="modal" data-target="#myModal-filter"
+                                                class="icon-margin edit" (click)="docImageView(doc)"><i
+                                                    class="fas fa-eye"></i></a>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </form>
+            <div class="modal fade common-model" id="myModal-filter">
+                <div class="modal-dialog modal-lg">
+                    <div class="modal-content model">
+                        <!-- Modal Header -->
+                        <div class="modal-header">
+                            <h4 class="modal-title align-center"> Image </h4>
+                            <button type="button" class="close" data-dismiss="modal">&times;</button>
+                        </div>
+                        <!-- Modal body -->
+                        <div class="modal-body">
+                            <img class="center-block img-circle img-thumbnail img-responsive profile-img"
+                                [src]="docImage" alt="No Image">
+                        </div>
+                        <!-- Modal footer -->
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-danger" data-dismiss="modal">Ok</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- settings -->
+        <div id="settings" class="container tab-pane fade">
+            <br>
+            <form [formGroup]="settingForm" (ngSubmit)="saveSetting()">
+                <div class="row margin-field">
+                    <div class="col-4 pb-0">
+                        <div class="form-section">
+                            <div class="form-field field">
+                                <div class="row">
+                                    <div class="col-6 pb-0">
+                                        <label>Confirmation After<i class="req-field"></i></label>
+                                    </div>
+                                    <div class="col-5 pb-0">
+                                        <input type="text" formControlName="confirmationAfter" maxlength="50">
+                                    </div>
+                                    <div class="col-1 pb-0 text-span">
+                                        <label>Days</label>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-field field">
+                                <div class="row">
+                                    <div class="col-6 pb-0">
+                                        <label>Leave Encash<i class="req-field"></i></label>
+                                    </div>
+                                    <div class="col-5 pb-0">
+                                        <input type="text" formControlName="leaveEncash" maxlength="50">
+                                    </div>
+                                    <div class="col-1 pb-0 text-span">
+                                        <label>Days</label>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-field field">
+                                <div class="row">
+                                    <div class="col-6 pb-0">
+                                        <label>Notice Period<i class="req-field"></i></label>
+                                    </div>
+                                    <div class="col-5 pb-0">
+                                        <input type="text" formControlName="noticePeriod" maxlength="50">
+                                    </div>
+                                    <div class="col-1 pb-0 text-span">
+                                        <label>Days</label>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-field field">
+                                <div class="row">
+                                    <div class="col-6 pb-0">
+                                        <label>Total Absent Multiply With<i class="req-field"></i></label>
+                                    </div>
+                                    <div class="col-5 pb-0">
+                                        <input type="text" formControlName="totalAbsentMultiplyWith" maxlength="50">
+                                    </div>
+                                    <div class="col-1 pb-0 text-span">
+                                        <label>Days</label>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-field field">
+                                <div class="row">
+                                    <div class="col-6 pb-0">
+                                        <label>Payslip Format<i class="req-field"></i></label>
+                                    </div>
+                                    <div class="col-6 pb-0">
+                                        <select [(ngModel)]="companyPayslipFormatModal" class="custom-select-box"
+                                            (change)="changeCompanyPayslipFormat()"
+                                            formControlName="companyPayslipFormat">
+                                            <option *ngFor="let month of attendanceMonths" [ngValue]="month">{{month}}
+                                            </option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="form-field field">
+                                <div class="row">
+                                    <div class="col-6 pb-0">
+                                        <label>Salary Sheet Vertical<i class="req-field"></i></label>
+                                    </div>
+                                    <div class="col-6 pb-0">
+                                        <select [(ngModel)]="companySalarySheetVerticalModal" class="custom-select-box"
+                                            (change)="changeCompanySalarySheetVertical()"
+                                            formControlName="companySalarySheetVertical">
+                                            <option *ngFor="let month of softwareStartMonths" [ngValue]="month">
+                                                {{month}}</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-4 pb-0">
+                        <div class="form-section">
+                            <div class="form-field field">
+                                <div class="row">
+                                    <div class="col-9 pb-0">
+                                        <label>Allow Days Present Manual</label>
+                                    </div>
+                                    <div class="col-3 pb-0">
+                                        <select [(ngModel)]="allowDaysPresentManualModal" class="custom-select-box"
+                                            (change)="changeAllowDaysPresentManual()"
+                                            formControlName="allowDaysPresentManual">
+                                            <option *ngFor="let option of options" [ngValue]="option.value">
+                                                {{option.key}}
+                                            </option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-field field">
+                                <div class="row">
+                                    <div class="col-9 pb-0">
+                                        <label>Stop salary process in case of hold</label>
+                                    </div>
+                                    <div class="col-3 pb-0">
+                                        <select [(ngModel)]="stopSalaryProcessIncaseOfHoldModal"
+                                            class="custom-select-box" (change)="changeStopSalaryProcessIncaseOfHold()"
+                                            formControlName="stopSalaryProcessIncaseOfHold">
+                                            <option *ngFor="let option of options" [ngValue]="option.value">
+                                                {{option.key}}
+                                            </option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-field field">
+                                <div class="row">
+                                    <div class="col-9 pb-0">
+                                        <label>Weekoff minus</label>
+                                    </div>
+                                    <div class="col-3 pb-0">
+                                        <select [(ngModel)]="weekOfMinusModal" class="custom-select-box"
+                                            (change)="changeWeekOfMinus()" formControlName="weekOfMinus">
+                                            <option *ngFor="let option of options" [ngValue]="option.value">
+                                                {{option.key}}
+                                            </option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-field field">
+                                <div class="row">
+                                    <div class="col-9 pb-0">
+                                        <label>Division Wise reports</label>
+                                    </div>
+                                    <div class="col-3 pb-0">
+                                        <select [(ngModel)]="divisionWiseReportModal" class="custom-select-box"
+                                            (change)="changeDivisionWiseReport()" formControlName="divisionWiseReport">
+                                            <option *ngFor="let option of options" [ngValue]="option.value">
+                                                {{option.key}}
+                                            </option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-field field">
+                                <div class="row">
+                                    <div class="col-9 pb-0">
+                                        <label>Mark leave with time process</label>
+                                    </div>
+                                    <div class="col-3 pb-0">
+                                        <select [(ngModel)]="markLeaveWithTimeProcessModal" class="custom-select-box"
+                                            (change)="changeMarkLeaveWithTimeProcess()"
+                                            formControlName="markLeaveWithTimeProcess">
+                                            <option *ngFor="let option of options" [ngValue]="option.value">
+                                                {{option.key}}
+                                            </option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-field field">
+                                <div class="row">
+                                    <div class="col-9 pb-0">
+                                        <label>Minus weekoff from join left absent</label>
+                                    </div>
+                                    <div class="col-3 pb-0">
+                                        <select [(ngModel)]="minusWeekoffFromJoinLeftAbsentModal"
+                                            class="custom-select-box" (change)="changeMinusWeekoffFromJoinLeftAbsent()"
+                                            formControlName="minusWeekoffFromJoinLeftAbsent">
+                                            <option *ngFor="let option of options" [ngValue]="option.value">
+                                                {{option.key}}
+                                            </option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-field field">
+                                <div class="row">
+                                    <div class="col-9 pb-0">
+                                        <label>Aadhaar No. Mandatory</label>
+                                    </div>
+                                    <div class="col-3 pb-0">
+                                        <select [(ngModel)]="adhaarNoMandatoryModal" class="custom-select-box"
+                                            (change)="changeAadhaarNoMandatory()" formControlName="adhaarNoMandatory">
+                                            <option *ngFor="let option of options" [ngValue]="option.value">
+                                                {{option.key}}
+                                            </option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-field field">
+                                <div class="row">
+                                    <div class="col-9 pb-0">
+                                        <label>Tax No. Mandatory</label>
+                                    </div>
+                                    <div class="col-3 pb-0">
+                                        <select [(ngModel)]="panNoMandatoryModal" class="custom-select-box"
+                                            (change)="changePanNoMandatory()" formControlName="panNoMandatory">
+                                            <option *ngFor="let option of options" [ngValue]="option.value">
+                                                {{option.key}}
+                                            </option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-field field">
+                                <div class="row">
+                                    <div class="col-9 pb-0">
+                                        <label>Duplicate Employee</label>
+                                    </div>
+                                    <div class="col-3 pb-0">
+                                        <select [(ngModel)]="duplicateEmployeeModal" class="custom-select-box"
+                                            (change)="changeDuplicateEmployee()" formControlName="duplicateEmployee">
+                                            <option *ngFor="let option of options" [ngValue]="option.value">
+                                                {{option.key}}
+                                            </option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-field field">
+                                <div class="row">
+                                    <div class="col-9 pb-0">
+                                        <label>Show Client Code</label>
+                                    </div>
+                                    <div class="col-3 pb-0">
+                                        <select [(ngModel)]="showClientCodeModal" class="custom-select-box"
+                                            (change)="changeShowClientCode()" formControlName="showClientCode">
+                                            <option *ngFor="let option of options" [ngValue]="option.value">
+                                                {{option.key}}
+                                            </option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-field field">
+                                <div class="row">
+                                    <div class="col-9 pb-0">
+                                        <label>Show TA-DA Details Button In Reimbursement</label>
+                                    </div>
+                                    <div class="col-3 pb-0">
+                                        <select [(ngModel)]="showCshowTaDaDeatilsButtonReimbursementlientCodeModal"
+                                            class="custom-select-box"
+                                            (change)="changeShowCshowTaDaDeatilsButtonReimbursementlientCode()"
+                                            formControlName="showCshowTaDaDeatilsButtonReimbursementlientCode">
+                                            <option *ngFor="let option of options" [ngValue]="option.value">
+                                                {{option.key}}
+                                            </option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-field field">
+                                <div class="row">
+                                    <div class="col-9 pb-0">
+                                        <label>Enable Drug and Food License</label>
+                                    </div>
+                                    <div class="col-3 pb-0">
+                                        <select [(ngModel)]="enableDrugFoodLicenseModal" class="custom-select-box"
+                                            (change)="changeEnableDrugFoodLicense()"
+                                            formControlName="enableDrugFoodLicense">
+                                            <option *ngFor="let option of options" [ngValue]="option.value">
+                                                {{option.key}}
+                                            </option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-field field">
+                                <div class="row">
+                                    <div class="col-9 pb-0">
+                                        <label>Division Days</label>
+                                    </div>
+                                    <div class="col-3 pb-0">
+                                        <select [(ngModel)]="divisionDaysModal" class="custom-select-box"
+                                            (change)="changeDivisionDays()" formControlName="divisionDays">
+                                            <option *ngFor="let option of options" [ngValue]="option.value">
+                                                {{option.key}}
+                                            </option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+
+                    <div class="col-4 pb-0">
+                        <div class="form-section">
+                            <div class="form-field field">
+                                <div class="row">
+                                    <div class="col-9 pb-0">
+                                        <label>Enable Attendance Cycle</label>
+                                    </div>
+                                    <div class="col-3 pb-0">
+                                        <select [(ngModel)]="enableAttendanceCycleModal" class="custom-select-box"
+                                            (change)="changeEnableAttendanceCycle()"
+                                            formControlName="enableAttendanceCycle">
+                                            <option *ngFor="let option of options" [ngValue]="option.value">
+                                                {{option.key}}
+                                            </option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-field field">
+                                <div class="row">
+                                    <div class="col-9 pb-0">
+                                        <label>CO Plus Approval</label>
+                                    </div>
+                                    <div class="col-3 pb-0">
+                                        <select [(ngModel)]="coPlusApprovalModal" class="custom-select-box"
+                                            (change)="changeCoPlusApproval()" formControlName="coPlusApproval">
+                                            <option *ngFor="let option of options" [ngValue]="option.value">
+                                                {{option.key}}
+                                            </option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-field field">
+                                <div class="row">
+                                    <div class="col-9 pb-0">
+                                        <label>Consider Next Day Shift For Week Off</label>
+                                    </div>
+                                    <div class="col-3 pb-0">
+                                        <select [(ngModel)]="considerNextDayShiftForWeekoffModal"
+                                            class="custom-select-box" (change)="changeConsiderNextDayShiftForWeekoff()"
+                                            formControlName="considerNextDayShiftForWeekoff">
+                                            <option *ngFor="let option of options" [ngValue]="option.value">
+                                                {{option.key}}
+                                            </option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-field field">
+                                <div class="row">
+                                    <div class="col-9 pb-0">
+                                        <label>Enable Mis Punch Module</label>
+                                    </div>
+                                    <div class="col-3 pb-0">
+                                        <select [(ngModel)]="enableMissPunchModuleModal" class="custom-select-box"
+                                            (change)="changeEnableMissPunchModule()"
+                                            formControlName="enableMissPunchModule">
+                                            <option *ngFor="let option of options" [ngValue]="option.value">
+                                                {{option.key}}
+                                            </option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-field field">
+                                <div class="row">
+                                    <div class="col-9 pb-0">
+                                        <label>Approve Without Remarks</label>
+                                    </div>
+                                    <div class="col-3 pb-0">
+                                        <select [(ngModel)]="approveWithoutRemarksModal" class="custom-select-box"
+                                            (change)="changeApproveWithoutRemarks()"
+                                            formControlName="approveWithoutRemarks">
+                                            <option *ngFor="let option of options" [ngValue]="option.value">
+                                                {{option.key}}
+                                            </option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-field field">
+                                <div class="row">
+                                    <div class="col-9 pb-0">
+                                        <label>Display Grade In ESS Profile</label>
+                                    </div>
+                                    <div class="col-3 pb-0">
+                                        <select [(ngModel)]="displayGradeInEssProfileModal" class="custom-select-box"
+                                            (change)="changeDisplayGradeInEssProfile()"
+                                            formControlName="displayGradeInEssProfile">
+                                            <option *ngFor="let option of options" [ngValue]="option.value">
+                                                {{option.key}}
+                                            </option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-12 pb-0">
+                    <div class="btn-middle">
+                        <button type="submit" class="btn btn-primary">Update</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+        <!-- advanced settings -->
+        <div id="advsettings" class="container tab-pane fade"><br>
+
+            <div class="row margin-field" *ngIf="toggleAdvLoader">
+                <img src="./assets/images/loader-icon.gif" class="loader-margin img-responsive" alt="loading....">
+            </div>
+            <form [formGroup]="advSettingForm" (ngSubmit)="saveAdvSetting()" *ngIf="!toggleAdvLoader">
+                <div class="row margin-field">
+                    <div class="col-4 pb-0">
+                        <div class="form-section">
+                            <div class="form-field field">
+                                <div class="row">
+                                    <div class="col-9 pb-0">
+                                        <label>Allow Previous Month Leave Approve</label>
+                                    </div>
+                                    <div class="col-3 pb-0">
+                                        <select [(ngModel)]="allowPreviousMontLeaveApproveModal"
+                                            class="custom-select-box" (change)="changeAllowPreviousMontLeaveApprove()"
+                                            formControlName="allowPreviousMontLeaveApprove">
+                                            <option *ngFor="let option of options" [ngValue]="option.value">
+                                                {{option.key}}
+                                            </option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-field field">
+                                <div class="row">
+                                    <div class="col-9 pb-0">
+                                        <label>Check Duplicate Emp Code</label>
+                                    </div>
+                                    <div class="col-3 pb-0">
+                                        <select [(ngModel)]="checkDuplicateEmployeeCodeModal" class="custom-select-box"
+                                            (change)="changeCheckDuplicateEmployeeCode()"
+                                            formControlName="checkDuplicateEmployeeCode">
+                                            <option *ngFor="let option of options" [ngValue]="option.value">
+                                                {{option.key}}
+                                            </option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-field field">
+                                <div class="row">
+                                    <div class="col-9 pb-0">
+                                        <label>Enable Employee Checker</label>
+                                    </div>
+                                    <div class="col-3 pb-0">
+                                        <select [(ngModel)]="enableEmployeeCheckerModal" class="custom-select-box"
+                                            (change)="changeEnableEmployeeChecker()"
+                                            formControlName="enableEmployeeChecker">
+                                            <option *ngFor="let option of options" [ngValue]="option.value">
+                                                {{option.key}}
+                                            </option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-field field">
+                                <div class="row">
+                                    <div class="col-9 pb-0">
+                                        <label>Enable Salary Structure Checker</label>
+                                    </div>
+                                    <div class="col-3 pb-0">
+                                        <select [(ngModel)]="enableSalaryStructureCheckerModal"
+                                            class="custom-select-box" (change)="changeEnableSalaryStructureChecker()"
+                                            formControlName="enableSalaryStructureChecker">
+                                            <option *ngFor="let option of options" [ngValue]="option.value">
+                                                {{option.key}}
+                                            </option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-field field">
+                                <div class="row">
+                                    <div class="col-9 pb-0">
+                                        <label>Calculate Short Notice Dedution Separately</label>
+                                    </div>
+                                    <div class="col-3 pb-0">
+                                        <select [(ngModel)]="calculateShortNoticeDedutionSeparatelyModal"
+                                            class="custom-select-box"
+                                            (change)="changeCalculateShortNoticeDedutionSeparately()"
+                                            formControlName="calculateShortNoticeDedutionSeparately">
+                                            <option *ngFor="let option of options" [ngValue]="option.value">
+                                                {{option.key}}
+                                            </option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-field field">
+                                <div class="row">
+                                    <div class="col-9 pb-0">
+                                        <label>Enable Group Date Of Joining</label>
+                                    </div>
+                                    <div class="col-3 pb-0">
+                                        <select [(ngModel)]="enableGroupDateJoiningModal" class="custom-select-box"
+                                            (change)="changeEnableGroupDateJoining()"
+                                            formControlName="enableGroupDateJoining">
+                                            <option *ngFor="let option of options" [ngValue]="option.value">
+                                                {{option.key}}
+                                            </option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-field field">
+                                <div class="row">
+                                    <div class="col-9 pb-0">
+                                        <label>Common Reporting Head</label>
+                                    </div>
+                                    <div class="col-3 pb-0">
+                                        <select [(ngModel)]="commonReportingHeadModal" class="custom-select-box"
+                                            (change)="changeCommonReportingHead()"
+                                            formControlName="commonReportingHead">
+                                            <option *ngFor="let option of options" [ngValue]="option.value">
+                                                {{option.key}}
+                                            </option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-field field">
+                                <div class="row">
+                                    <div class="col-9 pb-0">
+                                        <label>Reimb. Approver Selection</label>
+                                    </div>
+                                    <div class="col-3 pb-0">
+                                        <select [(ngModel)]="reimbApproverSelectionModal" class="custom-select-box"
+                                            (change)="changeReimbApproverSelection()"
+                                            formControlName="reimbApproverSelection">
+                                            <option *ngFor="let option of options" [ngValue]="option.value">
+                                                {{option.key}}
+                                            </option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-field field">
+                                <div class="row">
+                                    <div class="col-9 pb-0">
+                                        <label>Exit Clearance</label>
+                                    </div>
+                                    <div class="col-3 pb-0">
+                                        <select [(ngModel)]="exitClearenceModal" class="custom-select-box"
+                                            (change)="changeExitClearence()" formControlName="exitClearence">
+                                            <option *ngFor="let option of options" [ngValue]="option.value">
+                                                {{option.key}}
+                                            </option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-field field">
+                                <div class="row">
+                                    <div class="col-9 pb-0">
+                                        <label>Allow Leave Application Mobile APP</label>
+                                    </div>
+                                    <div class="col-3 pb-0">
+                                        <select [(ngModel)]="allowLeaveApplicationMobileAppModal"
+                                            class="custom-select-box" (change)="changeAllowLeaveApplicationMobileApp()"
+                                            formControlName="allowLeaveApplicationMobileApp">
+                                            <option *ngFor="let option of options" [ngValue]="option.value">
+                                                {{option.key}}
+                                            </option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-field field">
+                                <div class="row">
+                                    <div class="col-9 pb-0">
+                                        <label>Check OD For Conveyence Reimb.</label>
+                                    </div>
+                                    <div class="col-3 pb-0">
+                                        <select [(ngModel)]="checkOdForConveyenceReimbModal" class="custom-select-box"
+                                            (change)="changeCheckOdForConveyenceReimb()"
+                                            formControlName="checkOdForConveyenceReimb">
+                                            <option *ngFor="let option of options" [ngValue]="option.value">
+                                                {{option.key}}
+                                            </option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-field field">
+                                <div class="row">
+                                    <div class="col-9 pb-0">
+                                        <label>Short Leave Option Hour</label>
+                                    </div>
+                                    <div class="col-3 pb-0">
+                                        <select [(ngModel)]="shortLeaveOptionHourModal" class="custom-select-box"
+                                            (change)="changeShortLeaveOptionHour()"
+                                            formControlName="shortLeaveOptionHour">
+                                            <option *ngFor="let option of options" [ngValue]="option.value">
+                                                {{option.key}}
+                                            </option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-field field">
+                                <div class="row">
+                                    <div class="col-9 pb-0">
+                                        <label>Common Query Handler</label>
+                                    </div>
+                                    <div class="col-3 pb-0">
+                                        <select [(ngModel)]="commonQueryHandlerModal" class="custom-select-box"
+                                            (change)="changeCommonQueryHandler()" formControlName="commonQueryHandler">
+                                            <option *ngFor="let option of options" [ngValue]="option.value">
+                                                {{option.key}}
+                                            </option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+
+                    <div class="col-4 pb-0">
+                        <div class="form-section">
+                            <div class="form-field field">
+                                <div class="row">
+                                    <div class="col-9 pb-0">
+                                        <label>Enable OD Reimb.</label>
+                                    </div>
+                                    <div class="col-3 pb-0">
+                                        <select [(ngModel)]="enableOdReimbModal" class="custom-select-box"
+                                            (change)="changeEnableOdReimb()" formControlName="enableOdReimb">
+                                            <option *ngFor="let option of options" [ngValue]="option.value">
+                                                {{option.key}}
+                                            </option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-field field">
+                                <div class="row">
+                                    <div class="col-9 pb-0">
+                                        <label>OD Mandatory Field</label>
+                                    </div>
+                                    <div class="col-3 pb-0">
+                                        <select [(ngModel)]="odMandatoryFieldModal" class="custom-select-box"
+                                            (change)="changeOdMandatoryField()" formControlName="odMandatoryField">
+                                            <option *ngFor="let option of options" [ngValue]="option.value">
+                                                {{option.key}}
+                                            </option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-field field">
+                                <div class="row">
+                                    <div class="col-9 pb-0">
+                                        <label>Enable Feedback</label>
+                                    </div>
+                                    <div class="col-3 pb-0">
+                                        <select [(ngModel)]="enableFeedbackModal" class="custom-select-box"
+                                            (change)="changeEnableFeedback()" formControlName="enableFeedback">
+                                            <option *ngFor="let option of options" [ngValue]="option.value">
+                                                {{option.key}}
+                                            </option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-field field">
+                                <div class="row">
+                                    <div class="col-9 pb-0">
+                                        <label>Atten Code Same as Emp Code</label>
+                                    </div>
+                                    <div class="col-3 pb-0">
+                                        <select [(ngModel)]="attendCodeSameAsEmployeeCodeModal"
+                                            class="custom-select-box" (change)="changeAttendCodeSameAsEmployeeCode()"
+                                            formControlName="attendCodeSameAsEmployeeCode">
+                                            <option *ngFor="let option of options" [ngValue]="option.value">
+                                                {{option.key}}
+                                            </option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-field field">
+                                <div class="row">
+                                    <div class="col-9 pb-0">
+                                        <label>Default Absent</label>
+                                    </div>
+                                    <div class="col-3 pb-0">
+                                        <select [(ngModel)]="defaultAbsentModal" class="custom-select-box"
+                                            (change)="changeDefaultAbsent()" formControlName="defaultAbsent">
+                                            <option *ngFor="let option of options" [ngValue]="option.value">
+                                                {{option.key}}
+                                            </option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-field field">
+                                <div class="row">
+                                    <div class="col-9 pb-0">
+                                        <label>Payslip YTD Amount</label>
+                                    </div>
+                                    <div class="col-3 pb-0">
+                                        <select [(ngModel)]="payslipYtdAmountModal" class="custom-select-box"
+                                            (change)="changePayslipYtdAmount()" formControlName="payslipYtdAmount">
+                                            <option *ngFor="let option of options" [ngValue]="option.value">
+                                                {{option.key}}
+                                            </option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-field field">
+                                <div class="row">
+                                    <div class="col-9 pb-0">
+                                        <label>Insert Gatepass in Logs</label>
+                                    </div>
+                                    <div class="col-3 pb-0">
+                                        <select [(ngModel)]="insertGatepassInLogsModal" class="custom-select-box"
+                                            (change)="changeInsertGatepassInLogs()"
+                                            formControlName="insertGatepassInLogs">
+                                            <option *ngFor="let option of options" [ngValue]="option.value">
+                                                {{option.key}}
+                                            </option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-4 pb-0">
+                        <div class="form-section">
+                            <div class="form-field field">
+                                <div class="row">
+                                    <div class="col-6 pb-0">
+                                        <label>CO+ Lapse Days<i class="req-field"></i></label>
+                                    </div>
+                                    <div class="col-6 pb-0">
+                                        <input type="text" formControlName="coLapseDays" maxlength="50">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-field field">
+                                <div class="row">
+                                    <div class="col-6 pb-0">
+                                        <label>CO+/HCO+Credit Approver<i class="req-field"></i></label>
+                                    </div>
+                                    <div class="col-6 pb-0">
+                                        <input type="text" formControlName="coHcoCredit" maxlength="50">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-field field">
+                                <div class="row">
+                                    <div class="col-6 pb-0">
+                                        <label>TDS Approver<i class="req-field"></i></label>
+                                    </div>
+                                    <div class="col-6 pb-0">
+                                        <input type="text" formControlName="tdsApprover" maxlength="50">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-12 pb-0">
+                    <div class="btn-middle">
+                        <button type="submit" class="btn btn-primary">Update</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

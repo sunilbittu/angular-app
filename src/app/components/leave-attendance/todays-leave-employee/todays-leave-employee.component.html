@@ -1,0 +1,346 @@
+<div class="container-fluid">
+    <div class="d-flex align-items-center mt-2">
+        <div class="m-2">
+            <div class="h-size"><i class="fa fa-user mr-1"></i> <b>Employee's on Leave Today</b></div>
+        </div>
+        <div class="flex-fill">
+        </div>
+        <div class="m-3"></div>
+        <div class="m-3"></div>
+        <div class="m-3"></div>
+        <div class="m-3"></div>
+        <div class="m-3"><input class="form-control rounded-pill py-2 border-right-0 border" type="search"
+                placeholder="search" id="example-search-input" [(ngModel)]="searchModel"
+                (ngModelChange)="getAllEmployees()">
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-12">
+            <table class="table table-bordered table-hover table-sm">
+                <thead class="t-head">
+                    <tr>
+                        <th *ngFor="let head of headers"><a>{{head}}</a></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let employee of employeeList | paginate: {
+                        itemsPerPage: itemsPerPage,
+                        currentPage: currentPage,
+                        totalItems: totalItems
+                      };let i=index">
+                        <td>{{employee.employeeId}}</td>
+                        <td>{{employee.employeeCode}}</td>
+                        <td>{{employee.firstName}} {{employee.lastName}}</td>
+                        <td>{{employee.branchName}}</td>
+                        <td>{{employee.departmentName}}</td>
+                        <td>{{employee.designationName}}</td>
+                        <td>{{employee.divisionName}}</td>
+                        <td>{{employee.gradeName}}</td>
+                        <td>{{employee.categoryName}}</td>
+                        <td *ngIf="employee.project!=null">{{employee.project.projectName}}</td>
+                        <td *ngIf="employee.project==null"></td>
+                        <td class="action-width">
+                            <a title="View" class="icon-margin" (click)="getEmployeeDetailsById(employee.employeeId)"
+                                data-toggle="modal" data-target="#emp_modal"><span class="fas fa-eye"></span></a>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+            <div class="row" *ngIf="totalElements!=0">
+                <div class="col-md-6 pull-left"><span class="show-entry">Showing
+                        <span>{{showingFrom}} to {{showingTo}} of {{totalElements}} entries</span></span>&nbsp;
+                </div>
+        
+                <div class="col-md-6 pull-right" *ngIf="totalItems > 0">
+                    <pagination-controls (pageChange)="pageChanged($event)"></pagination-controls>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal fade common-model" id="emp_modal" style="margin-top:40px;">
+    <div class="modal-dialog modal-xl" style="max-width: 1270px;">
+        <div class="modal-content">
+            <!-- <form > -->
+            <div class="modal-header">
+                <div class="modal-title"> Employee View </div>
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-4">
+                        <table>
+                            <tr>
+                                <td><label>Emp Code</label></td>
+                                <td><input type="text" value="{{empData.employeeCode}}" class="text form-control"
+                                        readonly />
+                                </td>
+                            </tr>
+                            <tr>
+                                <td><label>Title</label></td>
+                                <td><input type="text" value="{{empData.title}}" class="text form-control" readonly />
+                                </td>
+                            </tr>
+                            <tr>
+                                <td><label>First Name</label></td>
+                                <td><input type="text" value="{{empData.firstName}}" class="text form-control"
+                                        readonly /></td>
+                            </tr>
+                            <tr>
+                                <td><label>Middle Name</label></td>
+                                <td><input type="text" value="{{empData.middleName}}" class="text form-control"
+                                        readonly /></td>
+                            </tr>
+                            <tr>
+                                <td><label>Last Name</label></td>
+                                <td><input type="text" value="{{empData.lastName}}" class="text form-control"
+                                        readonly /></td>
+                            </tr>
+                            <tr>
+                                <td><label for="gender">Gender</label></td>
+                                <td><input type="text" value="{{empData.gender}}" class="text form-control" readonly />
+                                </td>
+                            </tr>
+                            <tr>
+                                <td><label>Father Name</label></td>
+                                <td><input type="text" value="{{empData.fatherName}}" class="text form-control"
+                                        readonly /></td>
+                            </tr>
+                            <tr>
+                                <td><label>Mother Name</label></td>
+                                <td><input type="text" value="{{empData.motherName}}" class="text form-control"
+                                        readonly /></td>
+                            </tr>
+                            <tr>
+                                <td><label>Spouse Name</label></td>
+                                <td><input type="text" value="{{empData.spouseName}}" class="text form-control"
+                                        readonly /></td>
+                            </tr>
+                            <br>
+                            <tr class="title">
+                                <th><i class="fas fa-id-badge"></i> Identity card details</th>
+                            </tr>
+                            <tr>
+                                <td><label>Tax No.</label></td>
+                                <td><input type="text" value="{{empData.panNo}}" class="text form-control" id="Tax"
+                                        readonly />
+                                </td>
+                            </tr>
+                            <tr>
+                                <td><label>National Identity No</label></td>
+                                <td>
+                                    <input type="text" value="{{empData.aadhaarNo}}" class="text form-control"
+                                        id="aadhaarNo" readonly />
+                                </td>
+                            </tr>
+                            <tr>
+                                <td><label>Voter ID</label></td>
+                                <td>
+                                    <input type="text" value="{{empData.voterId}}" class="text form-control"
+                                        id="voterId" readonly />
+                                </td>
+                            </tr>
+                            <br>
+                            <tr class="title">
+                                <th><i class="fas fa-piggy-bank"></i> Bank details</th>
+                            </tr>
+                            <tr>
+                                <td><label for="paymentMode">Payment Mode</label></td>
+                                <td><input type="text" value="{{empData.paymentMode}}" class="text form-control"
+                                        readonly /></td>
+                            </tr>
+                            <tr>
+                                <td><label for="bankName">Bank Name</label></td>
+                                <td><input type="text" value="{{empData.motherName}}" class="text form-control"
+                                        readonly /></td>
+                            </tr>
+                            <tr>
+                                <td><label>Account Number</label></td>
+                                <td>
+                                    <input type="text" value="{{empData.accountNo}}" class="text form-control"
+                                        id="txt_accountNumber" readonly />
+                                </td>
+                            </tr>
+                            <tr>
+                                <td><label>IFSC Code</label></td>
+                                <td>
+                                    <input type="text" value="{{empData.ifscCode}}" class="text form-control"
+                                        id="txt_IfscCode" readonly />
+                                </td>
+                            </tr>
+                            <tr>
+                                <td><label>Account Name</label></td>
+                                <td>
+                                    <input type="text" value="{{empData.accountName}}" class="text form-control"
+                                        id="txt_accountName" readonly />
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+                    <div class="col-4">
+                        <table>
+                            <tr class="title">
+                                <th><i class="fas fa-user-check"></i> Joining details</th>
+                            </tr>
+                            <br>
+                            <tr>
+                                <td><label>Date of Birth<i></i> </label></td>
+                                <td>
+                                    <input type="text" value="{{empData.dob}}" placeholder="Date of Birth" readonly
+                                        class="text form-control" id="dateOfBirth" readonly />
+                                </td>
+                            </tr>
+                            <tr>
+                                <td><label>Date of Joining</label></td>
+                                <td>
+                                    <input type="text" value="{{empData.dateOfJoining}}" placeholder="Date of Joining"
+                                        class="text form-control" id="dateOfJoining" readonly readonly />
+                                </td>
+                            </tr>
+                            <tr>
+                                <td><label>Date of Confirmation </label></td>
+                                <td>
+                                    <input type="text" value="{{empData.dateOfJoiningConfirmation}}"
+                                        class="text form-control" placeholder="Date of Confirmation" readonly
+                                        readonly />
+                                </td>
+                            </tr>
+                            <br>
+                            <tr class="title">
+                                <th><i class="fas fa-list"></i> PF / ESIC details</th>
+                            </tr>
+                            <tr>
+                                <td><label for="pfapplicable">PF Applicable</label></td>
+                                <td *ngIf="empData.pfApplicable"><input type="text" value="Yes"
+                                        class="text form-control" readonly /></td>
+                                <td *ngIf="!empData.pfApplicable"><input type="text" value="No"
+                                        class="text form-control" readonly /></td>
+                            </tr>
+                            <tr>
+                                <td><label for="pfApplicableDate">PF Applicable Date</label></td>
+                                <td>
+                                    <input type="text" value="{{empData.pfApplicableDate}}"
+                                        placeholder="PF Applicable Date" readonly class="text form-control" readonly />
+                                </td>
+                            </tr>
+                            <tr>
+                                <td><label>PF Number</label></td>
+                                <td>
+                                    <input value="{{empData.pfNumber}}" type="text" class="text form-control"
+                                        id="pfNumber" readonly />
+                                </td>
+                            </tr>
+                            <tr>
+                                <td><label>UAN</label></td>
+                                <td>
+                                    <input value="{{empData.uanNo}}" type="text " class="text form-control" id="uanNo"
+                                        readonly />
+                                </td>
+                            </tr>
+                            <tr>
+                                <td><label>Is International Worker</label></td>
+                                <td *ngIf="empData.isInternationalWorker"><input type="text" value="Yes"
+                                        class="text form-control" readonly /></td>
+                                <td *ngIf="!empData.isInternationalWorker"><input type="text" value="No"
+                                        class="text form-control" readonly /></td>
+                            </tr>
+                            <tr>
+                                <td><label for="EsicApplicable"> ESIC Applicable</label></td>
+                                <td *ngIf="empData.esicApplicable"><input type="text" value="Yes"
+                                        class="text form-control" readonly /></td>
+                                <td *ngIf="!empData.esicApplicable"><input type="text" value="No"
+                                        class="text form-control" readonly /></td>
+                            </tr>
+                            <tr>
+                                <td><label>ESIC Application Date</label></td>
+                                <td>
+                                    <input type="text" value="{{empData.esicApplicableDate}}"
+                                        placeholder="ESIC Application Date" readonly placement="bottom"
+                                        class="text form-control" id="esicApplicableDate" readonly />
+                                </td>
+                            </tr>
+                            <tr>
+                                <td><label>ESIC Number</label></td>
+                                <td>
+                                    <input type="text" value="{{empData.esisNumber}}" class="text form-control"
+                                        id="esisNumber" readonly />
+                                </td>
+                            </tr>
+                            <tr>
+                                <td><label for="ptApplicable">PT Applicable</label></td>
+                                <td *ngIf="empData.ptApplicable"><input type="text" value="Yes"
+                                        class="text form-control" readonly /></td>
+                                <td *ngIf="!empData.ptApplicable"><input type="text" value="No"
+                                        class="text form-control" readonly /></td>
+                            </tr>
+                            <br>
+                            <tr class="title">
+                                <th><i class="fas fa-user-slash"></i> Date of Leaving</th>
+                            </tr>
+                            <tr>
+                                <td><label for="dateOfLeaving">Date of Leaving</label></td>
+                                <td><input type="text" value="" class="text form-control" readonly /></td>
+                            </tr>
+                        </table>
+                    </div>
+                    <div class="col-4">
+                        <table>
+                            <tr class="title">
+                                <th class=""><i class="fas fa-user-cog"></i> Employee work details</th>
+                            </tr>
+                            <br>
+                            <tr>
+                                <td><label for="branch">Branch</label></td>
+                                <td><input type="text" value="{{empData.branchDetail.branchName}}"
+                                        class="text form-control" readonly /></td>
+                            </tr>
+                            <tr>
+                                <td><label for="grade">Grade</label></td>
+                                <td><input type="text" value="{{empData.gradeMaster.gradeName}}"
+                                        class="text form-control" readonly /></td>
+                            </tr>
+                            <tr>
+                                <td><label for="department">Department</label></td>
+                                <td><input type="text" value="{{empData.department.departmentName}}"
+                                        class="text form-control" readonly /></td>
+                            </tr>
+                            <tr>
+                                <td><label>Is Department Head</label></td>
+                                <td *ngIf="empData.departmentHead"><input type="text" value="Yes"
+                                        class="text form-control" readonly /></td>
+                                <td *ngIf="!empData.departmentHead"><input type="text" value="No"
+                                        class="text form-control" readonly /></td>
+                            </tr>
+                            <tr>
+                                <td><label for="designation">Designation</label></td>
+                                <td><input type="text" value="{{empData.designation.designationName}}"
+                                        class="text form-control" readonly /></td>
+                            </tr>
+                            <tr>
+                                <td><label for="costCenteer">Cost Center</label></td>
+                                <td><input type="text" value="{{empData.costCenterMaster.costCenterName}}"
+                                        class="text form-control" readonly /></td>
+                            </tr>
+                            <tr>
+                                <td><label for="project"> Project</label></td>
+                                <td><input type="text" value="{{empData.projectMaster.projectName}}"
+                                        class="text form-control" readonly /></td>
+                            </tr>
+                            <tr>
+                                <td><label for="category"> Category</label></td>
+                                <td><input type="text" value="{{empData.categoryMaster.categoryName}}"
+                                        class="text form-control" readonly /></td>
+                            </tr>
+                            <tr>
+                                <td><label for="reportingHead"> Reporting Head</label></td>
+                                <td><input type="text"
+                                        value="{{reportingHeadObj.firstName + ' ' +reportingHeadObj.lastName}}"
+                                        class="text form-control" readonly /></td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

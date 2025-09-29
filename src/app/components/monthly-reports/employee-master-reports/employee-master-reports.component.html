@@ -1,0 +1,95 @@
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-md-2">
+            <div class="reports-box">
+                <h4 class="head-margin">Employee Master Reports</h4>
+               
+                <ul class="nav nav-tabs menu-tabs" role="tablist">
+                    <!-- <li >
+                        <a class="nav-link " data-toggle="tab" href="#branch-view"> Skills & Hobbies</a>
+                      </li>
+    
+                      <li>
+                        <a class="nav-link " data-toggle="tab" href="#department-view"> Skills & Hobbies</a>
+                      </li> -->
+    
+                      
+                    
+                    <li data-toggle="modal" ><i class="fa fa-file-pdf-o"></i><a  data-toggle="tab" href="#branch-view"> Branch-reports</a></li>
+                    <li data-toggle="modal" ><i class="fa fa-file-pdf-o"></i><a  data-toggle="tab" href="#department-view"> Department-reports</a></li>
+                    <li data-toggle="modal" ><i class="fa fa-file-pdf-o"></i><a  data-toggle="tab" href="#grade-view"> Grade-reports</a></li>
+                    <li data-toggle="modal" ><i class="fa fa-file-pdf-o"></i><a  data-toggle="tab" href="#project-view"> Project-reports</a></li>
+                    <li data-toggle="modal" ><i class="fa fa-file-pdf-o"></i><a  data-toggle="tab" href="#costcenter-view"> Costcenter-reports</a></li>
+                    <li data-toggle="modal" ><i class="fa fa-file-pdf-o"></i><a  data-toggle="tab" href="#category-view"> Category-reports</a></li>
+                    <li data-toggle="modal" ><i class="fa fa-file-pdf-o"></i><a  data-toggle="tab" href="#birthday-report"> Birthday-reports</a></li>
+                    <li data-toggle="modal" ><i class="fa fa-file-pdf-o"></i><a  data-toggle="tab" href="#anniversary-report"> Anniversary-reports</a></li>
+                    <li data-toggle="modal" ><i class="fa fa-file-pdf-o"></i><a  data-toggle="tab" href="#shift-report"> Shift-reports</a></li>
+
+                </ul>
+                <!-- <button class="btn btn-outline-secondary"><i class="fas fa-file-excel"></i> Export To Excel</button> -->
+                  
+            </div>
+        </div>
+    
+        <div class="col-md-10">  
+            
+            
+            <div class="tab-content">
+                <div id="branch-view" class="tab-pane active">
+                    <br>
+                    <app-branch-view></app-branch-view>
+                </div>
+               
+             
+    
+             
+                <div id="department-view" class="tab-pane ">
+                    <br>
+                    <app-view-department></app-view-department>
+                </div>
+
+                <div id="grade-view" class="tab-pane ">
+                    <br>
+                    <app-view-grade></app-view-grade>
+                </div>
+
+                <div id="project-view" class="tab-pane ">
+                    <br>
+                    <app-view-project></app-view-project>
+                </div>
+
+                <div id="costcenter-view" class="tab-pane ">
+                    <br>
+                    <app-view-costcenter></app-view-costcenter>
+                </div>
+
+
+                <div id="category-view" class="tab-pane ">
+                    <br>
+                    <app-category-view></app-category-view>
+                </div>
+
+               
+                <div id="birthday-report" class="tab-pane ">
+                    <br>
+                    <app-employee-birthday-report></app-employee-birthday-report>
+                </div>
+
+
+                <div id="anniversary-report" class="tab-pane ">
+                    <br>
+                    <app-employee-anniversary-report></app-employee-anniversary-report>
+                </div>
+
+                <div id="shift-report" class="tab-pane ">
+                    <br>
+                    <app-shift-report-view></app-shift-report-view>
+                </div>
+
+                
+             
+        </div>
+        
+     
+    </div>       
+</div>

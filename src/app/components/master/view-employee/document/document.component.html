@@ -1,0 +1,280 @@
+<div class="container-fluid" style="margin-top: 16px;">
+    <div class="row">
+        <div class="col-md-6">
+            <form [formGroup]=documentForm (ngSubmit)="onSubmitAttchment()">
+                <div>
+                    <h3><i class="fas fa-id-card"></i> <b> Add Document</b></h3>
+                </div>
+                <div class="card card-style">
+                    <div class="row col-12 padding-field-bottom">
+                        <div class="col-4">
+                            <label for="type">Document Name<span class="color-red">*</span></label>
+                        </div>
+                        <div class="col-8">
+                            <input type="text" formControlName="documentName" placeholder="Enter Document Name" class="form-control" maxlength="50" />
+                            <span class="color-red" *ngIf="submitted && doc_form_.documentName.errors">Document Name
+                                {{requiredErrorText}}</span>
+                        </div>
+                    </div>
+                    <div class="row col-12 padding-field-bottom">
+                        <div class="col-4">
+                            <label for="type">Document Type<span class="color-red">*</span></label>
+                        </div>
+                        <div class="col-8">
+                            <select class="form-control custom-select-box" formControlName="documentType">
+                                <option value="null" disabled>Select Document Type</option>
+                                <option *ngFor="let document of documentsMasterList" [value]=document.documentId>
+                                    {{document.documentName}}
+                                </option>
+                            </select>
+                            <span class="color-red" *ngIf="submitted && doc_form_.documentType.errors">Document Type
+                                {{requiredErrorText}}</span>
+                        </div>
+                    </div>
+                    <div class="row col-12 padding-field-bottom">
+                        <div class="col-4">
+                            <label>Attach File <span class="color-red">*</span></label>
+                        </div>
+                        <div class="col-8">
+                            <input type="file" formControlName="documentFile" (change)="onFileChanged($event)" class="text form-control" maxlength="50" #attachFile />
+                            <span class="color-red" *ngIf="submitted && !isFileSelected">Attach File
+                                        {{requiredErrorText}}</span>
+
+                        </div>
+                    </div>
+                    <div class="row col-6 padding-field-bottom" style="margin-left: 30%;">
+                        <button type="submit" class="button btn btn-success btn-primary btn-sm">Save</button>
+                        <button type="button" class="button btn btn-success btn-warning btn-sm" (click)="cancelDoc()">Cancel</button>
+                    </div>
+
+                </div>
+            </form>
+
+        </div>
+        <div class="col-md-6">
+            <div>
+                <h3><i class="fas fa-id-card"></i> <b> Document List</b></h3>
+            </div>
+            <div class="box-body scroll">
+                <table class="table table-bordered table-hover table-sm">
+                    <thead class="t-head">
+                        <tr>
+                            <th *ngFor="let head of headers1"><a><label>{{head}}</label></a></th>
+                        </tr>
+                    </thead>
+
+                    <tbody>
+                        <tr *ngFor="let data of documentsAttachmentList; let i = index">
+                            <td>{{i+1}}</td>
+                            <td>{{data.documentName}}</td>
+                            <td>{{data.documentType}}</td>
+
+                            <td>
+                                <span *ngIf="data.mandatory==true">Yes</span>
+                                <span *ngIf="data.mandatory==false">No</span>
+                            </td>
+                            <td>
+                                <a title="Download" class="icon-margin" target="_blank" (click)="downloadeDocumentAttachment(data.filePath, data.fileName)"><i class="fas fa-download"></i></a>
+                                <a title="Delete" class="icon-margin" mwlConfirmationPopover [popoverTitle]="popoverTitle" [popoverMessage]="popoverMessage" placement="left" (confirm)="deleteDocumentAttachement(data.documentsAttachmentId)" (cancel)="cancelClicked = true"><span class="fas fa-trash"></span></a>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="container-fluid" style="margin-top: 16px;">
+    <hr />
+    <div class="row">
+        <div class="col-md-6">
+            <form [formGroup]=requestDocForm (ngSubmit)="onSubmit()">
+                <div>
+                    <h3><i class="fas fa-id-card"></i> <b> Request Document</b></h3>
+                </div>
+                <div class="card card-style">
+                    <div class="row col-12 padding-field-bottom">
+                        <div class="col-4">
+                            <label for="type">Document Name<span class="color-red">*</span></label>
+                        </div>
+                        <div class="col-8">
+                            <input type="text" formControlName="documentName" placeholder="Enter Document Name" class="form-control" maxlength="50" />
+                            <span class="color-red" *ngIf="submittedReqDoc && form_.documentName.errors">Document Name
+                                {{requiredErrorText}}</span>
+                        </div>
+                    </div>
+                    <div class="row col-12 padding-field-bottom">
+                        <div class="col-4">
+                            <label for="type">Document Type<span class="color-red">*</span></label>
+                        </div>
+                        <div class="col-8">
+                            <select class="form-control custom-select-box" formControlName="documentType">
+                                <option value="null" disabled>Select Document Type</option>
+                                <option *ngFor="let document of documentsMasterList" [value]=document.documentId>
+                                    {{document.documentName}}
+                                </option>
+                            </select>
+                            <span class="color-red" *ngIf="submittedReqDoc && form_.documentType.errors">Document Type
+                                {{requiredErrorText}}</span>
+                        </div>
+                    </div>
+                    <div class="row col-12 padding-field-bottom">
+                        <div class="col-4">
+                            <label for="type">Description<span class="color-red">*</span></label>
+                        </div>
+                        <div class="col-8">
+                            <input type="text" formControlName="requestDescription" placeholder="Enter Description" class="form-control" />
+                            <span class="color-red" *ngIf="submittedReqDoc && form_.requestDescription.errors">Description
+                                {{requiredErrorText}}</span>
+                        </div>
+                    </div>
+                    <div class="row col-12 padding-field-bottom">
+                        <div class="col-4">
+                            <label for="type">Status<span class="color-red">*</span></label>
+                        </div>
+                        <div class="col-8">
+                            <select class="form-control custom-select-box" formControlName="docStatus">
+                                <option disabled>Select Status</option>
+                                <option value="Open">Open</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="row col-6 padding-field-bottom" style="margin-left: 30%;">
+                        <button type="submit" class="button btn btn-success btn-primary btn-sm">Send Request</button>
+                        <button type="button" class="button btn btn-success btn-warning btn-sm" (click)="cancel()">Cancel</button>
+                    </div>
+
+                </div>
+            </form>
+
+        </div>
+        <div class="col-md-6">
+            <div>
+                <h3><i class="fas fa-id-card"></i> <b> Document List</b></h3>
+            </div>
+            <div class="box-body scroll">
+                <table class="table table-bordered table-hover table-sm">
+                    <thead class="t-head">
+                        <tr>
+                            <th *ngFor="let head of requestHeader"><a><label>{{head}}</label></a></th>
+                        </tr>
+                    </thead>
+
+                    <tbody>
+                        <tr *ngFor="let data of requestDocList; let i = index">
+                            <td>{{i+1}}</td>
+                            <td>{{data.documentName}}</td>
+                            <td>{{data.docTypeName}}</td>
+                            <td>{{data.docStatus ? (data.docStatus === 'Open' ? 'Open' : 'Approved') : ''}}</td>
+                            <td>
+                                <a *ngIf="data.docStatus === 'Approve'" title="Download" class="icon-margin" (click)="downloadDocumentAttachment(data.documentsAttachmentId)" target="_blank"><i
+                                    class="fas fa-download"></i></a>
+                                <a *ngIf="data.docStatus === 'Open'" title="Download" class="disabled" style="cursor: default;"><i
+                                    class="fas fa-download" style="cursor: default;"></i></a>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="container-fluid" style="margin-top: 16px;" *ngIf="isHrRole">
+    <hr />
+    <div class="row">
+
+        <div class="col-md-12">
+            <div>
+                <h3><i class="fas fa-id-card"></i> <b> Approve Document</b></h3>
+            </div>
+            <table class="table table-bordered table-hover table-sm">
+                <thead class="t-head">
+                    <tr>
+                        <th *ngFor="let head of approveHeader"><a><label>{{head}}</label></a></th>
+                    </tr>
+                </thead>
+
+                <tbody>
+                    <tr *ngFor="let data of approveDocList; let i = index">
+                        <td>{{i+1}}</td>
+                        <td>{{data.documentName}}</td>
+                        <td>{{data.docTypeName}}</td>
+                        <td>{{data.employeeName}}</td>
+                        <td>{{data.approvedescription}}</td>
+                        <td>{{data.docStatus ? (data.docStatus === 'Open' ? 'Open' : 'Approved') : ''}}</td>
+                        <td>
+                            <a *ngIf="data.docStatus === 'Approve'" class="disabled" style="cursor: default;" title="Approved"><i class="fa fa-check-circle"></i>
+                                Approved</a>
+                            <a *ngIf="data.docStatus === 'Open'" title="Approve" class="icon-margin" style="cursor: pointer;" data-toggle="modal" data-target="#approve-document" (click)="approve(data.documentsAttachmentId)"><i class="fa fa-check-circle"></i>
+                                Approve</a>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<div class="modal alert-modal fade" id="approve-document" role="dialog" style="display: none;">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content model">
+            <div class="modal-header " id="msg_header">
+                <h4 class="modal-title">Update Document</h4>
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+            </div>
+            <div class="modal-body">
+                <form [formGroup]=approveDocumentForm>
+                    <div class="row col-12 padding-field-bottom">
+                        <div class="col-4">
+                            <label for="type">Status<span class="color-red">*</span></label>
+                        </div>
+                        <div class="col-8">
+                            <select class="form-control custom-select-box" formControlName="docStatus">
+                                <option disabled>Select Status</option>
+                                <option value="Approve">Approve</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="row col-12 padding-field-bottom">
+                        <div class="col-4">
+                            <label for="type">Description<span class="color-red">*</span></label>
+                        </div>
+                        <div class="col-8">
+                            <input type="text" formControlName="approvedescription" placeholder="Enter Description" class="form-control" />
+                            <span class="color-red" *ngIf="submittedApprove && approve_form_.approvedescription.errors">Description
+                                {{requiredErrorText}}</span>
+                        </div>
+                    </div>
+                    <div class="row col-12 padding-field-bottom">
+                        <div class="col-4">
+                            <label for="type">Select Letter<span class="color-red">*</span></label>
+                        </div>
+                        <div class="col-8">
+                            <select class="form-control custom-select-box" formControlName="letter">
+                                <option value="null" disabled>Select Select Letter</option>
+                                <option *ngFor="let letter of letterTemplateList" [value]=letter.templateId>
+                                    {{letter.templateName}}
+                                </option>
+                            </select>
+                            <span class="color-red" *ngIf="submittedApprove && approve_form_.letter.errors">Letter
+                                {{requiredErrorText}}</span>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="row col-12 padding-field-bottom">
+                <div class="col-md-6 pull-left">
+                    <button type="button" id="btnComponentSave" [disabled]="submitProcessing" (click)="submitStatus()" class="button btn-primary btn-style"><i class="fas fa-save"></i>
+                        Approve & Send <i class="fa fa-spinner fa-spin" *ngIf="submitProcessing"
+                            style="font-size:19px"></i></button>
+                </div>
+                <div class="col-md-6 pull-right">
+                    <button type="button" id="btnComponentSave" (click)="clearApprove()" class="button btn-warning btn-style" [disabled]="submitProcessing">
+                        Clear</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

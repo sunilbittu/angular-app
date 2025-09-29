@@ -1,0 +1,276 @@
+<div class="container-fluid">
+    <div class="d-flex align-items-center mt-2">
+        <div class="m-2">
+            <div class="h-size"><em class="fa fa-user"></em> <strong> Manage Tickets</strong></div>
+        </div>
+        <div class="flex-fill">
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-12">
+            <table class="table table-bordered table-hover table-sm">
+                <thead class="t-head">
+                    <tr>
+                        <th *ngFor="let head of headers"><a>{{head}}</a></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let data of ticketsList">
+                        <td>{{data.helpdeskTicketId}}</td>
+                        <td>{{data.problem}}</td>
+                        <td>{{data.employeeId.employeeCode}}  {{data.employeeId.firstName}} {{data.employeeId.lastName}}</td>
+                        <td>{{data.departmentId.departmentName}}</td>
+                        <td>{{data.asigneeId.firstName}} {{data.asigneeId.lastName}}</td>
+                        <td>{{data.ticketStatus}}</td>
+                        <td>{{data.remarks}}</td>
+                        <td>
+                            <a title="Edit" (click)="modelShowEdit(data)" class="icon-margin"><i
+                                    class="fas fa-user-edit"></i></a>
+                            <a title="Re-assign" (click)="handleReassign(data)" class="icon-margin"><i
+                                    class="fa fa-pencil-square-o"></i></a>
+                            <a title="Logs" (click)="handleLogs(data.helpdeskTicketId)" class="icon-margin"><i
+                                    class="fa fa-history"></i></a>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+            <div class="row" *ngIf="totalElements!=0">
+                <div class="col-md-6 col-sm-6 col-6  pagination-area"><span class="show-entry">Showing
+                        <span>{{showingFrom}} to {{showingTo}} of {{totalElements}} entries</span></span>&nbsp;
+                </div>
+
+                <div class="col-md-6 pull-right" *ngIf="totalElements > pageSize">
+                    <pagination-controls (pageChange)="pageChanged($event)"></pagination-controls>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal fade common-model" id="edit-popup">
+    <div class="modal-dialog modal-xl">
+        <div class="modal-content model">
+            <form [formGroup]="ticketsForm">
+                <div class="modal-header">
+                    <div class="modal-title"><i class="fa fa-pencil-square-o"></i> Manage Ticket</div>
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                </div>
+                <div class="modal-body">
+                    <div class="row col-12 padding-field-bottom">
+                        <div class="col-2">
+                            <label>Ticket Id<span class="color-red">*</span></label>
+                        </div>
+                        <div class="col-4">
+                            <input type="text" class="form-control" placeholder="Please Enter Ticket Id"
+                                formControlName="ticketId" [readonly]="true">
+                        </div>
+                        <div class="col-2">
+                            <label>Problem<span class="color-red">*</span></label>
+                        </div>
+                        <div class="col-4">
+                            <input type="text" class="form-control" placeholder="Please Enter Problem"
+                                formControlName="problem" [readonly]="true">
+                            <span class="color-red" *ngIf="submitted && form_.problem.errors">Problem
+                                {{requiredErrorText}}</span>
+                        </div>
+                    </div>
+                    <div class="row col-12 padding-field-bottom">
+                        <div class="col-2">
+                            <label for="type">Department<span class="color-red">*</span></label>
+                        </div>
+                        <div class="col-4">
+                            <input type="text" class="form-control" placeholder="Please Enter Department"
+                                formControlName="department" [readonly]="true">
+                            <span class="color-red" *ngIf="submitted && form_.department.errors">Department
+                                {{requiredErrorText}}</span>
+                        </div>
+                        <div class="col-2">
+                            <label>HOD<span class="color-red">*</span></label>
+                        </div>
+                        <div class="col-4">
+                            <input type="text" class="form-control" placeholder="Please Enter HOD Name"
+                                formControlName="hod" [readonly]="true">
+                            <span class="color-red" *ngIf="submitted && form_.hod.errors">HOD
+                                {{requiredErrorText}}</span>
+                        </div>
+                    </div>
+                    <div class="row col-12 padding-field-bottom">
+                        <div class="col-2">
+                            <label>Status<span class="color-red">*</span></label>
+                        </div>
+                        <div class="col-4">
+                            <select class="form-control" id="status" formControlName="status"
+                                [ngClass]="{ 'is-invalid': submitted && form_.status.errors }">
+                                <option value=null disabled>Please Select Status</option>
+                                <option *ngIf="_form.status == 'Open'" value='Open' disabled>Open</option>
+                                <option *ngFor="let status of statuses" [value]="status">
+                                    {{status}}
+                                </option>
+                            </select>
+                            <span class="color-red" *ngIf="submitted && form_.status.errors">Status
+                                {{requiredErrorText}}</span>
+                        </div>
+                        <div class="col-2">
+                            <label for="type">Remarks<span class="color-red">*</span></label>
+                        </div>
+                        <div class="col-4">
+                            <textarea type="text" class="form-control" placeholder="Please Enter Remarks"
+                                formControlName="remarks"></textarea>
+                            <span class="color-red" *ngIf="submitted && form_.remarks.errors">Remarks
+                                {{requiredErrorText}}</span>
+                        </div>
+                    </div>
+                    <hr>
+                    <div class="row">
+                        <div class="col-md-6 pull-left">
+                            <button type="submit" id="btnComponentSave" (click)="submit()" [disabled]="submitProcessing"
+                                class="button btn-primary btn-style"><i class="fas fa-save"></i>
+                                Update <i class="fa fa-spinner fa-spin" *ngIf="submitProcessing"
+                                    style="font-size:19px"></i></button>
+                        </div>
+                        <div class="col-md-6 pull-right">
+                            <button type="button" id="btnComponentSave" (click)="clear()"
+                                class="button btn-warning btn-style" [disabled]="submitProcessing">
+                                Clear</button>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade common-model" id="reassign-popup">
+    <div class="modal-dialog modal-xl">
+        <div class="modal-content model">
+            <form [formGroup]="reassignForm">
+                <!-- Modal Header -->
+                <div class="modal-header">
+                    <div class="modal-title"><i class="fas fa-user-edit"></i> Re-assign Ticket</div>
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                </div>
+                <!-- Modal body -->
+                <div class="modal-body">
+                    <div class="row col-12 padding-field-bottom">
+                        <div class="col-2">
+                            <label>Ticket Id<span class="color-red">*</span></label>
+                        </div>
+                        <div class="col-4">
+                            <input type="text" class="form-control" placeholder="Please Enter Ticket Id"
+                                formControlName="ticketId" [readonly]="true">
+                        </div>
+                        <div class="col-2">
+                            <label>Problem<span class="color-red">*</span></label>
+                        </div>
+                        <div class="col-4">
+                            <input type="text" class="form-control" placeholder="Please Enter Problem"
+                                formControlName="problem" [readonly]="true">
+                            <span class="color-red" *ngIf="reassignSubmitted && reassignForm_.problem.errors">Problem
+                                {{requiredErrorText}}</span>
+                        </div>
+                    </div>
+                    <div class="row col-12 padding-field-bottom">
+                        <div class="col-2">
+                            <label for="type">Department<span class="color-red">*</span></label>
+                        </div>
+                        <div class="col-4">
+                            <select class="form-control" id="department" formControlName="department"
+                                [ngClass]="{ 'is-invalid': reassignSubmitted && reassignForm_.department.errors }"
+                                (change)="getDepartmentheadsDetails()">
+                                <option value=null disabled>Please Select Department</option>
+                                <option *ngFor="let department of departmentList" [value]=department.departmentId>
+                                    {{department.departmentName}}
+                                </option>
+                            </select>
+                            <span class="color-red"
+                                *ngIf="reassignSubmitted && reassignForm_.department.errors">Department
+                                {{requiredErrorText}}</span>
+                        </div>
+                        <div class="col-2">
+                            <label for="type">Department Head<span class="color-red">*</span></label>
+                        </div>
+                        <div class="col-4">
+                            <select id="department" formControlName="asigneeId" class="form-control text">
+                                <option value=null selected disabled>Please Select Department Head</option>
+                                <option *ngFor="let employee of employeeDetails" [value]=employee.employeeId>
+                                    {{employee.firstName}} {{employee.lastName}}
+                                </option>
+                                <option value=null *ngIf="employeeDetails.length == 0" disabled>No Data Found!</option>
+                            </select>
+                            <span class="color-red"
+                                *ngIf="reassignSubmitted && reassignForm_.asigneeId.errors">Department Head
+                                {{requiredErrorText}}</span>
+
+                        </div>
+                    </div>
+                    <div class="row col-12 padding-field-bottom">
+                        <div class="col-2">
+                            <label for="type">Remarks<span class="color-red">*</span></label>
+                        </div>
+                        <div class="col-10">
+                            <textarea type="text" class="form-control" placeholder="Please Enter Remarks"
+                                formControlName="reassignRemarks"></textarea>
+                            <span class="color-red"
+                                *ngIf="reassignSubmitted && reassignForm_.reassignRemarks.errors">Remarks
+                                {{requiredErrorText}}</span>
+                        </div>
+                    </div>
+                    <hr>
+                    <div class="row">
+                        <div class="col-md-6 pull-left">
+                            <button type="button" id="btnComponentSave" (click)="submitReassign()"
+                                [disabled]="submitProcessing" class="button btn-primary btn-style"><i
+                                    class="fas fa-save"></i>
+                                Assign <i class="fa fa-spinner fa-spin" *ngIf="submitProcessing"
+                                    style="font-size:19px"></i></button>
+                        </div>
+                        <div class="col-md-6 pull-right">
+                            <button type="button" id="btnComponentSave" (click)="clearReassign()"
+                                class="button btn-warning btn-style" [disabled]="submitProcessing">
+                                Clear</button>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade common-model" id="logs-popup">
+    <div class="modal-dialog modal-xl">
+        <div class="modal-content model">
+            <!-- Modal Header -->
+            <div class="modal-header">
+                <div class="modal-title"><i class="fas fa-list"></i> Ticket Logs</div>
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+            </div>
+            <!-- Modal body -->
+            <div class="modal-body">
+                <div class="col-12">
+                    <table class="table table-bordered table-hover table-sm">
+                        <thead class="t-head">
+                            <tr>
+                                <th *ngFor="let head of logsHeaders"><a>{{head}}</a></th>
+                            </tr>
+                        </thead>
+                        <tbody *ngIf="logsList.length > 0">
+                            <tr *ngFor="let data of logsList;let i=index">
+                                <td>{{ticketId}}-{{i+1}}</td>
+                                <td>{{data.logMessage}}</td>
+                            </tr>
+                        </tbody>
+                        <tbody *ngIf="logsList.length == 0">
+                            <tr>
+                                <td colspan="2">No Records Found!</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <hr>
+                <div class="col-12 pull-right">
+                    <button type="button" class="button btn-danger btn-style" data-dismiss="modal"> Close </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

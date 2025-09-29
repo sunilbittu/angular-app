@@ -1,0 +1,52 @@
+/* .form-field{
+
+    display: flex;
+} */
+
+.form-field label {
+    min-width: 40%;
+    color: #5d6170;
+    font-weight: normal;
+}
+
+
+
+.form-section > .title {
+    margin-left: -30px;
+    font-size: 1.25rem;
+    font-weight: bold;
+    color: #5d6170;
+    font-style: italic;
+    margin-bottom: 1rem;
+}
+.modal{
+    margin-top:7vw;
+}
+.model.form-control{
+    width:25vw;
+    height: 30px ;
+    margin: 5px;
+    border: 1px solid #81badb;
+}
+.modal-footer .btn-success{
+    margin-right: 0vw; 
+}
+.ml-2 {
+    margin-left:2vw;;
+}
+
+.form-section {
+    padding-left: 30px;
+    margin-bottom: 1rem;
+}
+.text{
+margin-bottom: 6px;
+}
+/* add employee */
+
+.form-control{
+    height: 30px !important;
+}
+.ml-60{
+    margin-left: 60px;
+}

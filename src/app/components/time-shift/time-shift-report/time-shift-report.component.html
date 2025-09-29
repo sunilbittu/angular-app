@@ -1,0 +1,109 @@
+<div class="reports-box">
+    <h2 class="head-margin"> Time Shift Reports</h2>
+    <ul>
+        <li data-toggle="modal" data-target="#selectDate"><i class="fas fa-file-pdf"></i> Attendance In Details</li>
+        <li data-toggle="modal" data-target="#selectDate"><i class="fas fa-file-pdf"></i> Miss Punch Report</li>
+        <li data-toggle="modal" data-target="#selectDate"><i class="fas fa-file-pdf"></i> Miss Punch Application</li>
+        <li data-toggle="modal" data-target="#selectDate"><i class="fas fa-file-pdf"></i> Late Coming Report</li>
+        <li data-toggle="modal" data-target="#selectDate"><i class="fas fa-file-pdf"></i> Early Going Report</li>
+        <li data-toggle="modal" data-target="#selectDate"><i class="fas fa-file-pdf"></i> Overtime Report</li>
+        <li data-toggle="modal" data-target="#selectDate"><i class="fas fa-file-pdf"></i> Overtime Report1</li>
+        <li data-toggle="modal" data-target="#selectDate"><i class="fas fa-file-pdf"></i> OT Approval Report</li>
+        <li data-toggle="modal" data-target="#selectDate"><i class="fas fa-file-pdf"></i> Time Card Report</li>
+        <li data-toggle="modal" data-target="#selectDate"><i class="fas fa-file-pdf"></i> Time & Leave Report</li>
+        <li data-toggle="modal" data-target="#selectDate"><i class="fas fa-file-pdf"></i> Daily Attendance Report</li>
+        <li data-toggle="modal" data-target="#selectDate"><i class="fas fa-file-pdf"></i> MonthWise Attendance</li>
+        <li data-toggle="modal" data-target="#selectDate"><i class="fas fa-file-pdf"></i> DateWise Attendance</li>
+        <li data-toggle="modal" data-target="#selectDate"><i class="fas fa-file-pdf"></i> CO+ Report</li>
+        <li data-toggle="modal" data-target="#selectDate"><i class="fas fa-file-pdf"></i> Time In Out Report</li>
+        <li data-toggle="modal" data-target="#selectDate"><i class="fas fa-file-pdf"></i> Punch Location Report</li>
+        <li data-toggle="modal" data-target="#selectDate"><i class="fas fa-file-pdf"></i> Gate Pass Report</li>
+        <li data-toggle="modal" data-target="#selectDate"><i class="fas fa-file-pdf"></i> Device Id Deviation</li>
+        <li data-toggle="modal" data-target="#selectDate"><i class="fas fa-file-pdf"></i> Muster Roll Report</li>
+        <li data-toggle="modal" data-target="#selectDate"><i class="fas fa-file-pdf"></i> Employee Regularity Report</li>
+    </ul>
+    <div class="row mt-3 btn-group">
+        <div id="export_to_excel">
+            <a class="btn btn-outline fnt-3"><i class="fas fa-file-excel excel-icon-text"></i> Export To Excel</a>
+        </div>
+        <div id="export_to_pdf">
+            <a class="btn btn-outline fnt-3"><i class="fas fa-file-pdf pdf-icon-text"></i> Export To Pdf</a>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade common-model" id="selectDate">
+    <div class="modal-dialog model">
+        <div class="modal-content-md">
+
+            <!-- Modal Header -->
+            <div class="modal-header">
+                <h3 class="modal-title">Date Range</h3>
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+            </div>
+
+            <!-- Modal body -->
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-3 pb-0">
+                        <label for="txt_code">Date From</label>
+                    </div>
+                    <div class="col-9 pb-0">
+                        <input type="text" id="txt_date_from" placeholder="DD/MM/YYYY">
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-3 pb-0">
+                        <label for="txt_name">Date To</label>
+                    </div>
+                    <div class="col-9 pb-0">
+                        <input type="text" id="txt_date_to" placeholder="DD/MM/YYYY">
+                    </div>
+                </div>
+            </div>
+
+            <!-- Modal footer -->
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#myModal" data-dismiss="modal">Ok</button>
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+<div class="modal fade common-model" id="myModal">
+    <div class="modal-dialog modal-lg model">
+        <div class="modal-content">
+
+            <!-- Modal Header -->
+            <div class="modal-header">
+                <h4 class="modal-title2"><i class="fas fa-filter"></i>Employees Filter</h4>
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+            </div>
+
+            <!-- Modal body -->
+            <div class="modal-body">
+                <table class="table table-bordered model-table">
+                    <tr>
+                        <td><input type="checkbox" class="form-control"></td>
+                        <td>S No</td>
+                        <td><input type="checkbox" class="form-control"></td>
+                        <td>PHOTO</td>
+                        <td><input type="checkbox" class="form-control"></td>
+                        <td>EMP CODE</td>
+                        <td><input type="checkbox" class="form-control"></td>
+                        <td>CLIENT CODE</td>
+                    </tr>
+                </table>
+            </div>
+
+            <!-- Modal footer -->
+            <div class="modal-footer">
+                <button type="button" class="btn btn-success" data-dismiss="modal">Ok</button>
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            </div>
+
+        </div>
+    </div>
+</div>

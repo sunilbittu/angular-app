@@ -1,0 +1,80 @@
+.modal-title {
+    font-size: 1.1rem;
+    font-weight: bold;
+    text-align: center;
+    flex: 1;
+    color: #000;
+}
+
+#confirmDelete{
+    margin-top:5vw;
+}
+
+.edit {
+    cursor: pointer;
+  }
+
+.table tr th {
+    font-size: 14px;
+}
+
+.table tr td {
+    font-size: 14px;
+}
+
+.model-tbl tr td input {
+    height: 32px;
+    width: 310px;
+}
+.td-width {
+    width: 65%;
+}
+.td-width-1 {
+    width: 37%;;
+}
+.modal-title {
+    font-size: 1rem;
+    font-weight: bold;
+    text-align: center;
+    flex: 1;
+    color: #000;
+}
+.margin-left {
+    margin-left:10px;
+}
+.model-tbl tr td h4 {
+    padding-right: 50px;
+    padding-top: 3px;
+}
+.btn-footer {
+    margin: 1px;
+    margin-bottom: 15px;
+}
+.custom-select-box {
+    width: 100%;
+    border: 1px solid #adadad;
+    padding: 6px 9px;
+    font-weight: 400;
+    background-color: white;
+    border-radius: 4px;
+    margin-top: 4px;
+    height: 35px;
+}
+.pull-top-5 {
+    margin-top: 6px;
+}
+.padding-top-5 {
+    padding-top: 5px;
+}
+label {
+    display: inline-block;
+    font-size: 15px;
+    margin-bottom: 0px;
+}
+.modal-body {
+    max-height: calc(90vh - 200px);
+    overflow-y: auto;
+}
+.pull-left-5 {
+    margin-left: 5px;
+}

@@ -1,0 +1,119 @@
+.form-control::-webkit-input-placeholder {
+    font-family: FontAwesome;
+    font-weight: normal;
+    overflow: visible;
+    vertical-align: top;
+    display: inline-block !important;
+    padding-left: 1px;
+    padding-top: 2px;
+    color: hsl(9, 17%, 24%);
+  }
+  
+  .read-only {
+    background-color: #eeeeef;
+    cursor: auto;
+  }
+  
+  .edit {
+    cursor: pointer;
+  }
+  
+  .padding-field-bottom {
+    padding-bottom: 10px;
+  }
+  
+  label {
+    display: inline-block;
+    margin-bottom: .5rem;
+    font-size: 16px;
+  }
+  
+  .height-45 {
+    height: 45px;
+  }
+  
+  .custom-select-box {
+    width: 100%;
+    font-weight: 500;
+    background-color: white;
+    height: 38px;
+    font-size: 1.06rem;
+    color: #2d3135;
+    font-family: none;
+    cursor: pointer;
+  }
+  
+  .modal-title {
+    font-size: 20px;
+    font-weight: 500;
+    text-align: center;
+    flex: 1;
+    color: #000;
+  }
+  
+  .table tr th, .table tr td {
+    border: solid 1px #a3a2a3 !important;
+    font-size: 14px;
+  }
+  
+  input, textarea {
+    font-size: 1.06rem;
+    cursor: text;
+  }
+  
+  .col-2 {
+    flex: 0 0 16.666667%;
+    max-width: 16.666667%;
+    margin-top: 2px;
+  }
+  
+  .col-6 {
+    flex: 0 0 50%;
+    max-width: 50%;
+    padding-top: 8px;
+  }
+  
+  button:disabled,
+  button[disabled] {
+    border: 1px solid #999999;
+    background-color: #cccccc;
+    color: #666666;
+  }
+  
+  .padd-right-0 {
+    padding-right: 0px;
+  }
+  
+  .radio-font {
+    text-align: center;
+    font-size: x-large;
+    font-weight: 500;
+    cursor: pointer;
+  }
+  
+  .btn-group.myapp-select .btn.dropdown-toggle {
+    color: blue;
+    background: #cecece;
+    border-radius: 2px;
+  }
+  
+  .btn-group.myapp-select.open .btn.dropdown-toggle {
+    background-color: #afafaf;
+    font-weight: bold;
+  }
+  
+  .myapp-select>ul.dropdown-menu {
+    max-height: 300px;
+    overflow-y: auto;
+    border-radius: 2px;
+  }
+  
+  .myapp-select>ul.dropdown-menu>li {
+    color: blue;
+    background: #cecece;
+  }
+
+  .padding-div {
+    padding-top: 5px;
+    padding-bottom: 5px;
+  }

@@ -1,0 +1,159 @@
+<div class="container-fluid h-100">
+    <div class="row h-100 margin-top-5" style="overflow: hidden;">
+
+        <div class="col-2 light-bg side-rpt-menu h-100">
+
+            <h2 class="main-head">Tax Report</h2>
+            <div class="mt-3 btn-group-vertical width-auto">
+                <span class="width-auto" *ngFor="let tax of taxReports">
+                    <a class="btn btn-outline fnt-3" [ngClass]="{ 'active' : isValue == tax }" (click)="toggle(tax)"
+                     (click)="handleTaxReport(tax)"> {{tax}} Report</a>
+                </span>
+                <br />
+                <a class="btn btn-outline fnt-3" [class.disabled]="reports.length == 0" target="_blank"
+                    (click)="exportPDF()"> <i class="fa fa-file-pdf-o excel-icon-text text-danger"></i>Export To
+                    PDF
+                </a>
+                <a class="btn btn-outline fnt-3" [class.disabled]="reports.length == 0" target="_blank"
+                    (click)="exportExcel()"> <i class="fas fa-file-excel excel-icon-text text-success"></i>Export To
+                    Excel
+                </a>
+            </div>
+        </div>
+        <div class="col-10 p-0 h-100" style="margin-top: 5px;">
+            <form [formGroup]="form" (ngSubmit)="submit()">
+                <div class="d-flex align-items-center mt-2 light-blue-bg">
+                    <div class="m-2">
+                        <td>
+                            <label><strong>Financial Year</strong><span class="color-red">*</span></label>
+                        </td>
+                        <td>
+                            <select class="custom-select-box form-control" formControlName="finYear">
+                                <option value=''>--Please select Year--</option>
+                                <option *ngFor="let year of financialYearList" [value]="year.financialYearId">
+                                    {{year.financialYear}}
+                                </option>
+                            </select>
+                            <div class="align-center"><span class="color-red"
+                                    *ngIf="submitted && form_.finYear.errors">Financial Year
+                                    {{requiredErrorText}}</span></div>
+                        </td>
+                    </div>
+                    <div class="m-2" *ngIf="taxValue == 'Monthly TDS'">
+                        <select class="custom-select-box form-control" formControlName="month">
+                            <option value=''>--Please Select Month--</option>
+                            <option *ngFor="let month of months" [value]="month.key">
+                                {{month.key}}
+                            </option>
+                        </select>
+                        <div class="align-center"><span class="color-red" *ngIf="submitted && form_.month.errors">Month
+                                {{requiredErrorText}}</span></div>
+                    </div>
+                    <div class="m-2" *ngIf="taxValue == 'Quarterly TDS'">
+                        <select formControlName="quarter" (ngModelChange)="changeQuarter($event)"
+                            class="custom-select-box form-control pull-top-5">
+                            <option value="" disabled>Please select Quarter</option>
+                            <option *ngFor="let quarter of quarterList" [value]="quarter">
+                                {{quarter}}
+                            </option>
+                        </select>
+                        <div class="align-center"><span class="color-red"
+                                *ngIf="submitted && form_.quarter.errors">Quarter
+                                {{requiredErrorText}}</span></div>
+
+                    </div>
+                    <div class="m-2">
+                        <button type="submit" id="btn_projection" class="button btn-primary m-auto">Search</button>
+                        &nbsp;
+                        <button type="button" id="btn_projection" (click)="onClick()"
+                            class="button btn-danger m-auto">Cancel</button>
+                    </div>
+                </div>
+                <div>
+                    <p *ngIf="isFormValueInvalid" class="color-red">&nbsp;&nbsp;Please select any report</p>
+                </div>
+            </form>
+            <div id="dv_tbl_rpt_content" *ngIf="taxValue !== 'Investments'">
+                <div class="m-2">
+                    <table id="rpt_tbl" class="table scrollable table-bordered table-sm">
+                        <thead>
+                            <tr>
+                                <th colspan="6" style="background-color:#e5e6e8;position:sticky;top:-1px">
+                                    <b>Company Name :</b> {{companyName}}
+                                </th>
+                            </tr>
+                            <tr>
+                                <th class="header">Emp Code</th>
+                                <th class="header">Name</th>
+                                <th class="header">Tds</th>
+                                <th class="header">Branch Name</th>
+                                <th class="header">Department Name</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr *ngIf="toggleLoader">
+                                <td colspan="5">
+                                    <img src="./assets/images/loader-icon.gif" class="loader-margin img-responsive"
+                                        alt="loading....">
+                                </td>
+                            </tr>
+                            <tr class="align-center" *ngIf="reports.length==0 && !toggleLoader">
+                                <td colspan="5">No Records Found</td>
+                            </tr>
+
+                            <tr *ngFor="let data of reports">
+                                <td>{{data.employeeCode}}</td>
+                                <td>{{data.firstName}} {{data.lastName}}</td>
+                                <td>{{data.monthly}}</td>
+                                <td>{{data.branchName}}</td>
+                                <td>{{data.departmentName}}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <div id="dv_tbl_rpt_content" *ngIf="taxValue == 'Investments'">
+                <div class="m-2">
+                    <table id="rpt_tbl" class="table scrollable table-bordered table-sm">
+                        <thead>
+                            <tr>
+                                <th colspan="6" style="background-color:#e5e6e8;position:sticky;top:-1px">
+                                    <b>Company Name :</b> {{companyName}}
+                                </th>
+                            </tr>
+                            <tr>
+                                <th class="header">Emp Code</th>
+                                <th class="header">Name</th>
+                                <th class="header">Investment Type</th>
+                                <th class="header">Date</th>
+                                <th class="header">Declared Amount</th>
+                                <th class="header">Made Amount</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr *ngIf="toggleLoader">
+                                <td colspan="6">
+                                    <img src="./assets/images/loader-icon.gif" class="loader-margin img-responsive"
+                                        alt="loading....">
+                                </td>
+                            </tr>
+                            <tr class="align-center" *ngIf="reports.length==0 && !toggleLoader">
+                                <td colspan="6">No Records Found</td>
+                            </tr>
+
+                            <tr *ngFor="let data of reports">
+                                <td>{{data.employeeCode}}</td>
+                                <td>{{data.firstName}}</td>
+                                <td>{{data.investmentType}}</td>
+                                <td>{{data.investmentDate | date:'dd/MM/yyyy'}}</td>
+                                <td>{{data.declared}}</td>
+                                <td>{{data.made}}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,392 @@
+<div class="container-fluid">
+<div class=" row">
+    <div class="h-size"><em class="fa fa-user mr-1"></em> <strong>Employee Recruitment & Onboarding Report</strong></div>
+</div>
+<br>
+<div class="row" >
+    <div class="col-sm-3">
+        <label for="financialYear"> Branch: <span class="color-red">*</span></label>
+        <select class="form-control" [(ngModel)]="branchModel" name="branch" (change)="fetchDepaetmentsByBranch()"
+            id="branch">
+            <option disabled >Please Select Branch</option>
+            <option *ngFor="let branch of branchData" value={{branch.companyBranchDetailsId}}>{{branch.branchName}}
+            </option>
+        </select>
+        <span class="color-red" *ngIf="submitted && !isbranchNameSelected ">Branch Name cant be blank</span>
+    </div> 
+    <div class="col-sm-3">
+        <label for="department">Department : </label>
+        <select class="form-control" [(ngModel)]="departmentModel" name="department" id="department">
+            <option value="">--Please Select Department--</option>
+            <option *ngFor="let dep of departmentData" value={{dep.departmentId}}>{{dep.departmentName}}</option>
+        </select>
+
+    </div>
+    <div class="col-sm-2">
+        <label>From Date: <span class="color-red">*</span></label>
+        
+        <input type="Date" [(ngModel)]="fromDateModel" class="form-control" (change)="changeDate()"> 
+        <span class="color-red" *ngIf="submitted && !isDateSelected ">From Date cant be blank</span>
+        
+    </div>
+    <div class="col-sm-2">
+        <label>To Date: </label>
+        
+        <input type="Date" [(ngModel)]="toDateModel" class="form-control"   > 
+    </div>
+    <div class="col-sm-2 tttt">
+        <button class="btn btn-primary btn-sm" (click)="getEmployeeOnboardingDetails()">Search</button>&nbsp;
+
+        <button class="btn btn-danger btn-sm" (click)="clearData()">Cancel</button>
+    </div>
+</div>
+
+
+<br>
+<div class="container-fluid" *ngIf="toggleScreen">
+    <div class="row">
+        <table class="table table-bordered table-hover table-sm">
+
+            <tr>
+                <th rowspan="2" class="t-head head-width">
+                    Department Name
+                </th>
+                <th rowspan="2" class="t-head head-width">
+                    Request
+                </th>
+                <th rowspan="2" class="t-head head-width">
+                    Approved
+                </th>
+                <th rowspan="2" class="t-head head-width">
+                    Denied
+                </th>
+                <th rowspan="2" class="t-head head-width">
+                    Resources Gathered
+                </th>
+                <th rowspan="2" class="t-head head-width">
+                    New Joinees
+                </th>
+                <th style="" colspan="3" class="t-head head-width">
+                    Background Verification
+                </th>
+            </tr>
+            <tr>
+
+                <th class="t-head head-width"> In Progress</th>
+                <th class="t-head head-width"> Red</th>
+                <th class="t-head head-width"> Green</th>
+
+            </tr>
+            <tbody>
+                <tr *ngFor="let count of onboardingReportCount">
+                    <td>{{count.departmentName}}</td>
+                    <td><a class="icon-margin" title="Cilck hear to view Raised Requests"
+                            (click)="totalRaisedRequests(count)"><span>{{count.requestCount}}</span></a></td>
+                    <td><a class="icon-margin" title="Cilck hear view all the Approved Requests"
+                            (click)="totalApprovedRequests(count)"><span>{{count.approvedCount}}</span></a></td>
+                    <td><a class="icon-margin" title="Cilck hear to view all the Denied Requests"
+                            (click)="totalDeniedRequests(count)"><span>{{count.deniedCount}}</span></a></td>
+                    <td><a class="icon-margin" title="Cilck hear to view the Resources Gathered"
+                            (click)="totalResourceGathered(count)"><span>{{count.resourceGatheredCount}}</span></a></td>
+                    <td><a class="icon-margin" title="Cilck hear to view all the new Joinees"
+                            (click)="totalNewJoinees(count)"><span>{{count.newJoineesCount}}</span></a></td>
+                    <td><a class="icon-margin" title="Cilck hear to view the Employees with In Progress BGV Status"
+                            (click)="totalInProgress(count)"><span>{{count.inProgressCount}}</span></a></td>
+                    <td><a class="icon-margin" title="Cilck hear to view the Employees with Red BGV Status"
+                            (click)="totalRed(count)"><span>{{count.redCount}}</span></a></td>
+                    <td><a class="icon-margin" title="Cilck hear to view the Employees with Green BGV Status"
+                            (click)="totalGreen(count)"><span>{{count.greenCount}}</span></a></td>
+                </tr>
+            </tbody> 
+        </table>
+    </div>
+    <div class="row">
+        <button id="exportPDF1" class="btn btn-primary btn-sm" (click)=exportToPDFCountReport()> <em class="fa fa-file-pdf-o" aria-hidden="true"></em>Export to PDF</button>
+        <button id="exportEXCEL1" class="btn btn-primary btn-sm" (click)=exportToEXCELCountReport()> <em class="fa fa-file-excel-o" aria-hidden="true"></em>Export to EXCEL</button>
+    </div>
+</div>
+<div class="container-fluid" *ngIf="toggleScreen1">
+    <div class="row">
+        <button id="backButton" class="btn btn-primary btn-sm" (click)=backToFirstPage()> <em class="fa fa-backward"
+                aria-hidden="true"></em>Back</button>
+        <br>
+    </div>
+    <div class="row">
+        <div class="col-md-12">
+            <table class="table table-bordered table-hover table-sm">
+                <th class="t-head" *ngFor="let head of headers1" id="headers2">
+                    <tr>
+                        {{head}}
+                    </tr>
+                </th>
+
+                <tbody>
+                    <tr *ngFor="let employee of employeeList1">
+                        <td>{{employee.jobId}}</td>
+                        <td>{{employee.resourceTitle}}</td>
+                        <td>{{employee.numberRequired}}</td>
+                        <td>{{employee.projectName}}</td>
+                        <td>{{employee.requestRaisedByLastName}}</td>
+                        <td>{{employee.requestDate}}</td>
+                        <td>{{employee.budgetApprovingAuthorityLastName}}</td>
+                        <td>{{employee.budgetApprovalAction}}</td>
+                    </tr>
+                </tbody>
+
+            </table>
+        </div>
+    </div>
+    <div class="row">
+        <button id="exportPDF1" class="btn btn-primary btn-sm" (click)=exportToPDF1()> <em class="fa fa-file-pdf-o" aria-hidden="true"></em>Export to PDF</button>
+        <button id="exportEXCEL1" class="btn btn-primary btn-sm" (click)=exportToEXCEL1()> <em class="fa fa-file-excel-o" aria-hidden="true"></em>Export to EXCEL</button>
+    </div>
+</div>
+
+<div class="container-fluid" *ngIf="toggleScreen2">
+    <div class="row">
+        <button id="backButton" class="btn btn-primary btn-sm" (click)=backToFirstPage()> <em class="fa fa-backward"
+                aria-hidden="true"></em>Back</button>
+        <br>
+    </div>
+    <div class="row">
+        <div class="col-md-12">
+            <table class="table table-bordered table-hover table-sm">
+                <th class="t-head" *ngFor="let head of headers2" id="headers2">
+                    <tr>
+                        {{head}}
+                    </tr>
+                </th>
+
+                <tbody>
+                    <tr *ngFor="let employee of employeeList2">
+                        <td>{{employee.jobId}}</td>
+                        <td>{{employee.resourceTitle}}</td>
+                        <td>{{employee.numberRequired}}</td>
+                        <td>{{employee.projectName}}</td>
+                        <td>{{employee.requestRaisedByLastName}}</td>
+                        <td>{{employee.requestDate}}</td>
+                        <td>{{employee.budgetApprovingAuthorityLastName}}</td>
+                        <td>{{employee.budgetApprovalAction}}</td>
+                        <td>{{employee.hrManagerStatus}}</td>
+                    </tr>
+                </tbody>
+
+            </table>
+        </div>
+    </div>
+    <div class="row">
+        <button id="exportPDF1" class="btn btn-primary btn-sm" (click)=exportToPDF2()> <em class="fa fa-file-pdf-o" aria-hidden="true"></em>Export to PDF</button>
+        <button id="exportEXCEL1" class="btn btn-primary btn-sm" (click)=exportToEXCEL2()> <em class="fa fa-file-excel-o" aria-hidden="true"></em>Export to EXCEL</button>
+    </div>
+</div>
+
+<div class="container-fluid" *ngIf="toggleScreen3">
+    <div class="row">
+        <button id="backButton" class="btn btn-primary btn-sm" (click)=backToFirstPage()> <em class="fa fa-backward"
+                aria-hidden="true"></em>Back</button>
+        <br>
+    </div>
+    <div class="row">
+        <div class="col-md-12">
+            <table class="table table-bordered table-hover table-sm">
+                <th class="t-head" *ngFor="let head of headers1" id="headers2">
+                    <tr>
+                        {{head}}
+                    </tr>
+                </th>
+
+                <tbody>
+                    <tr *ngFor="let employee of employeeList3">
+                        <td>{{employee.jobId}}</td>
+                        <td>{{employee.resourceTitle}}</td>
+                        <td>{{employee.numberRequired}}</td>
+                        <td>{{employee.projectName}}</td>
+                        <td>{{employee.requestRaisedByLastName}}</td>
+                        <td>{{employee.requestDate}}</td>
+                        <td>{{employee.budgetApprovingAuthorityLastName}}</td>
+                        <td>{{employee.budgetApprovalAction}}</td>
+                    </tr>
+                </tbody>
+
+            </table>
+        </div>
+    </div>
+    <div class="row">
+        <button id="exportPDF1" class="btn btn-primary btn-sm" (click)=exportToPDF3()> <em class="fa fa-file-pdf-o" aria-hidden="true"></em>Export to PDF</button>
+        <button id="exportEXCEL1" class="btn btn-primary btn-sm" (click)=exportToEXCEL3()> <em class="fa fa-file-excel-o" aria-hidden="true"></em>Export to EXCEL</button>
+    </div>
+</div>
+
+<div class="container-fluid" *ngIf="toggleScreen4">
+    <div class="row">
+        <button id="backButton" class="btn btn-primary btn-sm" (click)=backToFirstPage()> <em class="fa fa-backward"
+                aria-hidden="true"></em>Back</button>
+        <br>
+    </div>
+    <div class="row">
+        <div class="col-md-12">
+            <table class="table table-bordered table-hover table-sm">
+                <th class="t-head" *ngFor="let head of headers3" id="headers2">
+                    <tr>
+                        {{head}}
+                    </tr>
+                </th>
+
+                <tbody>
+                    <tr *ngFor="let employee of employeeList4">
+                        <td>{{employee.candidetId}}</td>
+                        <td>{{employee.candidetName}}</td>
+                        <td>{{employee.phonenumber}}</td>
+                        <td>{{employee.emailId}}</td>
+                        <td>{{employee.candidetStatus}}</td>
+                    </tr>
+                </tbody>
+
+            </table>
+        </div>
+    </div>
+    <div class="row">
+        <button id="exportPDF1" class="btn btn-primary btn-sm" (click)=exportToPDF4()> <em class="fa fa-file-pdf-o" aria-hidden="true"></em>Export to PDF</button>
+        <button id="exportEXCEL1" class="btn btn-primary btn-sm" (click)=exportToEXCEL4()> <em class="fa fa-file-excel-o" aria-hidden="true"></em>Export to EXCEL</button>
+    </div>
+</div>
+
+<div class="container-fluid" *ngIf="toggleScreen5">
+    <div class="row">
+        <button id="backButton" class="btn btn-primary btn-sm" (click)=backToFirstPage()> <em class="fa fa-backward"
+                aria-hidden="true"></em>Back</button>
+        <br>
+    </div>
+    <div class="row">
+        <div class="col-md-12">
+            <table class="table table-bordered table-hover table-sm">
+                <th class="t-head" *ngFor="let head of headers3" id="headers2">
+                    <tr>
+                        {{head}}
+                    </tr>
+                </th>
+
+                <tbody>
+                    <tr *ngFor="let employee of employeeList5">
+                        <td>{{employee.candidetId}}</td>
+                        <td>{{employee.candidetName}}</td>
+                        <td>{{employee.phonenumber}}</td>
+                        <td>{{employee.emailId}}</td>
+                        <td>{{employee.candidetStatus}}</td>
+                    </tr>
+                </tbody>
+
+            </table>
+        </div>
+    </div>
+    <div class="row">
+        <button id="exportPDF1" class="btn btn-primary btn-sm" (click)=exportToPDF5()> <em class="fa fa-file-pdf-o" aria-hidden="true"></em>Export to PDF</button>
+        <button id="exportEXCEL1" class="btn btn-primary btn-sm" (click)=exportToEXCEL5()> <em class="fa fa-file-excel-o" aria-hidden="true"></em>Export to EXCEL</button>
+    </div>
+</div>
+
+<div class="container-fluid" *ngIf="toggleScreen6">
+    <div class="row">
+        <button id="backButton" class="btn btn-primary btn-sm" (click)=backToFirstPage()> <em class="fa fa-backward"
+                aria-hidden="true"></em>Back</button>
+        <br>
+    </div>
+    <div class="row">
+        <div class="col-md-12">
+            <table class="table table-bordered table-hover table-sm">
+                <th class="t-head" *ngFor="let head of headers4" id="headers2">
+                    <tr>
+                        {{head}}
+                    </tr>
+                </th>
+
+                <tbody>
+                    <tr *ngFor="let employee of employeeList6">
+                        <td>{{employee.candidetId}}</td>
+                        <td>{{employee.candidetName}}</td>
+                        <td>{{employee.phonenumber}}</td>
+                        <td>{{employee.emailId}}</td>
+                        <td>{{employee.candidetStatus}}</td>
+                        <td>{{employee.verificationStatus}}</td>
+                    </tr>
+                </tbody>
+
+            </table>
+        </div>
+    </div>
+    <div class="row">
+        <button id="exportPDF1" class="btn btn-primary btn-sm" (click)=exportToPDF6()> <em class="fa fa-file-pdf-o" aria-hidden="true"></em>Export to PDF</button>
+        <button id="exportEXCEL1" class="btn btn-primary btn-sm" (click)=exportToEXCEL6()> <em class="fa fa-file-excel-o" aria-hidden="true"></em>Export to EXCEL</button>
+    </div>
+</div>
+
+<div class="container-fluid" *ngIf="toggleScreen7">
+    <div class="row">
+        <button id="backButton" class="btn btn-primary btn-sm" (click)=backToFirstPage()> <em class="fa fa-backward"
+                aria-hidden="true"></em>Back</button>
+        <br>
+    </div>
+    <div class="row">
+        <div class="col-md-12">
+            <table class="table table-bordered table-hover table-sm">
+                <th class="t-head" *ngFor="let head of headers4" id="headers2">
+                    <tr>
+                        {{head}}
+                    </tr>
+                </th>
+
+                <tbody>
+                    <tr *ngFor="let employee of employeeList7">
+                        <td>{{employee.candidetId}}</td>
+                        <td>{{employee.candidetName}}</td>
+                        <td>{{employee.phonenumber}}</td>
+                        <td>{{employee.emailId}}</td>
+                        <td>{{employee.candidetStatus}}</td>
+                        <td>{{employee.verificationStatus}}</td>
+                    </tr>
+                </tbody>
+
+            </table>
+        </div>
+    </div>
+    <div class="row">
+        <button id="exportPDF1" class="btn btn-primary btn-sm" (click)=exportToPDF7()> <em class="fa fa-file-pdf-o" aria-hidden="true"></em>Export to PDF</button>
+        <button id="exportEXCEL1" class="btn btn-primary btn-sm" (click)=exportToEXCEL7()> <em class="fa fa-file-excel-o" aria-hidden="true"></em>Export to EXCEL</button>
+    </div>
+</div>
+
+<div class="container-fluid" *ngIf="toggleScreen8">
+    <div class="row">
+        <button id="backButton" class="btn btn-primary btn-sm" (click)=backToFirstPage()> <em class="fa fa-backward"
+                aria-hidden="true"></em>Back</button>
+        <br>
+    </div>
+    <div class="row">
+        <div class="col-md-12">
+            <table class="table table-bordered table-hover table-sm">
+                <th class="t-head" *ngFor="let head of headers4" id="headers2">
+                    <tr>
+                        {{head}}
+                    </tr>
+                </th>
+
+                <tbody>
+                    <tr *ngFor="let employee of employeeList8">
+                        <td>{{employee.candidetId}}</td>
+                        <td>{{employee.candidetName}}</td>
+                        <td>{{employee.phonenumber}}</td>
+                        <td>{{employee.emailId}}</td>
+                        <td>{{employee.candidetStatus}}</td>
+                        <td>{{employee.verificationStatus}}</td>
+                    </tr>
+                </tbody>
+
+            </table>
+        </div>
+    </div>
+    <div class="row">
+        <button id="exportPDF1" class="btn btn-primary btn-sm" (click)=exportToPDF8()> <em class="fa fa-file-pdf-o" aria-hidden="true"></em>Export to PDF</button>
+        <button id="exportEXCEL1" class="btn btn-primary btn-sm" (click)=exportToEXCEL8()> <em class="fa fa-file-excel-o" aria-hidden="true"></em>Export to EXCEL</button>
+    </div>
+</div>
+<div>

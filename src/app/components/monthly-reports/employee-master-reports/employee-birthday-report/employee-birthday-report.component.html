@@ -1,0 +1,51 @@
+<div class="container-fluid">
+
+    <div class="row">
+        <div class="col-md-5">
+
+            <div class="h-size"><i class="fa fa-user mr-1"></i> <b>Employees Birthday Report</b></div>
+
+        </div>
+
+        <div class="col-md-3">
+            <button type="button" class="btn btn-labeled btn-outline-danger btn-sm" (click)="exportTable('PDF')">
+                <span class="btn-label"><i class="fa fa-file-pdf-o" aria-hidden="true"></i></span>Export To PDF</button>
+        </div>
+
+        <div class="col-md-3">
+            <button type="button" class="btn btn-labeled btn-outline-success btn-sm" (click)="exportTableExcel()">
+                <span class="btn-label"><i class="fa fa-file-excel-o" aria-hidden="true"></i></span>Export To Excel</button>
+        </div>
+
+    </div>
+
+    <div class="row">
+        <div class="col-md-12">
+            <table class="table table-bordered table-hover table-sm">
+                <thead class="t-head">
+                    <tr>
+                        <th *ngFor="let head of headers"><a>{{head}}</a></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let employee of employeesBirthdayList | paginate: { itemsPerPage: 10, currentPage: p,id:'birthdayPagination' }">
+                        <td>{{employee.employee_code}}</td>
+                        <td [ngStyle]="employee.daystogo <= 7 ? tomarrowBirthdayStyle : fewDaysToGoBirthdayStyle">
+                            <span class="mr-1">{{employee.first_name}}</span>
+                            <span>{{employee.last_name}}</span>
+                        </td>
+                        <td>{{employee.dob | date : 'dd-MM-yyyy'}}</td>
+                        <td  [ngStyle]="employee.daystogo <= 7 ? tomarrowBirthdayStyle : fewDaysToGoBirthdayStyle">{{employee.daystogo}}</td>
+                        <td>{{employee.branch_name}}</td>
+                        <td>{{employee.department_name}}</td>   
+                    </tr>
+                </tbody>
+            </table>
+            <pagination-controls (pageChange)="p = $event" id="birthdayPagination"></pagination-controls>
+        </div>
+    </div>
+
+
+
+
+</div>

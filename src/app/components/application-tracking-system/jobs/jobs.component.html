@@ -1,0 +1,1817 @@
+<div class="container-fluid" *ngIf="!showView">
+    <div class="d-flex align-items-center mt-2">
+        <div class="m-2">
+            <div class="h-size"><em class="fa fa-user"></em> <strong> Jobs</strong></div>
+        </div>
+        <div class="flex-fill">
+        </div>
+        <div class="m-2" *ngIf="enableBulkAction">
+            <button class="bulk-action-button" mat-icon-button [matMenuTriggerFor]="menu" aria-label="Menu">
+                <span class="circle-span bg-blue">{{selectedClientCount}}</span> Bulk Action <i class="fa fa-angle-down"
+                    aria-hidden="true"></i>
+            </button>
+            <mat-menu #menu="matMenu">
+                <button mat-menu-item (click)="clearTags()" data-toggle="modal" data-target="#client-add-tag-bulk">
+                    <mat-icon> local_offer</mat-icon>
+                    <span><a>Manage Tag</a></span>
+                </button>
+                <button mat-menu-item data-toggle="modal" data-target="#client-archive">
+                    <mat-icon>archive</mat-icon>
+                    <span>Archive</span>
+                </button>
+            </mat-menu>
+        </div>
+        <div class="row">
+            <div class="col-12">
+                <button type="button" class="btn btn-primary btn-sm" (click)="modelShow()" data-toggle="modal"
+                    data-target="#client-add-modal">
+                    <i class="fas fa-user-plus"></i> Add
+                </button>
+            </div>
+        </div>
+        <div class="m-3"> <button type="button" class="btn btn-primary btn-sm" (click)="modelFilter()" >
+                <i class="fas fa-filter"></i> Filter
+            </button>
+        </div>
+        <div class="m-2">
+            <!-- <a title="Export" class="advance icon-margin" mat-icon-button [matMenuTriggerFor]="menu" aria-label="Menu">
+                <mat-icon>cloud_download</mat-icon>
+            </a> -->
+            <button title="Export" class="btn btn-primary btn-sm" mat-icon-button [matMenuTriggerFor]="menu" aria-label="Menu">
+                <i class='fas fa-file-export'></i> Export
+            </button>
+            <mat-menu #menu="matMenu">
+                <button mat-menu-item type="button" class="btn btn-labeled btn-sm"
+                    (click)="exportTable('PDF')">
+                    <span class="btn-label"><i class="fa fa-file-pdf-o" aria-hidden="true"></i></span> Export To
+                    PDF</button>
+                <button mat-menu-item type="button" class="btn btn-labeled btn-sm"
+                    (click)="exportTable('EXCEL')">
+                    <span class="btn-label"><i class="fa fa-file-excel-o" aria-hidden="true"></i></span> Export To
+                    Excel</button>
+            </mat-menu>
+        </div>
+
+        <div class="m-3"><input class="form-control rounded-pill py-2 border-right-0 border" type="search"
+                placeholder="search" id="example-search-input" [(ngModel)]="clientSearchModel"
+                (ngModelChange)="search()">
+        </div>
+    </div>
+
+    <div *ngIf="showFilterModel">
+        <div class="row">
+            <div class="form-group col-md-3">
+                <label for="empbranch">Field Name <span class="color-red"></span></label>
+                <select id="empbranch" [(ngModel)]="fieldModel" (change)="onValueFieldChange($event)" class="form-control" name="branch">
+                    <option value="" disabled selected>Select Field</option>
+                    <option *ngFor="let data of Fields" [value]="data.value">
+                        {{data.name}}</option>
+                </select>
+            </div>
+            <div class="form-group col-md-3">
+                <label for="libraryType">Condition <span class="color-red"></span></label>
+                <select id="libraryType" [(ngModel)]="conditionModel" (change)="onConditionChange($event)" name="department" class="form-control"
+                    name="department">
+                    <option value="" disabled selected>Select Condition</option>
+                    <option *ngFor="let data of Conditions" [value]="data.value">
+                        {{data.name}}</option>
+                </select>
+            </div>
+            <div class="form-group col-md-3">
+                <label for="vaccine">Value </label>
+                <input *ngIf="showConditionText" type="text" class="form-control" placeholder="Please Enter Value"
+                [(ngModel)]="valueModel" (change)="onValueChange()">
+                <ng-multiselect-dropdown *ngIf="showConditionDropdown" [placeholder]="'Select Value'" [(ngModel)]="valueModel" [settings]="dropdownSettingsUser"
+                [data]="valuesArray" (onSelect)="onItemSelectUser($event)"
+                (onDeSelect)="OnUserItemDeSelect($event)" (onSelectAll)="onSelectAllUser($event)">
+            </ng-multiselect-dropdown>
+            </div>
+            
+        </div>
+    </div>
+    <div *ngIf="showFilterModel" class="row">
+       
+            <div *ngFor="let condition of conditionsArray" class="col-3">
+                <input type="text" class="form-control" readonly value="{{condition}}">
+            </div>
+        <div class="form-group col-md-3 padding-top-25">
+            <!-- <button type="submit" id="btn_projection" class="button btn-primary btn-size"
+            (click)="addCondition(fieldModel,conditionModel,valueModel)">Add Filters</button> -->
+            <button type="submit" id="btn_projection" class="button btn-primary btn-size"
+                (click)="applyConditionFilter()">Apply Filter</button>
+                &nbsp;
+            <button type="button" id="btn_projection" (click)="clearCondition()"
+                    class="button btn-danger m-auto btn-size">Clear</button>
+                    &nbsp;
+            <button type="button" id="btn_projection" (click)="cancelFilter()"
+                    class="button btn-danger m-auto btn-size">Close</button>
+           
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-12">
+            <table sortable-table (sorted)="onSorted($event)" class="table table-bordered table-hover table-sm">
+                <thead class="t-head">
+                    
+                    <tr>
+                        <th class="align-center" style="padding-bottom: 8px;">
+                            <input type="checkbox" class="status-check select-all" name="client"
+                                [checked]="jobList.length == selectedClientCount" [value]="jobList"
+                                (change)="selectAllClient($event)">
+                        </th>
+                        <th sortable-column="positionName"><a>Position Name</a></th>
+                        <th sortable-column="clientName"><a>Job Client</a></th>
+                        <th sortable-column="jobLocation"><a>Job Location</a></th>
+                        <th sortable-column="headCount"><a>Headcount</a></th>
+                        <th sortable-column="maxSubmissions"><a>Max Submissions</a></th>
+                        <!-- <th sortable-column="submittedCount"><a>Current Submissions</a></th> -->
+                        <th sortable-column="minSalary"><a>Minimum Salary</a></th>
+                        <th sortable-column="maxSalary"><a>Maximum Salary</a></th>
+                        <th sortable-column="jobOwner"><a>Job Owner</a></th>
+                        <th><a>Job Team</a></th>
+                        <th><a>Job Stage</a></th>
+                        <th>
+                        <a>Actions</a></th>
+                    </tr>
+                    
+                </thead>
+                <tbody>
+                    <tr *ngFor="let data of jobList | paginate: {
+                        itemsPerPage: itemsPerPage,
+                        currentPage: currentPage,
+                        totalItems: totalItems
+                      };let i=index">
+                        <td class="align-center">
+                        <input type="checkbox" class="status-check select-all" [checked]="data.selected"
+                            (change)="onClickClientCheckBox(data.id)" name="status">
+                        </td>
+                        <td><a class="advance" (click)="handleClient(data.id)">{{data.positionName}}</a></td>
+                        <td>{{data.clientName}}</td>
+                        <td>{{data.jobLocation}}</td>
+                        <td>{{data.headCount}}</td>
+                        <td>{{data.maxSubmissions}}</td>
+                        <!-- <td>{{data.submittedCount}}</td> -->
+                        <!-- <td>{{data.jobStage}}</td> -->
+                        <td>{{data.minSalary}}</td>
+                        <td>{{data.maxSalary}}</td>
+                        <td>{{data.createdBy}}</td>
+                        <td><a title="View Team members" data-toggle="modal" data-target="#show-team-member-modal"
+                            (click)="showTeamMembers(data.id)" class="icon-margin"><i
+                                class="fas fa-eye"></i></a></td>
+                        <td>
+                            <!-- {{data.status}} -->
+                            <!-- <select id="jobStatus" formControlName="jobStatus"
+                                class="form-control text">
+                                <option style="display:none;"></option>
+                                <option value="Active">Active</option>
+                                <option value="Completed">Completed</option>
+                                <option value="Cancelled">Cancelled</option>
+                                <option value="On Hold">On Hold</option>
+                            </select> -->
+                            <select class="form-control text" (change)="onStatusChange($event,data.id)">
+                                <option value="{{data.status}}" selected>{{data.status}}</option>
+                                <ng-container  *ngFor="let status of statusList" >
+                                    <option *ngIf="status != data.status" [ngValue]="status">
+                                        {{ status }}
+                                    </option>
+                                </ng-container>
+                               
+                            </select>
+
+                        </td>
+                        <td>
+                            <span *ngIf="designation!=='Recruiter'">
+                            <a title="Edit" (click)="modelShowEdit(data)"  class="icon-margin"><i
+                                    class="fas fa-user-edit"></i></a>
+                            <a title="Delete" class="icon-margin" mwlConfirmationPopover [popoverTitle]="popoverTitle"
+                                [popoverMessage]="popoverMessage" placement="left" (confirm)="delete(data.id)"
+                                (cancel)="cancelClicked = true"><span class="fas fa-trash"></span></a>
+                            </span>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+            <div class="row" *ngIf="totalElements!=0">
+                <div class="col-md-6 col-sm-6 col-6"><span class="show-entry">Showing
+                        <span>{{showingFrom}} to {{showingTo}} of {{totalElements}} entries</span></span>&nbsp;
+                </div>
+
+                <div class="col-md-6" *ngIf="totalItems > 0">
+                    <pagination-controls (pageChange)="pageChanged($event)"></pagination-controls>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-12">
+            <button type="button" class="btn btn-primary btn-sm" (click)="modelShow()" data-toggle="modal"
+                data-target="#client-add-modal">
+                <i class="fas fa-user-plus"></i> Add
+            </button>
+        </div>
+    </div>
+</div>
+<div class="container-fluid" *ngIf="showView">
+    <div class="d-flex align-items-center mt-2">
+        <div class="col-md-12 pull-right">
+            <button class="btn btn-success btn-sm mb-3 " (click)="goBack()"><i class="fas fa-backward"></i>
+                Back</button>
+        </div>
+    </div>
+    <div class="d-flex align-items-center mt-2">
+        <div class="card" style="width: 100%;">
+            <div class="card-body">
+                <div class="form-row">
+                    <div class="form-group col-md-10">
+                        <label for="internalNotes">
+                            <h2>{{positionName}}</h2></label>
+                        <label *ngIf="jobTagsList">
+                            <span class="tag" *ngFor="let data of jobTagsList">
+                                <td><i class="fa fa-tags {{data.color}}" aria-hidden="true"></i> {{data.name}}</td>
+                            </span>&nbsp;
+                        </label>
+                        <a class="advance" (click)="clearTags()" data-toggle="modal"
+                            data-target="#client-add-tag-individual">
+                            <span><i class="fa fa-tags" aria-hidden="true"></i><a>Manage Tag</a></span>
+                        </a>
+                    </div>
+                    
+
+                </div>
+            </div>
+        </div>
+    </div>
+    <br>
+    <ul class="nav nav-tabs" role="tablist">
+        <li class="nav-item">
+            <a class="active nav-link active" href="#jobs" role="tab" data-toggle="tab"
+                (click)="setType('Jobs')">Candidates</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" href="#summary" role="tab" data-toggle="tab" (click)="setType('Summary')">Summary</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" href="#recommendations" role="tab" data-toggle="tab"
+                (click)="setType('Recommendations')">Recommendations</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" href="#attachments" role="tab" data-toggle="tab"
+                (click)="setType('Attachments')">Attachments</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" href="#teams" role="tab" data-toggle="tab" (click)="setType('Teams')">Teams</a>
+        </li>
+    </ul>
+    <!-- Tab panes -->
+    <div class="tab-content" style="margin-top: 10px;">
+        <div role="tabpanel" class="tab-pane active" id="jobs">
+            <div class="container-fluid">
+                <div class="d-flex align-items-center mt-2">
+                    <!-- <div class="m-2">
+                        <div class="h-size"><em class="fa fa-user"></em> <strong> Candidates</strong></div>
+                    </div> -->
+                    <div class="flex-fill">
+                    </div>
+                    <div class="m-2" *ngIf="enableStudentBulkAction">
+                        <button class="bulk-action-button" mat-icon-button [matMenuTriggerFor]="menu" aria-label="Menu">
+                            <span class="circle-span bg-blue">{{selectedCandidateCount}}</span> Bulk Action <i
+                                class="fa fa-angle-down" aria-hidden="true"></i>
+                        </button>
+                        <mat-menu #menu="matMenu">
+                            <button mat-menu-item (click)="clearTags()" data-toggle="modal" data-target="#candidate-add-tag-bulk">
+                                <span><i class="fa fa-tags" aria-hidden="true"></i><a> Add a Tag</a></span>
+                            </button>
+                            <button mat-menu-item data-toggle="modal" data-target="#candidate-archive-bulk">
+                                <span><i class="fa fa-archive" aria-hidden="true"></i> Archive</span>
+                            </button>
+                        </mat-menu>
+                    </div>
+                    <div class="m-3"> <button type="button" class="btn btn-primary btn-sm" (click)="modelFilter()">
+                            <i class="fas fa-filter"></i> Filter
+                        </button>
+                    </div>
+                    <!-- <div class="m-2">
+                        <button title="Export" class="btn btn-primary btn-sm" mat-icon-button [matMenuTriggerFor]="menu"
+                            aria-label="Menu">
+                            <i class='fas fa-file-export'></i> Export
+                        </button>
+                        <mat-menu #menu="matMenu">
+                            <button mat-menu-item type="button" class="btn btn-labeled btn-sm" (click)="exportTable('PDF')">
+                                <span class="btn-label"><i class="fa fa-file-pdf-o" aria-hidden="true"></i></span> Export To
+                                PDF</button>
+                            <button mat-menu-item type="button" class="btn btn-labeled btn-sm" (click)="exportTable('EXCEL')">
+                                <span class="btn-label"><i class="fa fa-file-excel-o" aria-hidden="true"></i></span> Export To
+                                Excel</button>
+                        </mat-menu>
+                    </div> -->
+            
+                    <!-- <div class="m-3">
+                        <input class="form-control rounded-pill py-2 border-right-0 border" type="search"
+                            placeholder="Search..." id="example-search-input" [(ngModel)]="candidatesSearchModel"
+                            (ngModelChange)="search()">
+                    </div> -->
+                </div>
+            
+                <div *ngIf="showFilterModel">
+                    <div class="row">
+                        <div class="form-group col-md-3">
+                            <label for="empbranch">Field Name <span class="color-red"></span></label>
+                            <select id="empbranch" [(ngModel)]="fieldModel" (change)="onCandidateValueFieldChange($event)" class="form-control" name="branch" #branch>
+                                <option value="" disabled selected>Select Field</option>
+                                <option *ngFor="let data of CandidateFields" [value]="data.value">
+                                    {{data.name}}</option>
+                            </select>
+                        </div>
+                        <div class="form-group col-md-3">
+                            <label for="libraryType">Condition <span class="color-red"></span></label>
+                            <select id="libraryType" [(ngModel)]="conditionModel" (change)="onConditionChange($event)" name="department" class="form-control"
+                                name="department">
+                                <option value="" disabled selected>Select Condition</option>
+                                <option *ngFor="let data of Conditions" [value]="data.value">
+                                    {{data.name}}</option>
+                            </select>
+                        </div>
+                        <div class="form-group col-md-3">
+                            <label for="vaccine">Value </label>
+                            <input *ngIf="showConditionText" type="text" class="form-control" placeholder="Please Enter Value" [(ngModel)]="valueModel">
+                            <ng-multiselect-dropdown *ngIf="showConditionDropdown" [placeholder]="'Select Value'" [(ngModel)]="valueModel" [settings]="dropdownSettingsUser"
+                            [data]="valuesArray" (onSelect)="onItemSelectUser($event)"
+                            (onDeSelect)="OnUserItemDeSelect($event)" (onSelectAll)="onSelectAllUser($event)">
+                            </ng-multiselect-dropdown>
+                        </div>
+                        <div class="form-group col-md-3 padding-top-25">
+                            <button type="submit" id="btn_projection" class="button btn-primary btn-size"
+                                (click)="addStudentCondition(fieldModel,conditionModel,valueModel)">Add Filters</button>
+            
+                        </div>
+                    </div>
+                </div>
+                <div *ngIf="showFilterModel" class="row">
+            
+                    <div *ngFor="let condition of conditionsArray" class="col-3">
+                        <input type="text" class="form-control" readonly value="{{condition}}">
+                    </div>
+            
+                    <div class="form-group col-md-3 padding-top-25">
+                        <button type="submit" id="btn_projection" class="button btn-primary btn-size"
+                            (click)="applyCandidateConditionFilter()">Apply Filter</button>
+                        &nbsp;
+                        <button type="button" id="btn_projection" (click)="clearCondition()"
+                            class="button btn-danger m-auto btn-size">Clear</button>
+                        &nbsp;
+                        <button type="button" id="btn_projection" (click)="cancelFilter()"
+                            class="button btn-danger m-auto btn-size">Close</button>
+            
+                    </div>
+            
+                </div>
+            
+                <div class="row">
+                    <div class="col-md-12">
+                        <table class="table table-bordered table-hover table-sm">
+                            <thead class="t-head">
+                                <tr>
+                                    <th class="align-center" style="padding-bottom: 8px;">
+                                        <input type="checkbox" class="status-check select-all" name="candidate"
+                                            [checked]="candidateList.length == selectedCandidateCount" [value]="candidateList"
+                                            (change)="selectAllCandidate($event)">
+                                    </th>
+                                    <th *ngFor="let head of candidateHeaders"><a>{{head}}</a></th>
+                                    <th><a>Candidate Stage</a></th>
+                                    <th style="width: 6%;">Candidate Dropped?</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr *ngIf='candidateList && candidateList.length == 0'>
+                                    <td colspan="12">
+                                        <div class="align-center">No Records Found.</div>
+                                    </td>
+                                </tr>
+                                <tr *ngFor="let data of candidateList | paginate: {
+                                    itemsPerPage: itemsPerPage,
+                                    currentPage: currentPage,
+                                    totalItems: totalItems
+                                  };let i=index">
+                                    <td class="align-center">
+                                        <input type="checkbox" class="status-check select-all" [checked]="data.selected"
+                                            (change)="onClickCandidateCheckBox(data.candidateId.id)" name="status">
+                                    </td>
+
+                                    <td><a class="advance" (click)="viewCandidate(data)">{{data.candidateId.candidateName}}</a></td>
+                                    <td>{{data.candidateId.candidateReference}}</td>
+                                    <td>{{data.candidateId.candidateLocation}}</td>
+                                    <td>{{data.candidateId.currentPosition}}</td>
+                                    <td>{{data.candidateId.currentCompany}}</td>
+                                    <td>{{data.candidateId.noticePeriod}}</td>
+                                    <td>{{data.candidateId.currentSalary}}</td>
+                                    <td>{{data.candidateId.expectedSalary}}</td>
+                                    <td>{{data.candidateId.createdBy}}</td>
+                                    <td>{{data.candidateId.createdDate | date:'dd-MM-yyyy'}}</td>
+                                    <td>
+                                        <select class="form-control text" [(ngModel)]="data.candidateStage" (change)="onStudentStatusChange(data.candidateStage, data.id, data)">
+                                            <option value=null disabled>Please Select Stage</option>
+                                            <option *ngFor="let status of candidateStatusList" [ngValue]="status">
+                                                {{ status }}
+                                            </option>
+                                        </select>
+                                    </td>
+                                    <td class="text-center">
+                                        <!-- <a title="Delete" class="icon-margin" mwlConfirmationPopover [popoverTitle]="droppedPopoverTitle"
+                                        [popoverMessage]="droppedPopoverTitle" placement="left" (confirm)="updateIsDropped(data.id)"
+                                        (cancel)="cancelClicked = true; data.isDropped = false"> -->
+                                        <input [disabled]="data.isDropped" [(ngModel)]="data.isDropped" (ngModelChange)="confirmDropped(data.id)" type="checkbox" class="dropped" />
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <!-- <div class="row" *ngIf="totalElements!=0">
+                            <div class="col-md-6 col-sm-6 col-6"><span class="show-entry">Showing
+                                    <span>{{showingFrom}} to {{showingTo}} of {{totalElements}} entries</span></span>&nbsp;
+                            </div>
+            
+                            <div class="col-md-6" *ngIf="totalItems > 0">
+                                <pagination-controls (pageChange)="pageChanged($event)"></pagination-controls>
+                            </div>
+                        </div> -->
+                    </div>
+                </div>
+                <!-- <div class="row">
+                    <div class="col-12">
+                        <button type="button" class="btn btn-primary btn-sm" (click)="modelShow()" data-toggle="modal"
+                            data-target="#candidate-add-modal">
+                            <i class="fas fa-user-plus"></i> Add
+                        </button>
+                    </div>
+                </div> -->
+            </div>
+        </div>
+
+        <div role="tabpanel" class="tab-pane fade block" id="recommendations">
+            <div class="container-fluid">
+                <!-- <div class="d-flex align-items-center mt-2"> -->
+                    <!-- <div class="m-2">
+                        <div class="h-size"><em class="fa fa-user"></em> <strong> Candidates</strong></div>
+                    </div> -->
+                    <!-- <div class="flex-fill">
+                    </div> -->
+                    <!-- <div class="m-2" *ngIf="enableStudentBulkAction">
+                        <button class="bulk-action-button" mat-icon-button [matMenuTriggerFor]="menu" aria-label="Menu">
+                            <span class="circle-span bg-blue">{{selectedCandidateCount}}</span> Bulk Action <i
+                                class="fa fa-angle-down" aria-hidden="true"></i>
+                        </button>
+                        <mat-menu #menu="matMenu">
+                            <button mat-menu-item (click)="clearTags()" data-toggle="modal" data-target="#candidate-add-tag-bulk">
+                                <span><i class="fa fa-tags" aria-hidden="true"></i><a> Add a Tag</a></span>
+                            </button>
+                            <button mat-menu-item data-toggle="modal" data-target="#candidate-archive-bulk">
+                                <span><i class="fa fa-archive" aria-hidden="true"></i> Archive</span>
+                            </button>
+                        </mat-menu>
+                    </div> -->
+                    <!-- <div class="m-3"> <button type="button" class="btn btn-primary btn-sm" (click)="modelFilter()">
+                            <i class="fas fa-filter"></i> Filter
+                        </button>
+                    </div> -->
+                    <!-- <div class="m-2">
+                        <button title="Export" class="btn btn-primary btn-sm" mat-icon-button [matMenuTriggerFor]="menu"
+                            aria-label="Menu">
+                            <i class='fas fa-file-export'></i> Export
+                        </button>
+                        <mat-menu #menu="matMenu">
+                            <button mat-menu-item type="button" class="btn btn-labeled btn-sm" (click)="exportTable('PDF')">
+                                <span class="btn-label"><i class="fa fa-file-pdf-o" aria-hidden="true"></i></span> Export To
+                                PDF</button>
+                            <button mat-menu-item type="button" class="btn btn-labeled btn-sm" (click)="exportTable('EXCEL')">
+                                <span class="btn-label"><i class="fa fa-file-excel-o" aria-hidden="true"></i></span> Export To
+                                Excel</button>
+                        </mat-menu>
+                    </div> -->
+            
+                    <!-- <div class="m-3"><input class="form-control rounded-pill py-2 border-right-0 border" type="search"
+                            placeholder="Search..." id="example-search-input" [(ngModel)]="candidatesSearchModel"
+                            (ngModelChange)="search()">
+                    </div> -->
+                <!-- </div> -->
+            
+                <!-- <div>
+                    <div class="row">
+                        <div class="form-group col-md-3">
+                            <label for="empbranch">Search Field <span class="color-red"></span></label>
+                            <select id="empbranch" [(ngModel)]="fieldModel" (change)="onFieldChange($event)" class="form-control" name="branch" #branch>
+                                <option value="" disabled selected>Select Field</option>
+                                <option *ngFor="let data of CandidateSearchFields" [value]="data.value">
+                                    {{data.name}}</option>
+                            </select>
+                        </div>
+                        <div class="form-group col-md-3">
+                            <label for="libraryType">Condition <span class="color-red"></span></label>
+                            <select id="libraryType" [(ngModel)]="conditionModel" name="department" class="form-control"
+                                name="department">
+                                <option value="" disabled selected>Select Condition</option>
+                                <option *ngFor="let data of Conditions" [value]="data.value">
+                                    {{data.name}}</option>
+                            </select>
+                        </div>
+                        <div class="form-group col-md-3">
+                            <label for="vaccine">Value </label> -->
+                            <!-- <input type="text" class="form-control" placeholder="Please Enter Value" [(ngModel)]="valueModel"> -->
+                            <!-- <select id="libraryType" [(ngModel)]="valueModel" name="department" class="form-control"
+                                name="department">
+                                <option value="" disabled selected>Select value</option>
+                                <option *ngFor="let data of valuesArray" [value]="data">
+                                    {{data}}</option>
+                            </select>
+                        </div>
+                        <div class="form-group col-md-3 padding-top-25">
+                            <button type="submit" id="btn_projection" class="button btn-primary btn-size"
+                                (click)="addCondition(fieldModel,conditionModel,valueModel)">Add</button>
+            
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+            
+                    <div *ngFor="let condition of conditionsArray" class="col-3">
+                        <input type="text" class="form-control" readonly value="{{condition}}">
+                    </div>
+            
+                    <div class="form-group col-md-3 padding-top-25">
+                        <button type="submit" id="btn_projection" class="button btn-primary btn-size"
+                            (click)="applyStudentConditionFilter()">Search</button>
+                        &nbsp;
+                        <button type="button" id="btn_projection" (click)="clearCondition()"
+                            class="button btn-danger m-auto btn-size">Clear</button> -->
+                        <!-- &nbsp;
+                        <button type="button" id="btn_projection" (click)="cancelFilter()"
+                            class="button btn-danger m-auto btn-size">Cancel</button>
+             -->
+                    <!-- </div>
+            
+                </div> -->
+            
+                <div class="row">
+                    <div class="col-md-12">
+                        <table class="table table-bordered table-hover table-sm">
+                            <thead class="t-head">
+                                <tr>
+                                    <!-- <th class="align-center" style="padding-bottom: 8px;">
+                                        <input type="checkbox" class="status-check select-all" name="candidate"
+                                            [checked]="candidateList.length == selectedCandidateCount" [value]="candidateList"
+                                            (change)="selectAllCandidate($event)">
+                                    </th> -->
+                                    <th *ngFor="let head of candidateHeaders"><a>{{head}}</a></th>
+                                    <th style="width: 6%;">Action</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr *ngIf='recommandedCandidateList && recommandedCandidateList.length == 0'>
+                                    <td colspan="12">
+                                        <div class="align-center">No Records Found.</div>
+                                    </td>
+                                </tr>
+                                <tr *ngFor="let data of recommandedCandidateList | paginate: config"> <!-- | paginate: {
+                                    itemsPerPage: itemsPerPage,
+                                    currentPage: currentPage,
+                                    totalItems: totalItems
+                                  };let i=index"> -->
+                                    <!-- <td class="align-center">
+                                        <input type="checkbox" class="status-check select-all" [checked]="data.selected"
+                                            (change)="onClickCandidateCheckBox(data.candidateId)" name="status">
+                                    </td> -->
+                                    <td><a class="advance">{{data.candidateName}}</a></td>
+                                    <td>{{data.candidateReference}}</td>
+                                    <td>{{data.candidateLocation}}</td>
+                                    <td>{{data.currentPosition}}</td>
+                                    <td>{{data.currentCompany}}</td>
+                                    <td>{{data.noticePeriod}}</td>
+                                    <td>{{data.currentSalary}}</td>
+                                    <td>{{data.expectedSalary}}</td>
+                                    <td>{{data.candidateOwner}}</td>
+                                    <td>{{data.createdDate | date:'dd-MM-yyyy'}}</td>
+                                    <td>
+                                        <a title="Add to Job" class="advance" mwlConfirmationPopover [popoverTitle]="addToJobPopoverTitle"
+                                        [popoverMessage]="addToJobPopoverMessage" placement="left" (confirm)="addToJob(data.id)"
+                                        (cancel)="cancelClicked = true">Add to Job</a>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <div class="row" *ngIf="recommTotalItems > config.itemsPerPage">
+                            <div class="col-md-6">
+                              <!-- <span class="show-entry">
+                                Showing {{ (config.currentPage) * config.itemsPerPage}} to 
+                                {{ Math.min(config.currentPage * config.itemsPerPage, recommTotalItems) }} of 
+                                {{ recommTotalItems }} entries
+                              </span> -->
+                            </div>
+                            <div class="col-md-6 text-right">
+                              <pagination-controls 
+                                id="recommendedCandidates"
+                                (pageChange)="recommPageChanged($event)"
+                                previousLabel="Previous"
+                                nextLabel="Next">
+                              </pagination-controls>
+                            </div>
+                        </div>
+                        <!-- <div class="row" *ngIf="totalElements!=0">
+                            <div class="col-md-6 col-sm-6 col-6"><span class="show-entry">Showing
+                                    <span>{{showingFrom}} to {{showingTo}} of {{totalElements}} entries</span></span>&nbsp;
+                            </div>
+            
+                            <div class="col-md-6" *ngIf="totalItems > 0">
+                                <pagination-controls (pageChange)="pageChanged($event)"></pagination-controls>
+                            </div>
+                        </div> -->
+                    </div>
+                </div>
+                <!-- <div class="row">
+                    <div class="col-12">
+                        <button type="button" class="btn btn-primary btn-sm" (click)="modelShow()" data-toggle="modal"
+                            data-target="#candidate-add-modal">
+                            <i class="fas fa-user-plus"></i> Add
+                        </button>
+                    </div>
+                </div> -->
+            </div>
+        </div>
+
+
+        <div role="tabpanel" class="tab-pane fade block" id="summary">
+            <div class="content-box">
+                <div class="col-md-6">
+                    <div class="modal-header" >
+                        <div class="modal-title">
+                            Job Details
+                        </div>
+                        <a title="Edit" *ngIf="!editSummaryDetailsEnable && designation!=='Recruiter'" (click)="handleEditSummaryDetails()"
+                            class="icon-margin"><i class="fas fa-user-edit"></i></a>
+                    </div>
+                    <div class="modal-body" style="border: 1px solid rgba(0,0,0,.125);">
+                        <div class="row col-12 padding-field-bottom">
+                            <div class="col-2">
+                                <label for="type">Position Name</label>
+                            </div>
+                            <div class="col-10">
+                                <input type="text" class="form-control" placeholder="Please Enter Job Name"
+                                [(ngModel)]="positionName" [readonly]="!editSummaryDetailsEnable">
+                            </div>
+                        </div>
+                        <div class="row col-12 padding-field-bottom">
+                            <div class="col-2">
+                                <label for="type">Client</label>
+                            </div>
+                            <div class="col-10" >
+                                <select id="clientId" [(ngModel)]="clientId" [disabled]="!editSummaryDetailsEnable"  class="form-control text">
+                                    <option value=null selected disabled hidden>--Select--</option>
+                                    <option *ngFor="let client of clientList" [value]=client.clientId>
+                                        {{client.clientName}}
+                                    </option>
+                                </select>
+                            </div>
+                        </div>
+                        <!-- <div class="row col-12 padding-field-bottom" *ngIf="!showAdvancedOptions">
+                            <a class="advance" (click)="handleAdvancedClick()">+ Advanced Options</a>
+                        </div> -->
+                        <div >
+                            
+                            <div class="row col-12 padding-field-bottom">
+                                <div class="col-2">
+                                    <label for="type">Location</label>
+                                </div>
+                                <div class="col-10">
+                                    <input type="text" class="form-control" placeholder="Please Enter Location"
+                                    [(ngModel)]="jobLocation" [readonly]="!editSummaryDetailsEnable">
+                                </div>
+                            </div>
+                            <div class="row col-12 padding-field-bottom">
+                                <div class="col-2">
+                                    <label for="type">Head Count</label>
+                                </div>
+                                <div class="col-10">
+                                    <input type="text" class="form-control" placeholder="Please Enter Head Count"
+                                    [(ngModel)]="headCount" [readonly]="!editSummaryDetailsEnable">
+                                </div>
+                            </div>
+                            <div class="row col-12 padding-field-bottom">
+                                <div class="col-2">
+                                    <label for="type">Max. Submissions</label>
+                                </div>                              
+                                <div class="col-10">
+                                    <input type="text" class="form-control" placeholder="Please Enter Max Submissions"
+                                    [(ngModel)]="maxSubmissions" [readonly]="!editSummaryDetailsEnable">
+                                </div>
+                            </div>
+                            <!-- <div class="row col-12 padding-field-bottom">
+                                <div class="col-2">
+                                    <label for="type">Current Submissions</label>
+                                </div>                              
+                                <div class="col-10">
+                                    <input type="text" class="form-control" placeholder="Current Submissions"
+                                    [(ngModel)]="submittedCount" readonly>
+                                </div>
+                            </div> -->
+                            <div class="row col-12 padding-field-bottom">
+                                <div class="col-2">
+                                    <label for="type">Contract Type</label>
+                                </div>
+                                <div class="col-10">
+                                    <!-- <input type="text" class="form-control" placeholder="Please Enter Contract Details"
+                                    [(ngModel)]="contractDetails" [readonly]="!editSummaryDetailsEnable"> -->
+
+                                    <select class="form-control text" [disabled]="!editSummaryDetailsEnable" [(ngModel)]="contractDetails">
+                                        <option value=null selected disabled hidden>--Select--</option>
+                                        <option *ngFor="let status of contractDropdown" [ngValue]="status">
+                                            {{ status }}
+                                        </option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="row col-12 padding-field-bottom">
+                                <div class="col-2">
+                                    <label for="type">Min Salary</label>
+                                </div>
+                                <div class="col-10">
+                                    <input type="text" class="form-control" placeholder="Add Minimum Salary"
+                                    [(ngModel)]="minSalary" [readonly]="!editSummaryDetailsEnable">
+                                </div>
+                            </div>
+                            <div class="row col-12 padding-field-bottom">
+                                <div class="col-2">
+                                    <label for="type">Max Salary</label>
+                                </div>
+                                <div class="col-10">
+                                    <input type="text" class="form-control" placeholder="Add Max Salary"
+                                    [(ngModel)]="maxSalary" [readonly]="!editSummaryDetailsEnable">
+                                </div>
+                            </div>
+                            <div class="row col-12 padding-field-bottom">
+                                <div class="col-2">
+                                    <label for="type">Currency</label>
+                                </div>
+                                <div class="col-10">
+                                    <!-- <input type="text" class="form-control" placeholder="Please Enter Currency"
+                                    [(ngModel)]="currency" [readonly]="!editSummaryDetailsEnable"> -->
+                                    <select class="form-control text" [disabled]="!editSummaryDetailsEnable" [(ngModel)]="currency">
+                                        <option value=null selected disabled hidden>--Select--</option>
+                                        <option *ngFor="let currency of currencyList" [ngValue]="currency.currencyName">
+                                            {{ currency.currencyName }}
+                                        </option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="row col-12 padding-field-bottom">
+                                <div class="col-2">
+                                    <label for="type">Frequency</label>
+                                </div>
+                                <div class="col-10">
+                                    <!-- <input type="text" class="form-control" placeholder="Please Select Frequency"
+                                    [(ngModel)]="frequency" [readonly]="!editSummaryDetailsEnable"> -->
+
+                                    <select class="form-control text" [(ngModel)]="frequency" [disabled]="!editSummaryDetailsEnable">
+                                        <option value=null selected disabled hidden>--Select--</option>
+                                        <option *ngFor="let status of frequencyDropdown" [ngValue]="status">
+                                            {{ status }}
+                                        </option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="row col-12 padding-field-bottom">
+                                <div class="col-2">
+                                    <label for="type">Experience Level</label>
+                                </div>
+                                <div class="col-10">
+                                    <input type="text" class="form-control" placeholder="Please Enter Experience Level"
+                                    [(ngModel)]="experianceLevel" [readonly]="!editSummaryDetailsEnable">
+                                </div>
+                            </div>
+                            <div class="row col-12 padding-field-bottom">
+                                <div class="col-2">
+                                    <label for="type">Job Industry</label>
+                                </div>
+                                <div class="col-10">
+                                    <input type="text" class="form-control"  placeholder="Please Enter Job Industry"
+                                    [(ngModel)]="jobIndustry" [readonly]="!editSummaryDetailsEnable">
+                                </div>
+                            </div>
+                        </div>
+                        <hr>
+                        <div class="row">
+                            <div class="col-md-6 pull-left">
+                                <button type="button" *ngIf="editSummaryDetailsEnable" id="btnComponentSave"
+                                    [disabled]="submitProcessing" class="button btn-primary btn-style"
+                                    (click)="updateSummaryDetails()"><i class="fas fa-save"></i>
+                                    Update <i class="fa fa-spinner fa-spin" *ngIf="submitProcessing"
+                                        style="font-size:19px"></i></button>
+                            </div>
+                            <div class="col-md-6 pull-right">
+                                <button type="button" *ngIf="editSummaryDetailsEnable" id="btnComponentSave"
+                                    (click)="cancelDetails()" class="button btn-warning btn-style"
+                                    [disabled]="submitProcessing">
+                                    Cancel</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="modal-header">
+                        <div class="modal-title">
+                            Job Description
+                        </div>
+                        <a title="Edit" *ngIf="!editSummaryDescriptionEnable && designation!=='Recruiter'" (click)="handleEditSummaryDescription()"
+                            class="icon-margin"><i class="fas fa-user-edit"></i></a>
+                    </div>
+                    <div class="modal-body" style="border: 1px solid rgba(0,0,0,.125);">
+                        <div class="row col-12 padding-field-bottom">
+                            <div class="col-4">
+                                <label for="type">Job Description</label>
+                            </div>
+                            <div class="col-8">
+                                <textarea type="text" [(ngModel)]="jobDescription" class="form-control"
+                                    placeholder="Please Enter Job Description"
+                                    [readonly]="!editSummaryDescriptionEnable"></textarea>
+                            </div>
+                        </div>
+                        <hr>
+                        <div class="row">
+                            <div class="col-md-6 pull-left">
+                                <button type="button" *ngIf="editSummaryDescriptionEnable" id="btnComponentSave"
+                                    [disabled]="submitProcessing" class="button btn-primary btn-style"
+                                    (click)="updateSummaryDetails()"><i class="fas fa-save"></i>
+                                    Update <i class="fa fa-spinner fa-spin" *ngIf="submitProcessing"
+                                        style="font-size:19px"></i></button>
+                            </div>
+                            <div class="col-md-6 pull-right">
+                                <button type="button" *ngIf="editSummaryDescriptionEnable" id="btnComponentSave"
+                                    (click)="cancelDescription()" class="button btn-warning btn-style"
+                                    [disabled]="submitProcessing">
+                                    Cancel</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="modal-header">
+                        <div class="modal-title">
+                            Package Details
+                        </div>
+                        <a title="Edit" *ngIf="!editSummaryDescriptionEnable && designation!=='Recruiter'" (click)="handleEditSummaryPackage()"
+                            class="icon-margin"><i class="fas fa-user-edit"></i></a>
+                        <!-- <a class="btn btn-primary btn-sm" href="#teams" role="tab" data-toggle="tab"
+                            (click)="setType('Teams')">
+                            <i class="fas fa-user-plus"></i> Add
+                        </a> -->
+                    </div>
+                    <div class="modal-body" style="border: 1px solid rgba(0,0,0,.125);">
+                        <div class="row col-12 padding-field-bottom">
+                            <div class="col-4">
+                                <label for="type">Package Details </label>
+                            </div>
+                            <div class="col-8">
+                                <textarea type="text" [(ngModel)]="jobPackage" class="form-control"
+                                    placeholder="Please Enter Package Details"
+                                    [readonly]="!editSummaryPackageEnable"></textarea>
+                            </div>
+                        </div>
+                        <hr>
+                        <div class="row">
+                            <div class="col-md-6 pull-left">
+                                <button type="button" *ngIf="editSummaryPackageEnable" id="btnComponentSave"
+                                    [disabled]="submitProcessing" class="button btn-primary btn-style"
+                                    (click)="updateSummaryDetails()"><i class="fas fa-save"></i>
+                                    Update <i class="fa fa-spinner fa-spin" *ngIf="submitProcessing"
+                                        style="font-size:19px"></i></button>
+                            </div>
+                            <div class="col-md-6 pull-right">
+                                <button type="button" *ngIf="editSummaryPackageEnable" id="btnComponentSave"
+                                    (click)="cancelPackage()" class="button btn-warning btn-style"
+                                    [disabled]="submitProcessing">
+                                    Cancel</button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-header">
+                        <div class="modal-title">
+                            Skills
+                        </div>
+                        <a class="btn btn-primary btn-sm" (click)="resetSkill()" data-toggle="modal"
+                            data-target="#job-skill-modal">
+                            <i class="fas fa-user-plus"></i> Add
+                        </a>
+                    </div>
+                    <div class="modal-body" style="border: 1px solid rgba(0,0,0,.125);">
+                        <div class="row col-12 padding-field-bottom">
+                            <table class="table table-bordered table-hover table-sm">
+                                <thead class="t-head">
+                                    <tr>
+                                        <th *ngFor="let head of skillsHeader"><a>{{head}}</a></th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr *ngIf='skillsList && skillsList.length == 0'>
+                                        <td colspan="4">
+                                            <div class="align-center">No Records Found.</div>
+                                        </td>
+                                    </tr>
+                                    <tr *ngFor="let data of skillsList">
+                                        <td>{{data.skillName}}</td>
+                                        <td>{{data.rating}} /10</td>
+                                        <td>
+                                            <span *ngIf="designation!=='Recruiter'">
+                                            <a title="Edit" (click)="modelShowEditSkill(data)" class="icon-margin"><i
+                                                    class="fas fa-user-edit"></i></a>
+                                            <a title="Delete" class="icon-margin" mwlConfirmationPopover
+                                                [popoverTitle]="popoverTitle" [popoverMessage]="popoverMessage"
+                                                placement="left" (confirm)="deleteSkill(data.id)"
+                                                (cancel)="cancelClicked = true"><span class="fas fa-trash"></span></a>
+                                            </span>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <hr>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div role="tabpanel" class="tab-pane fade block" id="attachments">
+            <div class="row">
+                <div class="col-12">
+                    <table class="table table-striped table-bordered">
+                        <thead class="t-head">
+                            <tr>
+                                <th *ngFor="let head of attachmentHeader"><a>{{head}}</a></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr *ngFor="let document of attachmentsList">
+                                <td>{{document.fileName}}</td>
+                                <td>{{document.fileType}}</td>
+                                <td class="action-width align-center">
+                                    <a class="action" title="File Downlaod"
+                                        (click)="downloadDocumentAttachment(document.filePath, document.fileName)"><i
+                                            class="fa fa-download" aria-hidden="true"></i></a>&nbsp;
+                                    <a title="Delete" class="icon-margin" mwlConfirmationPopover
+                                        [popoverTitle]="popoverTitle" [popoverMessage]="popoverMessage" placement="left"
+                                        (confirm)="deleteDoc(document.fileName)" (cancel)="cancelClicked = true"><span
+                                            class="fas fa-trash"></span></a>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-12">
+                    <button type="button" class="btn btn-primary btn-sm" title="Add File" data-toggle="modal"
+                        data-target="#client-attch-add-files" (click)="addFileClick()">
+                        <i class='fas fa-file-upload'></i> Upload
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <div role="tabpanel" class="tab-pane fade block" id="teams">
+            <div class="row">
+                <div class="col-12">
+                    <table class="table table-striped table-bordered">
+                        <thead class="t-head">
+                            <tr>
+                                <th *ngFor="let head of teamMembersHeader"><a>{{head}}</a></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr *ngFor="let member of teamMembersList">
+                                <td>{{member.name}}</td>
+                                <td>{{member.displayName}}</td>
+                                <td>{{member.lastActive}}</td>
+                                <td>
+                                    <a title="Delete" class="icon-margin" mwlConfirmationPopover
+                                        [popoverTitle]="popoverTitle" [popoverMessage]="popoverMessage" placement="left"
+                                        (confirm)="deleteTeamMember(member.id)" (cancel)="cancelClicked = true"><span
+                                            class="fas fa-trash"></span></a>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-12">
+                    <button type="button" class="btn btn-primary btn-sm" title="Add a Team Member" data-toggle="modal"
+                        data-target="#client-team-member-add" (click)="addTeamMember()">
+                        <i class="fas fa-user-plus"></i> Add a Team Member
+                    </button>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+<div class="modal fade common-model" id="client-add-modal">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content model">
+            <form [formGroup]="clientForm" (ngSubmit)="submit()">
+                <!-- Modal Header -->
+                <div class="modal-header">
+                    <div class="modal-title"><i class="fas fa-plus"></i>/ <i class="fas fa-edit ml-1"></i> Create/Update
+                        Job
+                    </div>
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                </div>
+                <!-- Modal body -->
+                <div class="modal-body">
+                    <div class="row col-12 padding-field-bottom">
+                        <div class="col-2">
+                            <label for="type">Position Name <span class="color-red">*</span></label>
+                        </div>
+                        <div class="col-10">
+                            <input type="text" class="form-control" placeholder="Please Enter Job Name"
+                                formControlName="positionName">
+                        </div>
+                    </div>
+                    <div class="row col-12 padding-field-bottom">
+                        <div class="col-2">
+                            <label for="type">Client <span class="color-red">*</span> </label>
+                        </div>
+                        <div class="col-10">
+                            <select id="clientId" formControlName="clientId" class="form-control text">
+                                <option value=null selected disabled hidden>--Select--</option>
+                                <option *ngFor="let client of clientList" [value]=client.clientId>
+                                    {{client.clientName}}
+                                </option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="row col-12 padding-field-bottom" *ngIf="!showAdvancedOptions">
+                        <a class="advance" (click)="handleAdvancedClick()">+ Advanced Options</a>
+                    </div>
+                    <div *ngIf="showAdvancedOptions">
+                        
+                        <div class="row col-12 padding-field-bottom">
+                            <div class="col-2">
+                                <label for="type">Location</label>
+                            </div>
+                            <div class="col-10">
+                                <input type="text" class="form-control" placeholder="Please Enter Location"
+                                    formControlName="jobLocation">
+                            </div>
+                        </div>
+                        <div class="row col-12 padding-field-bottom">
+                            <div class="col-2">
+                                <label for="type">Head Count</label>
+                            </div>
+                            <div class="col-10">
+                                <input type="text" class="form-control" placeholder="Please Enter Head Count"
+                                    formControlName="headCount">
+                            </div>
+                        </div>
+                        <div class="row col-12 padding-field-bottom">
+                            <div class="col-2">
+                                <label for="type">Max. Submissions</label>
+                            </div>
+                            <div class="col-10">
+                                <input type="text" class="form-control" placeholder="Please Enter Max Submissions"
+                                    formControlName="maxSubmissions">
+                            </div>
+                        </div>
+                        <!-- <div class="row col-12 padding-field-bottom">
+                            <div class="col-2">
+                                <label for="type">Current Submissions</label>
+                            </div>
+                            <div class="col-10">
+                                <input type="text" class="form-control" placeholder="Current Submissions"
+                                    formControlName="submittedCount" readonly>
+                            </div>
+                        </div> -->
+                        <div class="row col-12 padding-field-bottom">
+                            <div class="col-2">
+                                <label for="type">Contract Details</label>
+                            </div>
+                            <div class="col-10">
+                                <!-- <input type="text" class="form-control" placeholder="Please Enter Contract Details"
+                                    formControlName="contractDetails"> -->
+                                <select class="form-control text" formControlName="contractDetails">
+                                    <option value=null selected disabled hidden>--Select Contract--</option>
+                                    <!-- <option value="{{data.status}}" selected>{{data.candidateStage}}</option>   -->
+                                    <option *ngFor="let status of contractDropdown" [ngValue]="status">
+                                        {{ status }}
+                                    </option>
+                                </select>
+                            </div>
+                            
+                        </div>
+                        <div class="row col-12 padding-field-bottom">
+                            <div class="col-2">
+                                <label for="type">Min Salary</label>
+                            </div>
+                            <div class="col-10">
+                                <input type="text" class="form-control" placeholder="Add Minimum Salary"
+                                    formControlName="minSalary">
+                            </div>
+                        </div>
+                        <div class="row col-12 padding-field-bottom">
+                            <div class="col-2">
+                                <label for="type">Max Salary</label>
+                            </div>
+                            <div class="col-10">
+                                <input type="text" class="form-control" placeholder="Add Max Salary"
+                                    formControlName="maxSalary">
+                            </div>
+                        </div>
+                        <div class="row col-12 padding-field-bottom">
+                            <div class="col-2">
+                                <label for="type">Currency</label>
+                            </div>
+                            <div class="col-10">
+                                <!-- <input type="text" class="form-control" placeholder="Please Enter Currency"
+                                    formControlName="currency"> -->
+                                    <select class="form-control text" formControlName="currency">
+                                        <option value=null selected disabled hidden>--Select Currency--</option>
+                                        <option *ngFor="let currency of currencyList" [ngValue]="currency.currencyName">
+                                            {{ currency.currencyName }}
+                                        </option>
+                                    </select>
+                            </div>
+                        </div>
+                        <div class="row col-12 padding-field-bottom">
+                            <div class="col-2">
+                                <label for="type">Frequency</label>
+                            </div>
+                            <div class="col-10">
+                                <!-- <input type="text" class="form-control" placeholder="Please Select Frequency"
+                                    formControlName="frequency"> -->
+                                <select class="form-control text" formControlName="frequency">
+                                    <option value=null selected disabled hidden>--Select Frequency--</option>
+                                    <!-- <option value="{{data.status}}" selected>{{data.candidateStage}}</option>   -->
+                                    <option *ngFor="let status of frequencyDropdown" [ngValue]="status">
+                                        {{ status }}
+                                    </option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="row col-12 padding-field-bottom">
+                            <div class="col-2">
+                                <label for="type">Description</label>
+                            </div>
+                            <div class="col-10">
+                                <textarea class="form-control" formControlName="jobDescription"
+                                    placeholder="Please Enter Description"></textarea>
+                            </div>
+                        </div>
+                    </div>
+                    <hr>
+                    <div class="row">
+                        <div class="col-md-6 pull-left">
+                            <button type="submit" id="btnComponentSave" [disabled]="submitProcessing"
+                                class="button btn-primary btn-style"><i class="fas fa-save"></i>
+                                {{submitText}} <i class="fa fa-spinner fa-spin" *ngIf="submitProcessing"
+                                    style="font-size:19px"></i></button>
+                        </div>
+                        <div class="col-md-6 pull-right" >
+                            <button type="button" id="btnComponentSave" (click)="clear()"
+                                class="button btn-warning btn-style" [disabled]="submitProcessing">
+                                Clear</button>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+<div class="modal alert-modal fade" id="client-attch-add-files" role="dialog" style="display: none;">
+    <div class="modal-dialog modal-md">
+        <div class="modal-content model">
+            <div class="modal-header " id="msg_header">
+                <h4 class="modal-title">Upload</h4>
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="row col-12 padding-field-bottom">
+                    <div class="col-4">
+                        <label>Add Attachment <span class="color-red">* </span></label>
+                    </div>
+                    <div class="col-8">
+                        <input type="file" [(ngModel)]="selectedFile1" class="form-control height-45"
+                            (change)="onFileChanged1($event)">
+                        <span class="color-red"
+                            *ngIf="submitted1 && (selectedFile1 == '' || selectedFile1 == undefined)">Attachment
+                            {{requiredErrorText}}</span>
+                    </div>
+                </div>
+                <hr>
+                <div class="row">
+                    <div class="col-md-6 pull-left">
+                        <button type="button" id="btnComponentSave" [disabled]="submitProcessing" (click)="addFile()"
+                            class="button btn-primary btn-style"><i class="fas fa-save"></i>
+                            Save <i class="fa fa-spinner fa-spin" *ngIf="submitProcessing"
+                                style="font-size:19px"></i></button>
+                    </div>
+                    <div class="col-md-6 pull-right">
+                        <button type="button" id="btnComponentSave" (click)="clearAttachment()"
+                            class="button btn-warning btn-style" [disabled]="submitProcessing">
+                            Clear</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal alert-modal fade" id="client-team-member-add" role="dialog" style="display: none;">
+    <div class="modal-dialog modal-md">
+        <div class="modal-content model">
+            <div class="modal-header " id="msg_header">
+                <h4 class="modal-title">Select User</h4>
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="row col-12 padding-field-bottom">
+                    <input type="text" class="form-control" placeholder="Search Team Member" [(ngModel)]="searchValue"
+                        (ngModelChange)="applyFilter()">
+                </div>
+                <br>
+                <div class="row col-12 padding-field-bottom">
+                    <div class="emp-scroll">
+                        <label><strong>Please select employee(s)</strong></label>
+                        <table>
+                            <tr>
+                                <th class="align-center" style="padding-bottom: 8px;">
+                                    <input type="checkbox" class="select-all" name="teamMember" [value]="employeeList"
+                                        (change)="selectAll($event)">
+                                </th>
+                                <th><label class="s-lable"> Emp Code</label></th>
+                                <th><label class="s-lable"> Emp Name</label></th>
+                            </tr>
+                            <tr *ngIf="toggleLoader">
+                                <td colspan="2">
+                                    <img src="./assets/images/loader-icon.gif" class="loader-margin img-responsive"
+                                        alt="loading....">
+                                </td>
+                            </tr>
+                            <tr *ngFor="let emp of employeeList">
+                                <td class="align-center">
+                                    <input type="checkbox" class="status-check select-all" [checked]="emp.selected"
+                                        (change)="onClickCheckBox(emp.employeeId)" name="status">
+                                </td>
+                                <td>{{emp.employeeCode}} </td>
+                                <td>{{emp.fullName}}</td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+                <hr>
+                <div class="row">
+                    <div class="col-md-6 pull-left">
+                        <button type="button" id="btnComponentSave" [disabled]="submitProcessing" (click)="addMembers()"
+                            class="button btn-primary btn-style"><i class="fas fa-save"></i>
+                            Add Member <i class="fa fa-spinner fa-spin" *ngIf="submitProcessing"
+                                style="font-size:19px"></i></button>
+                    </div>
+                    <div class="col-md-6 pull-right">
+                        <button type="button" id="btnComponentSave" (click)="clearMembers()"
+                            class="button btn-warning btn-style" [disabled]="submitProcessing">
+                            Clear</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal alert-modal fade" id="client-add-tag-individual" role="dialog" style="display: none;">
+    <div class="modal-dialog modal-md">
+        <div class="modal-content model">
+            <div class="modal-header " id="msg_header">
+                <h4 class="modal-title">Manage Bulk tag</h4>
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="row col-12 padding-field-bottom">
+                    <input type="text" class="form-control" placeholder="Search a Tag" [(ngModel)]="tagSearchValue"
+                        (ngModelChange)="searchTag()">
+                </div>
+                <br>
+                <div class="row col-12 padding-field-bottom">
+                    <div>
+                        <table>
+                            <tr *ngFor="let data of tagsList">
+                                <div class="card-body" style="font-size: 18px;padding: 0.5rem;">
+                                    <td class="align-center">
+                                        <input type="checkbox" style="height: 18px; width: 22px;cursor: pointer;"
+                                            [checked]="data.selected" (change)="onClickTagCheckBox(data.name)"
+                                            name="status">
+                                    </td>
+                                    <td><i class="fa fa-tags {{data.color}}" aria-hidden="true"></i> {{data.name}}</td>
+                                </div>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+                <hr>
+                <div class="row">
+                    <div class="col-md-6 pull-left">
+                        <button type="button" id="btnComponentSave" [disabled]="submitProcessing"
+                            (click)="addTagsIndividual()" class="button btn-primary btn-style"><i
+                                class="fas fa-save"></i>
+                            Update Tags <i class="fa fa-spinner fa-spin" *ngIf="submitProcessing"
+                                style="font-size:19px"></i></button>
+                    </div>
+                    <div class="col-md-6 pull-right">
+                        <button type="button" id="btnComponentSave" (click)="clearTags()"
+                            class="button btn-warning btn-style" [disabled]="submitProcessing">
+                            Clear</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal alert-modal fade" id="client-add-tag-bulk" role="dialog" style="display: none;">
+    <div class="modal-dialog modal-md">
+        <div class="modal-content model">
+            <div class="modal-header " id="msg_header">
+                <h4 class="modal-title">Bulk add a tag</h4>
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="row col-12 padding-field-bottom">
+                    <input type="text" class="form-control" placeholder="Search a Tag" [(ngModel)]="tagSearchValue"
+                        (ngModelChange)="searchTag()">
+                </div>
+                <br>
+                <div class="row col-12 padding-field-bottom">
+                    <div>
+                        <table>
+                            <tr *ngFor="let data of tagsList">
+                                <div class="card-body" style="font-size: 18px;padding: 0.5rem;">
+                                    <td class="align-center">
+                                        <input type="checkbox" style="height: 18px; width: 22px;cursor: pointer;"
+                                            [checked]="data.selected" (change)="onClickTagCheckBox(data.name)"
+                                            name="status">
+                                    </td>
+                                    <td><i class="fa fa-tags {{data.color}}" aria-hidden="true"></i> {{data.name}}</td>
+                                </div>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+                <hr>
+                <div class="row">
+                    <div class="col-md-6 pull-left">
+                        <button type="button" id="btnComponentSave" [disabled]="submitProcessing" (click)="addTags()"
+                            class="button btn-primary btn-style"><i class="fas fa-save"></i>
+                            Add Tags <i class="fa fa-spinner fa-spin" *ngIf="submitProcessing"
+                                style="font-size:19px"></i></button>
+                    </div>
+                    <div class="col-md-6 pull-right">
+                        <button type="button" id="btnComponentSave" (click)="clearTags()"
+                            class="button btn-warning btn-style" [disabled]="submitProcessing">
+                            Clear</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal alert-modal fade" id="client-archive" role="dialog" style="display: none;">
+    <div class="modal-dialog modal-md">
+        <div class="modal-content model">
+            <div class="modal-header " id="msg_header">
+                <h4 class="modal-title">Message</h4>
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="row col-12 padding-field-bottom">
+                    <label>Are you sure you want to archive {{selectedClientCount}} Job?</label>
+                </div>
+                <hr>
+                <div class="row">
+                    <div class="col-md-6 pull-left">
+                        <button type="button" id="btnComponentSave" [disabled]="submitProcessing"
+                            (click)="clientArchive()" class="button btn-danger btn-style">Continue <i
+                                class="fa fa-spinner fa-spin" *ngIf="submitProcessing"
+                                style="font-size:19px"></i></button>
+                    </div>
+                    <div class="col-md-6 pull-right">
+                        <button type="button" data-dismiss="modal" class="button btn-warning btn-style">
+                            Cancel</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal alert-modal fade" id="show-team-member-modal" role="dialog" style="display: none;">
+    <div class="modal-dialog modal-md">
+        <div class="modal-content model">
+            <div class="modal-header " id="msg_header">
+                <h4 class="modal-title">Team Members</h4>
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-12">
+                        <table class="table table-striped table-bordered">
+                            <thead class="t-head">
+                                <tr>
+                                    <th *ngFor="let head of teamMembersHeader"><a>{{head}}</a></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr *ngFor="let member of teamMembersList">
+                                    <td>{{member.name}}</td>
+                                    <td>{{member.displayName}}</td>
+                                    <td>{{member.lastActive}}</td>
+                                    <td>
+                                        <a title="Delete" class="icon-margin" mwlConfirmationPopover
+                                            [popoverTitle]="popoverTitle" [popoverMessage]="popoverMessage"
+                                            placement="left" (confirm)="deleteTeamMember(member.id)"
+                                            (cancel)="cancelClicked = true"><span class="fas fa-trash"></span></a>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade common-model" id="candidate-drop-modal">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content model">
+            <!-- Modal Header -->
+            <div class="modal-header">
+                <div class="modal-title">
+                    Drop Candidate
+                </div>
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+            </div>
+            <!-- Modal body -->
+            <div class="modal-body">
+                <div class="row col-12 padding-field-bottom">
+                    <div class="col-2">
+                        <label for="type">Reason to Drop<span class="color-red">*</span></label>
+                    </div>
+                    <div class="col-10">
+                        <ng-multiselect-dropdown [placeholder]="'Select Reasons'" [settings]="dropdownSettingsStage"
+                            [data]="stageList" [(ngModel)]="selectedItemsStage" (onSelect)="onItemSelectStage($event)"
+                            (onDeSelect)="OnStageItemDeSelect($event)" (onSelectAll)="onSelectAllStage($event)">
+                        </ng-multiselect-dropdown>
+                    </div>
+                </div>
+                <div class="row col-12 padding-field-bottom">
+                    <div class="col-2">
+                        <label for="type">Description</label>
+                    </div>
+                    <div class="col-10">
+                        <textarea class="form-control" [(ngModel)]="dropDescription"
+                            placeholder="Please Enter Description"></textarea>
+                    </div>
+                </div>
+                <hr>
+                <div class="row">
+                    <div class="col-md-6 pull-left">
+                        <button type="button" (click)="dropCandidate()" id="btnComponentSave"
+                            [disabled]="submitProcessing" class="button btn-primary btn-style"><i
+                                class="fas fa-save"></i>
+                            Save <i class="fa fa-spinner fa-spin" *ngIf="submitProcessing"
+                                style="font-size:19px"></i></button>
+                    </div>
+                    <div class="col-md-6 pull-right">
+                        <button type="button" id="btnComponentSave" (click)="clearDropCandidate()"
+                            class="button btn-warning btn-style" [disabled]="submitProcessing">
+                            Clear</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade common-model" id="candidate-reject-modal">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content model">
+            <!-- Modal Header -->
+            <div class="modal-header">
+                <div class="modal-title">
+                    Reject Candidate
+                </div>
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+            </div>
+            <!-- Modal body -->
+            <div class="modal-body">
+                <div class="row col-12 padding-field-bottom">
+                    <div class="col-2">
+                        <label for="type">Reason to Reject<span class="color-red">*</span></label>
+                    </div>
+                    <div class="col-10">
+                        <ng-multiselect-dropdown [placeholder]="'Select Reasons'" [settings]="dropdownSettingsStage"
+                            [data]="stageList" [(ngModel)]="selectedItemsStage" (onSelect)="onItemSelectStage($event)"
+                            (onDeSelect)="OnStageItemDeSelect($event)" (onSelectAll)="onSelectAllStage($event)">
+                        </ng-multiselect-dropdown>
+                    </div>
+                </div>
+                <div class="row col-12 padding-field-bottom">
+                    <div class="col-2">
+                        <label for="type">Description</label>
+                    </div>
+                    <div class="col-10">
+                        <textarea class="form-control" [(ngModel)]="dropDescription"
+                            placeholder="Please Enter Description"></textarea>
+                    </div>
+                </div>
+                <hr>
+                <div class="row">
+                    <div class="col-md-6 pull-left">
+                        <button type="button" (click)="rejectCandidate()" id="btnComponentSave"
+                            [disabled]="submitProcessing" class="button btn-primary btn-style"><i
+                                class="fas fa-save"></i>
+                            Save <i class="fa fa-spinner fa-spin" *ngIf="submitProcessing"
+                                style="font-size:19px"></i></button>
+                    </div>
+                    <div class="col-md-6 pull-right">
+                        <button type="button" id="btnComponentSave" (click)="clearDropCandidate()"
+                            class="button btn-warning btn-style" [disabled]="submitProcessing">
+                            Clear</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade common-model" id="candidate-invoice-modal">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content model">
+            <!-- Modal Header -->
+            <div class="modal-header">
+                <div class="modal-title">
+                    Details of Invoice
+                </div>
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+            </div>
+            <!-- Modal body -->
+            <div class="modal-body">
+               
+                <div class="row col-12 padding-field-bottom">
+                    <div class="col-2">
+                        <label for="type">Candidate Name</label>
+                    </div>
+                    <div class="col-4">
+                        <input type="text" class="form-control" [(ngModel)]="candidateName"
+                            readonly>
+                    </div>
+                    <div class="col-2">
+                        <label for="type">Invoice No.</label>
+                    </div>
+                    <div class="col-4">
+                        <input type="text" class="form-control" [(ngModel)]="invoiceNo"
+                            placeholder="Please Enter Invoice No.">
+                    </div>
+                </div>
+
+                <div class="row col-12 padding-field-bottom">
+                    <div class="col-2">
+                        <label for="type">Position Title</label>
+                    </div>
+                    <div class="col-4">
+                        <input type="text" class="form-control" [(ngModel)]="positionTitle"
+                            readonly>
+                    </div>
+                    <div class="col-2">
+                        <label for="type">Invoice Date</label>
+                    </div>
+                    <div class="col-4">
+                        <input type="date" class="form-control" [(ngModel)]="invoiceDate"
+                            placeholder="Please Enter Invoice Date">
+                    </div>
+                </div>
+
+                <div class="row col-12 padding-field-bottom">
+                    <div class="col-2">
+                        <label for="type">Client Name</label>
+                    </div>
+                    <div class="col-4">
+                        <input type="text" class="form-control" [(ngModel)]="clientTitle"
+                            readonly>
+                    </div>
+                    <div class="col-2">
+                        <label for="type">Attention To</label>
+                    </div>
+                    <div class="col-4">
+                        <input type="text" class="form-control" [(ngModel)]="attentionTo"
+                            placeholder="Please Enter Attention To">
+                    </div>
+                </div>
+
+                <div class="row col-12 padding-field-bottom">
+                    <div class="col-2">
+                        <label for="type">Client Address</label>
+                    </div>
+                    <div class="col-4">
+                        <input type="text" class="form-control" [(ngModel)]="clientAddress"
+                            readonly>
+                    </div>
+                    <div class="col-2">
+                        <label for="type">Salary Offered</label>
+                    </div>
+                    <div class="col-4">
+                        <input type="text" class="form-control" [(ngModel)]="salaryOffered"
+                            placeholder="Please Enter Salary Offered">
+                    </div>
+                </div>
+
+                <div class="row col-12 padding-field-bottom">
+                    <div class="col-2">
+                        <label for="type">Client Email ID</label>
+                    </div>
+                    <div class="col-4">
+                        <input type="text" class="form-control" [(ngModel)]="clientEmailId"
+                            readonly>
+                    </div>
+                    <div class="col-2">
+                        <label for="type">Fee %</label>
+                    </div>
+                    <div class="col-4">
+                        <input type="text" class="form-control" [(ngModel)]="Fee"
+                            placeholder="Please Enter Fee">
+                    </div>
+                </div>
+
+                <div class="row col-12 padding-field-bottom">
+                    <div class="col-2">
+                        <label for="type">Job Started Date</label>
+                    </div>
+                    <div class="col-4">
+                        <input type="date" class="form-control" [(ngModel)]="jobStartedDate" >
+                    </div>
+                    
+                </div>
+
+                <hr>
+                <div class="row">
+                    <div class="col-md-6 pull-left">
+                        <button type="button" (click)="saveInvoice()" id="btnComponentSave"
+                            [disabled]="submitProcessing" class="button btn-primary btn-style"><i
+                                class="fas fa-save"></i>
+                            Save <i class="fa fa-spinner fa-spin" *ngIf="submitProcessing"
+                                style="font-size:19px"></i></button>
+                    </div>
+                    <div class="col-md-6 pull-right">
+                        <button type="button" id="btnComponentSave" (click)="clearDropCandidate()"
+                            class="button btn-warning btn-style" [disabled]="submitProcessing">
+                            Clear</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade common-model" id="candidate-interview-modal">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content model">
+            <!-- Modal Header -->
+            <div class="modal-header">
+                <div class="modal-title">
+                    Offered Date
+                </div>
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+            </div>
+            <!-- Modal body -->
+            <div class="modal-body">
+               
+                <div class="row col-12 padding-field-bottom">
+                    <div class="col-2">
+                        <label for="type">Candidate Name</label>
+                    </div>
+                    <div class="col-4">
+                        <input type="text" class="form-control" [(ngModel)]="candidateName"
+                            readonly>
+                    </div>
+                    <div class="col-2">
+                        <label for="type">Client Name</label>
+                    </div>
+                    <div class="col-4">
+                        <input type="text" class="form-control" [(ngModel)]="clientTitle"
+                            readonly>
+                    </div>
+                </div>
+
+                <div class="row col-12 padding-field-bottom">
+                    <div class="col-2">
+                        <label for="type">Position Title</label>
+                    </div>
+                    <div class="col-4">
+                        <input type="text" class="form-control" [(ngModel)]="positionTitle"
+                            readonly>
+                    </div>
+                    <div *ngIf="stage == 'Interviewed'" class="col-2">
+                        <label for="type">Date of Interview</label>
+                    </div>
+                    <div *ngIf="stage == 'Offered'" class="col-2">
+                        <label for="type">Date Offered</label>
+                    </div>
+                    <div *ngIf="stage == 'Started'" class="col-2">
+                        <label for="type">Date of Started</label>
+                    </div>
+                    <div class="col-4">
+                        <input type="date" class="form-control" [(ngModel)]="invoiceDate"
+                            placeholder="Please Enter Date">
+                    </div>
+                </div>
+               
+               
+                <hr>
+                <div class="row">
+                    <div class="col-md-6 pull-left">
+                        <button type="button" (click)="saveCandidateStage()" id="btnComponentSave"
+                            [disabled]="submitProcessing" class="button btn-primary btn-style"><i
+                                class="fas fa-save"></i>
+                            Save Candidate Stage <i class="fa fa-spinner fa-spin" *ngIf="submitProcessing"
+                                style="font-size:19px"></i></button>
+                    </div>
+                    <div class="col-md-6 pull-right">
+                        <button type="button" id="btnComponentSave" (click)="clearDropCandidate()"
+                            class="button btn-warning btn-style" [disabled]="submitProcessing">
+                            Clear</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div class="modal fade common-model" id="job-skill-modal">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content model">
+            <form [formGroup]="skillForm" (ngSubmit)="submitSkill()">
+                <!-- Modal Header -->
+                <div class="modal-header">
+                    <div class="modal-title"><i class="fas fa-plus"></i>
+                        {{submitTextSkill == 'Save' ? 'Add' : 'Update'}} new Skill
+                    </div>
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                </div>
+                <!-- Modal body -->
+                <div class="modal-body">
+                    <div class="row col-12 padding-field-bottom">
+                        <div class="col-2">
+                            <label for="type">Skill Name</label>
+                        </div>
+                        <div class="col-10">
+                            <!-- <input type="text" class="form-control" placeholder="Please Enter Skill Name"
+                                formControlName="skillName"> -->
+                            <select class="form-control" id="skillName" formControlName="skillName"
+                                [ngClass]="{ 'is-invalid': skillSubmitted && skillform_.skillName.errors }">
+                                <option value=null disabled>Please Select Skill</option>
+                                <option *ngFor="let data of skillList" [value]="data.id">
+                                    {{data.skillName}}
+                                </option>
+                            </select>
+                            <span class="color-red" *ngIf="skillSubmitted && skillform_.skillName.errors">Skill
+                                Name
+                                {{requiredErrorText}}</span>
+                        </div>
+                    </div>
+                    <div class="row col-12 padding-field-bottom">
+                        <div class="col-2">
+                            <label for="type">Rating</label>
+                        </div>
+                        <div class="col-10">
+                            <select class="form-control" id="rating" formControlName="rating"
+                                [ngClass]="{ 'is-invalid': skillSubmitted && skillform_.rating.errors }">
+                                <option value=null disabled>Please Select Rating</option>
+                                <option *ngFor="let data of ratingList" [value]="data">
+                                    {{data}}
+                                </option>
+                            </select>
+                            <span class="color-red" *ngIf="skillSubmitted && skillform_.rating.errors">Rating
+                                {{requiredErrorText}}</span>
+                        </div>
+                    </div>
+                    <hr>
+                    <div class="row">
+                        <div class="col-md-6 pull-left">
+                            <button type="submit" id="btnComponentSave" [disabled]="submitProcessing"
+                                class="button btn-primary btn-style"><i class="fas fa-save"></i>
+                                {{submitTextSkill}} <i class="fa fa-spinner fa-spin" *ngIf="submitProcessing"
+                                    style="font-size:19px"></i></button>
+                        </div>
+                        <div class="col-md-6 pull-right" *ngIf="submitTextSkill == 'Save'">
+                            <button type="button" id="btnComponentSave" (click)="clear()"
+                                class="button btn-warning btn-style" [disabled]="submitProcessing">
+                                Clear</button>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

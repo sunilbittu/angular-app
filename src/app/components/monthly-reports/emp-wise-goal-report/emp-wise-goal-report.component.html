@@ -1,0 +1,206 @@
+<div class="container-fluid">
+    <div class="d-flex align-items-center mt-2">
+        <div class="m-2">
+            <div class="h-size"><em class="fa fa-user mr-1"></em> <strong>Employee Wise Goal Report</strong></div>
+        </div>
+        <div class="flex-fill">
+        </div>
+        <div class="m-3">
+            <!-- <em class="fa fa-search"></em>
+            <span> Search </span><input type="text" value=""> -->
+        </div>
+    </div>
+    <div *ngIf="!showGoalNotSetEmp">
+        <div class="row">
+            <div class="form-group col-md-3">
+                <label for="libraryType">Department <span class="color-red">*</span></label>
+                <select id="libraryType" [(ngModel)]="departmentModel" name="department" (change)="onDepartmentChange()"
+                    class="form-control">
+                    <option value="" disabled>Please Select Department</option>
+                    <option *ngFor="let data of departmentsList" [value]="data.departmentId">
+                        {{data.departmentName}}</option>
+                </select>
+        <span class="color-red" *ngIf="submitted && !isdepselected ">Department cant be blank</span>
+
+            </div>
+            <div class="form-group col-md-3">
+                <label for="empbranch">Goal for FY <span class="color-red">*</span></label>
+                <select [(ngModel)]="financialYearModel" [ngModelOptions]="{standalone: true}" (change)="onFYChange()"
+                    class="custom-select-box form-control">
+                    <option value="" disabled>Please select financial year</option>
+                    <option *ngFor="let year of financialYearList" [value]="year.financialYearId">
+                        {{year.financialYear}}
+                    </option>
+                </select>
+        <span class="color-red" *ngIf="submitted && !idfyselected ">FY cant be blank</span>
+
+            </div>
+            <div class="form-group col-md-3 padding-top-25">
+                <button type="submit" id="btn_projection" class="button btn-primary" (click)="submit()">Search</button>
+                &nbsp;
+                <!-- <button type="button" id="btn_projection" (click)="onClick()"
+                            class="button btn-danger m-auto">Cancel</button> -->
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12">
+                <table class="table table-bordered table-hover table-sm">
+                    <thead class="t-head">
+                        <tr>
+                            <th *ngFor="let head of headers" id="headers1"><a>{{head}}</a></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr
+                            *ngFor="let data of empGoalReportList | paginate: { itemsPerPage: numberOfEntitesToShow, currentPage: p } ; let i=index;">
+                            <td>{{i+1}}</td>
+                            <td>{{data.departmentName}}</td>
+                            <td>{{data.employeeId}}</td>
+                            <td>{{data.firstName}} {{data.lastName}}</td>
+                            <td *ngIf="data.setGoals == 'Yes'"><i class="fa fa-check-circle green" aria-hidden="true"></i>
+                                <td *ngIf="data.setGoals == null"><i class="fa fa-check-circle red" aria-hidden="true"></i>
+                            <td ><a><i class="fa fa-eye" aria-hidden="true" data-toggle="modal" data-target="#emp_list"
+                                        (click)="view(data.employeeId)"></i></a>
+                            </td>
+                            
+                        </tr>
+                    </tbody>
+                </table>
+                <hr>
+                <div class="row btn-footer">
+                    <div class="col-md-6 pull-left">
+                        <h3>Number of Employee(s) Goal set : <strong>{{goalReportData.noOfEmpGoalSet}}</strong></h3>
+                    </div>
+                    <!-- <div class="col-md-6 pull-right">
+                        <h3>Number of Employee(s) Goal not set : <strong><a class="blue"
+                                    (click)="showGoalNotSet()">{{goalReportData.noOfEmpGoalNotSet}}</a></strong></h3>
+                    </div> -->
+                </div>
+                <hr>
+                <div class="row" *ngIf="totalElements2!=0">
+                    <!-- <div class="col-md-6 col-sm-6 col-6"><span class="show-entry">Showing
+                            <span>{{showingFrom2}} to {{showingTo2}} of {{totalElements2}} entries</span></span>&nbsp;
+                    </div> -->
+
+                    <div class="col-md-6" *ngIf="empGoalReportList.length > 0">
+                        <pagination-controls (pageChange)="p = $event"></pagination-controls>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- <div class="row">
+            <div class="col-md-2">
+                <button type="button" class="btn btn-labeled btn-outline-danger btn-sm" (click)="exportTable('PDF')">
+                    <span class="btn-label"><i class="fa fa-file-pdf-o" aria-hidden="true"></i></span>Export To
+                    PDF</button>
+            </div>
+
+            <div class="col-md-2">
+                <button type="button" class="btn btn-labeled btn-outline-success btn-sm" (click)="exportTable('EXCEL')">
+                    <span class="btn-label"><i class="fa fa-file-excel-o" aria-hidden="true"></i></span>Export To
+                    Excel</button>
+            </div>
+        </div> -->
+    </div>
+    <div *ngIf="showGoalNotSetEmp">
+        <div class="row btn-footer">
+            <div class="col-md-12 pull-right">
+                <button class="btn btn-default btn-sm back-btn" (click)="back()"> Back <i
+                        class="fas fa-long-arrow-alt-left"></i></button>
+            </div>
+        </div>
+        <br>
+        <div class="row">
+            <div class="col-md-12">
+                <table class="table table-bordered table-hover table-sm">
+                    <thead class="t-head">
+                        <tr>
+                            <th *ngFor="let head of goalNotSetHeaders" id="headers1"><a>{{head}}</a></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let data of empGoalNotSetReportList | paginate: {
+                            itemsPerPage: itemsPerPage,
+                            currentPage: currentPage,
+                            totalItems: totalItems
+                          };let i=index">
+                            <td>{{i+1}}</td>
+                            <td>{{data.employeeId}}</td>
+                            <td>{{data.firstName}} {{data.lastName}}</td>
+                            <td>{{data.personalEmail}}</td>
+                            <td>{{data.personalNo}}</td>
+                            <td class="align-center">
+                                <input type="checkbox" class="status-check select-all" [checked]="data.selected"
+                                    (change)="onClickCheckBox(data.employeeId)" name="status">
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+                <div class="row" *ngIf="totalElements!=0">
+                    <div class="col-md-6 col-sm-6 col-6"><span class="show-entry">Showing
+                            <span>{{showingFrom}} to {{showingTo}} of {{totalElements}} entries</span></span>&nbsp;
+                    </div>
+
+                    <div class="col-md-6" *ngIf="totalItems > 0">
+                        <pagination-controls (pageChange)="pageChanged($event)"></pagination-controls>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <br>
+        <div class="row btn-footer">
+            <div class="col-md-12 pull-right">
+                <div *ngIf="validationText != ''" class="color-red pull-left-5"><strong>{{validationText}}</strong>
+                </div>
+                <button class="btn btn-primary btn-sm back-btn" (click)="empGoalReminderMail()"> Send Reminder Mail
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal fade common-model" id="emp_list">
+    <div class="modal-dialog modal-xl">
+        <div class="modal-content model">
+            <!-- Modal Header -->
+            <div class="modal-header">
+                <div class="modal-title"><i class="fas fa-edit ml-1"></i> KPA Report</div>
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+            </div>
+            <!-- Modal body -->
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-md-12">
+                        <table class="table table-striped table-bordered">
+                            <thead class="t-head">
+                                <tr>
+                                    <th class="action-width align-center"><a>S No</a></th>
+                                    <th><a>Key Performance Area</a></th>
+                                    <th><a>Appraiser Rating </a></th>
+                                    <th><a>Manager Remarks</a></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr *ngIf="toggleLoader2">
+                                    <td colspan="3">
+                                        <img src="./assets/images/loader-icon.gif" class="img-responsive"
+                                            alt="loading....">
+                                    </td>
+                                </tr>
+                                <tr *ngFor="let emp of employeeKPAGoalsList; let i=index">
+                                    <td class="action-width align-center">{{i + 1}}</td>
+                                    <td>{{emp.kpaName}}</td>
+                                    <td>{{emp.appraiserRating}}</td>
+                                    <td>{{emp.appraisersComments}}</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer" style="justify-content: flex-end;">
+                <button type="button" class="btn btn-warning btn-sm" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,24 @@
+<div class="triangle"></div>
+<div [ngClass]="(list.length >= 4)?'mannual-height-scroll':'auto-height-scroll'">
+    <span *ngFor="let data of list">
+        <div class="container" [ngClass]="(data.notificationStatus == 'Opened')?'opened':'read'">
+            <div class="content"><a data-toggle="modal" data-target="#notification_modal_1"
+                    (click)="clickNotification(data.notificationId)"><b>{{data.message}}</b></a>
+            </div>
+        </div>
+    </span>
+</div>
+<div class="modal alert-modal fade" id="notification_modal_1" role="dialog" style="display: none;">
+    <div class="modal-dialog modal-md">
+        <div class="modal-content model">
+            <div class="modal-header " id="msg_header">
+                <h4 class="modal-title">Notification</h4>
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+            </div>
+            <div class="modal-body">
+                <h3 id="msg">{{notificationObj.message}}</h3>
+                <h5 id="msg">Created On: {{notificationObj.createdDate | date:'dd-MM-yyyy'}}</h5>
+            </div>
+        </div>
+    </div>
+</div>

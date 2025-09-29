@@ -1,0 +1,83 @@
+<div class="container-fluid">
+    <div class="row ">
+        <div class="d-flex align-items-center mt-2">
+            <div class="m-2">
+                <div class="h-size"><b> Leave Application Status Report</b></div>
+            </div>
+        </div>
+        <div class="d-flex align-items-center mt-2">
+            <div class="m-2">
+                <select class="dropdown-m-2 drop-down" name="employee">
+                    <option value="">All Status</option>
+                    <option *ngFor="let s of status">{{s.name}}</option>
+                </select>
+            </div>
+            <div class="m-2">
+                <select class="dropdown-m-2 drop-down" name="employee">
+                    <option value="">HOD Status</option>
+                    <option *ngFor="let m of master">{{m.name}}</option>
+                </select>
+            </div>
+            <div class="m-2">
+                <select class="dropdown-m-2 drop-down" name="employee">
+                    <option value="">Approval1 Status</option>
+                    <option *ngFor="let m of master">{{m.name}}</option>
+                </select>
+            </div>
+            <div class="m-2">
+                <select class="dropdown-m-2 drop-down" name="employee">
+                    <option value="">Approval2 Status</option>
+                    <option *ngFor="let m of master">{{m.name}}</option>
+                </select>
+            </div>
+            <div class="m-2">
+                <label class="control-label">&nbsp;</label>
+                <button id="btn_add" type="button" class="btn btn-primary button">Search</button>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-12">
+            <table class="table table-bordered table-hover table-sm no-wrap">
+                <thead class="t-head">
+                    <tr>
+                        <th *ngFor="let head of headers"><a>{{head}}</a></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let data of leaveReports;let i=index">
+                        <td>{{i+1}}</td>
+                        <td>{{data.employeeCode}}</td>
+                        <td>{{data.firstName}}</td>
+                        <td>
+                        </td>
+                        <td>{{data.manager}}</td>
+                        <td>{{data?.applicationDt}}</td>
+                        <td>{{data.startDate}}</td>
+                        <td>{{data.endDate}}</td>
+                        <td>{{data.noOfDays}}</td>
+                        <td>{{data.leaveTypeCode}}</td>
+                        <td>{{data.status}}</td>
+                        <td>{{data?.reason}}</td>
+                        <td>{{data?.statusOfApproval}}</td>
+                        <td>{{data?.dtofApprovalRptHead}}</td>
+                        <td>{{data?.statusof}}</td>
+                        <td>{{data?.dtofapproval}}</td>
+                    </tr>
+                </tbody>
+
+            </table>
+        </div>
+    </div>
+    <div class="d-flex align-items-center mt-2 ">
+        <div class="m-2">
+            <button id="btn_add" type="button" class="btn-primary button">OD Applications</button>
+        </div>
+        <div class="flex-fill">
+        </div>
+        <div class="m-2">
+            <button id="btn_add" type="button" class="btn-primary button"><i class="fa fa-download"
+                    aria-hidden="true"></i>Export To Excel</button>
+        </div>
+    </div>
+</div>

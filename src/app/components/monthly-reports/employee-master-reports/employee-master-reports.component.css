@@ -1,0 +1,61 @@
+.reports-box{
+    height: 700px;
+    background-color: rgb(231, 225, 225);
+    width: 201px;
+}
+.reports-box h2{
+   color: #707070;
+   font-size: 20px;
+}
+.reports-box ul li{
+    list-style: none;
+    color:#55799A ;
+    padding-bottom: 8px;
+    font-size: 16px;
+    cursor: pointer;
+    margin-left: 10px;
+}
+.reports-box ul li:hover {
+    text-decoration: underline;
+    
+}
+
+.repoprt-select{
+    width: 80% !important;
+    padding:0px;
+    background-color: #cbc6c6 !important;
+    margin-left: 24px;
+}
+
+.btn-outline-secondary{
+    margin-left: 28px;
+    background: white;
+}
+.select-all{
+    /* width: 25% !important; */
+    width: 20px;
+    height: 15px
+}
+.s-lable{
+    padding-left: 10px;
+
+}
+.modal-title{
+    margin-left: 300px;
+}
+.model-table td{
+    vertical-align: middle !important;
+    padding: 6px !important;
+}
+.head-margin {
+    padding: 3px;
+    background-color: rgb(40, 126, 255);
+    color: #fff;
+}
+.model {
+    margin: 4.75rem auto;
+}
+
+.container-fluid{
+    padding-left: 0%;
+}

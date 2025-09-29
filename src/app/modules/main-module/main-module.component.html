@@ -1,0 +1,830 @@
+<nav class="menu_wrap">
+  <!-- Brand/logo -->
+  <!-- <a class="navbar-brand" > -->
+  <img *ngIf="role =='ROLE_EMPLOYEE'" class="logo" src="../../../assets/images/logo.jpg" alt="logo" width="100px"
+    height="100px">
+  <img *ngIf="role !='ROLE_EMPLOYEE'" class="logo" src="../../assets/images/logo.jpg" alt="logo" width="100px"
+    height="100px">
+  <!-- <img src="https://mail.google.com/mail/u/0/#inbox?projector=1" alt="logo"> -->
+
+
+  <!-- </a> -->
+
+  <!-- Links -->
+  <ul class="menus menu-list ml-160">
+    <h2 class="logoText font-size-18">{{companyName}}</h2>
+    <li class="nav-item dropdown">
+      <a class="nav-link dropbtn"><span>Company</span> <b class="pipe">|</b></a>
+      <div class="dropdown-content">
+        <a *ngIf="role =='ROLE_SUPER_ADMIN' || (permisionsArray | search3:'Configuration/company') == true "
+          routerLink="Configuration/company">Company</a>
+        <a *ngIf="role =='ROLE_SUPER_ADMIN' " (click)="selectCompany()">Select Company</a>
+        <a *ngIf="role =='ROLE_SUPER_ADMIN' || (permisionsArray | search3:'Company/edit-company') == true "
+          routerLink="Company/edit-company">Edit Company</a>
+        <!-- <a *ngIf="role =='ROLE_SUPER_ADMIN' || (permisionsArray | search3:'Company/bank-details') == true " routerLink="Company/bank-details">Bank Details</a> -->
+        <a *ngIf="role =='ROLE_SUPER_ADMIN' || (permisionsArray | search3:'Company/tan-details') == true "
+          routerLink="Company/tan-details">TAN Details</a>
+        <!-- <a href="#">Group Dashboard</a> -->
+      </div>
+    </li>
+
+    <li class="nav-item dropdown">
+      <a class="nav-link dropbtn"><span>Masters</span> <b class="pipe">|</b></a>
+      <div class="dropdown-contentscroll">
+        <a *ngIf="role =='ROLE_SUPER_ADMIN' || (permisionsArray | search3:'Master/employee-master') == true "
+          routerLink="Master/employee-master">Employee Master</a>
+        <a *ngIf="role =='ROLE_SUPER_ADMIN' || (permisionsArray | search3:'Utilities/salary-master') == true "
+          routerLink="Utilities/salary-master">Salary Component Master</a>
+        <a *ngIf="role =='ROLE_SUPER_ADMIN' || (permisionsArray | search3:'Utilities/salary-mapping') == true "
+          routerLink="Utilities/salary-mapping">Salary Mapping</a>
+        <a *ngIf="role =='ROLE_SUPER_ADMIN' || (permisionsArray | search3:'Utilities/salary-mapping') == true "
+          routerLink="Income-tax/eis-slab">EIS Slab Master</a>
+        <a *ngIf="role =='ROLE_SUPER_ADMIN' || (permisionsArray | search3:'Utilities/salary-mapping') == true "
+          routerLink="Income-tax/epf-slab">EPF Slab Master</a>
+        <a *ngIf="role =='ROLE_SUPER_ADMIN' || (permisionsArray | search3:'Utilities/salary-mapping') == true "
+          routerLink="Income-tax/socso-slab">SOCSO Slab Master</a>
+
+        <a *ngIf="role =='ROLE_SUPER_ADMIN' || (permisionsArray | search3:'Master/emp-sal-structure') == true "
+          routerLink="Master/emp-sal-structure">Employee Salary Structure</a>
+        <a *ngIf="role =='ROLE_SUPER_ADMIN' || (permisionsArray | search3:'Master/branch-master') == true "
+          routerLink="Master/branch-master">Branch Master</a>
+        <a *ngIf="role =='ROLE_SUPER_ADMIN' || (permisionsArray | search3:'Master/department-master') == true "
+          routerLink="Master/department-master">Department Master</a>
+        <a *ngIf="role =='ROLE_SUPER_ADMIN' || (permisionsArray | search3:'Master/designation-master') == true "
+          routerLink="Master/designation-master">Designation Master</a>
+        <a *ngIf="role =='ROLE_SUPER_ADMIN' || (permisionsArray | search3:'Master/grade-master') == true "
+          routerLink="Master/grade-master">Grade Master</a>
+        <!-- <a *ngIf="role =='ROLE_SUPER_ADMIN' || (permisionsArray | search3:'Master/division-master') == true " routerLink="Master/division-master">Division Master</a> -->
+        <a *ngIf="role =='ROLE_SUPER_ADMIN' || (permisionsArray | search3:'Master/cost-center') == true "
+          routerLink="Master/cost-center">Cost Center</a>
+        <a *ngIf="role =='ROLE_SUPER_ADMIN' || (permisionsArray | search3:'Master/project-master') == true "
+          routerLink="Master/project-master">Project Master</a>
+        <a *ngIf="role =='ROLE_SUPER_ADMIN' || (permisionsArray | search3:'Master/category-master') == true "
+          routerLink="Master/category-master">Category Master</a>
+        <a *ngIf="role =='ROLE_SUPER_ADMIN' || (permisionsArray | search3:'Master/bank-master') == true "
+          routerLink="Master/bank-master">Bank Master(Employee)</a>
+        <!-- <a *ngIf="role =='ROLE_SUPER_ADMIN' || (permisionsArray | search3:'Master/slab-master') == true " routerLink="Master/slab-master">Slab Master</a> -->
+        <a *ngIf="role =='ROLE_SUPER_ADMIN' || (permisionsArray | search3:'Admin/qualification-master') == true "
+          routerLink="Admin/qualification-master">Qualification Master</a>
+        <a *ngIf="role =='ROLE_SUPER_ADMIN' || (permisionsArray | search3:'Master/document-master') == true "
+          routerLink="Master/document-master">Document Master</a>
+        <a *ngIf="role =='ROLE_SUPER_ADMIN' || (permisionsArray | search3:'Master/vaccination-master') == true "
+          routerLink="Master/vaccination-master">Vaccination Master</a>
+        <a *ngIf="role =='ROLE_SUPER_ADMIN' || (permisionsArray | search3:'Configuration/kpi-master') == true "
+          routerLink="Configuration/kpi-master">KPI Master</a>
+        <a *ngIf="role =='ROLE_SUPER_ADMIN' || (permisionsArray | search3:'Configuration/insurance-company-master') == true "
+          routerLink="Configuration/insurance-company-master">Insurance Master</a>
+        <a *ngIf="role =='ROLE_SUPER_ADMIN' || (permisionsArray | search3:'Configuration/bench-resource-mapping') == true "
+          routerLink="Configuration/bench-resource-mapping">Bench Resource Mapping</a>
+        <a *ngIf="role =='ROLE_SUPER_ADMIN' || (permisionsArray | search3:'Master/rewards-recognition') == true "
+          routerLink="Master/rewards-recognition">Rewards-Recognition Master</a>
+        <a *ngIf="role =='ROLE_SUPER_ADMIN' || (permisionsArray | search3:'Master/letter-template') == true "
+          routerLink="Master/letter-template">Letter Template</a>
+        <a *ngIf="role =='ROLE_SUPER_ADMIN' || (permisionsArray | search3:'') == true "
+          routerLink="Master/salary-increment-arrears">Salary Increments & Arrears Payment</a>
+        <!-- <a *ngIf="role =='ROLE_SUPER_ADMIN' || (permisionsArray | search3:'') == true " routerLink="Master/assign-reporting-head">Assign Reporting Head</a>
+          <a *ngIf="role =='ROLE_SUPER_ADMIN' || (permisionsArray | search3:'') == true " routerLink="Master/reporting-head-report">Reporting Head Report</a>
+          <a *ngIf="role =='ROLE_SUPER_ADMIN' || (permisionsArray | search3:'') == true " routerLink="Master/employee-master-report">Employee Master Report</a>
+          <a *ngIf="role =='ROLE_SUPER_ADMIN' || (permisionsArray | search3:'') == true " routerLink="Master/reminder">Reminders</a>
+          <a *ngIf="role =='ROLE_SUPER_ADMIN' || (permisionsArray | search3:'') == true " routerLink="Master/asset">Asset</a>
+          <a *ngIf="role =='ROLE_SUPER_ADMIN' || (permisionsArray | search3:'') == true " routerLink="Master/assign-letter">Assign Letter</a>
+          <a *ngIf="role =='ROLE_SUPER_ADMIN' || (permisionsArray | search3:'') == true " routerLink="Master/organization-chart">Organisation Chart</a> -->
+      </div>
+    </li>
+    <li class="nav-item dropdown">
+      <a class="nav-link dropbtn"><span>Employee Onboarding</span> <b class="pipe">|</b></a>
+      <div class="dropdown-content">
+        <a routerLink="Employee-Onboarding/new-Resorce-IndentRequest">New Resource Indent Request</a>
+        <a routerLink="Employee-Onboarding/budget-approval">Budget Approval </a>
+        <a routerLink="Employee-Onboarding/requesting-process">Request Processing By HR</a>
+        <a routerLink="Employee-Onboarding/internal-jobMovement">Internal Job Movement/Mapping</a>
+        <a routerLink="Employee-Onboarding/referral-Recruitment">Referral Recruitment </a>
+        <a routerLink="Employee-Onboarding/screening-candidate">Screening & Evalution </a>
+        <a routerLink="Employee-Onboarding/align-for-interview">Align For Interview </a>
+        <a routerLink="Employee-Onboarding/technical-round">Technical Round </a>
+        <a routerLink="Employee-Onboarding/hr-round">HR Screening</a>
+        <a routerLink="Employee-Onboarding/onboarding-offer-letter-rollout">Offer Letter Rollout </a>
+        <a routerLink="Employee-Onboarding/shortListed-candidates">List Of Candidates Accepted Offer Letter</a>
+        <a routerLink="Employee-Onboarding/background-verification">Background Verification</a>
+        <a routerLink="Employee-Onboarding/manage-onboarding-employees">Manage Onboarding Employee</a>
+        <a routerLink="Employee-Onboarding/manage-employee-resignation">Manage Employee Resignations</a>
+      </div>
+    </li>
+    <li class="nav-item dropdown">
+      <a class="nav-link dropbtn"><span>Leave-Attendance</span> <b class="pipe">|</b></a>
+      <div class="dropdown-content">
+        <!-- <a *ngIf="role =='ROLE_SUPER_ADMIN' || (permisionsArray | search3:'') == true " routerLink="Leave-attendance/leave-master">Leave Master</a> -->
+        <a *ngIf="role =='ROLE_SUPER_ADMIN' || (permisionsArray | search3:'Leave-attendance/apply-leave') == true "
+          routerLink="Leave-attendance/apply-leave">Apply Leave</a>
+        <a *ngIf="role =='ROLE_SUPER_ADMIN' || (permisionsArray | search3:'Leave-attendance/manage-leaves') == true "
+          routerLink="Leave-attendance/manage-leaves">Manage Leave</a>
+        <!-- <a *ngIf="role =='ROLE_SUPER_ADMIN' || (permisionsArray | search3:'') == true " routerLink="Leave-attendance/approved-leaves">Approved Leave</a> -->
+        <a *ngIf="role =='ROLE_SUPER_ADMIN' || (permisionsArray | search3:'Leave-attendance/leave-master-indivisual') == true "
+          routerLink="Leave-attendance/leave-master-indivisual">Leave Master Individual</a>
+        <a *ngIf="role =='ROLE_SUPER_ADMIN' || (permisionsArray | search3:'Leave-attendance/leave-mapping') == true "
+          routerLink="Leave-attendance/leave-mapping">Leave Mapping</a>
+        <!-- <a *ngIf="role =='ROLE_SUPER_ADMIN' || (permisionsArray | search3:'') == true " routerLink="Leave-attendance/attendance-monthly">Attendance Monthly</a> -->
+        <!-- <a *ngIf="role =='ROLE_SUPER_ADMIN' || (permisionsArray | search3:'') == true " routerLink="Leave-attendance/Time-sheet">Attendance Time Sheet</a> -->
+        <!-- <a *ngIf="role =='ROLE_SUPER_ADMIN' || (permisionsArray | search3:'') == true " routerLink="Leave-attendance/daily-attendance">Daily Attendance</a>
+        <a *ngIf="role =='ROLE_SUPER_ADMIN' || (permisionsArray | search3:'') == true " routerLink="Leave-attendance/process-leave-balance">Process Leave Balance</a>
+        <a *ngIf="role =='ROLE_SUPER_ADMIN' || (permisionsArray | search3:'') == true " routerLink="Leave-attendance/monthly-closing-balance">Monthly Closing Balance</a> -->
+        <a *ngIf="role =='ROLE_SUPER_ADMIN' || (permisionsArray | search3:'Leave-attendance/reports') == true "
+          routerLink="Leave-attendance/reports">Reports</a>
+        <a *ngIf="role =='ROLE_SUPER_ADMIN' || (permisionsArray | search3:'Leave-attendance/create-leave-year') == true "
+          routerLink="Leave-attendance/create-leave-year">Create Leave Year</a>
+        <a *ngIf="role =='ROLE_SUPER_ADMIN' || (permisionsArray | search3:'Leave-attendance/holidays') == true "
+          routerLink="Leave-attendance/holidays">Holidays</a>
+        <!-- <a *ngIf="role =='ROLE_SUPER_ADMIN' || (permisionsArray | search3:'') == true " routerLink="Leave-attendance/leave-apply-report">Leave Apply Report</a> -->
+        <!-- <a *ngIf="role =='ROLE_SUPER_ADMIN' || (permisionsArray | search3:'') == true " routerLink="Leave-attendance/visit-application-report">Visit Application Report</a> -->
+      </div>
+    </li>
+
+  <!-- <li *ngIf="role =='ROLE_SUPER_ADMIN'" class="nav-item dropdown">
+      <a class="nav-link dropbtn"><span>Time Shifts</span> <b class="pipe">|</b></a>
+      <div class="dropdown-content">
+        <a *ngIf="role =='ROLE_SUPER_ADMIN' || (permisionsArray | search3:'') == true "
+          routerLink="Time-shifts/shift-master">Shift Master</a>
+        <a *ngIf="role =='ROLE_SUPER_ADMIN' || (permisionsArray | search3:'') == true "
+          routerLink="Configuration/time-shift-mapping">Time Shift Mapping</a>
+        <a *ngIf="role =='ROLE_SUPER_ADMIN' || (permisionsArray | search3:'') == true "
+          routerLink="Time-shifts/app-time-shift-manage">Manage Time Shift </a> -->
+    <!-- <a *ngIf="role =='ROLE_SUPER_ADMIN' || (permisionsArray | search3:'') == true " routerLink="Time-shifts/shift-assigned">Shift Assigned</a>
+        <a *ngIf="role =='ROLE_SUPER_ADMIN' || (permisionsArray | search3:'') == true " routerLink="Time-shifts/daily-log-import">Daily Log Import</a>
+        <a *ngIf="role =='ROLE_SUPER_ADMIN' || (permisionsArray | search3:'') == true " routerLink="Time-shifts/log-history">Log History</a>
+        <a *ngIf="role =='ROLE_SUPER_ADMIN' || (permisionsArray | search3:'') == true " routerLink="Time-shifts/process-attendance">Process Attendance</a>
+        <a *ngIf="role =='ROLE_SUPER_ADMIN' || (permisionsArray | search3:'') == true " routerLink="Time-shifts/time-in-out">Time In Out</a>
+        <a *ngIf="role =='ROLE_SUPER_ADMIN' || (permisionsArray | search3:'') == true " routerLink="Time-shifts/time-shift-report">Time Shift Report</a>-->
+     <!-- </div>
+    </li> -->
+    <!-- <li class="nav-item dropdown">
+      <a class="nav-link dropbtn"><span>Monthly Process</span> <b class="pipe">|</b></a>
+      <div class="dropdown-content"> -->
+    <!-- <a *ngIf="role =='ROLE_SUPER_ADMIN' || (permisionsArray | search3:'') == true " routerLink="Monthly-process/select-month">Select Month</a>
+        <a *ngIf="role =='ROLE_SUPER_ADMIN' || (permisionsArray | search3:'') == true " routerLink="Monthly-process/monthly-variables">Monthly Variables</a>
+        <a *ngIf="role =='ROLE_SUPER_ADMIN' || (permisionsArray | search3:'') == true " routerLink="Monthly-process/process-salary">Process Salary</a>
+        <a *ngIf="role =='ROLE_SUPER_ADMIN' || (permisionsArray | search3:'') == true " routerLink="Monthly-process/view-salary">View Salary</a> -->
+    <!-- <a *ngIf="role =='ROLE_SUPER_ADMIN' || (permisionsArray | search3:'') == true "
+          routerLink="Monthly-process/loan-advance">Loan-Advance</a>
+        <a *ngIf="role =='ROLE_SUPER_ADMIN' || (permisionsArray | search3:'Monthly-reports/payslip') == true "
+          routerLink="Monthly-reports/payslip">Prview/Generate Payslips</a> -->
+    <!-- <a *ngIf="role =='ROLE_SUPER_ADMIN' || (permisionsArray | search3:'') == true " routerLink="Monthly-process/ff-settelment">Full & Final Settlement</a>
+        <a *ngIf="role =='ROLE_SUPER_ADMIN' || (permisionsArray | search3:'') == true " routerLink="Monthly-process/promotion-transfer">Promotion & Transfers</a>
+        <a *ngIf="role =='ROLE_SUPER_ADMIN' || (permisionsArray | search3:'') == true " routerLink="Monthly-process/employee-increment">Employee Increment</a>
+        <a *ngIf="role =='ROLE_SUPER_ADMIN' || (permisionsArray | search3:'') == true " routerLink="Monthly-process/arear-payments">Arrear Payment</a>
+        <a *ngIf="role =='ROLE_SUPER_ADMIN' || (permisionsArray | search3:'') == true " routerLink="Monthly-process/gl-statement">GL Statement</a>
+        <a *ngIf="role =='ROLE_SUPER_ADMIN' || (permisionsArray | search3:'') == true " routerLink="Monthly-process/disbursement-payyment">Disbursement Payment</a> -->
+    <!-- </div>
+    </li> -->
+    <!-- <li *ngIf="role =='ROLE_SUPER_ADMIN'" class="nav-item dropdown">
+      <a class="nav-link dropbtn"><span>Additional Payments</span> <b class="pipe">|</b></a>
+      <div class="dropdown-content">
+        <a *ngIf="role =='ROLE_SUPER_ADMIN' || (permisionsArray | search3:'') == true " routerLink="Additional-payments/supplementary-payment">Supplementary Payment</a>
+        <a *ngIf="role =='ROLE_SUPER_ADMIN' || (permisionsArray | search3:'') == true " routerLink="Additional-payments/bonus-calculation">Bonus Calculation</a>
+        <a *ngIf="role =='ROLE_SUPER_ADMIN' || (permisionsArray | search3:'') == true " routerLink="Additional-payments/gratuity-calculation">Gratuity Calculation</a>
+        <a *ngIf="role =='ROLE_SUPER_ADMIN' || (permisionsArray | search3:'') == true " routerLink="Additional-payments/reimbursement-year">Reimbursement Year</a>
+        <a *ngIf="role =='ROLE_SUPER_ADMIN' || (permisionsArray | search3:'') == true " routerLink="Additional-payments/reimbursement-opening">Reimbursement Opening</a>
+        <a *ngIf="role =='ROLE_SUPER_ADMIN' || (permisionsArray | search3:'') == true " routerLink="Additional-payments/reimbursement-billpayment">Reimbursement Bill Payment</a>
+        <a *ngIf="role =='ROLE_SUPER_ADMIN' || (permisionsArray | search3:'') == true " routerLink="Additional-payments/reimbursement-reports">Reimbursement Reports</a>
+        <a *ngIf="role =='ROLE_SUPER_ADMIN' || (permisionsArray | search3:'') == true " routerLink="Additional-payments/leave-encashment">Leave Encashment</a>
+      </div>
+    </li> -->
+    <li class="nav-item dropdown">
+      <a class="nav-link dropbtn"><span>Reports Center</span> <b class="pipe">|</b></a>
+      <div class="dropdown-contentscroll">
+
+        <a *ngIf="role =='ROLE_SUPER_ADMIN' || (permisionsArray | search3:'Monthly-reports/payroll-reports') == true "
+          routerLink="Monthly-reports/payroll-reports">View Generated Payslips</a>
+        <!-- <a *ngIf="role =='ROLE_SUPER_ADMIN' || (permisionsArray | search3:'') == true " routerLink="Monthly-reports/leave-apply-reports">Leave Apply Reports</a> -->
+        <!-- <a *ngIf="role =='ROLE_SUPER_ADMIN' || (permisionsArray | search3:'') == true " routerLink="Monthly-reports/visit-application-reports">visit-application-reports</a> -->
+        <a *ngIf="role =='ROLE_SUPER_ADMIN' || (permisionsArray | search3:'Monthly-reports/employee-master-reports') == true "
+          routerLink="Monthly-reports/employee-master-reports">Employee Master Reports</a>
+        <a *ngIf="role =='ROLE_SUPER_ADMIN' || (permisionsArray | search3:'Monthly-reports/employee-education-reports') == true "
+          routerLink="Monthly-reports/employee-education-reports">Employee Education Reports</a>
+        <a *ngIf="role =='ROLE_SUPER_ADMIN' || (permisionsArray | search3:'Monthly-reports/employee-skillbaseed-reports') == true "
+          routerLink="Monthly-reports/employee-skillbaseed-reports">Employee Skill Based Reports</a>
+        <!-- <a *ngIf="role =='ROLE_SUPER_ADMIN' || (permisionsArray | search3:'') == true " routerLink="Monthly-reports/reporting-head-reports">reporting head reports</a> -->
+        <!-- <a *ngIf="role =='ROLE_SUPER_ADMIN' || (permisionsArray | search3:'') == true " routerLink="Monthly-reports/attendance-reports">Attendance Reports</a> -->
+        <!-- <a *ngIf="role =='ROLE_SUPER_ADMIN' || (permisionsArray | search3:'') == true " routerLink="Monthly-reports/holiday-reports">holiday reports</a> -->
+        <!-- <a *ngIf="role =='ROLE_SUPER_ADMIN' || (permisionsArray | search3:'') == true " routerLink="Monthly-reports/employee-onboarding-reports">Employee-Onboarding Reports</a> -->
+        <!-- <a *ngIf="role =='ROLE_SUPER_ADMIN' || (permisionsArray | search3:'') == true " routerLink="Monthly-reports/payroll-reports">payroll reports</a> -->
+        <a *ngIf="role =='ROLE_SUPER_ADMIN' || (permisionsArray | search3:'Monthly-reports/performance-reports') == true "
+          routerLink="Monthly-reports/performance-reports">Employee Tenure Reports</a>
+        <a *ngIf="role =='ROLE_SUPER_ADMIN' || (permisionsArray | search3:'Monthly-reports/vaccination-report') == true "
+          routerLink="Monthly-reports/vaccination-report">Employee Vaccination Reports</a>
+        <a *ngIf="role =='ROLE_SUPER_ADMIN' || (permisionsArray | search3:'Monthly-reports/expense-report') == true "
+          routerLink="Monthly-reports/expense-report">Employee Expense Reports</a>
+        <!-- <a *ngIf="role =='ROLE_SUPER_ADMIN' || (permisionsArray | search3:'') == true " routerLink="Monthly-reports/leave-attendance-reports">leave-attendance reports</a> -->
+        <!-- <a *ngIf="role =='ROLE_SUPER_ADMIN' || (permisionsArray | search3:'') == true " routerLink="Monthly-reports/tax-reports">Tax Reports</a> -->
+        <a *ngIf="role =='ROLE_SUPER_ADMIN' || (permisionsArray | search3:'Monthly-reports/Organization-Hierarchy-reports') == true "
+          routerLink="Monthly-reports/Organization-Hierarchy-reports">Organization Hierarchy Reports</a>
+        <!-- <a *ngIf="role =='ROLE_SUPER_ADMIN' || role =='ROLE_FINANCE_HEAD'|| (permisionsArray | search3:'Monthly-reports/expense-report') == true "
+          routerLink="Monthly-reports/employee-loan-advance-report">Employee Loan/Advance Report</a> -->
+        <a *ngIf="role =='ROLE_SUPER_ADMIN' || (permisionsArray | search3:'Monthly-reports/asset-categories-report') == true "
+          routerLink="Monthly-reports/asset-categories-report">Asset Category Report</a>
+        <a *ngIf="role =='ROLE_SUPER_ADMIN' || (permisionsArray | search3:'Monthly-reports/asset-status-report') == true "
+          routerLink="Monthly-reports/asset-status-report">Asset Status Report</a>
+        <a *ngIf="role =='ROLE_SUPER_ADMIN' || (permisionsArray | search3:'Monthly-reports/vendor-asset-report') == true "
+          routerLink="Monthly-reports/vendor-asset-report">Vendor Asset Report</a>
+        <a *ngIf="role =='ROLE_SUPER_ADMIN' || (permisionsArray | search3:'Monthly-reports/employee-resignation-report') == true"
+          routerLink="Monthly-reports/employee-resignation-report">Employee
+          Resignation Report</a>
+        <!-- <a *ngIf="role =='ROLE_SUPER_ADMIN' || (permisionsArray | search3:'Monthly-reports/trainers-reports') == true"
+          routerLink="Monthly-reports/trainers-reports">Trainers Report</a>
+        <a *ngIf="role =='ROLE_SUPER_ADMIN' || (permisionsArray | search3:'Monthly-reports/training-reports') == true"
+          routerLink="Monthly-reports/training-reports">Training Report</a>
+        <a *ngIf="role =='ROLE_SUPER_ADMIN' || (permisionsArray | search3:'Monthly-reports/training-exam-result') == true"
+          routerLink="Monthly-reports/training-exam-result">Training Exam Results
+          Report</a>-->
+        <a *ngIf="role =='ROLE_SUPER_ADMIN' || (permisionsArray | search3:'Monthly-reports/helpdesk-report') == true"
+          routerLink="Monthly-reports/helpdesk-report">Helpdesk Report</a> 
+
+        <a *ngIf="role =='ROLE_SUPER_ADMIN' || (permisionsArray | search3:'Monthly-reports/rewards-recognition') == true"
+          routerLink="Monthly-reports/rewards-recognition">Rewards-Recognition Report</a>
+
+        <a *ngIf="role =='ROLE_SUPER_ADMIN' || (permisionsArray | search3:'Monthly-reports/reward-recognization-filter-report') == true"
+          routerLink="Monthly-reports/reward-recognization-filter-report">Rewards &
+          Recognition Filter Report</a>
+        <a *ngIf="role =='ROLE_SUPER_ADMIN' || (permisionsArray | search3:'Monthly-reports/payslip-component-report') == true"
+          routerLink="Monthly-reports/payslip-component-report">Payslip Component Report</a>
+
+        <a *ngIf="role =='ROLE_SUPER_ADMIN' || (permisionsArray | search3:'Monthly-reports/payslip-component-report') == true"
+          routerLink="Monthly-reports/payslip-component-mtd-report">Payslip MTD Component Report</a>
+        <a *ngIf="role =='ROLE_SUPER_ADMIN' || (permisionsArray | search3:'Monthly-reports/payslip-component-report') == true"
+          routerLink="Monthly-reports/payslip-component-epf-report">Payslip EPF Component Report</a>
+        <a *ngIf="role =='ROLE_SUPER_ADMIN' || (permisionsArray | search3:'Monthly-reports/payslip-component-report') == true"
+          routerLink="Monthly-reports/payslip-component-socso-report">Payslip SOCSO Component Report</a>
+
+
+        <a *ngIf="role =='ROLE_SUPER_ADMIN' || (permisionsArray | search3:'Monthly-reports/arrears-payment-report') == true"
+          routerLink="Monthly-reports/arrears-payment-report">Arrears Payment Report</a>
+        <!-- <a *ngIf="role =='ROLE_SUPER_ADMIN' || (permisionsArray | search3:'Monthly-reports/payslip-component-report') == true"
+          routerLink="Monthly-reports/payslip-component-report">Payslip Component Report</a> -->
+        <a *ngIf="role =='ROLE_SUPER_ADMIN' || (permisionsArray | search3:'Monthly-reports/salary-increment-report') == true"
+          routerLink="Monthly-reports/salary-increment-report">Salary Increment Report</a>
+        <a *ngIf="role =='ROLE_SUPER_ADMIN' || (permisionsArray | search3:'') == true " routerLink="Monthly-reports/ats-jobs-report">Jobs Report</a>
+        <a *ngIf="role =='ROLE_SUPER_ADMIN' || (permisionsArray | search3:'ATS/client-report') == true"
+          routerLink="Monthly-reports/client-report">Client Report</a>
+        <a *ngIf="role =='ROLE_SUPER_ADMIN' || (permisionsArray | search3:'ATS/candidate-report') == true"
+          routerLink="Monthly-reports/candidate-report">Candidates Database Report</a>
+          <a *ngIf="role =='ROLE_SUPER_ADMIN' || (permisionsArray | search3:'ATS/candidate-drop-report') == true"
+          routerLink="Monthly-reports/candidate-drop-report">Candidate Drop Report</a>
+        <a *ngIf="role =='ROLE_SUPER_ADMIN' || (permisionsArray | search3:'ATS/leaderboard-report') == true "
+          routerLink="Monthly-reports/performance-leaderboard-reports">Employee Leaderboard Reports</a>
+        <a *ngIf="role =='ROLE_SUPER_ADMIN' || (permisionsArray | search3:'ATS/candidate-info-report') == true"
+          routerLink="Monthly-reports/candidate-info-report">Candidate Detailed Report</a>
+          <a *ngIf="role =='ROLE_SUPER_ADMIN' || (permisionsArray | search3:'ATS/hiring-performance') == true "
+          routerLink="ATS/hiring-performance">Hiring Performance</a>
+
+        <!-- <a *ngIf="role =='ROLE_SUPER_ADMIN' || (permisionsArray | search3:'') == true " routerLink="Monthly-reports/ctc-report">CTC Report</a> -->
+        <!-- <a *ngIf="role =='ROLE_SUPER_ADMIN' || (permisionsArray | search3:'') == true " routerLink="Monthly-reports/emp-wise-goal-report">Employee Wise Goal Report</a>
+        <a *ngIf="role =='ROLE_HR_HEAD'" *ngIf="role =='ROLE_SUPER_ADMIN' || (permisionsArray | search3:'') == true " routerLink="Monthly-reports/dept-wise-goal-report">Department Wise Goal Report</a> -->
+         <a *ngIf="role =='ROLE_SUPER_ADMIN' || (permisionsArray | search3:'') == true " routerLink="Monthly-reports/time-sheet-report">Time Sheet Report</a>
+        <a *ngIf="role =='ROLE_SUPER_ADMIN' || (permisionsArray | search3:'') == true " routerLink="Monthly-reports/monthly-tds-reports">Monthly Tds Report</a>
+        <a *ngIf="role =='ROLE_SUPER_ADMIN' || (permisionsArray | search3:'') == true " routerLink="Monthly-reports/yearly-tds-reports">Yearly Tds Report</a>
+        <a *ngIf="role =='ROLE_SUPER_ADMIN' || (permisionsArray | search3:'') == true " routerLink="Monthly-reports/quarterly-tds-reports">Quarterly Tds Report</a>
+        <a *ngIf="role =='ROLE_SUPER_ADMIN' || (permisionsArray | search3:'') == true " routerLink="Monthly-reports/investment-reports">Investment Report</a>
+
+
+        <!-- <a *ngIf="role =='ROLE_SUPER_ADMIN' || (permisionsArray | search3:'') == true " routerLink="Monthly-reports/email-payslip">E-mail Payslip</a>
+        <a *ngIf="role =='ROLE_SUPER_ADMIN' || (permisionsArray | search3:'') == true " routerLink="Monthly-reports/salary-sheet">Salary Sheet</a>
+        <a *ngIf="role =='ROLE_SUPER_ADMIN' || (permisionsArray | search3:'') == true " routerLink="Monthly-reports/salary-sheetvertical">Salary Sheet Vertical</a>
+        <a *ngIf="role =='ROLE_SUPER_ADMIN' || (permisionsArray | search3:'') == true " routerLink="Monthly-reports/salary-summary">Salary Summary</a>
+        <a *ngIf="role =='ROLE_SUPER_ADMIN' || (permisionsArray | search3:'') == true " routerLink="Monthly-reports/bank-statement">Bank Statement</a>
+        <a *ngIf="role =='ROLE_SUPER_ADMIN' || (permisionsArray | search3:'') == true " routerLink="Monthly-reports/pf-report">PF Reports</a>
+        <a *ngIf="role =='ROLE_SUPER_ADMIN' || (permisionsArray | search3:'') == true " routerLink="Monthly-reports/esic-reports">ESIC Reports</a>
+        <a *ngIf="role =='ROLE_SUPER_ADMIN' || (permisionsArray | search3:'') == true " routerLink="Monthly-reports/professional-tax">Professional Tax</a>
+        <a *ngIf="role =='ROLE_SUPER_ADMIN' || (permisionsArray | search3:'') == true " routerLink="Monthly-reports/salary-onhold">Salary on Hold</a>
+        <a *ngIf="role =='ROLE_SUPER_ADMIN' || (permisionsArray | search3:'') == true " routerLink="Monthly-reports/loan/advance">Loan/ Advance</a>
+        <a *ngIf="role =='ROLE_SUPER_ADMIN' || (permisionsArray | search3:'') == true " routerLink="Monthly-reports/tds-deducted">TDS Deducted</a>
+        <a *ngIf="role =='ROLE_SUPER_ADMIN' || (permisionsArray | search3:'') == true " routerLink="Monthly-reports/yearly-salaryregister">Yearly Salary Register</a>
+        <a *ngIf="role =='ROLE_SUPER_ADMIN' || (permisionsArray | search3:'') == true " routerLink="Monthly-reports/other-reports">Other Reports</a>
+        <a *ngIf="role =='ROLE_SUPER_ADMIN' || (permisionsArray | search3:'') == true " routerLink="Monthly-reports/salary-reconciliation">Salary Reconciliation</a> -->
+      </div>
+    </li>
+    <!-- <li *ngIf="role =='ROLE_HR_HEAD'" class="nav-item dropdown">
+      <a class="nav-link dropbtn"><span>Monthly Reports</span> <b class="pipe">|</b></a>
+      <div class="dropdown-content">
+        <a *ngIf="role =='ROLE_SUPER_ADMIN' || (permisionsArray | search3:'') == true " routerLink="Monthly-reports/emp-wise-goal-report">Employee Wise Goal Report</a>
+        <a *ngIf="role =='ROLE_SUPER_ADMIN' || (permisionsArray | search3:'') == true " routerLink="Monthly-reports/dept-wise-goal-report">Department Wise Goal Report</a>
+      </div>
+    </li> -->
+
+     <li *ngIf="role =='ROLE_SUPER_ADMIN'" class="nav-item dropdown">
+      <a class="nav-link dropbtn"><span>Income Tax</span> <b class="pipe">|</b></a>
+      <div class="dropdown-content">
+        <a routerLink="Income-tax/incometax-slab">Income Tax Slab</a>
+        <a routerLink="Income-tax/tds-investment">TDS Investment Limit</a>
+        <a routerLink="Income-tax/investments">Investments</a>
+        <a routerLink="Income-tax/tds-projection">TDS Projection</a>
+        <a routerLink="Income-tax/challan-deposite">Challan Deposit</a>
+        <a routerLink="Income-tax/tds-quaterly">TDS Quarterly Return</a>
+        <a routerLink="Income-tax/tds-year">TDS Quarterly Receipts</a>
+        <a *ngIf="role !='ROLE_SUPER_ADMIN'" routerLink="Income-tax/form-16" >Form 16</a>
+        <a *ngIf="role =='ROLE_SUPER_ADMIN'" routerLink="Income-tax/upload-form16">Upload Form 16</a>
+        <a routerLink="Income-tax/investments-reports">Investment Report</a>
+
+        
+        
+       
+      </div>
+    </li>
+    
+    <li class="nav-item dropdown">
+      <a class="nav-link dropbtn"><span>Performance Management</span> <b class="pipe">|</b></a>
+      <div class="dropdown-content">
+        <a *ngIf="role =='ROLE_HR_HEAD' || role =='ROLE_HR' || role =='ROLE_SUPER_ADMIN'" routerLink="performance-management/kpa-creation">KPA Creation</a>
+        <a *ngIf="role =='ROLE_HR_HEAD' || role =='ROLE_HR'" routerLink="performance-management/appraisal-cycle">Appraisal Cycle Creation</a>
+        <a routerLink="performance-management/manager-golas-review">Manager Goals Review</a>
+
+        <a routerLink="performance-management/emp-goal-settings">Employee Goal Setting</a>
+        <a *ngIf="designation =='Manager'" routerLink="performance-management/manager-vew-emp-goal">Manager View Of Employee Goals</a>
+        <a routerLink="performance-management/emp-appraisal">Employee Appraisal </a>
+        <a *ngIf="designation =='Manager'" routerLink="performance-management/manager-review-menu">Manager Review Menu</a>
+        <a *ngIf="designation =='Manager'" routerLink="performance-management/manager-review-screen">Manager Review Screen</a>
+        <a *ngIf="role == 'ROLE_DEPARTMENT_HEAD' || role== 'ROLE_HR_HEAD'  || role == 'ROLE_FINANCE_HEAD'" routerLink="performance-management/department-head-review">Department Head Review </a>
+        <a *ngIf="role =='ROLE_HR_HEAD' || role =='ROLE_HR'" routerLink="performance-management/hr-team-appraisal-status">HR Team Appraisal Status</a>
+        <a  routerLink="performance-management/promotions">Promotions</a>
+        <a  routerLink="performance-management/termination">Termination</a>
+      </div>
+    </li>
+
+
+
+    <!-- <li *ngIf="role =='ROLE_SUPER_ADMIN'" class="nav-item dropdown">
+      <a class="nav-link dropbtn"><span>Utilities</span> <b class="pipe">|</b></a>
+      <div class="dropdown-content">
+        <a *ngIf="role =='ROLE_SUPER_ADMIN' || (permisionsArray | search3:'') == true " routerLink="Utilities/salary-master">Salary Component Master</a>
+        <a *ngIf="role =='ROLE_SUPER_ADMIN' || (permisionsArray | search3:'') == true " routerLink="Utilities/salary-mapping">Salary Mapping</a> -->
+
+    <!-- <a *ngIf="role =='ROLE_SUPER_ADMIN' || (permisionsArray | search3:'') == true " routerLink="Utilities/email-setting">Email Setting</a>
+        <a *ngIf="role =='ROLE_SUPER_ADMIN' || (permisionsArray | search3:'') == true " routerLink="Utilities/lock-month">Lock Unlock Month</a>
+        <a *ngIf="role =='ROLE_SUPER_ADMIN' || (permisionsArray | search3:'') == true " routerLink="Utilities/import-excel">Import From Excel</a>
+        <a *ngIf="role =='ROLE_SUPER_ADMIN' || (permisionsArray | search3:'') == true " routerLink="Utilities/ess-role-assign">Ess Role Assign</a>
+        <a *ngIf="role =='ROLE_SUPER_ADMIN' || (permisionsArray | search3:'') == true " routerLink="Utilities/ess-user-rights">Ess User Rights</a>
+        <a *ngIf="role =='ROLE_SUPER_ADMIN' || (permisionsArray | search3:'') == true " routerLink="Utilities/import-processed-salary">Import Processed Salary</a>
+        <a *ngIf="role =='ROLE_SUPER_ADMIN' || (permisionsArray | search3:'') == true " routerLink="Utilities/verify-database">Verify Database</a>
+        <a *ngIf="role =='ROLE_SUPER_ADMIN' || (permisionsArray | search3:'') == true " routerLink="Utilities/import-reimbursementBill">Import Reimbursement Bill</a> -->
+    <!-- </div>
+    </li> -->
+
+    <li class="nav-item dropdown">
+      <a class="nav-link dropbtn"><span>Configuration</span> <b class="pipe">|</b></a>
+      <div class="dropdown-contentscroll">
+        <a *ngIf="role =='ROLE_SUPER_ADMIN' || (permisionsArray | search3:'Configuration/nationality') == true "
+          routerLink="Configuration/nationality">Nationality</a>
+        <a *ngIf="role =='ROLE_SUPER_ADMIN' || (permisionsArray | search3:'Configuration/religion') == true "
+          routerLink="Configuration/religion">Religion</a>
+        <a *ngIf="role =='ROLE_SUPER_ADMIN' || (permisionsArray | search3:'Configuration/race') == true "
+          routerLink="Configuration/race">Race</a>
+        <a *ngIf="role =='ROLE_SUPER_ADMIN' || (permisionsArray | search3:'Configuration/country') == true "
+          routerLink="Configuration/country">Country</a>
+        <a *ngIf="role =='ROLE_SUPER_ADMIN' || (permisionsArray | search3:'Configuration/state') == true "
+          routerLink="Configuration/state">State</a>
+        <a *ngIf="role =='ROLE_SUPER_ADMIN' || (permisionsArray | search3:'Configuration/city') == true "
+          routerLink="Configuration/city">City</a>
+        <a *ngIf="role =='ROLE_SUPER_ADMIN' || (permisionsArray | search3:'Utilities/leave-type') == true "
+          routerLink="Utilities/leave-type">Leave Type</a>
+        <a *ngIf="role =='ROLE_SUPER_ADMIN' || (permisionsArray | search3:'Utilities/leave-type') == true "
+          routerLink="Configuration/approval-work-flow">Approval Workflow</a>
+        <a *ngIf="role =='ROLE_SUPER_ADMIN' || (permisionsArray | search3:'Configuration/sourcing-channel') == true "
+          routerLink="Configuration/sourcing-channel">Sourcing Channel</a>
+        <a *ngIf="role =='ROLE_SUPER_ADMIN' || (permisionsArray | search3:'Configuration/financial-year') == true "
+          routerLink="Configuration/financial-year">Financial Year</a>
+        <a *ngIf="role =='ROLE_SUPER_ADMIN' || (permisionsArray | search3:'Configuration/document-type') == true "
+          routerLink="Configuration/document-type">Document Type</a>
+        <a *ngIf="role =='ROLE_SUPER_ADMIN' || (permisionsArray | search3:'Configuration/currency-type') == true "
+          routerLink="Configuration/currency-type">Currency Type</a>
+
+        <a *ngIf="role =='ROLE_SUPER_ADMIN' || (permisionsArray | search3:'Admin/document-center') == true "
+          routerLink="Admin/document-center">Documents Center</a>
+        <a *ngIf="role =='ROLE_SUPER_ADMIN' || (permisionsArray | search3:'Admin/anouncement') == true "
+          routerLink="Admin/anouncement">Announcement</a>
+        <a *ngIf="role =='ROLE_SUPER_ADMIN' || (permisionsArray | search3:'Configuration/password-reset') == true "
+          routerLink="Configuration/password-reset">Employee Password Reset</a>
+
+        <a *ngIf="role =='ROLE_SUPER_ADMIN' || (permisionsArray | search3:'Configuration/password-reset') == true "
+          routerLink="Configuration/employee-lock-unlock">Employee Lock & Unlock</a>
+
+
+        <a *ngIf="role =='ROLE_SUPER_ADMIN' || (permisionsArray | search3:'Configuration/roles') == true "
+          routerLink="Configuration/roles">Roles</a>
+        <a *ngIf="role =='ROLE_SUPER_ADMIN' || (permisionsArray | search3:'Configuration/employee-permissions') == true "
+          routerLink="Configuration/employee-permissions">Employee Permissions</a>
+        <a *ngIf="role =='ROLE_SUPER_ADMIN' || (permisionsArray | search3:'Configuration/nationality') == true "
+          routerLink="Configuration/notification">Notification Settings</a>
+        <a *ngIf="role =='ROLE_SUPER_ADMIN' || (permisionsArray | search3:'Configuration/email-settings') == true"
+          routerLink="Configuration/email-settings">Email Settings</a>
+        <a *ngIf="role =='ROLE_SUPER_ADMIN' || (permisionsArray | search3:'Configuration/language') == true "
+          routerLink="Configuration/language">Language</a>
+        <a *ngIf="role =='ROLE_SUPER_ADMIN' || (permisionsArray | search3:'Configuration/skill-master') == true "
+          routerLink="Configuration/skill-master">Skill Master</a>
+        <a *ngIf="role =='ROLE_SUPER_ADMIN' || (permisionsArray | search3:'Configuration/industry-master') == true "
+          routerLink="Configuration/industry-master">Industry Master</a>
+        <a *ngIf="role =='ROLE_SUPER_ADMIN' || (permisionsArray | search3:'Configuration/cron-settings') == true "
+          routerLink="Configuration/cron-settings">Cron Settings</a>
+      </div>
+    </li>
+    <li class="nav-item dropdown">
+      <a class="nav-link dropbtn"><span>Expenses</span> <b class="pipe">|</b></a>
+      <div class="dropdown-content">
+        <a *ngIf="role =='ROLE_SUPER_ADMIN' || (permisionsArray | search3:'Expenses/event-master') == true "
+          routerLink="Admin/event-anouncement">Event Master</a>
+        <a *ngIf="role =='ROLE_SUPER_ADMIN' || (permisionsArray | search3:'Expenses/roles-master') == true "
+        routerLink="Configuration/event-roles">Roles Master</a>
+        <a *ngIf="role =='ROLE_SUPER_ADMIN' || (permisionsArray | search3:'Expenses/event-mapping') == true "
+        routerLink="Admin/event-mapping">Event Mapping</a>
+        <a *ngIf="role =='ROLE_SUPER_ADMIN' || (permisionsArray | search3:'Expenses/create-manage-expenses-type') == true "
+          routerLink="Expenses/create-manage-expenses-type">Create & Manage Expenses Type</a>
+        
+          <a routerLink="Expenses/apply-manage-reimbursements">Apply & manage Reimbursements</a>
+          <a *ngIf="role =='ROLE_SUPER_ADMIN' || (permisionsArray | search3:'Expenses/approve-manage-reimbursements') == true "
+          routerLink="Expenses/approve-manage-reimbursements">Approve & manage Reimbursements</a>
+      </div>
+    </li>
+
+    <li class="nav-item dropdown">
+      <a class="nav-link dropbtn"><span>Loan & Advances</span><b class="pipe">|</b></a>
+      <div class="dropdown-content">
+        <a *ngIf="role =='ROLE_SUPER_ADMIN' || (permisionsArray | search3:'Loan-and-Advance/loan-type') == true "
+          routerLink="Loan-and-Advance/loan-type">Loan/Advance Types</a>
+        <a *ngIf="role =='ROLE_SUPER_ADMIN' || (permisionsArray | search3:'Loan-and-Advance/loan-mapping') == true "
+          routerLink="Loan-and-Advance/loan-mapping">Loan Mapping</a>
+        <a *ngIf="role =='ROLE_SUPER_ADMIN' || (permisionsArray | search3:'Loan-and-Advance/apply-loan-advance') == true "
+          routerLink="Loan-and-Advance/apply-loan-advance">Apply Loan Advance</a>
+        <a *ngIf="role =='ROLE_SUPER_ADMIN' || (permisionsArray | search3:'Loan-and-Advance/approve-loan-advance') == true "
+          routerLink="Loan-and-Advance/approve-loan-advance">Approve Loan Advances</a>
+        <a *ngIf="role =='ROLE_SUPER_ADMIN' || (permisionsArray | search3:'Loan-and-Advance/close-loan-advance') == true "
+          routerLink="Loan-and-Advance/close-loan-advance">Close Loan Advance</a>
+      </div>
+    </li> 
+   <li class="nav-item dropdown">
+      <a class="nav-link dropbtn"><span>Asset Management</span><b class="pipe">|</b></a>
+      <div class="dropdown-content">
+        <a *ngIf="role =='ROLE_SUPER_ADMIN' || (permisionsArray | search3:'Asset-Mangement/vendors') == true "
+          routerLink="Asset-Mangement/vendors">Vendors</a>
+        <a *ngIf="role =='ROLE_SUPER_ADMIN' || (permisionsArray | search3:'Asset-Mangement/asset-type') == true "
+          routerLink="Asset-Mangement/asset-type">Asset Types</a>
+        <a *ngIf="role =='ROLE_SUPER_ADMIN' || (permisionsArray | search3:'Asset-Mangement/apply-asset') == true "
+          routerLink="Asset-Mangement/apply-asset">Apply Asset</a>
+        <a *ngIf="role =='ROLE_SUPER_ADMIN' || (permisionsArray | search3:'Asset-Mangement/approve-asset-management') == true "
+          routerLink="Asset-Mangement/approve-asset-management">Approve Asset</a>
+        <a *ngIf="role =='ROLE_SUPER_ADMIN' || (permisionsArray | search3:'Asset-Mangement/issuing-asset') == true "
+          routerLink="Asset-Mangement/issuing-asset">Asset Issuing</a>
+        <a *ngIf="role =='ROLE_SUPER_ADMIN' || (permisionsArray | search3:'Asset-Mangement/damage-asset') == true "
+          routerLink="Asset-Mangement/damage-asset">Damage Asset</a>
+        <a *ngIf="role =='ROLE_SUPER_ADMIN' || (permisionsArray | search3:'Asset-Mangement/retrive-asset') == true "
+          routerLink="Asset-Mangement/retrive-asset">Retrive Asset</a>
+        <a *ngIf="role =='ROLE_SUPER_ADMIN' || (permisionsArray | search3:'Asset-Mangement/repair-request') == true "
+          routerLink="Asset-Mangement/repair-request">Repair Request</a>
+        <a *ngIf="role =='ROLE_SUPER_ADMIN' || (permisionsArray | search3:'Asset-Mangement/close-repair-request') == true "
+          routerLink="Asset-Mangement/close-repair-request">Close Repair Request</a>
+      </div>
+    </li>
+
+    <li class="nav-item dropdown">
+      <a class="nav-link dropbtn"><span>Helpdesk</span><b class="pipe">|</b></a>
+      <div class="dropdown-content">
+        <a *ngIf="role =='ROLE_SUPER_ADMIN' || (permisionsArray | search3:'Helpdesk/create-ticket') == true "
+          routerLink="Helpdesk/create-ticket">Create Tickets</a>
+        <a *ngIf="role =='ROLE_SUPER_ADMIN' || (permisionsArray | search3:'Helpdesk/manage-tickets') == true "
+          routerLink="Helpdesk/manage-tickets">Manage Tickets</a>
+      </div>
+    </li>
+
+    <li class="nav-item dropdown">
+      <a class="nav-link dropbtn"><span>Application Tracking System</span><b class="pipe">|</b></a>
+      <div class="dropdown-content">
+        <a *ngIf="role =='ROLE_SUPER_ADMIN' || (permisionsArray | search3:'ATS/jobs') == true "
+          routerLink="ats-dashboard">Home</a>
+        <a *ngIf="role =='ROLE_SUPER_ADMIN' || (permisionsArray | search3:'ATS/clients') == true "
+          routerLink="ATS/clients">Clients</a>
+        <a *ngIf="role =='ROLE_SUPER_ADMIN' || (permisionsArray | search3:'ATS/jobs') == true "
+          routerLink="ATS/jobs">Jobs</a>
+        <a *ngIf="role =='ROLE_SUPER_ADMIN' || (permisionsArray | search3:'ATS/candidates') == true "
+          routerLink="ATS/candidates">Candidates</a>
+        <a *ngIf="role =='ROLE_SUPER_ADMIN' || (permisionsArray | search3:'ATS/referral') == true "
+          routerLink="ATS/referral">Referral</a>
+        <a *ngIf="role =='ROLE_SUPER_ADMIN' || (permisionsArray | search3:'ATS/archive') == true "
+          routerLink="ATS/archive">Archive</a>
+        
+      </div>
+    </li>
+    <li class="nav-item dropdown">
+      <a class="nav-link dropbtn"><span>Incentives</span><b class="pipe">|</b></a>
+      <div class="dropdown-content">
+        <a *ngIf="role =='ROLE_SUPER_ADMIN' || (permisionsArray | search3:'Utilities/salary-mapping') == true "
+          routerLink="Income-tax/kpi-slab">Define KPIs</a>
+        <a *ngIf="role =='ROLE_SUPER_ADMIN' || (permisionsArray | search3:'Utilities/salary-mapping') == true "
+          routerLink="Master/funds-realized">Entry of Funds Realized</a>
+        <a *ngIf="role =='ROLE_SUPER_ADMIN' || (permisionsArray | search3:'Utilities/salary-mapping') == true "
+          routerLink="performance-management/incentives">Incentive Payment</a>
+        <a *ngIf="role =='ROLE_SUPER_ADMIN' || (permisionsArray | search3:'Utilities/salary-mapping') == true "
+          routerLink="performance-management/invoices-report">Invoices Report</a>
+        <a *ngIf="role =='ROLE_SUPER_ADMIN' || (permisionsArray | search3:'Utilities/salary-mapping') == true "
+          routerLink="performance-management/incentives-report">Incentives Report</a>
+      </div>
+    </li>
+
+    <!-- <li *ngIf="role =='ROLE_SUPER_ADMIN'" class="nav-item dropdown" >
+      <a class="nav-link dropbtn"><span>Admin</span></a>
+      <div class="dropdown-content"> -->
+
+
+    <!-- <a *ngIf="role =='ROLE_SUPER_ADMIN' || (permisionsArray | search3:'') == true " routerLink="Admin/mailer">Mailer</a>
+        <a *ngIf="role =='ROLE_SUPER_ADMIN' || (permisionsArray | search3:'') == true " routerLink="Admin/query-management">Query Management</a>
+        <a *ngIf="role =='ROLE_SUPER_ADMIN' || (permisionsArray | search3:'') == true " routerLink="Admin/exit-clearence">Exit Clearance Head</a>
+        <a *ngIf="role =='ROLE_SUPER_ADMIN' || (permisionsArray | search3:'') == true " routerLink="Admin/event-master">Event Master</a>
+        <a *ngIf="role =='ROLE_SUPER_ADMIN' || (permisionsArray | search3:'') == true " routerLink="Admin/gallery-master">Gallery Master</a>
+        <a *ngIf="role =='ROLE_SUPER_ADMIN' || (permisionsArray | search3:'') == true " routerLink="Admin/assignpunch-location">Assign Punch Location</a>
+        <a *ngIf="role =='ROLE_SUPER_ADMIN' || (permisionsArray | search3:'') == true " routerLink="Admin/audit-trails">Audit Trails</a>
+        <a *ngIf="role =='ROLE_SUPER_ADMIN' || (permisionsArray | search3:'') == true " routerLink="Admin/news">News</a>
+        <a *ngIf="role =='ROLE_SUPER_ADMIN' || (permisionsArray | search3:'') == true " routerLink="Admin/exit-template">Exit Template</a>
+        <a *ngIf="role =='ROLE_SUPER_ADMIN' || (permisionsArray | search3:'') == true " routerLink="Admin/general-settings">General Setting</a>
+        <a *ngIf="role =='ROLE_SUPER_ADMIN' || (permisionsArray | search3:'') == true " routerLink="Admin/ess-user">Ess Users</a>
+        <a *ngIf="role =='ROLE_SUPER_ADMIN' || (permisionsArray | search3:'') == true " routerLink="Admin/approver">Approver</a>
+        <a *ngIf="role =='ROLE_SUPER_ADMIN' || (permisionsArray | search3:'') == true " routerLink="Admin/guidelines">Guidelines</a>-->
+
+    <!-- <a *ngIf="role =='ROLE_SUPER_ADMIN' || (permisionsArray | search3:'') == true " routerLink="Admin/mailer-setting">Mailer Setting</a>  -->
+  </ul>
+  <!-- <ul  class="menus menu-list ml-160"></ul> -->
+  <ul class="right-menu">
+    <li class="nav-item dropdownside ng-scope">
+      <a data-toggle="dropdown" title="Notifiaction" (click)="getNotificationList()" class="nav-link dropdown-toggle"
+        data-toggle="collapse" data-target="#handleNotification">
+        <i class="fas fa-bell in-app-icon fa-lg ic"></i>
+        <span class="badge badge-light">{{unreadNotificationCount}}</span>
+      </a>
+      <div class="dropdown-menu set-popup" id="handleNotification">
+        <i aria-hidden="true" class="fa fa-circle-o-notch fa-spin margin-spin" [style.font-size.px]="40"
+          *ngIf="showSpinner"></i>
+        <app-notification [list]="notificationList" (updateNotificationCount)="updateNotificationCount()">
+        </app-notification>
+      </div>
+    </li>
+    <li class="nav-item dropdownside ng-scope">
+      <a data-toggle="dropdown" title="Chat Messanger" (click)="getEmployeeList()" class="nav-link dropdown-toggle"
+        data-toggle="collapse" data-target="#handleChat">
+        <i class="fas fa-spin in-app-icon fa-lg ic"></i>
+        <!-- <span class="badge badge-light">{{unreadNotificationCount}}</span> -->
+      </a>
+      <div class="dropdown-menu set-popup" id="handleChat">
+        <i aria-hidden="true" [style.font-size.px]="40"></i>
+        <app-chat [list]="employeeList"></app-chat>
+      </div>
+    </li>
+    <li>
+      <a class="nav-link"><i class="fas fa-user-circle user-icon"></i> Welcome
+        <span>{{userName}}-{{firstName}}</span></a>
+    </li>
+
+    <li class="nav-item dropdownside">
+      <a id="viewDetailsTrigger" (click)="menuclick()" class="nav-link dropdown-toggle" data-toggle="collapse"
+        data-target="#viewdetails">
+        <span><i class="fas fa-power-off"></i></span>
+      </a>
+      <div class="dropdown-menu xyz" id="viewdetails">
+        <ul class="user-header">
+          <p style="color: #444;">{{userName}}-{{firstName}}</p>
+        </ul>
+
+        <ul class="user-footer ">
+          <div class="pull-left ">
+            <a class="btn btn-secondary btn-sm" style="color:#444" (click)="changePassword()">Change Password</a>
+          </div>
+          <div class="pull-right">
+            <a class="btn btn-danger btn-sm" style="color:#444" (click)="logout()">Sign out</a>
+          </div>
+        </ul>
+      </div>
+    </li>
+    <!-- <li >
+            <a class="nav-link logout-btn" (click)="changePassword()"><span class="fa-passwd-reset fa-stack">
+              <i class="fa fa-undo fa-stack-2x"></i>
+              <i class="fa fa-key fa-stack-1x"></i>
+          </span><br><span class="text-c">Change Password</span></a>
+        </li> -->
+
+
+
+    <!-- </div>
+    </li> -->
+
+  </ul>
+
+</nav>
+
+<!-- <div id="mySidenav" class="sidenav">
+  <a >About</a>
+  <a >Services</a>
+  <a >Clients</a>
+  <a >Contact</a>
+</div> -->
+
+<nav class="navbar side-menu align-center">
+  <ul *ngIf="role !='ROLE_CANDIDATE'" class="navbar-nav text-center" style="margin-left:-15px;">
+    <li *ngIf="role!='ROLE_EMPLOYEE'">
+      <a class="nav-link " routerLink="dashboard">
+        <i class="fas fa-tachometer-alt"></i><br>
+        <span>Dashboard</span>
+      </a>
+    </li>
+    <li *ngIf="role!='ROLE_EMPLOYEE'">
+      <a class="nav-link" routerLink="Master/employee-master">
+        <i class="fas fa-users"></i><br>
+        <span>Employee</span>
+      </a>
+    </li>
+    <!-- <li >
+      <a class="nav-link" routerLink="Monthly-process/select-month">
+          <i class="fas fa-calendar"></i><br>
+          <span class="mln-10">Select Month</span>
+      </a>
+    </li> -->
+    <!-- <li >
+      <a class="nav-link"  routerLink="Monthly-process/monthly-variables">
+          <i class="fas fa-donate"></i><br>
+          <span class="mln-20">Monthly Variable</span>
+      </a>
+    </li> -->
+    <!-- <li>
+      <a class="nav-link" routerLink="Leave-attendance/Time-sheet">
+        <i class="fas fa-fingerprint"></i><br>
+        <span>Attendance</span>
+      </a>
+    </li> -->
+    <!-- <li >
+      <a class="nav-link" routerLink="Monthly-process/process-salary">
+          <i class="fas fa-money-bill-alt"></i><br>
+          <span class="mln-14">Process Salary</span>
+      </a>
+    </li> -->
+
+    <li>
+      <a class="nav-link"
+        *ngIf="role =='ROLE_SUPER_ADMIN' || (permisionsArray | search3:'Monthly-reports/payslip-allow') == true "
+        routerLink="Monthly-reports/payslip-allow">
+        <i class="fas fa-money-check-alt"></i><br>
+        <span>Allow Payslip</span>
+      </a>
+    </li>
+    <li>
+      <a class="nav-link"
+        *ngIf="role =='ROLE_SUPER_ADMIN' || (permisionsArray | search3:'Monthly-reports/payslip') == true "
+        routerLink="Monthly-reports/payslip">
+        <i class="fas fa-money-check-alt"></i><br>
+        <span>Payslip</span>
+      </a>
+    </li>
+    <li>
+      <a class="nav-link"
+        *ngIf="role =='ROLE_SUPER_ADMIN'"
+        routerLink="Monthly-reports/payslip-delete">
+        <i class="fas fa-money-check-alt"></i><br>
+        <span>Delete Payslip</span>
+      </a>
+    </li>
+    <!-- <li >
+      <a class="nav-link" *ngIf="role =='ROLE_SUPER_ADMIN' || (permisionsArray | search3:'') == true " routerLink="Monthly-reports/salary-sheet">
+          <i class="fas fa-money-check"></i><br>
+          <span>Salary Sheet</span>
+      </a>
+    </li>
+    <li >
+      <a class="nav-link" *ngIf="role =='ROLE_SUPER_ADMIN' || (permisionsArray | search3:'') == true " routerLink="Monthly-process/view-salary">
+          <i class="fas fa-receipt"></i><br>
+          <span>View Salary</span>
+      </a>
+    </li> -->
+    <li>
+      <a class="nav-link"
+        *ngIf="role =='ROLE_SUPER_ADMIN' || (permisionsArray | search3:'Leave-attendance/apply-leave') == true "
+        routerLink="Leave-attendance/apply-leave">
+        <i class="fas fa-receipt"></i><br>
+        <span>Apply Leave</span>
+      </a>
+    </li>
+    <li>
+      <a class="nav-link"
+        *ngIf="role =='ROLE_SUPER_ADMIN' || (permisionsArray | search3:'Leave-attendance/manage-leaves') == true "
+        routerLink="Leave-attendance/manage-leaves">
+        <i class="fas fa-receipt"></i><br>
+        <span>Manage Leave</span>
+      </a>
+    </li>
+    <!-- <li >
+      <a class="nav-link" *ngIf="role =='ROLE_SUPER_ADMIN' || (permisionsArray | search3:'') == true " routerLink="Leave-attendance/manage-leaves">
+          <i class="fas fa-receipt"></i><br>
+          <span>Leave Manage</span>
+      </a>
+    </li> -->
+    <!-- <li>
+      <a class="nav-link" *ngIf="role !='ROLE_SUPER_ADMIN' || (permisionsArray | search3:'') == true "
+        routerLink="Income-tax/check-investments/investments-table">
+        <i class="fas fa-money-bill-alt"></i><br>
+        <span>Investments</span>
+      </a>
+    </li> -->
+
+    <!-- <li >
+      <a class="nav-link" *ngIf="role =='ROLE_SUPER_ADMIN' || (permisionsArray | search3:'Leave-attendance/reports') == true " routerLink="Leave-attendance/reports">
+          <i class="fas fa-receipt"></i><br>
+          <span>Leaves Summary</span>
+      </a>
+    </li> -->
+    <!-- <li>
+      <a class="nav-link" *ngIf="role !='ROLE_SUPER_ADMIN' || (permisionsArray | search3:'') == true "
+        routerLink="Income-tax/form-16">
+        <i class="fas fa-receipt"></i><br>
+        <span>Form 16</span>
+      </a>
+    </li> -->
+    <!-- <li >
+      <a class="nav-link" *ngIf="role =='ROLE_SUPER_ADMIN' || (permisionsArray | search3:'') == true " routerLink="Monthly-reports/time-sheet-report">
+          <i class="fas fa-receipt"></i><br>
+          <span>Time Shift</span>
+      </a>
+    </li> -->
+    <!-- <li>
+      <a class="nav-link" routerLink="Master/employee-resignation">
+        <i class="fas fa-edit"></i><br>
+        <span>Employee Resignation</span>
+      </a>
+    </li> -->
+  </ul>
+</nav>
+<div style="margin-left: 160px">
+  <router-outlet></router-outlet>
+
+</div>
+<div class="modal fade common-model" id="add">
+  <div class="modal-dialog modal-md">
+    <div class="modal-content model">
+      <form [formGroup]="resetForm" (ngSubmit)="submit()">
+        <div class="modal-header">
+          <div class="modal-title"><em class="fas fa-edit ml-1"></em> Change Password
+          </div>
+          <button type="button" class="close" data-dismiss="modal" (click)="resetTheForm()">&times;</button>
+        </div>
+        <div class="modal-body">
+          <div class="row">
+            <div class="col-md-12">
+              <table class="model-tbl">
+                <tr>
+                  <td class="padding-top-5">
+                    <label>Current Password<span class="color-red">*</span></label>
+                  </td>
+                  <td><input type="text" class="form-control pull-top-5" placeholder="Please Enter Current Password"
+                      formControlName="currentPassword" (ngModelChange)="changePwd()">
+                    <span class="color-red" *ngIf="submitted && resetForm_.currentPassword.errors">
+                      Current Password can't be blank
+                    </span>
+                    <span class="color-red" *ngIf="submitted && userCredentialMatchFound">Current Passwords are not
+                      matched in DB, Please check once.
+                    </span>
+                  </td>
+                </tr>
+                <tr>
+                  <td class="padding-top-5">
+                    <label>New Password<span class="color-red">*</span></label>
+                  </td>
+                  <td><input type="text" class="form-control pull-top-5" placeholder="Please Enter New Password"
+                      formControlName="newPassword" (ngModelChange)="changePass()">
+                    <span class="color-red" *ngIf="submitted && resetForm_.newPassword.errors">
+                      New Password can't be blank
+                    </span>
+                  </td>
+                </tr>
+                <tr>
+                  <td class="padding-top-5">
+                    <label>Confirm New Password<span class="color-red">*</span></label>
+                  </td>
+                  <td><input type="text" class="form-control pull-top-5" placeholder="Please Enter New Password"
+                      formControlName="confirmNewPassword" (ngModelChange)="changePass()">
+                    <span class="color-red" *ngIf="submitted && resetForm_.confirmNewPassword.errors">Confirm New
+                      Password
+                      can't be blank
+                    </span>
+                    <span class="color-red" *ngIf="submitted && isPasswordsNoteMatched">Passwords are not matched,
+                      Please check once.
+                    </span>
+                  </td>
+                </tr>
+              </table>
+            </div>
+          </div>
+        </div>
+        <hr>
+        <div class="row btn-footer">
+          <div class="col-md-6 pull-left">
+            <button type="submit" id="btnComponentSave" class="button btn-primary btn-style"><em
+                class="fas fa-save"></em>
+              Submit</button>
+          </div>
+          <div class="col-md-6 pull-right">
+            <button type="button" class="button btn-warning btn-style" (click)="resetTheForm()">Clear</button>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>

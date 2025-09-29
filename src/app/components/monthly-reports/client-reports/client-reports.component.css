@@ -1,0 +1,24 @@
+.table tr.active td {
+    background-color: #9ABCEA !important;
+    color: white;
+}
+.table tr th, .table tr td {
+    border: solid 1px #a3a2a3 !important;
+    font-size: 14px;
+}
+
+.advance {
+    color: blue;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.padding-top-25 {
+    padding-top: 30px;
+}
+
+.table-responsive {
+    width: 100%;
+    overflow-x: auto;
+    max-width: 100%;  
+  }

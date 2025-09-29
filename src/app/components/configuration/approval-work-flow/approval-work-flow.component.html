@@ -1,0 +1,265 @@
+<div class="container-fluid">
+    <div class="d-flex align-items-center mt-2">
+        <div class="m-2">
+            <div class="h-size"><i class="fa fa-user mr-1"></i> <b>Approval Workflow</b></div>
+        </div>
+        <div class="flex-fill">
+        </div>
+        <div class="m-3"><input class="form-control rounded-pill py-2 border-right-0 border" type="search"
+                placeholder="search" id="example-search-input" value="" (keyup)="getApprovalWorkFlowListBySearchParam($event)">
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-12">
+            <table class="table table-bordered table-hover table-sm">
+                <thead matSort class="t-head">
+                    <tr>
+                        <th mat-sort-header="name" scope="col">Name<i class="fa fa-sort ml-1"></i></th>
+                        <th mat-sort-header="createdAt" scope="col">Created<i class="fa fa-sort ml-1"></i></th>
+                        <th mat-sort-header="updatedAt" scope="col">Updated<i class="fa fa-sort ml-1"></i></th>
+                        <th scope="col">Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let data of approvalList | paginate
+                    : {
+                        itemsPerPage: itemsPerPage,
+                        currentPage: currentPage,
+                        totalItems: totalItems
+                      };let i=index">
+
+                        <td>{{data.name}}</td>
+                        <td>{{data.createdAt | date:'dd-MM-YYYY'}}</td>
+                        <td>{{data.updatedAt | date:'dd-MM-YYYY'}}</td>
+                        <td>
+                            <a title="Edit" (click)="onEditApprovalWorkflow(data.id)" data-toggle="modal"
+                                data-target=".approvalWorkFlow-model" class="icon-margin"><i
+                                    class="fas fa-user-edit"></i></a>
+                            <a title="Delete" class="icon-margin" mwlConfirmationPopover [popoverTitle]="popoverTitle"
+                                [popoverMessage]="popoverMessage" placement="left"
+                                (confirm)="deleteApprovalWorkFlow(data.id)" (cancel)="cancelClicked = true"><span
+                                    class="fas fa-trash"></span></a>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+            <div class="row" *ngIf="totalElements!=0">
+                <div class="col-md-6 pull-left"><span class="show-entry">Showing
+                        <span>{{showingFrom}} to {{showingTo}} of {{totalElements}} entries</span></span>&nbsp;
+                </div>
+
+                <div class="col-md-6 pull-right" *ngIf="totalItems > 0">
+                    <pagination-controls (pageChange)="pageChanged($event)"></pagination-controls>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-12">
+            <span data-toggle="modal" data-target=".approvalWorkFlow-model">
+                <button data-toggle="tooltip" data-placement="top" title="Create Approval workflow" type="button"
+                    class="btn btn-primary button btn-sm" (click)="clearFormOnAdd()"><em
+                        class="fas fa-user-plus"></em> Add</button>
+            </span>
+            <!-- <button type="button" (click)="modelShow()" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#employeeModelPopup">
+                <i class="fas fa-user-plus"></i> Add
+            </button> -->
+        </div>
+    </div>
+</div>
+<!-- Large modal -->
+
+<div class="modal fade approvalWorkFlow-model mt-4" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog modal-xl ">
+        <div class="modal-content">
+            <div class="modal-header">
+                <div class="modal-title"><i class="fas fa-plus"></i>/ <i class="fas fa-edit ml-1"></i> {{updateButton? 'Update' : 'Create'}} Approval
+                    Workflow
+                </div>
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+            </div>
+            <div class="modal-body">
+
+                <form [formGroup]="approvalForm">
+                    <div class="card">
+                        <div class="card-header">
+                            <i class="fa fa-edit mr-1"></i>Approval Workflow Labels
+                        </div>
+
+                        <div class="card-body">
+                            <div class="form-row">
+                                <div class="form-group col-md-4">
+                                    <label for="name">Name</label>
+                                    <input type="text" formControlName="name" class="form-control" id="name"
+                                        placeholder="Enter Name"
+                                        [ngClass]="{ 'is-invalid': submitted && f.name.errors }">
+                                    <div *ngIf="submitted && f.name.errors" class="invalid-feedback">
+                                        <div *ngIf="f.name.errors.required">Name is required</div>
+                                    </div>
+                                </div>
+                                <!-- <div class="form-group col-md-4">
+
+                                    <label for="status-approval">Status on Approve</label>
+                                    <select id="status-approval" class="form-control"
+                                        formControlName="statusOnApproval"  [ngClass]="{ 'is-invalid': submitted && f.statusOnApproval.errors }">
+
+                                        <option value="{{status.id}}" *ngFor="let status of ticketStatusList">{{status.name}}</option>
+
+                                    </select>
+
+                                    <div *ngIf="submitted && f.statusOnApproval.errors" class="invalid-feedback">
+                                        <div *ngIf="f.statusOnApproval.errors.required">Status is required</div>
+                                    </div>
+
+                                </div> -->
+
+                                <!-- <div class="form-group col-md-4">
+
+                                    <label for="status-deny">Status on Deny</label>
+                                    <select id="status-deny" class="form-control" formControlName="statusOnDeny"
+                                     [ngClass]="{ 'is-invalid': submitted && f.statusOnDeny.errors }">
+
+                                        <option value="{{status.id}}" *ngFor="let status of ticketStatusList">{{status.name}}</option>
+
+                                    </select>
+
+                                    <div *ngIf="submitted && f.statusOnDeny.errors" class="invalid-feedback">
+                                        <div *ngIf="f.statusOnDeny.errors.required">Status is required</div>
+                                    </div>
+
+                                </div> -->
+
+                            </div>
+
+                            <div formArrayName="levelArray"
+                                *ngFor="let level of approvalForm.get('levelArray').controls; let i = index">
+
+                                <div class="card">
+
+                                    <div class="card-header">
+                                        <i class="fa fa-edit mr-1"></i>Level {{i+1}}
+
+                                    </div>
+
+                                    <div class="card-body">
+
+                                        <div [formGroupName]="i">
+
+                                            <div class="form-row">
+                                                <div class="form-group   col-md-12">
+                                                    <button type="button" *ngIf="i>0"
+                                                        class="btn btn-success btn-xs ml-1 float-right"
+                                                        (click)="removeGroup(i)"><i class="fa fa-minus"></i></button>
+
+                                                </div>
+                                            </div>
+
+                                            <div class="form-row">
+                                                <div class="form-group col-md-6">
+
+                                                    <label [attr.for]="'levelName'+i">Name</label>
+                                                    <input type="text" formControlName="Levelname" class="form-control"
+                                                        [id]="'levelName'+i" placeholder="Enter Level {{i + 1}} Name"
+                                                        [ngClass]="{ 'is-invalid': submitted && level.controls.Levelname.errors }">
+
+                                                    <div *ngIf="submitted && level.controls.Levelname.errors"
+                                                        class="invalid-feedback">
+                                                        <div *ngIf="level.controls.Levelname.errors.required">Name is
+                                                            required
+                                                        </div>
+                                                    </div>
+
+                                                </div>
+
+                                                <div class="form-group col-md-6">
+
+                                                    <label [attr.for]="'users'+i">Users</label>
+                                                    <select [id]="'users'+i" class="form-control"
+                                                        formControlName="users"
+                                                        [ngClass]="{ 'is-invalid': submitted && level.controls.users.errors }">
+                                                        <option [ngValue]="null" selected disabled>Select User</option>
+                                                        <option value="{{user.employeeId}}"
+                                                            *ngFor="let user of usersList">{{user.employeeCode}}-
+                                                            {{user.firstName}} {{user.lastName}}</option>
+                                                    </select>
+
+                                                    <div *ngIf="submitted && level.controls.users.errors"
+                                                        class="invalid-feedback">
+                                                        <div *ngIf="level.controls.users.errors.required">User is
+                                                            required
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                                <!-- <div class="form-group col-md-6">
+
+                                                    <label [attr.for]="'matcher'+i">Matcher</label>
+                                                    <select [id]="'matcher'+i" class="form-control" formControlName="matcher" 
+                                                    [ngClass]="{ 'is-invalid': submitted && level.controls.matcher.errors }">
+                                                        <option value="" disabled selected>Select</option>
+                                                        <option value="any">Any</option>
+                                                        <option value="all">All</option>
+                                                    </select>
+
+                                                    <div *ngIf="submitted && level.controls.matcher.errors" class="invalid-feedback">
+                                                        <div *ngIf="level.controls.matcher.errors.required">Matcher is required</div>
+                                                    </div>
+
+                                                </div> -->
+
+                                            </div>
+
+                                            <!-- <div class="form-row">
+
+                                                <div class="form-group col-md-6">
+
+                                                    <label [attr.for]="'user-types'+i">User Types</label>
+                                                    <select [id]="'user-types'+i" class="form-control" formControlName="userTypes" 
+                                                     [ngClass]="{ 'is-invalid': submitted && level.controls.userTypes.errors }">
+                                                        <option value="" disabled selected>Select</option>
+                                                        <option value="1">Department Manager</option>
+                                                        <option value="2">Organisation Manager</option>
+                                                        <option value="3">Team Lead</option>
+                                                    </select>
+
+                                                    <div *ngIf="submitted && level.controls.userTypes.errors" class="invalid-feedback">
+                                                        <div *ngIf="level.controls.userTypes.errors.required">User is required</div>
+                                                    </div>
+
+                                                </div>
+                                            </div> -->
+
+                                        </div>
+
+                                    </div>
+
+                                </div>
+
+                            </div>
+
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group col-md-12">
+                                <button type="button" class="btn btn-success btn-xs float-left" (click)="addGroup()"
+                                    [disabled]="approvalForm.get('levelArray').invalid"><i class="fa fa-plus mr-1"></i>
+                                    Add Level {{approvalForm.get('levelArray').length + 1}}</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div *ngIf="!updateButton">
+                        <button type="submit" class="btn btn-primary btn-sm" (click)="onSubmit()"><i
+                                class="fa fa-save mr-1"></i>Save</button>
+
+                    </div>
+
+                    <div *ngIf="updateButton">
+                        <button type="submit" class="btn btn-primary btn-sm" (click)="onUpdate()"><i
+                                class="fa fa-save mr-1"></i>Update</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

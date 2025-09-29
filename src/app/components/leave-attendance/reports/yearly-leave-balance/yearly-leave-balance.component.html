@@ -1,0 +1,36 @@
+<div class="row">
+        <div class="col-md-12">
+            <div>{{companyName}}</div>
+            <div>Yearly Leave Balance Report for the Year : {{selectedYear}}</div>
+            <table class="table table-bordered table-hover table-sm">
+                    <thead class="t-head">
+                        <tr>
+                            <th>MONTH</th>
+                            <th>EMP CODE</th>
+                            <th>EMPLOYEE NAME</th>
+                            <ng-container *ngFor="let head of LeaveTypesObject">
+                                    <th>{{head.leaveTypeCode}} OPENING</th>
+                                    <th>{{head.leaveTypeCode}} AVAILED</th>
+                            </ng-container>
+                        </tr>
+                       
+                        </thead>
+                        <tbody>
+                        <ng-container *ngFor="let employee of epmloyeeList">
+                            <tr *ngFor="let month of monthList">
+                             
+                                <td>{{month}}</td>
+                                 <td>{{employee.employee.employeeId}}</td>
+                                  <td>{{employee.employee.firstName}} {{employee.employee.lastName}}</td>
+                                <ng-container *ngFor="let leaveTypeInfo of employee.leaveTypeInfo">
+                                        <td>{{leaveTypeInfo.openingBal}}</td>
+                                        <td>{{leaveTypeInfo.currentBal}}</td>
+                                </ng-container> 
+                             </tr>   
+                                 
+                        </ng-container>
+                        </tbody>
+        
+                </table>
+        </div>
+    </div>

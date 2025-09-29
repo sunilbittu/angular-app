@@ -1,0 +1,338 @@
+<div class="container-fluid">
+    <div class="d-flex align-items-center mt-2">
+        <div class="m-2">
+            <div class="h-size"><em class="fa fa-user"></em> <strong> Employee Loan Advance List</strong></div>
+        </div>
+        <div class="flex-fill">
+        </div>
+        <div class="m-3"><input class="form-control rounded-pill py-2 border-right-0 border" type="search"
+                placeholder="search" id="example-search-input" [(ngModel)]="searchModel" (ngModelChange)="search()">
+        </div>
+    </div>
+    <!-- <div class="row" style="height: 240px;" > -->
+    <div class="row">
+        <div class="col-md-12" style="overflow-y: scroll;">
+            <table class="table table-bordered table-hover table-sm">
+                <thead class="t-head">
+                    <tr>
+                        <th *ngFor="let head of headers"><a>{{head}}</a></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let employee of employees | paginate: {
+                        itemsPerPage: itemsPerPage,
+                        currentPage: currentPage,
+                        totalItems: totalItems
+                      };let i=index" (click)="clickedRow(i, employee.employeeId)"
+                        [class.active]="i == highlightRow && employee.employeeId === employeeId">
+                        <td>{{employee.employeeCode}}</td>
+                        <td>{{employee.firstName}} {{employee.lastName}}</td>
+                        <td>{{employee.branchName}}</td>
+                        <td>{{employee.departmentName}}</td>
+                        <td>{{employee.designationName}}</td>
+                        <td>{{employee.divisionName}}</td>
+                        <td>{{employee.gradeName}}</td>
+                        <td>{{employee.categoryName}}</td>
+                        <td *ngIf="employee.project!=null">{{employee.project.projectName}}</td>
+                        <td *ngIf="employee.project==null"></td>
+                    </tr>
+                </tbody>
+            </table>
+            <div class="row" *ngIf="totalElements!=0">
+                <div class="col-md-6 pull-left"><span class="show-entry">Showing
+                        <span>{{showingFrom}} to {{showingTo}} of {{totalElements}} entries</span></span>&nbsp;
+                </div>
+
+                <div class="col-md-6 pull-right" *ngIf="totalItems > 0">
+                    <pagination-controls (pageChange)="pageChanged($event)"></pagination-controls>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div *ngIf="loanData && loanData.length > 0">
+        <div class="d-flex align-items-center mt-2">
+            <div class="m-2">
+                <div class="h-size"><em class="fa fa-user"></em> <strong> Loan List </strong></div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-12">
+                <table class="table table-bordered table-hover table-sm">
+                    <thead class="t-head">
+                        <tr>
+                            <th *ngFor="let head of headerLoan"><a>{{head}}</a></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let loan of loanData">
+                            <td>{{loan.loanOrAdvType}}</td>
+                            <td>{{loan.loanTypeId.loanName}}</td>
+                            <td>{{loan.appliedDate}}</td>
+                            <td>{{loan.budgetLimit}}</td>
+                            <td>{{loan.loanAmount}}</td>
+                            <td>{{loan.emiCalculatedField}}</td>
+                            <td>{{loan.installmentMonths}}</td>
+                            <td>{{loan.startrecoveryfrom.year}} - {{loan.startrecoveryfrom.month}}</td>
+                            <td>{{loan.status}}</td>
+                            <td>{{loan.purpose}}</td>
+                            <td>
+                                <span *ngFor="let doc of loan.documents">
+                                    <a class="action" title="File Downlaod" (click)="viewDocument(doc, loan)"><i
+                                            class="fa fa-download" aria-hidden="true"></i></a>&nbsp;
+                                </span>
+                            </td>
+                            <td>
+                                <button title="Pay" [disabled]="loan.status == 'Closed'" (click)="modelShowEdit(loan)"
+                                    class="icon-margin">Pay <i class="fa fa-credit-card"></i></button>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        </div>
+        <div *ngIf="advanceData && advanceData.length > 0">
+        <div class="d-flex align-items-center mt-2">
+            <div class="m-2">
+                <div class="h-size"><em class="fa fa-user"></em> <strong> Advance List </strong></div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-12">
+                <table class="table table-bordered table-hover table-sm">
+                    <thead class="t-head">
+                        <tr>
+                            <th *ngFor="let head of headerAdvacne"><a>{{head}}</a></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let advance of advanceData">
+                            <td>{{advance.loanOrAdvType}}</td>
+                            <td>{{advance.loanTypeId.loanName}}</td>
+                            <td>{{advance.appliedDate}}</td>
+                            <td>{{advance.budgetLimit}}</td>
+                            <td>{{advance.loanAmount}}</td>
+                            <td>{{advance.emiCalculatedField}}</td>
+                            <td>{{advance.installmentMonths}}</td>
+                            <td>{{advance.startrecoveryfrom.year}} - {{advance.startrecoveryfrom.month}}</td>
+                            <td>{{advance.status}}</td>
+                            <td>{{advance.purpose}}</td>
+                            <td>
+                                <span *ngFor="let doc of advance.documents">
+                                    <a class="action" title="File Downlaod" (click)="viewDocument(doc, advance)"><i
+                                            class="fa fa-download" aria-hidden="true"></i></a>&nbsp;
+                                </span>
+                            </td>
+                            <td>
+                                <button title="Pay" [disabled]="advance.status == 'Closed'"
+                                    (click)="modelShowEdit(advance)" class="icon-margin">Pay <i
+                                        class="fa fa-credit-card"></i></button>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal alert-modal fade" id="donwload_doc" role="dialog" style="display: none;">
+    <div class="modal-dialog modal-md">
+        <div class="modal-content model">
+            <div class="modal-header " id="msg_header">
+                <h4 class="modal-title">Download</h4>
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="row col-12 padding-field-bottom">
+                    <div class="col-2">
+                        <label>File Name:</label>
+                    </div>
+                    <div class="col-10">
+                        {{document.fileName}}
+                    </div>
+                </div>
+                <hr>
+                <div class="row col-12 padding-field-bottom">
+                    <button type="button" target="_blank"
+                        (click)="downloadDocumentAttachment(document.filePath, document.fileName)"
+                        class="button btn-primary btn-style">Downlaod</button>
+                    <button type="button" class="button btn-danger btn-style" data-dismiss="modal">
+                        Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade common-model" id="employeeModelPopup">
+    <div class="modal-dialog modal-xl">
+        <div class="modal-content model">
+            <form [formGroup]="loanForm" (ngSubmit)="submit()">
+                <!-- Modal Header -->
+                <div class="modal-header">
+                    <div class="modal-title"><i class="fas fa-plus"></i>/ <i class="fas fa-edit ml-1"></i> Loan
+                        Repayment
+                    </div>
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                </div>
+                <!-- Modal body -->
+                <div class="modal-body">
+                    <div class="row col-12 padding-field-bottom">
+                        <div class="col-6 radio-font padd-right-0">
+                            <span><input id="deny" class="radio-size" name="loanAdvType" type="radio" value="Loan"
+                                    [(ngModel)]="loanAdvType" [ngModelOptions]="{standalone: true}"
+                                    style="cursor: pointer;" checked disabled>
+                                <label>&nbsp;Loan</label></span>&nbsp;
+                            <span><input id="approve" class="radio-size" name="loanAdvType" type="radio" value="Advance"
+                                    style="cursor: pointer;" [(ngModel)]="loanAdvType"
+                                    [ngModelOptions]="{standalone: true}" disabled>
+                                <label>&nbsp;Advance</label></span>
+                        </div>
+                        <div class="col-2">
+                            <label for="type">Type</label>
+                        </div>
+                        <div class="col-4">
+                            <input type="text" class="form-control" id="loanType" formControlName="loanType" readonly>
+                        </div>
+                    </div>
+                    <div class="row col-12 padding-field-bottom">
+                        <div class="col-2">
+                            <label for="type">Applied Date</label>
+                        </div>
+                        <div class="col-4">
+                            <input type="text" formControlName="appliedDate" class="text form-control pull-top-5"
+                                maxlength="50" readonly />
+
+                        </div>
+                        <div class="col-2">
+                            <label>Budget Limit</label>
+                        </div>
+                        <div class="col-4">
+                            <input type="text" class="form-control" placeholder="Please Enter Budget Limit"
+                                formControlName="budgetLimit" readonly>
+                        </div>
+                    </div>
+                    <div class="row col-12 padding-field-bottom">
+                        <div class="col-2">
+                            <label for="type">Amount Required</label>
+                        </div>
+                        <div class="col-4">
+                            <input type="text" class="form-control" placeholder="Please Enter Amunt Required"
+                                formControlName="amountRequired" readonly>
+
+                        </div>
+                        <div class="col-2">
+                            <label for="type">Tenure Months</label>
+                        </div>
+                        <div class="col-4">
+                            <input type="text" class="form-control" id="installmentMonths"
+                                formControlName="installmentMonths" readonly>
+                        </div>
+                    </div>
+                    <div class="row col-12 padding-field-bottom">
+                        <div class="col-2">
+                            <label for="type">EMI Calculated field</label>
+                        </div>
+                        <div class="col-4">
+                            <input type="text" class="form-control" placeholder="Please Enter EMI Calculated field"
+                                formControlName="emiCalculatedField" readonly>
+
+                        </div>
+                        <div class="col-2">
+                            <label>Work Period</label>
+                        </div>
+                        <div class="col-4 row padd-right-0">
+                            <div class="col-6 padd-right-0">
+                                <input type="text" class="form-control" placeholder="Please Enter Work Period Year"
+                                    formControlName="workPeriodyear" readonly>
+                            </div>
+                            <div class="col-6 padd-right-0">
+                                <input type="text" class="form-control" placeholder="Please Enter Work Period Month"
+                                    formControlName="workPeriodMonth" readonly>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row col-12 padding-field-bottom">
+                        <div class="col-2">
+                            <label for="type">Status</label>
+                        </div>
+                        <div class="col-4">
+                            <input type="text" class="form-control" id="status" formControlName="status" readonly>
+                        </div>
+                        <div class="col-2">
+                            <label>Start Recovery From</label>
+                        </div>
+                        <div class="col-4 row padd-right-0">
+                            <div class="col-6 padd-right-0">
+                                <input type="text" formControlName="year" class="form-control" readonly>
+                            </div>
+                            <div class="col-6 padd-right-0">
+                                <input type="text" formControlName="month" class="form-control" readonly>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row col-12 padding-field-bottom">
+                        <div class="col-2">
+                            <label>Purpose</label>
+                        </div>
+                        <div class="col-4">
+                            <input type="text" formControlName="purpose" placeholder="Please Enter Purpose"
+                                class="form-control form-control-sm" id="purpose" readonly>
+                        </div>
+                        <div class="col-2">
+                            <label>Loan/Advance Total Due</label>
+                        </div>
+                        <div class="col-4">
+                            <input type="text" formControlName="totalDue"
+                                placeholder="Please Enter Loan/Advance Total Due" class="form-control" id="purpose"
+                                readonly>
+                        </div>
+                    </div>
+                    <div class="row col-12 padding-field-bottom">
+                        <div class="col-2">
+                            <label for="type">Payment Amount<span class="color-red">*</span></label>
+                        </div>
+                        <div class="col-4">
+                            <input type="text" class="form-control" placeholder="Please Enter Payment Amount"
+                                formControlName="paymentAmount">
+                            <span class="color-red" *ngIf="submitted && loanForm.controls.paymentAmount.errors">Payment
+                                Amount
+                                {{requiredErrorText}}</span>
+                        </div>
+                        <div class="col-2">
+                            <label for="type">Payment Date<span class="color-red">*</span></label>
+                        </div>
+                        <div class="col-4">
+                            <input type="text" formControlName="paymentDate" bsDatepicker
+                                placeholder="Please Select Date"
+                                [ngClass]="{ 'is-invalid': submitted && loanForm.controls.paymentDate.errors}"
+                                [minDate]="now" readonly
+                                [bsConfig]="{ isAnimated: true, dateInputFormat: 'DD-MM-YYYY' }" bsDatepicker
+                                (bsValueChange)="onAppliedDateValueChange($event)" placement="bottom"
+                                class="text form-control pull-top-5" maxlength="50" />
+                            <span class="color-red" *ngIf="submitted &&loanForm.controls.paymentDate.errors">Payment
+                                Date
+                                {{requiredErrorText}}</span>
+                        </div>
+                    </div>
+                    <hr>
+                    <div class="row">
+                        <div class="col-md-6 pull-left">
+                            <button type="submit" id="btnComponentSave" [disabled]="submitProcessing"
+                                class="button btn-primary btn-style"><i class="fas fa-save"></i>
+                                Submit <i class="fa fa-spinner fa-spin" *ngIf="submitProcessing"
+                                    style="font-size:19px"></i></button>
+                        </div>
+                        <div class="col-md-6 pull-right">
+                            <button type="button" id="btnComponentSave" data-dismiss="modal"
+                                class="button btn-warning btn-style">
+                                Close</button>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

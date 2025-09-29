@@ -1,0 +1,99 @@
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-md-5">
+            <div class="h-size"><i class="fa fa-user mr-1"></i> <b>Employees Category Wise Report</b></div>
+        </div>
+        <div class="col-md-3">
+            <button type="button" class="btn btn-labeled btn-outline-danger btn-sm" (click)="exportTable('PDF')">
+                <span class="btn-label"><i class="fa fa-file-pdf-o" aria-hidden="true"></i></span>Export To PDF</button>
+        </div>
+        <div class="col-md-3">
+            <button type="button" class="btn btn-labeled btn-outline-success btn-sm" (click)="exportTable('EXCEL')">
+                <span class="btn-label"><i class="fa fa-file-excel-o" aria-hidden="true"></i></span>
+                Export To Excel
+            </button>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-12">
+            <table class="table table-bordered table-hover table-sm">
+                <thead class="t-head">
+                    <tr>
+                        <th *ngFor="let head of headers"><a>{{head}}</a></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let employee of employeesCategoryList">
+                        <td>{{employee.categoryCode}}</td>
+                        <td>{{employee.categoryName}}</td>
+                        <td class="model-button"><a data-toggle="modal" data-target=".Category-model"
+                                (click)="fetchEmployeesCountListByCategory(employee.categoryId)">{{employee.liveEmployee}}</a>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <div class="modal fade Category-model mt-4" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog modal-xl ">
+            <div class="modal-content">
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-md-5">
+                            <div class="h-size"><i class="fa fa-user mr-1"></i> <b>Employees Category Wise Report</b>
+                            </div>
+                        </div>
+                        <div class="col-md-2">
+                            <button type="button" class="btn btn-labeled btn-outline-danger btn-sm"
+                                (click)="exportInnerTable('PDF')">
+                                <span class="btn-label"><i class="fa fa-file-pdf-o" aria-hidden="true"></i></span>
+                                Export To PDF
+                            </button>
+                        </div>
+                        <div class="col-md-2">
+                            <button type="button" class="btn btn-labeled btn-outline-success btn-sm"
+                                (click)="exportInnerTable('EXCEL')">
+                                <span class="btn-label"><i class="fa fa-file-excel-o"
+                                        aria-hidden="true"></i></span>Export To
+                                Excel</button>
+                        </div>
+                    </div>
+
+                    <!-- <div class="row"> -->
+
+                    <!-- </div> -->
+                    <div class="row">
+                        <div class="col-md-12">
+                            <table class="table table-bordered table-hover table-sm">
+                                <thead class="t-head">
+                                    <tr>
+                                        <th *ngFor="let head of headersCount"><a>{{head}}</a></th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr
+                                        *ngFor="let employee of employeesCategoryCountList | paginate: { itemsPerPage: 10, currentPage: p ,id:'categoryPagination'}">
+                                        <td>{{employee.employeeCode}}</td>
+                                        <td><span class="mr-1">{{employee.firstName}}</span>
+                                            <span>{{employee.lastName}}</span>
+                                        </td>
+                                        <td>{{employee.categoryCode}}</td>
+                                        <td>{{employee.categoryName}}</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                            <pagination-controls (pageChange)="p = $event" id="categoryPagination"></pagination-controls>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary btn-sm" (click)="onModelClose()"
+                        data-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,23 @@
+.form-control{
+    width:25vw;
+    height: 30px ;
+    margin: 5px;
+    border: 1px solid #81badb;
+}
+
+
+.tttt{
+    margin-top: 32px;
+}
+
+.head-width{
+    width:12%;
+}
+
+.table-eg tr th{
+   width: 60%;
+    color: #555;
+}
+#backButton{
+    margin-left: auto;
+}

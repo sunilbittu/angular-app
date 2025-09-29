@@ -1,0 +1,73 @@
+
+<div class="container-fluid p-10" >
+    <section class="content-header">
+         <h3 class="box-title"><i class="fas fa-calendar-week"></i> Select Month</h3>
+
+        <ul class="breadcrumb">
+            <li>
+                    <span>Search:</span>
+                    <!-- <label class="col-sm-2 control-label" for="inputWarning">Input with warning and glyphicon</label> -->
+                      <input type="text" id="inputWarning">
+            </li>
+        </ul>
+    </section>
+    <section class="content">
+        
+        <div class="box box-solid">
+            
+            <div class="box-body table-responsive">
+                <div id="w0">
+                    <div id="w1" class="grid-view">
+                        <!-- <span *ngIf="!toggleloader"><cms-totalEntities [numberOfEntitesToShow]="numberOfEntitesToShow" [currentpageNumber]="currentPage" [totoalNumberOfItems]="totalEmployeeRecords"></cms-totalEntities></span> -->
+                            <table class="table table-striped ">
+                                <thead class="table-head-bg">
+                                <tr>
+                                    <th *ngFor="let data of Headers"><a>{{data}}</a></th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                     <tr *ngFor="let data of monthsData">
+                                         <td>{{data.startDate}}</td>
+                                         <td>{{data.endDate}}</td>
+                                         <td>{{data.totalDays}}</td>
+                                         <td>{{data.months}}</td>
+                                         <td>{{data.year}}</td>
+                                         <td>{{data.monthName}}</td>
+                                         <td>{{data.lock}}</td>
+                                         <td>{{data.essPaySlip}}</td>
+                                         <td>{{data.activeMonth}}</td>
+                                         <td>{{data.paidHolidays}}</td>
+                                         <td>{{data.weeklyOff}}</td>
+                                         <td>
+                                            <a  title="View" class="icon-margin"><span class="fas fa-eye"></span></a>
+                                            <a title="Edit" class="icon-margin"><i class="fas fa-user-edit"></i></a>
+                                         </td>
+                                     </tr>
+                                </tbody>
+
+                            </table>
+                            
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

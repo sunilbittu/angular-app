@@ -1,0 +1,159 @@
+<div class="container-fluid">
+    <div class="d-flex align-items-center mt-2">
+        <div class="m-2">
+            <div class="h-size"><i class="fas fa-cogs"></i> <b>Manager Appraisal Review</b></div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-12">
+            <table class="table table-bordered table-hover table-sm table-eg">
+
+
+                <tr>
+                    <th>Name:</th>
+                    <td>{{employeeData?.firstName}}</td>
+
+                    <th>Manager:</th>
+                    <td>{{managerName}}</td>
+                </tr>
+                <tr>
+                    <th>Designation:</th>
+                    <td>{{employeeData?.designation?.designationName}}</td>
+
+                    <th>Department:</th>
+                    <td>{{employeeData?.department?.departmentName}}</td>
+                </tr>
+                <tr>
+                    <th>Grade:</th>
+                    <td>{{employeeData?.gradeMaster?.gradeName}}</td>
+
+                    <th>Branch:</th>
+                    <td>{{employeeData?.branchDetail?.branchName}}</td>
+                </tr>
+                <tr>
+
+                    <th>Days remaining for Review Completion:</th>
+                    <td>{{remainingDay}}</td>
+                    <th>Appraisal Year:</th>
+                    <td>
+                        <select class="form-control" [(ngModel)]="yearModel" style="width: 30%;" name="year"
+                            (change)="getmenuList()">
+                            <option value="">Please Select Year</option>
+                            <option *ngFor="let year of investmentYear" value={{year.financialYearId}}>
+                                {{year.financialYear}}</option>
+                        </select>
+                    </td>
+                </tr>
+
+                <tbody>
+
+                </tbody>
+
+            </table>
+
+        </div>
+    </div>
+
+    <br>
+    <div class="row">
+        <div class="col-md-12">
+
+
+            <div class="d-flex align-items-center mt-2">
+                <div class="m-2">
+                    <div class="h-size"><i class="fa fa-user"></i> <b>Appraisal Reviews Menu</b></div>
+                </div>
+                <div class="flex-fill">
+                </div>
+
+            </div>
+            <table class="table table-bordered table-hover table-sm">
+                <thead class="t-head">
+                    <tr>
+                        <th style="width: 200px;">Grade</th>
+                        <th style="width: 200px;">Number of Reporties</th>
+                        <th>S</th>
+                        <th>M</th>
+                        <th>A</th>
+                        <th>R</th>
+                        <th>T</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let data of menuData">
+                        <th>{{data.gradeName}}</th>
+                        <td>{{data.totalNoOfReporteesGradeWise}}</td>
+                        <td>{{data.s}}</td>
+                        <td>{{data.m}}</td>
+                        <td>{{data.a}}</td>
+                        <td>{{data.r}}</td>
+                        <td>{{data.t}}</td>
+
+                    </tr>
+                </tbody>
+
+            </table>
+        </div>
+    </div>
+    <br>
+    <div class="row">
+        <div class="col-md-12">
+
+
+            <div class="d-flex align-items-center mt-2">
+                <div class="m-2">
+                    <div class="h-size"><i class="fa fa-user"></i> <b>Appraisal Reviews</b></div>
+                </div>
+                <div class="flex-fill">
+                </div>
+
+            </div>
+            <table class="table table-bordered table-hover table-sm">
+                <thead class="t-head">
+                    <tr>
+                        <th>S.No</th>
+                        <th>Employee ID </th>
+                        <th> Employee Name</th>
+                        <th>Previous Year Appraisals</th>
+                        <th>Appraisal Status</th>
+                        <th>Self Appraisal Rating</th>
+                        <th>Manager Rating</th>
+                        <th>Action</th>
+                    </tr>
+
+                </thead>
+                <tbody>
+                    <tr *ngFor="let data of employeeList;let i=index">
+                        <td>{{i+1}}</td>
+                        <td>{{data.employeeId}}</td>
+                        <td>{{data.firstName}}</td>
+                        <td></td>
+
+                        <td>
+                            <span class="badge badge-warning" *ngIf="data.managerReviewStatus ==null">Inprogress</span>
+                            <span class="badge badge-success" *ngIf="data.managerReviewStatus !=null">Done</span>
+
+                        </td>
+                        <td>{{data.employeeRating}}</td>
+                        <td>{{data.managerRating}}</td>
+                        <td>
+                            <a (click)="changeReview(data.employeeId, data.employeeRating, data.managerRating)"
+                                *ngIf="data.managerReviewStatus ==null"><span class="badge badge-warning">Yet to be
+                                    Review</span></a>
+                            <span class="badge badge-success" *ngIf="data.managerReviewStatus !=null">Reviewed</span>
+                        </td>
+
+                    </tr>
+                </tbody>
+
+            </table>
+        </div>
+    </div>
+    <!-- <div class="row">
+        <div class="col-12">
+            <button type="button" class="btn btn-primary btn-sm" >
+                <i class="fas fa-user-plus"></i> Submit
+            </button>
+        </div>
+    </div> -->
+</div>

@@ -1,0 +1,61 @@
+
+<div class="container-fluid">
+    <div class="d-flex align-items-center mt-2">
+        <div class="m-2">
+            <div class="h-size"> <b>Approved Leaves</b></div>
+        </div>
+        <div class="flex-fill">
+        </div>
+        <div class="m-3"><i class="fa fa-search"></i>
+            <span> Search </span><input type="text" value="">
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-12">
+            <table class="table table-bordered table-hover table-sm">
+                <thead class="t-head">
+                    <tr>
+                        <th *ngFor="let head of headers"><a>{{head}}</a></th>
+                    </tr>
+                    </thead>
+                    <!-- <tbody>
+                         <tr *ngFor="let data of employees">
+                             <td>{{data.leaveType}}</td>
+                             <td>{{data.description}}</td>
+                             <td>{{data.entitlement}}</td>
+                             <td>{{data.branch}}</td>
+                             <td>{{data.grade}}</td>
+                             <td>{{data.division}}</td>
+                             <td>{{data.remarks}}</td>
+                             <td>
+                                <a title="Edit" class="icon-margin"><i class="fas fa-user-edit" (click)="editLeaveMaster(data)"></i></a>
+                                <a  title="View" class="icon-margin" tabindex="-1" data-toggle="modal" data-target="#confirmDelete" (click)="deleteItem(data.id)"><span class="fas fa-trash-alt"></span></a>
+                             </td>
+                         </tr>
+                    </tbody> -->
+
+            </table>
+        </div>
+    </div>
+   
+</div>
+
+
+
+
+
+<div class="modal fade" id="confirmDelete" role="dialog">
+    <div class="modal-dialog">
+    
+      <!-- Modal content-->
+      <div class="modal-content">
+        <div class="modal-body"><button type="button" class="close" data-dismiss="modal">&times;</button>
+          <p>Are you sure you want to delete selected items?</p>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+          <button type="button" data-dismiss="modal" class="btn btn-primary"  (click)="deleteSelected()" >Ok</button>
+        </div>
+      </div>
+    </div>
+</div>

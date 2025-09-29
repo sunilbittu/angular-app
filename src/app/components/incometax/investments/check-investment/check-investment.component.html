@@ -1,0 +1,12 @@
+
+    <div class=" inv-headers" *ngIf="employeeId ==1">
+        <div class="flex">
+            <div>Emp Code: {{empData.employeeCode}}</div>
+            <div>Emp Name: {{empData.firstName}} {{empData.lastName}}</div>
+            <div>Department Name: {{empData.departmentName}}</div>
+            <div>Branch Name {{empData.branchName}}</div>
+        </div>
+    </div>
+    <div class="container-fluid">
+        <router-outlet></router-outlet>
+    </div>

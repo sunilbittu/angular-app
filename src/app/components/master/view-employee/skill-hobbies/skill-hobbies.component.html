@@ -1,0 +1,620 @@
+<div class="container-fluid">
+  <div class="row">
+    <div class="col-md-4">
+      <table>
+        <tr>
+          <th id="skillHeader">
+            <em class="fas fa-id-card"></em> Skills
+          </th>
+        </tr>
+        <tr>
+          <td>
+            <label>Name <span class="color-red">*</span></label>
+          </td>
+          <td>
+            <input type="text" class="text form-control" maxlength="50" (change)="changedname()" [(ngModel)]="skillModel" />
+            <span class="color-red" *ngIf="submitted && !isSkillsfilled ">Skill Name
+              {{requiredErrorText}}</span>
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <label>Experience <span class="color-red">*</span></label>
+          </td>
+          <td>
+            <input type="number" class="text form-control" maxlength="50" (change)="changedExp()" [(ngModel)]="experienceModel" />
+            <span class="color-red" *ngIf="submitted && !isSkillsExcpeinecefilled">Experience
+              {{requiredErrorText}}</span>
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <label>Remarks </label>
+          </td>
+          <td>
+            <textarea [(ngModel)]="skillRemarkModel"></textarea>
+          </td>
+        </tr>
+      </table>
+      <br>
+      <button class="btn btn-success btn-sm" (click)="createSkills()">Save</button>
+      <button id="btn_add" type="button" class="button btn-primary button" data-toggle="modal"
+                    data-target="#importModelSkills" ><i
+                        class="fas fa-file-excel-o"></i>Import Skills</button>
+      <br>
+      <br>
+      <br>
+      <table class="table table-bordered table-hover table-sm">
+        <thead class="t-head">
+          <tr>
+            <th id="skillHeader1"> Skill</th>
+            <th id="experienceHeader"> Experience</th>
+            <th id="remarksHeader"> Remarks</th>
+            <th id="action1"> Action</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let skill of skillObject">
+            <td>{{skill.skillName}}</td>
+            <td>{{skill.experience}}</td>
+            <td>{{skill.skillRemarks}}</td>
+            <td>
+              <a title="Edit" class="icon-margin" data-toggle="modal" data-target="#myModal-editSkill"
+                (click)="editSkill(skill)"><em class="fas fa-user-edit"></em></a>
+              <a title="Delete" class="icon-margin"><em class="fa fa-trash" data-toggle="modal"
+                  data-target="#confirmDeleteSkill" (click)="removeSkill(skill)"></em></a>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="col-md-4">
+      <table>
+        <tr>
+          <th id="hobbieHeader">
+            <em class="fas fa-id-card"></em> Hobbies
+          </th>
+        </tr>
+        <tr>
+          <td>
+            <label>Name<span class="color-red">*</span></label>
+          </td>
+          <td>
+            <input type="text" class="text form-control" maxlength="50" [(ngModel)]="hobbiesModel" />
+            <span class="color-red" *ngIf="submitted2 && !isHobbiesfilled">Hobbies Name
+              {{requiredErrorText}}</span>
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <label>Remarks</label>
+          </td>
+          <td>
+            <textarea [(ngModel)]="hobbiesRemarkModel"></textarea>
+          </td>
+        </tr>
+      </table>
+      <br>
+      <button class="btn btn-success btn-sm" (click)="createHobbies()">Save</button>
+      <button id="btn_add" type="button" class="button btn-primary button" data-toggle="modal"
+      data-target="#importModelHobbies" ><i
+          class="fas fa-file-excel-o"></i>Import Hobbies</button>
+      <br>
+      <br>
+      <br>
+      <table class="table table-bordered table-hover table-sm">
+        <thead class="t-head">
+          <tr>
+            <th id="hobbieHeader1"> Hobbies</th>
+            <th id="remarksHeader1"> Remarks</th>
+            <th id="action2"> Action</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let hobbie of hobbiesObject">
+            <td>{{hobbie.hobbiesName}}</td>
+            <td>{{hobbie.hobbiesRemarks}}</td>
+            <td>
+              <a title="Edit" class="icon-margin" data-toggle="modal" data-target="#myModal-editHobbies"
+                (click)="editHobbies(hobbie)"><em class="fas fa-user-edit"></em></a>
+              <a title="Delete" class="icon-margin"><em class="fa fa-trash" data-toggle="modal"
+                  data-target="#confirmDeleteHobbies" (click)="removeHobbies(hobbie)"></em></a>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="col-md-4">
+      <table>
+        <tr>
+          <th id="achivementsHeader">
+            <em class="fas fa-id-card"></em> Achivements
+          </th>
+        </tr>
+        <tr>
+          <td>
+            <label>Name <span class="color-red">*</span></label>
+          </td> 
+          <td>
+            <input type="text" class="text form-control" maxlength="50" [(ngModel)]="achivementsModel" />
+            <span class="color-red" *ngIf="submitted3 && !isAchivementsfilled">Achivements Name
+              {{requiredErrorText}}</span>
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <label>Remarks </label>
+          </td>
+          <td>
+            <textarea [(ngModel)]="achivementsRemarkModel"></textarea>
+          </td>
+        </tr>
+      </table>
+      <br>
+      <button class="btn btn-success btn-sm" (click)="createAchivements()">Save</button>
+      <button id="btn_add" type="button" class="button btn-primary button" data-toggle="modal"
+      data-target="#importModelAchivements" ><i
+          class="fas fa-file-excel-o"></i>Import Achivements</button>
+      <br>
+      <br>
+      <br>
+      <table class="table table-bordered table-hover table-sm">
+        <thead class="t-head">
+          <tr>
+            <th id="achivementsHeader1"> Achivements</th>
+            <th id="remarksHeader2"> Remarks</th>
+            <th id="action3"> Action</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let achivements of achivementsObject">
+            <td>{{achivements.achievementsName}}</td>
+            <td>{{achivements.achievementsRemarks}}</td>
+            <td>
+              <a title="Edit" class="icon-margin" data-toggle="modal" data-target="#myModal-editAchivements"
+                (click)="editAchivements(achivements)"><em class="fas fa-user-edit"></em></a>
+              <a title="Delete" class="icon-margin"><em class="fa fa-trash" data-toggle="modal"
+                  data-target="#confirmDeleteAchivements" (click)="removeAchivements(achivements)"></em></a>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+<!-- edit model pou up for skill -->
+<div class="modal fade common-model" id="myModal-editSkill">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <!-- Modal Header -->
+      <div class="modal-header">
+        <h4 class="modal-title align-center"><em class="fas fa-filter"></em> Edit Skill</h4>
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+      </div>
+      <!-- Modal body -->
+      <div class="form-group ml-2">
+        <label for="skillModel1">Skill:<span class="color-red">*</span></label>
+        <input class="form-control form-control-sm" type="text" id="skillModel1" (change)="changedname2()" [(ngModel)]="skillModel1">
+        <span class="color-red" *ngIf="submitted && !isSkillsfilled ">Skill Name
+          {{requiredErrorText}}</span>
+      </div>
+      <div class="form-group ml-2">
+        <label for="experienceModel1">Experience <span class="color-red">*</span></label>
+        <input type="number" class="form-control form-control-sm" id="experienceModel1"
+          [(ngModel)]="experienceModel1" (change)="changedExp2()" />
+          <span class="color-red" *ngIf="submitted && !isSkillsExcpeinecefilled">Experience
+            {{requiredErrorText}}</span>
+      </div>
+      <div class="form-group ml-2">
+        <label for="skillRemarkModel1">Remarks:</label>
+        <input class="form-control form-control-sm" type="text" id="skillRemarkModel1" [(ngModel)]="skillRemarkModel1">
+      </div>
+      <!-- Modal footer -->
+      <div class="modal-footer">
+        <button type="button" class="btn btn-danger btn-sm" (click)="clear()">Clear</button>
+        <button type="button" class="btn btn-success btn-sm" data-dismiss="modal"
+          (click)="updateSkill()">Update</button>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- Delete model Pop up for Skills -->
+<div class="modal fade" id="confirmDeleteSkill" role="dialog">
+  <div class="modal-dialog">
+    <!-- Modal content-->
+    <div class="modal-content">
+      <div class="modal-body"><button type="button" class="close" data-dismiss="modal">&times;</button>
+        <p>Are you sure you want to delete selected items?</p>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default btn-sm" data-dismiss="modal">Close</button>
+        <button type="button" data-dismiss="modal" class="btn btn-primary btn-sm" (click)="deleteSkill()">Ok</button>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- edit model pou up for Hobbies -->
+<div class="modal fade common-model" id="myModal-editHobbies">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <!-- Modal Header -->
+      <div class="modal-header">
+        <h4 class="modal-title align-center"><em class="fas fa-filter"></em> Edit Hobbies</h4>
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+      </div>
+      <!-- Modal body -->
+      <div class="form-group ml-2">
+        <label for="city">Hobbies:<span class="color-red">*</span></label>
+        <input class="form-control form-control-sm" type="text" id="state" [(ngModel)]="hobbiesModel1">
+      </div>
+      <div class="form-group ml-2">
+        <label for="city">Remarks:</label>
+        <input class="form-control form-control-sm" type="text" id="state" [(ngModel)]="hobbiesRemarkModel1">
+      </div>
+      <!-- Modal footer -->
+      <div class="modal-footer">
+        <button type="button" class="btn btn-danger btn-sm" (click)="clear()">Clear</button>
+        <button type="button" class="btn btn-success btn-sm" data-dismiss="modal"
+          (click)="updateHobbies()">Update</button>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- Delete model Pop up  for Hobbies-->
+<div class="modal fade" id="confirmDeleteHobbies" role="dialog">
+  <div class="modal-dialog">
+    <!-- Modal content-->
+    <div class="modal-content ">
+      <div class="modal-body"><button type="button" class="close" data-dismiss="modal">&times;</button>
+        <p>Are you sure you want to delete selected items?</p>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default btn-sm" data-dismiss="modal">Close</button>
+        <button type="button" data-dismiss="modal" class="btn btn-primary btn-sm" (click)="deleteHobbies()">Ok</button>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- edit model pou up for Achivemnets -->
+<div class="modal fade common-model" id="myModal-editAchivements">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <!-- Modal Header -->
+      <div class="modal-header">
+        <h4 class="modal-title align-center"><em class="fas fa-filter"></em> Edit Achivements</h4>
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+      </div>
+      <!-- Modal body -->
+      <div class="form-group ml-2">
+        <label for="city">Achivements: <span class="color-red">*</span></label>
+        <input class="form-control form-control-sm" type="text" id="state" [(ngModel)]="achivementsModel1">
+      </div>
+      <div class="form-group ml-2">
+        <label for="city">Remarks: </label>
+        <input class="form-control form-control-sm" type="text" id="state" [(ngModel)]="achivementsRemarkModel1">
+      </div>
+      <!-- Modal footer -->
+      <div class="modal-footer">
+        <button type="button" class="btn btn-danger btn-sm" (click)="clear()">Clear</button>
+        <button type="button" class="btn btn-success btn-sm" data-dismiss="modal"
+          (click)="updateAchivements()">Update</button>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- Delete model Pop up for Achivements -->
+<div class="modal fade" id="confirmDeleteAchivements" role="dialog">
+  <div class="modal-dialog">
+    <!-- Modal content-->
+    <div class="modal-content">
+      <div class="modal-body"><button type="button" class="close" data-dismiss="modal">&times;</button>
+        <p>Are you sure you want to delete selected items?</p>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default btn-sm" data-dismiss="modal">Close</button>
+        <button type="button" data-dismiss="modal" class="btn btn-primary btn-sm"
+          (click)="deleteAchivements()">Ok</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<div class="modal fade common-model" id="importModelSkills">
+  <div class="modal-dialog modal-xl">
+    <div class="modal-content">
+      <!-- Modal Header -->
+      <div class="modal-header">
+              <h1> <i class="fa fa-upload"></i> Import Skills</h1>
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+      </div>
+      <!-- Modal body -->
+      <div class="container-fluid" >
+          <section class="content">
+              <form id="import-student" action="/student/student-import/index" method="post" enctype="multipart/form-data">
+                  <div class="box box-primary">
+                      <div class="box-header with-border">
+                          <h3 class="box-title"><i class="fa fa-file-excel-o"></i> Select File</h3>
+                      </div><!--./box-header-->
+                      <div class="box-body">
+                          <div class="row">
+                              <div class="col-sm-4">
+                                  <div class="form-group field-stumaster-importfile">
+  
+                  <input type="file" id="stumaster-importfile" #inputFile name="importFile" (change)="importFileSkill($event)" title="Browse Excel File" accept=".xlsx, .xls">
+  
+                  <div class="help-block"></div>
+                  </div>			</div>
+                          </div>
+                          <div class="row">
+                              <div class="col-sm-12">
+                                  <div class="callout callout-info" style="background-color: #92b9e9 !important;">
+                                      <h4>Please follow these instructions at the time of importing data</h4>
+                                      <ol>
+                                          <li><b>The fields with red color are required and cannot be blank.</b></li>
+                                      </ol>
+                                      <h3>Download the sample Excel sheet format. 
+                                          <b><a class="fas fa-download" href="./assets/excel/EmployeeSkillsImportSample.xlsx" target="_blank">Download</a>
+                                          </b></h3>
+                                  </div><!--./callout-->
+                              </div><!--./col-->
+                          </div><!--./row-->
+                      </div><!--./box-body-->
+                      <div class="box-footer">
+                          <button type="submit" (click)="submitImportSkill()" class="btn btn-primary"><i class="fa fa-upload"></i> Import</button>	</div>
+                  </div><!--./box-->
+              </form>
+              <div class="box box-solid" *ngIf="listOfEmployeeResults1.length != 0">
+                  <div class="box-header with-border">
+                      <h3 class="box-title"><i class="fa fa-upload"></i> Import Employee Skills Result</h3>
+                  </div>
+                  <div class="alert alert-success alert-dismissable flash-msg-hide" id="flash-msg" *ngIf="showSuccessMsg">
+                  <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+                  <h4><i class="icon fa fa-check"></i> Imported!</h4> {{successCount}} Employee Skills successfully. </div>
+                  <div *ngIf="showErrorMsg" class="alert alert-danger alert-dismissable flash-msg-hide">
+                      <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+                      <h4><i class="icon fa fa-check"></i> Error!</h4> {{errorCount}} Employees Skills importing error.
+              </div>
+                  <div class="box-body table-responsive table-wrapper-scroll-y table-wrapper-scroll-x" style="max-height: 300px;">
+                      <div id="w1">
+                          <div id="w2" class="grid-view">
+                              <div id="loader-img">
+  
+                                  <img *ngIf="listOfEmployeeResults == 0" src="./assets/images/loader.gif" class="loader img-responsive" alt="loading...." >
+  
+                              </div>
+                              <table class="table table-striped table-borders myTable"> 
+                                  <thead>
+                                      <tr>
+                                        <th>S.No</th>
+                                          <th>Skill Name</th>
+                                          <th>Experience</th>
+                                          <th>Remarks/Message(s)</th>
+                                      </tr>
+                                  </thead>
+                                  <tbody>
+                                  <ng-container  *ngFor="let employee of listOfEmployeeResults1;let i=index;">
+                                      <tr [class.danger]="employee.errorList.length != 0" [class.success]="employee.errorList.length == 0">
+                                          <td>{{i+1}}</td>
+                                          <td>{{employee.skillName}}</td>
+                                          <td>{{employee.experience}}</td>
+                                          <td>{{employee.status}}</td>
+                                          <td [class.success]="employee.errorList.length == 0">
+                                          <ng-container *ngIf="employee.errorList.length != 0" >
+                                                  Please fix the following errors:
+                                          <ul *ngFor="let error of employee.errorList">
+                                              <li> {{error}}</li>
+                                          </ul>
+                                          </ng-container>
+                                          </td>
+                                      </tr>
+                                  </ng-container>
+                                  </tbody>
+                              </table>
+                          </div>
+                      </div>
+                  </div>
+              </div>
+          </section>
+  </div>
+    </div>
+  </div>
+</div>
+
+<div class="modal fade common-model" id="importModelHobbies">
+  <div class="modal-dialog modal-xl">
+    <div class="modal-content">
+      <!-- Modal Header -->
+      <div class="modal-header">
+              <h1> <i class="fa fa-upload"></i> Import Hobbies</h1>
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+      </div>
+      <!-- Modal body -->
+      <div class="container-fluid" >
+          <section class="content">
+              <form id="import-student" action="/student/student-import/index" method="post" enctype="multipart/form-data">
+                  <div class="box box-primary">
+                      <div class="box-header with-border">
+                          <h3 class="box-title"><i class="fa fa-file-excel-o"></i> Select File</h3>
+                      </div><!--./box-header-->
+                      <div class="box-body">
+                          <div class="row">
+                              <div class="col-sm-4">
+                                  <div class="form-group field-stumaster-importfile">
+  
+                  <input type="file" id="stumaster-importfile" #inputFile name="importFile" (change)="importFileHobbie($event)" title="Browse Excel File" accept=".xlsx, .xls">
+  
+                  <div class="help-block"></div>
+                  </div>			</div>
+                          </div>
+                          <div class="row">
+                              <div class="col-sm-12">
+                                  <div class="callout callout-info" style="background-color: #92b9e9 !important;">
+                                      <h4>Please follow these instructions at the time of importing data</h4>
+                                      <ol>
+                                          <li><b>The fields with red color are required and cannot be blank.</b></li>
+                                      </ol>
+                                      <h3>Download the sample Excel sheet format. 
+                                          <b><a class="fas fa-download" href="./assets/excel/EmployeeHobbiesImportSample.xlsx" target="_blank">Download</a>
+                                          </b></h3>
+                                  </div><!--./callout-->
+                              </div><!--./col-->
+                          </div><!--./row-->
+                      </div><!--./box-body-->
+                      <div class="box-footer">
+                          <button type="submit" (click)="submitImportHobbie()" class="btn btn-primary"><i class="fa fa-upload"></i> Import</button>	</div>
+                  </div><!--./box-->
+              </form>
+              <div class="box box-solid" *ngIf="listOfEmployeeResults2.length != 0">
+                  <div class="box-header with-border">
+                      <h3 class="box-title"><i class="fa fa-upload"></i> Import Employee Skills Result</h3>
+                  </div>
+                  <div class="alert alert-success alert-dismissable flash-msg-hide" id="flash-msg" *ngIf="showSuccessMsg">
+                  <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+                  <h4><i class="icon fa fa-check"></i> Imported!</h4> {{successCount2}} Employee Hobbies successfully. </div>
+                  <div *ngIf="showErrorMsg" class="alert alert-danger alert-dismissable flash-msg-hide">
+                      <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+                      <h4><i class="icon fa fa-check"></i> Error!</h4> {{errorCount2}} Employees Hobbies importing error.
+              </div>
+                  <div class="box-body table-responsive table-wrapper-scroll-y table-wrapper-scroll-x" style="max-height: 300px;">
+                      <div id="w1">
+                          <div id="w2" class="grid-view">
+                              <div id="loader-img">
+  
+                                  <img *ngIf="listOfEmployeeResults2 == 0" src="./assets/images/loader.gif" class="loader img-responsive" alt="loading...." >
+  
+                              </div>
+                              <table class="table table-striped table-borders myTable"> 
+                                  <thead>
+                                      <tr>
+                                        <th>S.No</th>
+                                          <th>Hobbie Name</th>
+                                          <th>Remarks/Message(s)</th>
+                                      </tr>
+                                  </thead>
+                                  <tbody>
+                                  <ng-container  *ngFor="let employee of listOfEmployeeResults2;let i=index;">
+                                      <tr [class.danger]="employee.errorList.length != 0" [class.success]="employee.errorList.length == 0">
+                                          <td>{{i+1}}</td>
+                                          <td>{{employee.hobbiesName}}</td>
+                                          <td>{{employee.status}}</td>
+                                          <td [class.success]="employee.errorList.length == 0">
+                                          <ng-container *ngIf="employee.errorList.length != 0" >
+                                                  Please fix the following errors:
+                                          <ul *ngFor="let error of employee.errorList">
+                                              <li> {{error}}</li>
+                                          </ul>
+                                          </ng-container>
+                                          </td>
+                                      </tr>
+                                  </ng-container>
+                                  </tbody>
+                              </table>
+                          </div>
+                      </div>
+                  </div>
+              </div>
+          </section>
+  </div>
+    </div>
+  </div>
+</div>
+
+<div class="modal fade common-model" id="importModelAchivements">
+  <div class="modal-dialog modal-xl">
+    <div class="modal-content">
+      <!-- Modal Header -->
+      <div class="modal-header">
+              <h1> <i class="fa fa-upload"></i> Import Achivements</h1>
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+      </div>
+      <!-- Modal body -->
+      <div class="container-fluid" >
+          <section class="content">
+              <form id="import-student" action="/student/student-import/index" method="post" enctype="multipart/form-data">
+                  <div class="box box-primary">
+                      <div class="box-header with-border">
+                          <h3 class="box-title"><i class="fa fa-file-excel-o"></i> Select File</h3>
+                      </div><!--./box-header-->
+                      <div class="box-body">
+                          <div class="row">
+                              <div class="col-sm-4">
+                                  <div class="form-group field-stumaster-importfile">
+  
+                  <input type="file" id="stumaster-importfile" #inputFile name="importFile" (change)="importFileAchivement($event)" title="Browse Excel File" accept=".xlsx, .xls">
+  
+                  <div class="help-block"></div>
+                  </div>			</div>
+                          </div>
+                          <div class="row">
+                              <div class="col-sm-12">
+                                  <div class="callout callout-info" style="background-color: #92b9e9 !important;">
+                                      <h4>Please follow these instructions at the time of importing data</h4>
+                                      <ol>
+                                          <li><b>The fields with red color are required and cannot be blank.</b></li>
+                                      </ol>
+                                      <h3>Download the sample Excel sheet format. 
+                                          <b><a class="fas fa-download" href="./assets/excel/EmployeeAchivementsImportSample.xlsx" target="_blank">Download</a>
+                                          </b></h3>
+                                  </div><!--./callout-->
+                              </div><!--./col-->
+                          </div><!--./row-->
+                      </div><!--./box-body-->
+                      <div class="box-footer">
+                          <button type="submit" (click)="submitImportAchivement()" class="btn btn-primary"><i class="fa fa-upload"></i> Import</button>	</div>
+                  </div><!--./box-->
+              </form>
+              <div class="box box-solid" *ngIf="listOfEmployeeResults3.length != 0">
+                  <div class="box-header with-border">
+                      <h3 class="box-title"><i class="fa fa-upload"></i> Import Employee Achivement Result</h3>
+                  </div>
+                  <div class="alert alert-success alert-dismissable flash-msg-hide" id="flash-msg" *ngIf="showSuccessMsg">
+                  <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+                  <h4><i class="icon fa fa-check"></i> Imported!</h4> {{successCount3}} Employee Achivements successfully. </div>
+                  <div *ngIf="showErrorMsg" class="alert alert-danger alert-dismissable flash-msg-hide">
+                      <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+                      <h4><i class="icon fa fa-check"></i> Error!</h4> {{errorCount3}} Employees Achivements importing error.
+              </div>
+                  <div class="box-body table-responsive table-wrapper-scroll-y table-wrapper-scroll-x" style="max-height: 300px;">
+                      <div id="w1">
+                          <div id="w2" class="grid-view">
+                              <div id="loader-img">
+  
+                                  <img *ngIf="listOfEmployeeResults == 0" src="./assets/images/loader.gif" class="loader img-responsive" alt="loading...." >
+  
+                              </div>
+                              <table class="table table-striped table-borders myTable"> 
+                                  <thead>
+                                      <tr>
+                                        <th>S.No</th>
+                                        <th>Hobbie Name</th>
+                                          <th>Remarks/Message(s)</th>
+                                      </tr>
+                                  </thead>
+                                  <tbody>
+                                  <ng-container  *ngFor="let employee of listOfEmployeeResults3;let i=index;">
+                                      <tr [class.danger]="employee.errorList.length != 0" [class.success]="employee.errorList.length == 0">
+                                          <td>{{i+1}}</td>
+                                          <td>{{employee.achievementsName}}</td>
+                                          <td>{{employee.status}}</td>
+                                          <td [class.success]="employee.errorList.length == 0">
+                                          <ng-container *ngIf="employee.errorList.length != 0" >
+                                                  Please fix the following errors:
+                                          <ul *ngFor="let error of employee.errorList">
+                                              <li> {{error}}</li>
+                                          </ul>
+                                          </ng-container>
+                                          </td>
+                                      </tr>
+                                  </ng-container>
+                                  </tbody>
+                              </table>
+                          </div>
+                      </div>
+                  </div>
+              </div>
+          </section>
+  </div>
+    </div>
+  </div>
+</div>

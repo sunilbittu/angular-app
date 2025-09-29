@@ -1,0 +1,41 @@
+<div class="container-fluid">
+    <div class="d-flex align-items-center mt-2">
+    <div class="m-2">
+    <div class="h-size"> <strong><p>Welcome {{candidetName}}</p></strong></div>
+
+    <div >
+        <p>We are extremely excited to have you on board {{companyName}}</p>
+        <p>Your Joining date is {{joiningDate}} as per our records </p>
+        <p>You are requested to login with the below given credentials and fill in the details. In case of any assistance please reachout to helpdesk@hrms.dss.com </p>
+        <p>Login Name : {{emailId}}</p>
+        <p>Password : {{emailId}}</p>
+    </div>
+
+    <div class="h-size"> <strong><p>Following documents should be brought on the day of joining for HR verification</p></strong></div>
+    <p>All Qualifications</p>
+    <p>All Certifications</p>
+    <p>All Experiance Certificates</p>
+    <p>All Releaving Letters</p>
+    <p>KYC Documents (Aadhar, Tax Card)</p>
+
+    <div class="h-size"> <strong><p>Please Select BGV Type</p></strong></div>
+
+    <input id="nobgv" type="radio" value="nobgv" name="gender">
+    <label for="nobgv">No BGV Require</label>
+    <input id="internal" type="radio" value="internal" name="gender">
+    <label for="internal">Internal BGV</label>
+    <input id="external" type="radio" value="external" name="gender">
+    <label for="external">External BGV</label>
+
+    </div>
+   
+    </div>
+    <button type="submit" class="btn btn-success btn-sm"  (click)="updateAndSendMail()" >Update And Send Mail</button>
+    <div *ngIf="mail" class="h-size"> <p>Mail Sent Sucessfully</p></div>
+    <br>
+    <div *ngIf="errormessagetoggel" class="h-size" > <span class="color-red"> <p >{{errormessage}}</p></span></div>
+    
+</div>
+
+   
+

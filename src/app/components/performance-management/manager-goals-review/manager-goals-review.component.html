@@ -1,0 +1,77 @@
+<div class="container-fluid">
+    <div class="d-flex align-items-center mt-2">
+        <div class="m-2">
+            <div class="h-size"><i class="fas fa-cogs"></i> <b>Manager Goals Review</b></div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-6">
+            <label>Department</label>
+            <select class="form-control">
+                <option>Please Select</option>
+            </select>
+        </div>
+        <div class="col-md-6">
+            <label>Designation</label>
+            <select class="form-control">
+                <option>Please Select</option>
+            </select>
+        </div>
+    </div>
+    <br>
+    <div class="row">
+        <div class="col-md-6">
+            <label>Grade</label>
+            <select class="form-control">
+                <option>Please Select</option>
+            </select>
+        </div>
+        <div class="col-md-6">
+            <label>FinancialYear</label>
+            <select class="form-control">
+                <option>Please Select</option>
+            </select>
+        </div>
+    </div>
+
+    <br>
+    <br>
+    
+    <div class="row">
+        <div class="col-md-12">
+            <table class="table table-bordered table-hover table-sm mt-4">
+                <thead class="t-head">
+                    <tr>
+                        <th *ngFor="let head of headers"><a>{{head}}</a></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let data of kpaList | paginate: {
+                        itemsPerPage: itemsPerPage,
+                        currentPage: currentPage,
+                        totalItems: totalItems
+                      };let i=index">
+                        <td>{{data.kpaName}}</td>
+                        <td>{{data.designationName}}</td>
+                        <td>{{data.departmentName}}</td>
+                        <td>{{data.gradeName}}</td>
+                        <td>{{data.financialYear}}</td>
+                        <td>{{data.kpaRemarks}}</td>
+                        <td>
+                            <input type="checkbox" (change)="getkpaId(data.kpaId)"> 
+                        </td>
+
+                        <td>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+            <div class="row">
+                <div class="col-md-6 col-sm-6 col-6">
+                    <button class="btn btn-success" (click)="approvereviews()">Approve</button>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>

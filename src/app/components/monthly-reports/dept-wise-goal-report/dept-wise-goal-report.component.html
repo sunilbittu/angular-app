@@ -1,0 +1,132 @@
+<div class="container-fluid">
+    <div class="d-flex align-items-center mt-2">
+        <div class="m-2">
+            <div class="h-size"><em class="fa fa-user mr-1"></em> <strong>Department Wise Goal Report</strong></div>
+        </div>
+        <div class="flex-fill">
+        </div>
+        <div class="m-3"><em class="fa fa-search"></em>
+            <span> Search </span><input type="text" value="">
+        </div>
+    </div>
+    <div *ngIf="!showGoalNotSetEmp">
+        <div class="row">
+            <div class="form-group col-md-3">
+                <label for="libraryType">Department <span class="color-red">*</span></label>
+                <ng-multiselect-dropdown [placeholder]="'Please Select Department'"
+                    [settings]="dropdownSettingsDepartment" [data]="departmentsList"
+                    [(ngModel)]="selectedItemsDepartment" [ngModelOptions]="{standalone: true}"
+                    (onSelect)="onItemSelectDepartment($event)" (onSelectAll)="onSelectAllDepartment($event)">
+                </ng-multiselect-dropdown>
+            </div>
+            <div class="form-group col-md-3">
+                <label for="empbranch">Goal for FY <span class="color-red">*</span></label>
+                <select [(ngModel)]="financialYearModel" [ngModelOptions]="{standalone: true}"
+                    class="custom-select-box form-control">
+                    <option value="" disabled>Please select financial year</option>
+                    <option *ngFor="let year of financialYearList" [value]="year.financialYearId">
+                        {{year.financialYear}}
+                    </option>
+                </select>
+            </div>
+            <div class="form-group col-md-3 padding-top-25">
+                <button type="submit" id="btn_projection" class="button btn-primary" (click)="submit()">Search</button>
+                &nbsp;
+                <!-- <button type="button" id="btn_projection" (click)="onClick()"
+                            class="button btn-danger m-auto">Cancel</button> -->
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12">
+                <table class="table table-bordered table-hover table-sm">
+                    <thead class="t-head">
+                        <tr>
+                            <th *ngFor="let head of headers" id="headers1"><a>{{head}}</a></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let data of empGoalReportList | paginate: {
+                            itemsPerPage: itemsPerPage,
+                            currentPage: currentPage,
+                            totalItems: totalItems
+                          };let i=index">
+                            <td>{{i+1}}</td>
+                            <td>{{data.departmentName}}</td>
+                            <td>{{data.employeeCount}}</td>
+                            <td>{{data.employeeAvg}}</td>
+                            <td>{{data.managerAvg}}</td>
+                            <td>{{data.attainment}}</td>
+                        </tr>
+                    </tbody>
+                </table>
+                <div class="row" *ngIf="totalElements!=0">
+                    <div class="col-md-6 col-sm-6 col-6"><span class="show-entry">Showing
+                            <span>{{showingFrom}} to {{showingTo}} of {{totalElements}} entries</span></span>&nbsp;
+                    </div>
+    
+                    <div class="col-md-6" *ngIf="totalItems > 0">
+                        <pagination-controls (pageChange)="pageChanged($event)"></pagination-controls>
+                    </div>
+                </div>
+            </div>
+        </div>
+<!-- 
+        <div class="row">
+            <div class="col-md-2">
+                <button type="button" class="btn btn-labeled btn-outline-danger btn-sm" (click)="exportTable('PDF')">
+                    <span class="btn-label"><i class="fa fa-file-pdf-o" aria-hidden="true"></i></span>Export To
+                    PDF</button>
+            </div>
+
+            <div class="col-md-2">
+                <button type="button" class="btn btn-labeled btn-outline-success btn-sm" (click)="exportTable('EXCEL')">
+                    <span class="btn-label"><i class="fa fa-file-excel-o" aria-hidden="true"></i></span>Export To
+                    Excel</button>
+            </div>
+        </div> -->
+    </div>
+
+    <div *ngIf="showGoalNotSetEmp">
+        <div class="row btn-footer">
+            <div class="col-md-12 pull-right">
+                <button class="btn btn-default btn-sm back-btn" (click)="back()"> Back <i
+                        class="fas fa-long-arrow-alt-left"></i></button>
+            </div>
+        </div>
+        <br>
+        <div class="row">
+            <div class="col-md-12">
+                <table class="table table-bordered table-hover table-sm">
+                    <thead class="t-head">
+                        <tr>
+                            <th *ngFor="let head of goalHeaders" id="headers1"><a>{{head}}</a></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let data of goalReportList.pmsReportDTO | paginate: {
+                            itemsPerPage: itemsPerPage2,
+                            currentPage: currentPage2,
+                            totalItems: totalItems2
+                          };let i=index">
+                            <td>{{i+1}}</td>
+                            <td>{{data.departmentName}}</td>
+                            <td>{{data.employeeId}}</td>
+                            <td>{{data.firstName}} {{data.lastName}}</td>
+                            <td><i class="fa fa-check-circle green" aria-hidden="true"></i>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+                <div class="row" *ngIf="totalElements2!=0">
+                    <div class="col-md-6 col-sm-6 col-6"><span class="show-entry">Showing
+                            <span>{{showingFrom2}} to {{showingTo2}} of {{totalElements2}} entries</span></span>&nbsp;
+                    </div>
+    
+                    <div class="col-md-6" *ngIf="totalItems2 > 0">
+                        <pagination-controls (pageChange)="pageChanged2($event)"></pagination-controls>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

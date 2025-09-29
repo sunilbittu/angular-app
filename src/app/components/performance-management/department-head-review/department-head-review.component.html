@@ -1,0 +1,243 @@
+<div class="container-fluid">
+    <div class="d-flex align-items-center mt-2">
+        <div class="m-2">
+            <div class="h-size"><i class="fa fa-user"></i> <b> Department Head Review</b></div>
+        </div>
+        <div class="flex-fill">
+        </div>
+        <!-- <div class="m-3"><input type="text" placeholder=" Search" class="form-control" name="search">
+        </div> -->
+    </div>
+    <fieldset class="bg-color">
+        <legend class="bg-color">&nbsp;Filter:</legend>
+        <div class="margin">
+            <td>
+                <span>Financial Year<span class="color-red">*</span>&nbsp;&nbsp;</span>
+            </td>
+            <td class="td-width">
+                <select [(ngModel)]="financialYearModel" [ngModelOptions]="{standalone: true}"
+                    (change)="handleFincialYear()" class="custom-select-box form-control">
+                    <option value="" disabled>Please select financial year</option>
+                    <option *ngFor="let year of financialYearList" [value]="year.financialYearId">
+                        {{year.financialYear}}
+                    </option>
+                </select>
+            </td>
+        </div>
+        <div class="margin" *ngIf="financialYearModel != ''">
+            <span>Select Grade: </span>&nbsp;&nbsp;
+            <span>
+                <span *ngFor="let item of gradeList">
+                    <input type="checkbox" name="{{item.gradeName}}" id="" [(ngModel)]="item.isChecked"
+                        (change)="changeSelection()">
+                    {{item.gradeName}}&nbsp;&nbsp;
+                </span>
+            </span>
+            <span>
+                <input type="checkbox" name="" id="" [(ngModel)]="selectAllModel" (click)="selectAll(selectAllModel)">
+                All
+            </span>
+        </div>
+        <div class="margin" *ngIf="financialYearModel != ''">
+            <span>Finalize All: </span>&nbsp;&nbsp;
+            <span>
+                <span *ngFor="let item of finalizeList">
+                    <input type="checkbox" name="{{item.gradeName}}" id="" [(ngModel)]="item.selected"
+                        (change)="changeFinalize()">
+                    {{item.gradeName}}&nbsp;&nbsp;
+                </span>
+            </span>
+        </div>
+        <div class="margin" *ngIf="financialYearModel != ''">
+            <span>Finalized Count: <input type="text" size="4" [(ngModel)]="finalizedCount.length" class="read-only"
+                    readonly></span>&nbsp;&nbsp;
+            <span>Remaining Count: <input type="text" size="4" [(ngModel)]="remainingCount.length" class="read-only"
+                    readonly></span>
+        </div>
+    </fieldset>
+    <div class="row">
+        <div class="col-md-12">
+            <table class="table table-bordered table-hover table-sm table-eg">
+                <tbody>
+                    <tr>
+                        <th>Total Number of employees in the department:</th>
+                        <td>{{empKPADetails.totalNoOfEmps}}</td>
+                    </tr>
+                    <tr>
+                        <th>Total eligible employees in the department for appraisals this FY:</th>
+                        <td>{{empKPADetails.eligibleEmps}}</td>
+                    </tr>
+                    <tr>
+                        <th>Total Number of employees Submitted self-appraisals:</th>
+                        <td>{{empKPADetails.totalNoOfEmpsSelfRating}}</td>
+                    </tr>
+                    <tr>
+                        <th>Total Number of employees appraisals review submitted:</th>
+                        <td>{{empKPADetails.totalNoOfEmpsManagerRating}}</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-12">
+            <table class="table table-bordered table-hover table-sm">
+                <thead class="t-head">
+                    <tr>
+                        <th class="grade-width"><a>Department</a></th>
+                        <th class="grade-width"><a>Grade</a></th>
+                        <th class="emp-width"><a>Number Of Employees</a></th>
+                        <th class="width"><a>S</a></th>
+                        <th class="width"><a>M</a></th>
+                        <th class="width"><a>A</a></th>
+                        <th class="width"><a>R</a></th>
+                        <th class="width"><a>T</a></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngIf="countToggleLoader">
+                        <td colspan="8">
+                            <img src="./assets/images/loader-icon.gif" class="img-responsive" alt="loading....">
+                        </td>
+                    </tr>
+                    <tr *ngFor="let dept of deptHeadCounts; let i=index">
+                        <td>{{dept.departmentName}}</td>
+                        <td>{{dept.gradeName}}</td>
+                        <td>{{dept.count}}</td>
+                        <td>{{dept.s}}</td>
+                        <td>{{dept.m}}</td>
+                        <td>{{dept.a}}</td>
+                        <td>{{dept.r}}</td>
+                        <td>{{dept.t}}</td>
+                    </tr>
+                </tbody>
+
+            </table>
+        </div>
+    </div>
+    <!-- <div class="row">
+        <div class="col-12">
+            <button id="btn_add" type="button" data-toggle="modal" data-target="#add-new-resourse"
+                class="button btn-primary button" (click)="addResource()"><i class="fas fa-user-plus"></i> Add</button>
+        </div>
+    </div> -->
+    <div class="row" *ngIf="showEmployee">
+        <div class="col-md-12" *ngFor="let error of errors">
+            <div class="error-msg">
+                <i class="fa fa-times-circle"></i>
+                {{error}}
+            </div>
+        </div>
+        <div class="col-md-12">
+            <table class="table table-bordered table-hover table-sm">
+                <thead class="t-head">
+                    <tr>
+                        <th class="action-width align-center"><a>S No</a></th>
+                        <th><a>Employee Name</a></th>
+                        <th><a>Designation</a></th>
+                        <th><a>Self Rating</a></th>
+                        <th><a>Employee Total Score</a></th>
+                        <th><a>Appraiser Rating </a></th>
+                        <th><a>Appraiser Total Score</a></th>
+                        <th><a>Department Head Rating </a></th>
+                        <th><a>Department Head Total Score</a></th>
+                        <th><a>Finalize</a></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngIf="toggleLoader">
+                        <td colspan="9">
+                            <img src="./assets/images/loader-icon.gif" class="img-responsive" alt="loading....">
+                        </td>
+                    </tr>
+                    <tr *ngFor="let emp of employeeRatingAndScoreList | paginate: { itemsPerPage: 10, currentPage: p }; let i=index">
+                        <td class="action-width align-center">{{i + 1}}</td>
+                        <td><a data-toggle="modal" data-target="#emp_list"
+                                (click)="loadKPAList(emp.employeeId, emp.isFinalized)" href="">{{emp.firstName}}
+                                {{emp.lastName}}</a></td>
+                        <td>{{emp.designationName}}</td>
+                        <td>{{emp.employeeRating}}</td>
+                        <td>{{emp.employeeTotalScore}}</td>
+                        <td>{{emp.managerRating}}</td>
+                        <td>{{emp.managerTotalScore}}</td>
+                        <td>{{emp.deptHeadRating}}</td>
+                        <td>{{emp.deptHeadTotalScore}}</td>
+                        <td class="align-center">
+                            <input type="checkbox" class="status-check select-all" [disabled]="emp.isFinalized"
+                                [checked]="emp.selected" (change)="onClickCheckBox(emp.employeeId)" name="status">
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+            <pagination-controls (pageChange)="p = $event"></pagination-controls>
+            <div class="padding-left-0">
+                <button id="btn_add" type="button" (click)="updateEmployeeRatingAndScore()"
+                    [disabled]="submitProcessing || remainingCount.length == 0" class="button btn-primary button"><i class="fas fa-edit ml-1"></i>
+                    Update <i class="fa fa-spinner fa-spin" *ngIf="submitProcessing"
+                        style="font-size:19px"></i></button>
+            </div>
+            <div *ngIf="validationText != ''" class="color-red pull-left-5"><strong>{{validationText}}</strong></div>
+        </div>
+    </div>
+</div>
+<div class="modal fade common-model" id="emp_list">
+    <div class="modal-dialog modal-xl">
+        <div class="modal-content model">
+            <!-- Modal Header -->
+            <div class="modal-header">
+                <div class="modal-title"><i class="fas fa-edit ml-1"></i> KPA Report</div>
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+            </div>
+            <!-- Modal body -->
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-md-12">
+                        <table class="table table-striped table-bordered">
+                            <thead class="t-head">
+                                <tr>
+                                    <th class="action-width align-center"><a>S No</a></th>
+                                    <th><a>Employee Name</a></th>
+                                    <th><a>Key Performance Area</a></th>
+                                    <th><a>Weightage in %tage</a></th>
+                                    <th><a>Appraiser Rating </a></th>
+                                    <th><a>Department Head Rating </a></th>
+                                    <th><a>Department Head Remarks</a></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr *ngIf="toggleLoader2">
+                                    <td colspan="8">
+                                        <img src="./assets/images/loader-icon.gif" class="img-responsive"
+                                            alt="loading....">
+                                    </td>
+                                </tr>
+                                <tr *ngFor="let emp of employeeKPAGoalsList; let i=index">
+                                    <td class="action-width align-center">{{i + 1}}</td>
+                                    <td>{{emp.firstName}} {{emp.lastName}}</td>
+                                    <td>{{emp.kpaName}}</td>
+                                    <td>{{emp.kpaWeighttage}}</td>
+                                    <td>{{emp.appraiserRating}}</td>
+                                    <td><input type="number" name="emp.deptHeadRating" value="emp.deptHeadRating"
+                                            [min]="1" [max]="5" class="form-control" step="0.1" [(ngModel)]="emp.deptHeadRating"
+                                            placeholder="Please enter Rating" [readonly]="isKPAUpdateDisabled"></td>
+                                    <td><input type="text" name="emp.deptHeadRemarks" value="emp.deptHeadRemarks"
+                                            class="form-control" [(ngModel)]="emp.deptHeadRemarks"
+                                            placeholder="Please enter Remarks" [readonly]="isKPAUpdateDisabled"></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <div class="padding-left-0">
+                            <button id="btn_add" type="button" [disabled]="isKPAUpdateDisabled || submitProcessing"
+                                (click)="updateEmployeeGoals()" class="button btn-primary button"><i
+                                    class="fas fa-edit ml-1"></i>
+                                Update <i class="fa fa-spinner fa-spin" *ngIf="submitProcessing"
+                                    style="font-size:19px"></i></button>
+                            <button type="button" [disabled]="isKPAUpdateDisabled || submitProcessing"
+                                (click)="cancel()" class="button btn-secondary btn-header">Cancel</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,62 @@
+
+<div class="container-fluid">
+    <div class="d-flex align-items-center mt-2">
+        <div class="flex-fill">
+
+        </div>
+        <div class="m-3"><a href="#" data-action="live-emp" class="tab-lnk active"><i class="fas fa-user"></i><span
+                    class="info-text font-bold fnt-5 ml-2 mr-1" id="spnLiveEmployeeCount">132</span>Live Employees</a>
+        </div>
+        
+    </div>
+    <div class="row">
+        <div class="col-md-12">
+            <table class="table table-bordered table-hover table-sm">
+                <thead class="t-head">
+                    <tr>
+                        <th *ngFor="let head of headers"><a>{{head}}</a></th>
+                    </tr>
+                   
+                    </thead>
+                    <tbody>
+                         <tr *ngFor="let employee of employees">
+                            <td>{{employee.code}}</td>
+                            <td>{{employee.name}}</td>
+                            <td>{{employee.settlementDate}}</td>
+                            <td>{{employee.showMonth}}</td>
+                            <td>{{employee.branch}}</td>
+                            <td>{{employee.department}}</td>
+                            <td>{{employee.status}}</td>
+                            <td>{{employee.ffNote}}</td>
+                             <td>
+                                <a  title="View" class="icon-margin"><span class="fas fa-eye"></span></a>
+                                <a title="Edit" class="icon-margin"><i class="fas fa-user-edit"></i></a>
+                             </td>
+                         </tr>
+                    </tbody>
+
+            </table>
+        </div>
+    </div>
+    <div class="row">
+            <div class="col-12">
+                 <button id="btn_add" type="button" class="btn btn-primary button" disabled="disabled"><i
+                        class="fas fa-user-plus"></i>Add</button>
+
+                 <button id="btn_add" type="button" class="btn btn-primary button" disabled="disabled"><i
+                        class="fas fa fa-bar-chart"></i>Settlement Report</button>
+            
+        </div>
+    </div>
+</div>
+
+
+
+
+
+
+
+
+
+
+

@@ -1,0 +1,124 @@
+<div class="container-fluid">
+    <div class="d-flex align-items-center mt-2">
+        <div class="m-2">
+            <div class="h-size"><i class="fa fa-user"></i> <b>Vaccination Master</b></div>
+        </div>
+        <div class="flex-fill">
+        </div>
+        <div class="m-3"><input class="form-control rounded-pill py-2 border-right-0 border" type="search"
+            placeholder="search" id="example-search-input" value="" (keyup)="getVaccinationListBySearchParam($event)">
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-12">
+            <table class="table table-bordered table-hover table-sm">
+                <thead class="t-head">
+                    <tr>
+                        <th *ngFor="let head of headers"><a>{{head}}</a></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let vaccination of vaccinationList | paginate
+                    : {
+                        itemsPerPage: itemsPerPage,
+                        currentPage: currentPage,
+                        totalItems: totalItems
+                      };let i=index">
+                        <td>{{vaccination.vaccinationCode}}</td>
+                        <td>{{vaccination.vaccinationName | titlecase}}</td>
+                        <td>
+
+                            <a title="Edit" class="icon-margin" (click)="editVaccination(vaccination.vaccinationId)"
+                                data-toggle="modal" data-target="#employeeModelPopup"><i
+                                    class="fas fa-user-edit"></i></a>
+
+                            <a title="Delete" class="icon-margin" mwlConfirmationPopover [popoverTitle]="popoverTitle"
+                                [popoverMessage]="popoverMessage" placement="left"
+                                (confirm)="deleteVaccinationById(vaccination.vaccinationId)"
+                                (cancel)="cancelClicked = true"><span class="fas fa-trash"></span></a>
+
+                        </td>
+                    </tr>
+                </tbody>
+
+            </table>
+            <div class="row" *ngIf="totalElements!=0">
+                <div class="col-md-6 pull-left"><span class="show-entry">Showing
+                        <span>{{showingFrom}} to {{showingTo}} of {{totalElements}} entries</span></span>&nbsp;
+                </div>
+
+                <div class="col-md-6 pull-right" *ngIf="totalItems > 0">
+                    <pagination-controls (pageChange)="pageChanged($event)"></pagination-controls>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-12">
+            <button type="button" class="btn btn-primary btn-sm" (click)="modelShow()" data-toggle="modal"
+                data-target="#employeeModelPopup">
+                <i class="fas fa-user-plus"></i> Add
+            </button>
+        </div>
+    </div>
+
+    <form [formGroup]=vaccinationMastersForm (ngSubmit)="onSubmit()">
+        <app-employee-model-popup>
+            <h4 class="modal-title" head><i class="fas fa-plus mr-1"></i> / <i class="fas fa-edit mr-1"></i>Vaccination
+                Details </h4>
+            <div body>
+
+                <div class="container">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="vaccinationCode" class="col-form-label">Vaccination Code<span
+                                        class="color-red">*</span>
+                                </label>
+                                <input type="text" formControlName="vaccinationCode" (input)=checkIfalreadyExist2()
+                                    class="form-control form-control-sm" id="vaccinationCode">
+                                <span class="color-red" *ngIf="submitted && form_.vaccinationCode.errors">Vaccination
+                                    Code
+                                    {{requiredErrorText}}</span>
+                                <span class="color-red" *ngIf="exist2"> Vaccination Code Already Exist</span>
+                            </div>
+                        </div>
+
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="vaccinationName" class="col-form-label">Vaccination Name <span
+                                        class="color-red">*</span>
+
+                                </label>
+                                <input type="text" formControlName="vaccinationName" (input)=checkIfalreadyExist()
+                                    class="form-control form-control-sm" id="vaccinationName">
+                                <span class="color-red" *ngIf="submitted && form_.vaccinationName.errors">Vaccination
+                                    Name
+                                    {{requiredErrorText}}</span>
+                                <span class="color-red" *ngIf="exist"> Vaccination Name Already Exist</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div footer>
+
+                <div *ngIf=editButtonEnable>
+
+                    <button type="button" class="btn btn-warning btn-sm" data-dismiss="modal">Cancel</button>
+                    <button type="button" class="btn btn-success btn-sm"
+                        (click)="updateVaccinationMaster(0)">Update</button>
+                </div>
+
+                <div *ngIf=!editButtonEnable>
+
+                    <button type="button" class="btn btn-warning btn-sm" data-dismiss="modal">Cancel</button>
+                    <button type="submit" class="btn btn-primary btn-sm">Save</button>
+                </div>
+            </div>
+
+        </app-employee-model-popup>
+    </form>
+
+</div>

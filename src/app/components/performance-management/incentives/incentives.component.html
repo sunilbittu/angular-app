@@ -1,0 +1,158 @@
+<div class="container-fluid">
+    <div class="d-flex align-items-center mt-2">
+        <div class="m-2">
+            <div class="h-size"><i class="fas fa-user-edit"></i> <b>Incentive Payment</b></div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-4">
+            <label for="branch"> Year : <span class="color-red">*</span></label>
+            <!-- <select class="form-control" [(ngModel)]="branchModel" name="year" (change)="fetchDepartments()"
+                id="branch">
+                <option disabled selected>Please Select Year</option>
+                
+
+            </select> -->
+            <select class="form-control" name="leaveYear" [(ngModel)]="branchModel">
+                <option value="" disabled>Select Year</option>
+                <option *ngFor="let data of leaveYear" [value]="data.leaveYear">{{data.leaveYear}}</option>
+            </select>
+            <span class="color-red" *ngIf="(submitted && leaveYearValidation)">Leave Year
+                {{requiredErrorText}}</span>
+
+        </div>
+        <div class="col-md-4">
+            <label for="department">Quarter : </label>
+            <select class="form-control" [(ngModel)]="departmentModel" name="department" 
+                id="department">
+                <option value="all">All </option>
+                <option value="Q1">Q1 Jan-Mar </option>
+                <option value="Q2">Q2 Apr-Jun </option>
+                <option value="Q3">Q3 Jul-Sep </option>
+                <option value="Q4">Q4 Oct-Dec </option>
+                <!-- <option *ngFor="let dep of departmentData" value={{dep.departmentId}}>{{dep.departmentName}}</option> -->
+            </select>
+
+        </div>
+        <div class="col-md-4 tttt ">
+            <button class="btn btn-primary btn-sm" (click)="fetchEmployees()">Search</button>&nbsp;
+
+            <button class="btn btn-danger btn-sm" (click)="clearData()">Cancel</button>
+        </div>
+    </div>
+    <br>
+    <div class="container-fluid" *ngIf="toggleScreen == true">
+
+        <div class="row" *ngIf="!leaveYearValidation">
+            <div class="col-md-12">
+                <table class="table table-bordered table-hover table-sm">
+                    <th class="t-head" *ngFor="let head of headers2" id="headers2">
+                        <tr>
+                            {{head}}
+                        </tr>
+                    </th>
+
+                    <tbody>
+                        <tr *ngFor="let employee of employeeList">
+                            <td>{{employee.jobId.jobOwner}}</td>
+                            <td>{{employee.candidateId.candidateName}}</td>
+                            <td>{{employee.fundsRealizedOn}}</td>
+                            <td>{{employee.salaryOffered}}</td>
+                            <td>{{employee.regularIncentive}}</td>
+                            <td>{{employee.additionalIncentive}}</td>
+                            <td>{{employee.fee}}</td>
+                            <td>{{employee.paidDate}}</td>
+                            <!-- <td></td> -->
+                            <td>
+
+                                <a *ngIf="employee.paidDate==null" title="Promote/Demote" class="icon-margin" (click)="editPromotion(employee)"><span
+                                        class="fas fa-user-edit" data-toggle="modal"
+                                        data-target="#promotions"></span></a>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade common-model" id="promotions">
+    <div class="modal-dialog modal-xl">
+        <div class="modal-content model width">
+            <!-- Modal Header -->
+            <div class="modal-header">
+                <div class="modal-title"><i class="fa fa-eye" aria-hidden="true"></i> Incentive Details
+                </div>
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+            </div>
+            <!-- Modal body -->
+            <div class="modal-body sample">
+                <div class="row col-12 padding-field-bottom">
+                    <div class="row col-md-12">
+                        <div class="col-3">
+                            <label><strong>Recruiter Name :</strong></label>
+                        </div>
+                        <div class="col-3">
+                            {{editObject.jobId.jobOwner}}
+                        </div>
+                        <div class="col-3">
+                            <label><strong>Candidate Name :</strong></label>
+                        </div>
+                        <div class="col-3">
+                            {{editObject.candidateId.candidateName}}
+                        </div>
+                    </div>
+                    <div class="row col-md-12">
+                        <div class="col-3">
+                            <label><strong>Joined Date :</strong></label>
+                        </div>
+                        <div class="col-3">
+                            {{editObject.fundsRealizedOn}}
+                        </div>
+                        <div class="col-3">
+                            <label><strong>Salary Offered :</strong></label>
+                        </div>
+                        <div class="col-3">
+                            {{editObject.salaryOffered}}
+                        </div>
+
+                    </div>
+                    <div class="row col-md-12">
+                        <div class="col-3">
+                            <label><strong>Regular Incentive :</strong></label>
+                        </div>
+                        <div class="col-3">
+                            {{editObject.regularIncentive}}
+                        </div>
+                        <div class="col-3">
+                            <label><strong>Additional Incentive:</strong></label>
+                        </div>
+                        <div class="col-3">
+                            {{editObject.additionalIncentive}}
+                        </div>
+                    </div>
+                    <div class="row col-md-12">
+                        <div class="col-3">
+                            <label><strong>Total :</strong></label>
+                        </div>
+                        <div class="col-3">
+                            {{editObject.fee}}
+                        </div>
+                        <!-- <div class="col-3">
+                            <label><strong>Project :</strong></label>
+                        </div>
+                        <div class="col-3">
+                            {{projectName}}
+                        </div> -->
+                    </div>
+                               
+                   
+                </div>
+
+                <button class="btn btn-primary btn-sm" data-dismiss="modal"
+                    (click)="terminateEmployee()">Paid</button>&nbsp;
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,89 @@
+
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-2">        
+                <div class="h-size m-2"><i class="fa fa-user"></i> <b>Grautity Calculation</b></div>
+        </div>
+        <div class="clo-10">
+                <div class="h-size m-2"><i class="fa fa-user"></i> <b>Grautity Details</b></div>
+        </div>
+    </div>
+            
+    
+    <div class="row">
+        <div class="col-md-2">
+            <div class="form-group" >
+                <label for="nod">No. of Days in Month:</label>
+                <input type="text" id="nod">
+
+                <label for="nowd">No. of Working Days:</label>
+                <input type="text" id="nowd" >
+
+                <label for="mgp">Maximum Grautity Payable:</label>
+                <input type="text" id="mgp" >
+
+                <label for="mys">Minimum Year Service:</label>
+                <input type="text" id="mys">
+
+                
+                
+
+                <div class="form-group">
+                    <label for="cbo">Calculation Based on:</label>
+                      <select class="form-control form-control-sm" id="cbo" >
+                          <option value="">--Select Month--</option>
+                      <option *ngFor="let month of months" >{{month}}</option>
+                      
+                    </select>
+                  </div>
+
+                 <div class="row" style="margin-left: 2px;">
+                    <label for="cgtm">Calculate Gratuity Till Month:</label>
+                    <div class="form-check" id="cgtm">                        
+                         <label class="form-check-label">
+                            <input type="radio" class="form-check-input" name="optradio"> Date of Joining
+                         </label>
+                    </div>
+                    <div class="form-check" >
+                        <label class="form-check-label">
+                        <input type="radio" class="form-check-input" name="optradio">Group Date of Joining
+                        </label>
+                  </div>
+                </div>
+                
+            </div>
+            <button id="btn_add" type="button" class="btn btn-primary button btn-sm" disabled="disabled">Claculate</button>
+
+        </div>
+        <div class="col-10">
+            <table class="table table-bordered table-hover table-sm" style="margin-top: 5px;">
+                <thead class="t-head">
+                    <tr>
+                        <th *ngFor="let head of headers"><a>{{head}}</a></th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                         <tr *ngFor="let employee of employees">
+                             <td>{{employee.employeeCode}}</td>
+                             <td>{{employee.name}}</td>
+                             <td>{{employee.doj}}</td>
+                             <td>{{employee.noOfYears}}</td>
+                             <td>{{employee.lastSalary}}</td>
+                             <td>{{employee.calculatedSalary}}</td>
+                             <td>{{employee.calculatedGratuity}}</td>
+                             <td>{{employee.maximumGratuity}}</td>
+                             
+                             
+                         </tr>
+                    </tbody>
+
+                </table>
+            <button id="btn_add" type="button" class="btn btn-primary button btn-sm" disabled="disabled"><i
+                    class="fas fa-user-plus"></i>Add</button>
+        </div>
+    </div>
+</div>
+
+
+
+

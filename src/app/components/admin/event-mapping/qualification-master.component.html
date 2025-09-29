@@ -1,0 +1,135 @@
+<div class="container-fluid">
+    <div class="d-flex align-items-center mt-2">
+        <div class="m-2">
+            <div class="h-size"><i class="fa fa-user"></i> <b>Event Mapping</b></div>
+        </div>
+        <div class="flex-fill">
+        </div>
+        <div class="m-3"></div>
+    </div>
+    <div class="row">
+        <div class="col-md-12">
+            <table class="table table-striped table-bordered mt-4">
+                <thead class="t-head">
+                    <th *ngFor="let head of headers">{{head}}</th>
+                    <tr>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let qualification of qualifications">
+                        <td>{{qualification.qualificationCode}}</td>
+                        <td>{{qualification.qualificationName | titlecase}}</td>
+                        <td>{{qualification.qualificationType}}</td>
+                        <td>
+                            <!-- <a title="View" class="icon-margin"><span class="fas fa-eye"></span></a> -->
+                            <a title="Edit" class="icon-margin" (click)="edit(qualification)" data-toggle="modal"
+                                data-target="#addQualification"><i class="fas fa-user-edit"></i></a>
+
+                            <a title="Delete" class="icon-margin" mwlConfirmationPopover [popoverTitle]="popoverTitle"
+                                [popoverMessage]="popoverMessage" placement="left"
+                                (confirm)="deleteById(qualification.qualificationId)"
+                                (cancel)="cancelClicked = true"><span class="fas fa-trash"></span></a>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+            <!-- <div class="pagination-block">
+                <nav aria-label="Page navigation example">
+                    <ul class="pagination justify-content-end">
+                        <li class="page-item disabled">
+                            <a class="page-link" href="#" tabindex="-1">Previous</a>
+                        </li>
+                        <li class="page-item"><a class="page-link" href="#">1</a></li>
+                        <li class="page-item"><a class="page-link" href="#">2</a></li>
+                        <li class="page-item"><a class="page-link" href="#">3</a></li>
+                        <li class="page-item">
+                            <a class="page-link" href="#">Next</a>
+                        </li>
+                    </ul>
+                </nav>
+            </div> -->
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-12">
+            <!-- Button trigger modal -->
+            <button type="button" class="btn btn-primary btn-sm" data-toggle="modal" (click)="clickAdd()"
+                data-target="#addQualification">
+                <i class="fas fa-user-plus"></i> Add
+            </button>
+        </div>
+    </div>
+    <!-- Modal -->
+    <div class="modal fade" id="addQualification" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle"
+        aria-hidden="true" data-backdrop="static">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title text-center"><i class="fas fa-edit ml-1"></i> Event Mapping</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form [formGroup]=qualificationMasterForm (ngSubmit)="onSubmit()">
+                        <div class="form-group">
+                            <label for="qualificationCode">Select User Name<span class="color-red">*</span></label>
+                            <!-- <input type="text" class="form-control form-control-sm" id="qualificationCode"
+                                formControlName="qualificationCode" aria-describedby="emailHelp"
+                                placeholder="Qualification Code"> -->
+                            <select class="form-control form-control-sm"  formControlName="qualificationCode">
+                                <option [ngValue]="null" selected disabled>--Select User--</option>
+                                <option *ngFor="let user of employeeList" [value]="user.firstName">{{user.firstName}}</option>
+                            </select>
+                            <span class="color-red" *ngIf="submitted && form_.qualificationCode.errors">User Name
+                                Code can't be blank
+                            </span>
+                        </div>
+                        <div class="form-group">
+                            <label for="qualificationName">Select Event<span class="color-red">*</span></label>
+                            <!-- <input type="text" class="form-control form-control-sm" id="qualificationName"
+                                formControlName="qualificationName" aria-describedby="emailHelp"
+                                placeholder="Qualification Name"> -->
+
+                            <select class="form-control form-control-sm" formControlName="qualificationName">
+                                <option [ngValue]="null" selected disabled>--Select Event--</option>
+                                <option *ngFor="let user of eventsList" [value]="user.announcementName">{{user.announcementName}}</option>
+                            </select>
+                            <span class="color-red" *ngIf="submitted && form_.qualificationName.errors">Event
+                                Name can't be blank
+                            </span>
+                        </div>
+                        <div class="form-group">
+                            <label for="qualificationType">Role in that Event<span class="color-red">*</span></label>
+                            <!-- <select class="form-control form-control-sm" formControlName="qualificationType">
+                                <option>select</option>
+                                <option>Graduate</option>
+                                <option>Post Graduate</option>
+                                <option>Under Graduate</option>
+                            </select> -->
+                            <select class="form-control form-control-sm" formControlName="qualificationType">
+                                <option [ngValue]="null" selected disabled>--Select Role--</option>
+                                <option *ngFor="let user of roleList" [value]="user.roleName">{{user.roleName}}</option>
+                            </select>
+                            <span class="color-red" *ngIf="submitted && form_.qualificationType.errors">Role
+                                can't be blank
+                            </span>
+                        </div>
+                        <div class="modal-footer">
+                            <div>
+                                <button type="submit" id="btnComponentSave" class="btn btn-primary btn-sm"><i
+                                        class="fas fa-save"></i>
+                                    {{submitText}}</button>
+                            </div>
+                            <div *ngIf="submitText == 'Save'">
+                                <button type="button" id="btnComponentSave" (click)="resetTheForm()"
+                                    class="btn btn-warning btn-sm">
+                                    Clear</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

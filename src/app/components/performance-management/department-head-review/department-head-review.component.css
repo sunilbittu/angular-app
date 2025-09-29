@@ -1,0 +1,103 @@
+.table tr th, .table tr td {
+    border: solid 1px #a3a2a3!important;
+    font-size: 14px;
+    vertical-align: inherit;
+    text-align: center;
+}
+.form-control::-webkit-input-placeholder { 
+    font-family: FontAwesome;
+    font-weight: normal;
+    overflow: visible;
+    vertical-align: top;
+    display: inline-block !important;
+    padding-left: 1px;
+    padding-top: 2px;
+    color: hsl(9, 17%, 24%);
+}
+.grade-width {
+    width: 20%;
+}
+.emp-width {
+    width: 20%;
+}
+.width {
+    width: 10%;
+}
+span {
+    font-size: 17px;
+}
+.read-only {
+    background-color: #eeeeef;
+    cursor: auto;
+    height: calc(1.5em + .75rem + 2px);
+    font-size: 1rem;
+    font-weight: 400;
+    line-height: 1.5;
+    color: #495057;
+    background-clip: padding-box;
+    border: 1px solid #ced4da;
+    border-radius: .25rem;
+    transition: border-color .15s ease-in-out,box-shadow .15s ease-in-out;
+}
+
+.margin {
+    margin-bottom: 10px;
+    margin-left: 10px;
+}
+fieldset {
+    min-width: 0;
+    padding: 10px;
+    margin-bottom: 10px;
+    border: solid;
+    color: #555;
+    border-width: medium;
+}
+.bg-color {
+    background-color: aliceblue;
+}
+.table-eg tr th {
+    background-color: #d0e5f9;
+    width: 30%;
+    color: #555;
+    text-align: left;
+}
+.table-eg tr td {
+    color: #555;
+    text-align: left;
+    padding-left: 15px;
+}
+legend {
+    display: block;
+    width: 5%;
+    max-width: 100%;
+    padding: 0;
+    padding-left: 5px;
+    font-size: 20px;
+    line-height: inherit;
+    color: inherit;
+    white-space: normal;
+}
+.modal-title {
+    font-size: 20px;
+    font-weight: 500;
+    text-align: center;
+    flex: 1;
+    color: #000;
+}
+
+.back-btn {
+    background-color: #bbbbbb;
+}
+.modal-body {
+    max-height: calc(90vh - 200px);
+    overflow-y: auto;
+}
+.padding-left-0 {
+    padding-left: 0px;
+}
+button:disabled,
+button[disabled]{
+  border: 1px solid #999999;
+  background-color: #cccccc;
+  color: #666666;
+}

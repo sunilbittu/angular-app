@@ -1,0 +1,142 @@
+<div class="container-fluid">
+    <div class="d-flex align-items-center mt-2">
+        <div class="m-2">
+            <div class="h-size"><i class="fa fa-user"></i> <b> Salary Mapping</b></div>
+        </div>
+        <div class="flex-fill"></div>
+    </div>
+    <br>
+    <div>
+        <table class="table table-striped table-bordered">
+            <thead class="t-head">
+                <tr>
+                    <th class="action-width align-center"><a>#</a></th>
+                    <th *ngFor="let head of salaryCompHeaders"><a>{{head}}</a></th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let data of salaryMappingList; let i=index">
+                    <td class="action-width align-center">{{i + 1}}</td>
+                    <td>{{data.componentName | titlecase}}</td>
+                    <td>{{data.branchName}}</td>
+                    <td>
+                        <li *ngFor="let d of data.department">
+                            {{d.departmentName}}
+                        </li>
+                    </td>
+                    <td class="action-width align-center">
+                        <a title="Edit" class="icon-margin edit" data-toggle="modal" data-target="#add"
+                            (click)="edit(data)"><i class="fas fa-user-edit"></i></a>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+    <div>
+        <div class="row m-2">
+            <div class="col-12 p-0">
+                <button id="btn_add" type="button" data-toggle="modal" data-target="#add"
+                    class="button btn-primary button" (click)="reset()"><i class="fas fa-user-plus"></i>
+                    Add</button>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal fade common-model" id="add">
+    <div class="modal-dialog modal-md">
+        <div class="modal-content model">
+            <form>
+                <!-- Modal Header -->
+                <div class="modal-header">
+                    <div class="modal-title"><i class="fas fa-plus"></i>/ <i class="fas fa-edit ml-1"></i> Salary
+                        Mapping
+                    </div>
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                </div>
+                <!-- Modal body -->
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div>
+                                <table class="model-tbl">
+                                    <tr>
+                                        <td class="td-width-1">
+                                            <h4>Branch<span class="color-red">*</span></h4>
+                                        </td>
+                                        <td class="td-width">
+                                            <select [(ngModel)]="branchComponentModel"
+                                                [ngModelOptions]="{standalone: true}" class="custom-select-box"
+                                                (change)="changeBranchComponent($event)">
+                                                <option value="" disabled>Please select Branch</option>
+                                                <option *ngFor="let branch of branchDetailsList"
+                                                    [value]="branch.companyBranchDetailsId">
+                                                    {{branch.branchName}}
+                                                </option>
+                                            </select>
+                                            <span class="color-red"
+                                                *ngIf="submitted && branchComponentModel == ''">Please select one Branch
+                                            </span>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td class="td-width-1">
+                                            <h4>Department<span class="color-red">*</span></h4>
+                                        </td>
+                                        <td class="td-width">
+                                            <ng-multiselect-dropdown [placeholder]="'Please Select Department'"
+                                                [settings]="dropdownSettings" [data]="departmentMasterList"
+                                                [(ngModel)]="selectedItems" [ngModelOptions]="{standalone: true}"
+                                                (onSelect)="onItemSelect($event)" (onSelectAll)="onSelectAll($event)"
+                                                (onDeSelectAll)="onDeSelectAll($event)"
+                                                (onDeSelect)="onItemDeSelect($event)">
+                                            </ng-multiselect-dropdown>
+                                            <span class="color-red"
+                                                *ngIf="submitted && selectedItems.length == 0">Please select atleast one
+                                                Department</span>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td class="td-width-1">
+                                            <h4>CTC Component<span class="color-red">*</span></h4>
+                                        </td>
+                                        <td class="td-width">
+                                            <select [(ngModel)]="ctcComponentModel"
+                                                [ngModelOptions]="{standalone: true}" class="custom-select-box"
+                                                (change)="changeCtcComponent($event)">
+                                                <option value="" disabled>Please select CTC</option>
+                                                <option *ngFor="let ctc of ctcComponentList"
+                                                    [value]="ctc.ctcComponentId">
+                                                    {{ctc.componentname}}
+                                                </option>
+                                            </select>
+                                            <span class="color-red" *ngIf="submitted && ctcComponentModel == ''">Please
+                                                select one CTC Component
+                                            </span>
+                                            <!-- <ng-multiselect-dropdown [placeholder]="'Please Select CTC'"
+                                                [settings]="ctcDropdownSettings" [data]="ctcComponentList"
+                                                [(ngModel)]="ctcSelectedItems" [ngModelOptions]="{standalone: true}" (onSelect)="onItemSelect($event)"
+                                                (onDeSelect)="onItemDeSelect($event)">
+                                            </ng-multiselect-dropdown> -->
+                                        </td>
+                                    </tr>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- Modal footer -->
+                <hr>
+                <div class="row btn-footer">
+                    <div class="col-md-6 pull-left">
+                        <button type="submit" id="btnComponentSave" (click)="submit()"
+                            class="button btn-primary btn-style"><i class="fas fa-save"></i>
+                            {{submitText}}</button>
+                    </div>
+                    <div class="col-md-6 pull-right" *ngIf="submitText == 'Save'">
+                        <button type="button" class="button btn-warning btn-style" (click)="reset()">Clear</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

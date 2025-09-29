@@ -1,0 +1,236 @@
+<div class="container-fluid">
+    <div class="d-flex align-items-center mt-2">
+        <div class="m-2">
+            <div class="h-size"><i class="fa fa-user"></i> <b>&nbsp; Rewards List</b></div>
+        </div>
+        <div class="flex-fill">
+        </div>
+        <div class="m-3"><input class="form-control rounded-pill py-2 border-right-0 border" type="search"
+            placeholder="search" id="example-search-input" [(ngModel)]="searchModel" (keyup)="fetchRewardList()">
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-12">
+            <table class="table table-bordered table-hover table-sm">
+                <thead class="t-head">
+                    <tr>
+                        <th *ngFor="let head of headers"><a>{{head}}</a></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let data of rewardList | paginate
+                    : {
+                        itemsPerPage: itemsPerPage,
+                        currentPage: currentPage,
+                        totalItems: totalItems
+                      };let i=index">
+                        <td>{{data.name | titlecase}}</td>
+                        <td>{{data.budget}}</td>
+                        <td>
+                            <a title="Edit" class="icon-margin" (click)="editReward(data)" data-toggle="modal"
+                                data-target="#rewardModal"><i class="fas fa-user-edit"></i></a>
+                            <a title="Delete" class="icon-margin" mwlConfirmationPopover [popoverTitle]="popoverTitle"
+                                [popoverMessage]="popoverMessage" placement="left"
+                                (confirm)="deleteRewardById(data.rewardRecognitionId)"
+                                (cancel)="cancelClicked = true"><span class="fas fa-trash"></span></a>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+            <div class="row" *ngIf="totalElements!=0">
+                <div class="col-md-6 pull-left"><span class="show-entry">Showing
+                        <span>{{showingFrom}} to {{showingTo}} of {{totalElements}} entries</span></span>&nbsp;
+                </div>
+  
+                <div class="col-md-6 pull-right" *ngIf="totalItems > 0">
+                    <pagination-controls (pageChange)="pageChanged($event)"></pagination-controls>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-12">
+            <button type="button" class="btn btn-primary btn-sm" (click)="clickAddReward()" data-toggle="modal"
+                data-target="#rewardModal">
+                <i class="fas fa-user-plus"></i> Add
+            </button>
+        </div>
+    </div>
+</div>
+<div class="container-fluid">
+    <div class="d-flex align-items-center mt-2">
+        <div class="m-2">
+            <div class="h-size"><i class="fa fa-user"></i> <b>&nbsp; Recognition List </b></div>
+        </div>
+        <div class="flex-fill">
+        </div>
+        <div class="m-3"><input class="form-control rounded-pill py-2 border-right-0 border" type="search"
+            placeholder="search" id="example-search-input" [(ngModel)]="searchModel1" (keyup)="fetchRecognitionList()">
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-12">
+            <table class="table table-bordered table-hover table-sm">
+                <thead class="t-head">
+                    <tr>
+                        <th *ngFor="let head of headers2"><a>{{head}}</a></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let data of recognitionList | paginate
+                    : {
+                        itemsPerPage: itemsPerPageRecognition,
+                        currentPage: currentPageRecognition,
+                        totalItems: totalItemsRecognition
+                      };let i=index">
+                        <td>{{data.name | titlecase}}</td>
+                        <td>{{data.recognisationType}}</td>
+                        <td>
+                            <a title="Edit" class="icon-margin" (click)="editRecognition(data)" data-toggle="modal"
+                                data-target="#recognitionModal"><i class="fas fa-user-edit"></i></a>
+                            <a title="Delete" class="icon-margin" mwlConfirmationPopover [popoverTitle]="popoverTitle"
+                                [popoverMessage]="popoverMessage" placement="left"
+                                (confirm)="deleteRecognitionById(data.rewardRecognitionId)"
+                                (cancel)="cancelClicked = true"><span class="fas fa-trash"></span></a>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+            <div class="row" *ngIf="totalElementsRecognition!=0">
+                <div class="col-md-6 pull-left">
+                    <span class="show-entry">Showing
+                        <span>{{showingFromRecognition}} to {{showingToRecognition}} of {{totalElementsRecognition}} entries</span>
+                    </span>&nbsp;
+                </div>
+
+                <div class="col-md-6 pull-right" *ngIf="totalItemsRecognition > 0">
+                    <pagination-controls (pageChange)="pageChangedRecognition($event)"></pagination-controls>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-12">
+            <button type="button" class="btn btn-primary btn-sm" (click)="clickAddRecognition()" data-toggle="modal"
+                data-target="#recognitionModal">
+                <i class="fas fa-user-plus"></i> Add
+            </button>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade common-model" id="rewardModal">
+    <div class="modal-dialog modal-xl">
+        <div class="modal-content model">
+            <form [formGroup]="rewardForm">
+                <div class="modal-header">
+                    <div class="modal-title"><i class="fa fa-pencil-square-o"></i> Add Reward</div>
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                </div>
+                <div class="modal-body">
+                    <div class="row col-12">
+                        <div class="col-2">
+                            <label>Reward Name<span class="color-red">*</span></label>
+                        </div>
+                        <div class="col-4">
+                            <input type="text" formControlName="name" (keyup)="checkName('Reward')"
+                                class="form-control form-control-sm" placeholder="Enter Reward Name">
+                            <span class="color-red" *ngIf="submitted && form_.name.errors">Reward Name
+                                {{requiredErrorText}}</span>
+                            <span class="color-red" *ngIf="isNameExist"> Reward Name Already Exist</span>
+                        </div>
+                        <div class="col-2">
+                            <label>Budget <span class="color-red">*</span></label>
+                        </div>
+                        <div class="col-4">
+                            <input type="number" formControlName="budget" class="form-control form-control-sm"
+                                id="technologyName" placeholder="Enter Budget">
+                            <span class="color-red" *ngIf="submitted && form_.budget.errors">Budget
+                                {{requiredErrorText}}</span>
+                        </div>
+                    </div>
+                    <hr>
+                    <div class="row">
+                        <div class="col-md-6 pull-left">
+                            <button type="button" id="btnComponentSave" *ngIf="isForSaveReward" (click)="saveReward()"
+                                [disabled]="submitProcessing" class="button btn-primary btn-style"><i
+                                    class="fas fa-save"></i>
+                                Save <i class="fa fa-spinner fa-spin" *ngIf="submitProcessing"
+                                    style="font-size:19px"></i></button>
+                            <button type="button" id="btnComponentSave" *ngIf="!isForSaveReward"
+                                (click)="updateReward()" [disabled]="submitProcessing"
+                                class="button btn-primary btn-style"><i class="fas fa-save"></i>
+                                Update <i class="fa fa-spinner fa-spin" *ngIf="submitProcessing"
+                                    style="font-size:19px"></i></button>
+                        </div>
+                        <div class="col-md-6 pull-right" *ngIf="isForSaveReward">
+                            <button type="button" id="btnComponentSave" (click)="clearReward()"
+                                class="button btn-warning btn-style" [disabled]="submitProcessing">
+                                Clear</button>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade common-model" id="recognitionModal">
+    <div class="modal-dialog modal-xl">
+        <div class="modal-content model">
+            <form [formGroup]="recognitionForm">
+                <div class="modal-header">
+                    <div class="modal-title"><i class="fa fa-pencil-square-o"></i> Add Recognition</div>
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                </div>
+                <div class="modal-body">
+                    <div class="row col-12">
+                        <div class="col-2">
+                            <label>Recognition Name <span class="color-red">*</span></label>
+                        </div>
+                        <div class="col-4">
+                            <input type="text" formControlName="name" (keyup)="checkName('Recognition')"
+                                class="form-control form-control-sm" placeholder="Enter Recognition Name">
+                            <span class="color-red" *ngIf="submitted && form2_.name.errors">Recognition Name
+                                {{requiredErrorText}}</span>
+                            <span class="color-red" *ngIf="isNameExist"> Recognition Name Already Exist</span>
+                        </div>
+                        <div class="col-2">
+                            <label>Recognition Type <span class="color-red">*</span></label>
+                        </div>
+                        <div class="col-4">
+                            <select formControlName="recognisationType" class="custom-select-box form-control">
+                                <option value="" disabled>Select Recognisation Type</option>
+                                <option value="Certificate">Certificate</option>
+                                <option value="Letter">Letter</option>
+                            </select>
+                            <span class="color-red" *ngIf="submitted && form2_.recognisationType.errors">Recognition
+                                Type
+                                {{requiredErrorText}}</span>
+                        </div>
+                    </div>
+                    <hr>
+                    <div class="row">
+                        <div class="col-md-6 pull-left">
+                            <button type="button" id="btnComponentSave" *ngIf="isForSaveRecognition"
+                                (click)="saveRecognition()" [disabled]="submitProcessing"
+                                class="button btn-primary btn-style"><i class="fas fa-save"></i>
+                                Save <i class="fa fa-spinner fa-spin" *ngIf="submitProcessing"
+                                    style="font-size:19px"></i></button>
+                            <button type="button" id="btnComponentSave" *ngIf="!isForSaveRecognition"
+                                (click)="updateRecognition()" [disabled]="submitProcessing"
+                                class="button btn-primary btn-style"><i class="fas fa-save"></i>
+                                Update <i class="fa fa-spinner fa-spin" *ngIf="submitProcessing"
+                                    style="font-size:19px"></i></button>
+                        </div>
+                        <div class="col-md-6 pull-right" *ngIf="isForSaveRecognition">
+                            <button type="button" id="btnComponentSave" (click)="clearRecognition()"
+                                class="button btn-warning btn-style" [disabled]="submitProcessing">
+                                Clear</button>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

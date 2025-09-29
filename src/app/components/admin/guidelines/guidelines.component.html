@@ -1,0 +1,93 @@
+<div class="container-fluid">
+    
+    <div class="row mt-2">
+        <div class="col-md-2">
+            <h3 class="text-center text-white bg-info"><i class="fas fa-user mr-2"></i>Coporate Guidelines</h3>
+        </div>
+
+
+        <div class="col-md-3 offset-md-7">
+            <div class="m-2 d-flex align-items-center">
+                <i class="fas fa-search mr-2"></i>
+                <span class="mr-2">Search</span>
+                <div class="text-box-with-icon">
+                    <input type="text" id="txtSearchText" />
+                    <button type="button" id="btnClearSearch"><i class="fas fa-undo"></i></button>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <div class="row">
+        <div class="col-md-3">
+            <div class="form-group form-inline">
+
+                <label class="mr-1">Subject :</label>
+                <input type="text" class="form-control form-control-sm"/>
+
+            </div>
+        </div>
+
+        <div class="col-md-2">
+            <div class="form-group">
+                <input type="file" class="custom-file-input form-control-sm"  required>
+                <label class="custom-file-label form-control-sm" for="validatedCustomFile">Choose file...</label>
+            </div>
+        </div>
+
+        <div class="col-md-2">
+            <div class="form-group">
+                <div class="form-check">
+                  <input class="form-check-input" type="checkbox" id="gridCheck">
+                  <label class="form-check-label" for="gridCheck">
+                    : Is this file a newsletter
+                  </label>
+                </div>
+              </div>
+        </div>
+
+
+        <div class="col-md-1">
+            <button class="btn btn-sm btn-secondary">Upload</button>
+        </div>
+
+       
+
+    </div>
+
+
+
+    <div class="table-block">
+
+        
+        <table class="table table-striped table-bordered">
+            <thead class="t-head">
+                <tr>
+                    <th *ngFor="let head of headers"><a>{{head}}</a></th>
+                </tr>
+
+            </thead>
+            <tbody>
+                <tr *ngFor="let employee of employees">
+                    <td>{{employee.Subject}}</td>
+                    <td>{{employee.newsLetter}}</td>
+                    
+                    <td>
+                        <a title="View" class="icon-margin"><span class="fas fa-eye"></span></a>
+                       
+                        <a title="Delete" class="icon-margin"><span class="fas fa-trash-alt"></span></a>
+                    </td>
+
+                  
+                </tr>
+            </tbody>
+
+        </table>
+
+
+       
+
+    </div>
+
+</div>

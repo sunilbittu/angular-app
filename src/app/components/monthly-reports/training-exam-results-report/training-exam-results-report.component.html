@@ -1,0 +1,57 @@
+<div class="container-fluid">
+    <div class="d-flex align-items-center mt-2">
+        <div class="col-md-8">
+            <div class="h-size"><em class="fa fa-user"></em> <strong>Training Exam Results Report</strong></div>
+        </div>
+        
+    </div>
+    <br>
+    <div class="row">
+        <div class="col-md-2">
+            <label for="branch"> Training Batch : <span class="color-red">*</span></label>
+        </div>
+        <div class="col-md-3">
+            <select class="form-control" [(ngModel)]="technologyModel" name="technology" id="technology">
+                <option disabled selected>Please Select Batch Name</option>
+                <option *ngFor="let branch of technologyList" value={{branch}}>
+                    {{branch}}
+                </option>
+            </select>
+
+        </div>
+        <div class="col-md-1"></div>
+        <div class="col-md-4 tttt ">
+            <button class="btn btn-primary btn-sm" (click)="fetchEmployees()">Search</button>&nbsp;
+
+            <button class="btn btn-danger btn-sm" (click)="clearData()">Cancel</button>
+        </div>
+    </div>
+    <br>
+    <div class="row">
+        <div class="col-md-12">
+            <table class="table table-bordered table-hover table-sm">
+                <thead class="t-head">
+                    <tr>
+                        <th *ngFor="let head of headers"><a>{{head}}</a></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let data of trainersList;let i=index">
+                        <td>{{i+1}}</td>
+                        <td>{{data.firstName}} {{data.lastName}}</td>
+                        <td>{{data.grade}}</td>
+                        <td>{{data.remarks}}</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <div class="col-md-6">
+        <button type="button" class="btn btn-labeled btn-outline-danger btn-sm" (click)="exportTable('PDF')">
+            <span class="btn-label"><i class="fa fa-file-pdf-o" aria-hidden="true"></i></span>Export To PDF</button>
+    
+        <button type="button" class="btn btn-labeled btn-outline-success btn-sm" (click)="exportTable('EXCEL')">
+            <span class="btn-label"><i class="fa fa-file-excel-o" aria-hidden="true"></i></span>Export To
+            Excel</button>
+    </div>
+</div>

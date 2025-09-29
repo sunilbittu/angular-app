@@ -1,0 +1,320 @@
+   
+<div class="container-fluid">
+    <!-- <section class="content-header">
+        <h1>
+            <i class="fa fa-bell-o"></i> Notification | <small> Alert Settings</small>            </h1>
+        <ul class="breadcrumb">
+            <li><a routerLink="/dashboard"><i class="fa fa-home"></i>Home</a></li>
+            <li routerLink="/communicationDashboard">Communication</li>
+            <li class="active">SMS</li>
+            <li class="active">User Sms Apis</li>
+        </ul>
+    </section> -->
+    <section class="content">
+
+        <form [formGroup]="notificationForm">
+            <div class="box box-solid">
+                <div class="box-header with-border">
+                    <h3 class="box-title"><i class="fa fa-list-ul" aria-hidden="true"></i> List of Notification Activity</h3>
+                </div>
+                <div class="summary">
+                        <!-- <div class="alert alert-info alert-dismissable flash-msg-hide" *ngIf="saveAlertSuccess">
+                            <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+                            <h4>	<i class="icon fa fa-check"></i> Alert!</h4> Record Create Successfully.
+                        </div> -->
+            </div>
+                <div class="box-body" style="max-height:620px;overflow-y:auto;overflow-x:hidden">                   
+                    <table class="table table-striped">
+                        <thead class="header-color">
+                            <tr>
+                                <th>Activity Name</th>
+                                <th class="text-center">SMS Enabled</th>
+                                <th class="text-center">Email Enabled</th>
+                                <th class="text-center">Web Enabled</th>
+                                <!-- <th class="text-center">Mobile App</th> -->
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr class="active">
+                                <th colspan="5" class="text-center">Loans & Advances</th>
+                            </tr>
+                            <tr>
+                                <th>Apply Loan</th>
+                                <th class="text-center">
+                                    <div class="form-group field-notificationsetting-1-ns_sms_enabled required">
+
+                                        <label>
+                                            <input type="checkbox" formControlName="openNewTicketSmsEnabled" [checked]="notificationSettingsData?.openNewTicketSmsEnabled=='true'"> </label>
+
+                                        <div class="help-block"></div>
+                                    </div> 
+                                </th>
+                                <th class="text-center">
+                                    <div class="form-group field-notificationsetting-1-ns_mail_enabled required">
+
+                                        <label>
+                                            <input type="checkbox"  formControlName="openNewTicketEmailEnabled" [checked]="notificationSettingsData?.openNewTicketEmailEnabled=='true'"> </label>
+
+                                        <div class="help-block"></div>
+                                    </div>
+                                </th>
+                                <th class="text-center">
+                                    <div class="form-group field-notificationsetting-1-ns_web_enabled required">
+
+                                        <label>
+                                            <input type="checkbox"   formControlName="openNewTicketWebEnabled" [checked]="notificationSettingsData?.openNewTicketWebEnabled=='true'"> </label>
+
+                                        <div class="help-block"></div>
+                                    </div>
+                                </th>
+                                <!-- <th class="text-center">
+                                    <div class="form-group field-notificationsetting-1-ns_app_enabled required">
+
+                                        <label>
+                                            <input type="checkbox"   formControlName="openNewTicketMobileEnabled" [checked]="notificationSettingsData?.openNewTicketMobileEnabled=='true'"> </label>
+
+                                        <div class="help-block"></div>
+                                    </div>
+                                </th> -->
+                            </tr>
+                            <tr>
+                                <th>Approve Loan</th>
+                                <th class="text-center">
+                                    <div class="form-group field-notificationsetting-2-ns_sms_enabled required">
+
+                                        <label>
+                                            <input type="checkbox"  formControlName="addTicketReplaySmsEnabled" [checked]="notificationSettingsData?.addTicketReplaySmsEnabled=='true'"> </label>
+
+                                        <div class="help-block"></div>
+                                    </div>
+                                </th>
+                                <th class="text-center">
+                                    <div class="form-group field-notificationsetting-2-ns_mail_enabled required">
+
+                                        <label>
+                                            <input type="checkbox"  name="NotificationSetting[2][ns_mail_enabled]" formControlName="addTicketReplayEmailEnabled" [checked]="notificationSettingsData?.addTicketReplayEmailEnabled=='true'"> </label>
+
+                                        <div class="help-block"></div>
+                                    </div>
+                                </th>
+                                <th class="text-center">
+                                    <div class="form-group field-notificationsetting-2-ns_web_enabled required">
+
+                                        <label>
+                                            <input type="checkbox"  name="NotificationSetting[2][ns_web_enabled]" formControlName="addTicketReplayWebEnabled" [checked]="notificationSettingsData?.addTicketReplayWebEnabled=='true'"> </label>
+
+                                        <div class="help-block"></div>
+                                    </div>
+                                </th>
+                                <!-- <th class="text-center">
+                                    <div class="form-group field-notificationsetting-2-ns_app_enabled required">
+
+                                        <label>
+                                            <input type="checkbox" name="NotificationSetting[2][ns_app_enabled]" formControlName="addTicketReplayMobileEnabled" [checked]="notificationSettingsData?.addTicketReplayMobileEnabled=='true'"> </label>
+
+                                        <div class="help-block"></div>
+                                    </div>
+                                </th> -->
+                            </tr>
+                            <tr>
+                                <th>Reject Loan</th>
+                                <th class="text-center">
+                                    <div class="form-group field-notificationsetting-3-ns_sms_enabled required">
+
+                                        <label>
+                                            <input type="checkbox"  name="NotificationSetting[3][ns_sms_enabled]" formControlName="closeTicketSmsEnabled" [checked]="notificationSettingsData?.closeTicketSmsEnabled=='true'"> </label>
+
+                                        <div class="help-block"></div>
+                                    </div>
+                                </th>
+                                <th class="text-center">
+                                    <div class="form-group field-notificationsetting-3-ns_mail_enabled required">
+
+                                        <label>
+                                            <input type="checkbox"  name="NotificationSetting[3][ns_mail_enabled]" formControlName="closeTicketEmailEnabled" [checked]="notificationSettingsData?.closeTicketEmailEnabled=='true'"> </label>
+
+                                        <div class="help-block"></div>
+                                    </div>
+                                </th>
+                                <th class="text-center">
+                                    <div class="form-group field-notificationsetting-3-ns_web_enabled required">
+
+                                        <label>
+                                            <input type="checkbox"  name="NotificationSetting[3][ns_web_enabled]" formControlName="closeTicketWebEnabled" [checked]="notificationSettingsData?.closeTicketWebEnabled=='true'"> </label>
+
+                                        <div class="help-block"></div>
+                                    </div>
+                                </th>
+                                <!-- <th class="text-center">
+                                    <div class="form-group field-notificationsetting-3-ns_app_enabled required">
+
+                                        <label>
+                                            <input type="checkbox"  name="NotificationSetting[3][ns_app_enabled]" formControlName="closeTicketMobileEnabled" [checked]="notificationSettingsData?.closeTicketMobileEnabled=='true'"> </label>
+
+                                        <div class="help-block"></div>
+                                    </div>
+                                </th> -->
+                            </tr>
+                            <tr>
+                                <th>Close Loan</th>
+                                <th class="text-center">
+                                    <div class="form-group field-notificationsetting-4-ns_sms_enabled required">
+
+                                        <label>
+                                            <input type="checkbox"  name="NotificationSetting[4][ns_sms_enabled]" formControlName="reOpenTicketSmsEnabled" [checked]="notificationSettingsData?.reOpenTicketSmsEnabled=='true'"> </label>
+
+                                        <div class="help-block"></div>
+                                    </div>
+                                </th>
+                                <th class="text-center">
+                                    <div class="form-group field-notificationsetting-4-ns_mail_enabled required">
+
+                                        <label>
+                                            <input type="checkbox"  name="NotificationSetting[4][ns_mail_enabled]" formControlName="reOpenTicketEmailEnabled" [checked]="notificationSettingsData?.reOpenTicketEmailEnabled=='true'"> </label>
+
+                                        <div class="help-block"></div>
+                                    </div>
+                                </th>
+                                <th class="text-center">
+                                    <div class="form-group field-notificationsetting-4-ns_web_enabled required">
+
+                                        <label>
+                                            <input type="checkbox" id="notificationsetting-4-ns_web_enabled" name="NotificationSetting[4][ns_web_enabled]" formControlName="reOpenTicketWebEnabled" [checked]="notificationSettingsData?.reOpenTicketWebEnabled=='true'"> </label>
+
+                                        <div class="help-block"></div>
+                                    </div>
+                                </th>
+                                <!-- <th class="text-center">
+                                    <div class="form-group field-notificationsetting-4-ns_app_enabled required">
+
+                                        <label>
+                                            <input type="checkbox" id="notificationsetting-4-ns_app_enabled" name="NotificationSetting[4][ns_app_enabled]" formControlName="reOpenTicketMobileEnabled" [checked]="notificationSettingsData?.reOpenTicketMobileEnabled=='true'"> </label>
+
+                                        <div class="help-block"></div>
+                                    </div>
+                                </th> -->
+                            </tr>
+                            <tr class="active">
+                                <th colspan="5" class="text-center">Expenses</th>
+                            </tr>
+                            <tr>
+                                <th>Apply Reimbursement</th>
+                                <th class="text-center">
+                                    <div class="form-group field-notificationsetting-6-ns_sms_enabled required">
+
+                                        <label>
+                                            <input type="checkbox" id="notificationsetting-6-ns_sms_enabled" name="NotificationSetting[6][ns_sms_enabled]" formControlName="updateScheduleSmsEnabled" [checked]="notificationSettingsData?.updateScheduleSmsEnabled=='true'"> </label>
+
+                                        <div class="help-block"></div>
+                                    </div>
+                                </th>
+                                <th class="text-center">
+                                    <div class="form-group field-notificationsetting-6-ns_mail_enabled required">
+
+                                        <label>
+                                            <input type="checkbox" id="notificationsetting-6-ns_mail_enabled" name="NotificationSetting[6][ns_mail_enabled]" formControlName="updateScheduleEmailEnabled" [checked]="notificationSettingsData?.updateScheduleEmailEnabled=='true'"> </label>
+
+                                        <div class="help-block"></div>
+                                    </div>
+                                </th>
+                                <th class="text-center">
+                                    <div class="form-group field-notificationsetting-6-ns_web_enabled required">
+
+                                        <label>
+                                            <input type="checkbox" id="notificationsetting-6-ns_web_enabled" name="NotificationSetting[6][ns_web_enabled]" formControlName="updateScheduleWebEnabled" [checked]="notificationSettingsData?.updateScheduleWebEnabled=='true'"> </label>
+
+                                        <div class="help-block"></div>
+                                    </div>
+                                </th>
+                                <!-- <th class="text-center">
+                                    <div class="form-group field-notificationsetting-6-ns_app_enabled required">
+
+                                        <label>
+                                            <input type="checkbox" id="notificationsetting-6-ns_app_enabled" name="NotificationSetting[6][ns_app_enabled]" formControlName="updateScheduleMobileEnabled" [checked]="notificationSettingsData?.updateScheduleMobileEnabled=='true'"> </label>
+
+                                        <div class="help-block"></div>
+                                    </div>
+                                </th> -->
+                            </tr>
+                            <tr>
+                                <th>Approve Reimbursement</th>
+                                <th class="text-center">
+                                    <div class="form-group field-notificationsetting-7-ns_sms_enabled required">
+
+                                        <label>
+                                            <input type="checkbox" id="notificationsetting-7-ns_sms_enabled" name="NotificationSetting[7][ns_sms_enabled]" formControlName="cancelScheduleSmsEnabled" [checked]="notificationSettingsData?.cancelScheduleSmsEnabled=='true'"> </label>
+
+                                        <div class="help-block"></div>
+                                    </div>
+                                </th>
+                                <th class="text-center"> 
+                                    <div class="form-group field-notificationsetting-7-ns_mail_enabled required">
+
+                                        <label>
+                                            <input type="checkbox" id="notificationsetting-7-ns_mail_enabled" name="NotificationSetting[7][ns_mail_enabled]" formControlName="cancelScheduleEmailEnabled" [checked]="notificationSettingsData?.cancelScheduleEmailEnabled=='true'"> </label>
+
+                                        <div class="help-block"></div>
+                                    </div>
+                                </th>
+                                <th class="text-center">
+                                    <div class="form-group field-notificationsetting-7-ns_web_enabled required">
+
+                                        <label>
+                                            <input type="checkbox" id="notificationsetting-7-ns_web_enabled" name="NotificationSetting[7][ns_web_enabled]" formControlName="cancelScheduleWebEnabled" [checked]="notificationSettingsData?.cancelScheduleWebEnabled=='true'"> </label>
+
+                                        <div class="help-block"></div>
+                                    </div>
+                                </th>
+                                <!-- <th class="text-center">
+                                    <div class="form-group field-notificationsetting-7-ns_app_enabled required">
+
+                                        <label>
+                                            <input type="checkbox" id="notificationsetting-7-ns_app_enabled" name="NotificationSetting[7][ns_app_enabled]" formControlName="cancelScheduleMobileEnabled" [checked]="notificationSettingsData?.cancelScheduleMobileEnabled=='true'"> </label>
+
+                                        <div class="help-block"></div>
+                                    </div>
+                                </th> -->
+                            </tr>
+                            <tr class="active">
+                                <th colspan="5" class="text-center">Helpdesk Ticket</th>
+                            </tr>
+                            <tr>
+                                <th>Helpdesk Ticket Update</th>
+                                <th class="text-center">
+                                    <div class="form-group field-notificationsetting-8-ns_sms_enabled required">
+
+                                        <label>
+                                            <input type="checkbox" id="notificationsetting-8-ns_sms_enabled" name="NotificationSetting[8][ns_sms_enabled]" formControlName="helpDeskTicketSmsEnabled" [checked]="notificationSettingsData?.helpDeskTicketSmsEnabled=='true'"> </label>
+
+                                        <div class="help-block"></div>
+                                    </div>
+                                </th>
+                                <th class="text-center">
+                                    <div class="form-group field-notificationsetting-8-ns_mail_enabled required">
+
+                                        <label>
+                                            <input type="checkbox" id="notificationsetting-8-ns_mail_enabled" name="NotificationSetting[8][ns_mail_enabled]" formControlName="helpDeskTicketEmailEnabled" [checked]="notificationSettingsData?.helpDeskTicketEmailEnabled=='true'"> </label>
+
+                                        <div class="help-block"></div>
+                                    </div>
+                                </th>
+                                <th class="text-center">
+                                    <div class="form-group field-notificationsetting-8-ns_web_enabled required">
+
+                                        <label>
+                                            <input type="checkbox" id="notificationsetting-8-ns_web_enabled" name="NotificationSetting[8][ns_web_enabled]" formControlName="helpDeskTicketWebEnabled" [checked]="notificationSettingsData?.helpDeskTicketWebEnabled=='true'"> </label>
+
+                                        <div class="help-block"></div>
+                                    </div>
+                                </th>
+                            </tr>
+                        </tbody>   
+                    </table>
+                </div>
+                <div class="box-footer">
+                    <button type="submit" (click)="updateSettings(notificationForm)" [disabled]="loading" class="btn btn-info"><i class="fa fa-floppy-o" aria-hidden="true"></i> Save</button>
+                </div>
+            </div>
+        </form>
+    </section>
+</div>

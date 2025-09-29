@@ -1,0 +1,193 @@
+<div class="container-fluid">
+    <div class="d-flex align-items-center mt-2">
+        <div class="m-2">
+            <div class="h-size"><em class="fa fa-user"></em> <strong> Cron Setting</strong></div>
+        </div>
+        <div class="flex-fill">
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-12">
+            <table class="table table-bordered table-hover table-sm">
+                <thead class="t-head">
+                    <tr>
+                        <th *ngFor="let head of headers"><a>{{head}}</a></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngIf='cronList && cronList.length == 0'>
+                        <td colspan="5">
+                            <div class="align-center">No Records Found.</div>
+                        </td>
+                    </tr>
+                    <tr *ngFor="let data of cronList | paginate: {
+                            itemsPerPage: itemsPerPage,
+                            currentPage: currentPage,
+                            totalItems: totalItems
+                          };let i=index">
+                        <td>{{data.name}}</td>
+                        <td>
+                            <li *ngFor="let d of data.days">
+                                {{d}} Days
+                            </li>
+                        </td>
+                        <td>{{data.scheduler}}</td>
+                        <td>
+                            <li *ngFor="let d of data.hrName">
+                                {{d | titlecase}}
+                            </li>
+                        </td>
+                        <td>
+                            <a title="Edit" (click)="modelShowEdit(data)" class="icon-margin"><i
+                                    class="fas fa-user-edit"></i></a>
+                            <!-- <a title="Delete" class="icon-margin" mwlConfirmationPopover [popoverTitle]="popoverTitle"
+                                [popoverMessage]="popoverMessage" placement="left" (confirm)="delete(data.trainerId)"
+                                (cancel)="cancelClicked = true"><span class="fas fa-trash"></span></a> -->
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+            <div class="row" *ngIf="totalElements!=0">
+                <div class="col-md-6 col-sm-6 col-6  pagination-area"><span class="show-entry">Showing
+                        <span>{{showingFrom}} to {{showingTo}} of {{totalElements}} entries</span></span>&nbsp;
+                </div>
+
+                <div class="col-md-6 pull-right" *ngIf="totalElements > pageSize">
+                    <pagination-controls (pageChange)="pageChanged($event)"></pagination-controls>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Large modal -->
+<div class="modal fade common-model" id="cron-settingAddPopup">
+    <div class="modal-dialog modal-xl ">
+        <div class="modal-content">
+            <div class="modal-header">
+                <div class="modal-title">
+                    <i class="fas fa-plus"></i>/ <i class="fas fa-edit ml-1"></i> Edit Cron Setting
+                </div>
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="card">
+                    <div class="card">
+                        <div class="card-body">
+                            <form [formGroup]="settingFrom">
+                                <div class="form-row">
+                                    <div class="form-group col-md-4">
+                                        <label for="name">Name <span class="color-red">*</span></label>
+                                        <input type="text" formControlName="name" class="form-control" readonly
+                                            [ngClass]="{ 'is-invalid': submitted && f.name.errors }" id="name"
+                                            name="name" placeholder="Name">
+                                        <div *ngIf="submitted && f.name.errors" class="invalid-feedback">
+                                            <div *ngIf="f.name.errors.required">Name is required</div>
+                                        </div>
+                                    </div>
+                                    <div class="form-group col-md-4">
+                                        <label for="days">Days <span class="color-red">*</span></label>
+                                        <ng-multiselect-dropdown [placeholder]="'Select Days'"
+                                            [settings]="dropdownSettingsDays" [data]="daysList"
+                                            [(ngModel)]="selectedItemsDays" [ngModelOptions]="{standalone: true}"
+                                            (onSelect)="onItemSelectDays($event)"
+                                            (onDeSelect)="OnDaysItemDeSelect($event)"
+                                            (onSelectAll)="onSelectAllDays($event)">
+                                        </ng-multiselect-dropdown>
+                                        <div class="color-red" *ngIf="submitted && selectedItemsDays.length == 0">Days
+                                            is Required</div>
+                                    </div>
+                                    <div class="form-group col-md-4">
+                                        <label for="every">Scheduler <span class="color-red">*</span></label>
+                                        <select class="form-control" id="days" [ngModelOptions]="{standalone: true}"
+                                            [(ngModel)]="schedulerModel" required
+                                            [ngClass]="{ 'is-invalid': submitted && !schedulerModel }"
+                                            (change)="handlescheduler()">
+                                            <option value=null disabled>Please Select scheduler</option>
+                                            <option *ngFor="let sc of schedulerList" [value]="sc">
+                                                {{sc}}
+                                            </option>
+                                        </select>
+                                        <div *ngIf="submitted && !schedulerModel" class="invalid-feedback">
+                                            <div>Scheduler is Required</div>
+                                        </div>
+                                    </div>
+                                    <div class="form-group col-md-4" *ngIf="showAdditionalFieldMonth">
+                                        <label>Month <span class="color-red">*</span></label>
+                                        <select class="form-control" id="month" [ngModelOptions]="{standalone: true}"
+                                            [(ngModel)]="monthModel" required
+                                            [ngClass]="{ 'is-invalid': submitted && !monthModel }">
+                                            <option value=null disabled>Please Select Every</option>
+                                            <option *ngFor="let data of monthList" [value]="data">
+                                                {{data}}
+                                            </option>
+                                        </select>
+                                        <div *ngIf="submitted && !monthModel" class="invalid-feedback">
+                                            <div>Month is Required</div>
+                                        </div>
+                                    </div>
+                                    <div class="form-group col-md-4" *ngIf="showAdditionalFieldWeek">
+                                        <label>Week <span class="color-red">*</span></label>
+                                        <select class="form-control" id="interval" [ngModelOptions]="{standalone: true}"
+                                            [(ngModel)]="weekModel" #week="ngModel" required
+                                            [ngClass]="{ 'is-invalid': submitted && week.errors }">
+                                            <option value=null disabled>Please Select Every</option>
+                                            <option *ngFor="let data of weekList" [value]="data">
+                                                {{data}}
+                                            </option>
+                                        </select>
+                                        <div *ngIf="submitted && week.errors" class="invalid-feedback">
+                                            <div>Week day is Required</div>
+                                        </div>
+                                    </div>
+                                    <div class="form-group col-md-4" *ngIf="showAdditionalFieldDay">
+                                        <label>Day <span class="color-red">*</span></label>
+                                        <select class="form-control" id="interval" [ngModelOptions]="{standalone: true}"
+                                            [(ngModel)]="dayModel" #day="ngModel" required
+                                            [ngClass]="{ 'is-invalid': submitted && day.errors }">
+                                            <option value=null disabled>Please Select Day</option>
+                                            <option *ngFor="let data of dayList" [value]="data">
+                                                {{data}}
+                                            </option>
+                                        </select>
+                                        <div *ngIf="submitted && day.errors" class="invalid-feedback">
+                                            <div>Day is Required</div>
+                                        </div>
+                                    </div>
+                                    <div class="form-group col-md-4" *ngIf="showAdditionalFieldTime">
+                                        <label>Execution Time <span class="color-red">*</span></label>
+                                        <input type="time" class="form-control" name="date" #time="ngModel" required
+                                            [ngClass]="{ 'is-invalid': submitted && time.errors }"
+                                            [ngModelOptions]="{standalone: true}" [(ngModel)]="timeModel"
+                                            placeholder="Select Time">
+                                        <div *ngIf="submitted && time.errors" class="invalid-feedback">
+                                            <div>Execution Time is Required</div>
+                                        </div>
+                                    </div>
+                                    <div class="form-group col-md-4">
+                                        <label for="days">HR <span class="color-red">*</span></label>
+                                        <ng-multiselect-dropdown [placeholder]="'Select HR'"
+                                            [settings]="dropdownSettingsUser" [data]="employeeList"
+                                            [(ngModel)]="selectedItemsUser" [ngModelOptions]="{standalone: true}"
+                                            (onSelect)="onItemSelectUser($event)"
+                                            (onDeSelect)="OnUserItemDeSelect($event)"
+                                            (onSelectAll)="onSelectAllUser($event)">
+                                        </ng-multiselect-dropdown>
+                                        <div class="color-red" *ngIf="submitted && selectedItemsUser && selectedItemsUser.length == 0">Days
+                                            is Required</div>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                    <div class="padding-div">
+                        <button type="submit" class="btn btn-primary btn-sm" (click)="update()"><i
+                                class="fa fa-sync mr-1"></i>Update</button>
+                        &nbsp;
+                        <button type="button" class="btn btn-danger btn-sm" style="float: right;" data-dismiss="modal">Cancel</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

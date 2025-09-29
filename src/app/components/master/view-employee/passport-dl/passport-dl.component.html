@@ -1,0 +1,222 @@
+<div class="container-fluid" style="margin-top: 16px;">
+
+    <form [formGroup]="passportDetailsForm" (ngSubmit)="onSubmit()">
+    <div class="row">
+
+        
+
+            <div class="col-md-4">
+                <table>
+                    <tr>
+                        <th>
+                            <i class="fas fa-id-card"></i> PassPort details
+                        </th>
+                    </tr>
+                    <tr>
+                        <td>
+                            <label>Show This in payslip</label>
+                        </td>
+                        <td>
+                            <label>
+                                <input type="radio" formControlName="columnType" value="PPNo"> PPNo 
+                            </label>
+                            <label>
+                                <input type="radio" formControlName="columnType" value="NRIC"> NRIC 
+                            </label>
+                            <label>
+                                <input type="radio" formControlName="columnType" value="Both"> Both 
+                            </label>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <label>Passport No.</label>
+                        </td>
+                        <td>
+                            <input type="text " formControlName="passportNo" class="text form-control" maxlength="50" />
+                        </td>
+                    </tr>
+                    
+                    <tr>
+                        <td>
+                            <label>Passport Issue Date</label>
+                        </td>
+                        <td>
+                           
+                                <input type="text" formControlName="passportIssueDate" bsDatepicker placeholder="Passport Issue Date"
+                                [bsConfig]="{ isAnimated: true, dateInputFormat: 'DD-MM-YYYY' }" readonly
+                                placement="bottom" class="text form-control" id="dateOfBirth" maxlength="50" />
+    
+                        </td>
+                    </tr>
+    
+                    <tr>
+                        <td>
+                            <label>Passport Expiry Date</label>
+                        </td>
+                        <td>
+    
+                                <input type="text" formControlName="passportExpiryDate" bsDatepicker placeholder="Passport Expiry Date"
+                                [bsConfig]="{ isAnimated: true, dateInputFormat: 'DD-MM-YYYY' }" readonly
+                                placement="bottom" class="text form-control" id="dateOfBirth" maxlength="50" />
+    
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <label>Passport Place Of Issue</label>
+                        </td>
+                        <td>
+                            <input type="text " formControlName="passportPlaceOfIssue" class="text form-control"
+                                maxlength="50" />
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td>
+                            <label for="visaType">Visa Type</label>
+                        </td>
+                        <td>
+                            <select id="visaType" formControlName="visaType" class="form-control text">
+                                <option value="" selected disabled hidden>--Select--</option>
+                                <option value="DSS-EP">DSS - EP</option>
+                                <option value="DSS-LOCAL">DSS - LOCAL</option>
+                            </select>
+                        </td>
+                    </tr>
+    
+                 
+    
+    
+                   
+    
+                </table>
+                <br>
+                
+    
+            </div>
+            <div class="col-md-4">
+                <table>
+                    <tr>
+                        <th>
+                            <i class="fas fa-phone"></i> Driving License Details
+                        </th>
+                    </tr>
+                    <tr>
+                        <td>
+                            <label>Vehicle Details.</label>
+                        </td>
+                        <td>
+                            <input type="text " formControlName="vehicleDetails" class="text form-control" maxlength="50" />
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <label>Driving License No.</label>
+                        </td>
+                        <td>
+                            <input type="text " formControlName="drivingLicenseNo" class="text form-control"
+                                maxlength="50" />
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <label>Driving License Issue Date.</label>
+                        </td>
+                        <td>
+                            
+    
+                                <input type="text" formControlName="drivingLicenseIssueDate" bsDatepicker placeholder="Driving License Issue Date"
+                                [bsConfig]="{ isAnimated: true, dateInputFormat: 'DD-MM-YYYY' }" readonly
+                                placement="bottom" class="text form-control" id="dateOfBirth" maxlength="50" />
+                        </td>
+                    </tr>
+    
+    
+                    <tr>
+                        <td>
+                            <label>Driving License Expiry Date.</label>
+                        </td>
+                        <td>
+                                <input type="text" formControlName="drivingLicenseExpiryDate" bsDatepicker placeholder="Driving License Expiry Date"
+                                [bsConfig]="{ isAnimated: true, dateInputFormat: 'DD-MM-YYYY' }" readonly
+                                placement="bottom" class="text form-control" id="dateOfBirth" maxlength="50" />
+                        </td>
+                    </tr>
+
+                    <tr>
+                       
+                        <td>
+                            <input class="mr-2" type="checkbox" id="twoWheeler" formControlName="twoWheeler" name="vehicle1" value="Bike">
+                            <label for="vehicle1"> Two Wheeler</label><br>
+                        </td>
+    
+                        <td>
+                            <input type="checkbox" class="mr-2" id="fourWheeler" formControlName="fourWheeler" name="vehicle1" value="Bike">
+                            <label for="vehicle1"> Four Wheeler</label><br>
+                        </td>
+                    </tr>
+    
+                </table>
+            </div>
+            <!-- <div class="col-md-4">
+                <table>
+                    <tr>
+                        <th>
+                            <i class="fas fa-user-cog"></i> Drug License Details
+                        </th>
+                    </tr>
+                    <tr>
+                        <td>
+                            <label>Drug License No.</label>
+                        </td>
+                        <td>
+                            <input type="text " formControlName="drugLicenseNo" class="text form-control" maxlength="50" />
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <label>Drug Issue Date</label>
+                        </td>
+                        <td>
+                           
+                            <input type="text" formControlName="drugIssueDate" bsDatepicker placeholder="Drug Issue Date"
+                            [bsConfig]="{ isAnimated: true, dateInputFormat: 'DD-MM-YYYY' }" readonly
+                            placement="bottom" class="text form-control" id="dateOfBirth" maxlength="50" />
+    
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <label>Drug Expiry Date</label>
+                        </td>
+                        <td>
+                            
+                            <input type="text" formControlName="drugExpiryDate" bsDatepicker placeholder="Drug Expiry Date"
+                            [bsConfig]="{ isAnimated: true, dateInputFormat: 'DD-MM-YYYY' }" readonly
+                            placement="bottom" class="text form-control" id="dateOfBirth" maxlength="50" />
+    
+                        </td>
+                    </tr>
+    
+    
+                </table>
+            </div> -->
+    
+         
+
+
+      
+        
+    </div>
+    <button *ngIf="!enableUpdateButton" class="btn btn-success mx-auto d-block">Save</button>
+
+
+
+     
+
+    <button *ngIf="enableUpdateButton" class="btn btn-success mx-auto d-block">Update</button>
+
+</form>
+
+</div>

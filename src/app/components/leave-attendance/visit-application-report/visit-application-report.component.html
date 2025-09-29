@@ -1,0 +1,56 @@
+<div class="container-fluid">
+    <div class="d-flex align-items-center mt-2">
+        <div class="m-2">
+            <label class="control-label">From Date:&nbsp;</label>
+            <input type="text" name="fromDate" placeholder="dd/mm/yyyy">
+        </div>
+        <div class="m-2">
+            <label class="control-label">To Date:&nbsp;</label>
+            <input type="text" name="toDate" placeholder="dd/mm/yyyy">
+        </div>
+        <span class="left-span"> Status:&nbsp;</span>
+        <select class="dropdown-m-2 drop-down" name="st">
+            <option *ngFor="let st of status">{{st}}</option>
+        </select>
+        <div class="m-2">
+            <label class="control-label">&nbsp;</label>
+            <button id="btn_add" type="button"  data-toggle="modal" data-target="#myModal" class="btn-primary button show">Show</button>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade common-model" id="myModal">
+    <div class="modal-dialog modal-lg model">
+        <div class="modal-content">
+
+            <!-- Modal Header -->
+            <div class="modal-header">
+                <h4 class="modal-title2"><i class="fas fa-filter"></i>Employees Filter</h4>
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+            </div>
+
+            <!-- Modal body -->
+            <div class="modal-body">
+                <table class="table table-bordered model-table">
+                    <tr>
+                        <td><input type="checkbox" class="form-control"></td>
+                        <td>S No</td>
+                        <td><input type="checkbox" class="form-control"></td>
+                        <td>PHOTO</td>
+                        <td><input type="checkbox" class="form-control"></td>
+                        <td>EMP CODE</td>
+                        <td><input type="checkbox" class="form-control"></td>
+                        <td>CLIENT CODE</td>
+                    </tr>
+                </table>
+            </div>
+
+            <!-- Modal footer -->
+            <div class="modal-footer">
+                <button type="button" class="btn btn-success" data-dismiss="modal">Ok</button>
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            </div>
+
+        </div>
+    </div>
+</div>

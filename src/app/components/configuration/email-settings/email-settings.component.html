@@ -1,0 +1,257 @@
+<div class="container-fluid">
+    <div class="d-flex align-items-center mt-2">
+        <div class="m-2">
+            <div class="h-size"><em class="fa fa-user"></em> <strong> Email Settings</strong></div>
+        </div>
+        <div class="flex-fill">
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-12">
+            <table class="table table-bordered table-hover table-sm">
+                <thead class="t-head">
+                    <tr>
+                        <th scope="col">Email address</th>
+                        <th scope="col">Email Name</th>
+                        <th scope="col">Fetching Protocol</th>
+                        <th scope="col">Transfer Protocol</th>
+                        <th scope="col">Internal Notes</th>
+                        <th scope="col">Is Default</th>
+                        <th scope="col">Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let emails of emailsList">
+                        <td>{{emails.emailAddress}}</td>
+                        <td>{{emails.emailName}}</td>
+                        <td>{{emails.fetchingProtocol}}</td>
+                        <td>{{emails.transferProtocol}}</td>
+                        <td>{{emails.internalNotes}}</td>
+                        <td>{{emails.isDefault}}</td>
+                        <td class="action-width align-center">
+                            <a title="Edit" class="icon-margin edit" data-toggle="modal" data-target="#add"
+                            (click)="modelShowEdit(emails)"><i class="fas fa-user-edit"></i></a>
+                            <a title="Delete" class="icon-margin" mwlConfirmationPopover [popoverTitle]="popoverTitle"
+                              [popoverMessage]="popoverMessage" placement="left" (confirm)="deleteEmail(emails.id)"
+                              (cancel)="cancelClicked = true"><span class="fas fa-trash"></span></a>
+                          </td>
+                    </tr>
+                </tbody>
+            </table>
+            <div class="row" *ngIf="totalElements!=0">
+                <div class="col-md-6 col-sm-6 col-6  pagination-area"><span class="show-entry">Showing
+                        <span>{{showingFrom}} to {{showingTo}} of {{totalElements}} entries</span></span>&nbsp;
+                </div>
+
+                <div class="col-md-6 pull-right" *ngIf="totalElements > pageSize">
+                    <pagination-controls (pageChange)="pageChanged($event)"></pagination-controls>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-12">
+            <button type="button" class="btn btn-primary btn-sm" (click)="createEmailFormModel()" data-toggle="modal"
+                data-target="#add">
+                <i class="fas fa-user-plus"></i> Add
+            </button>
+        </div>
+    </div>
+</div>
+<!-- Large modal -->
+<div class="modal fade add mt-4" tabindex="-1" id="add" role="dialog" aria-labelledby="myLargeModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog modal-xl ">
+        <div class="modal-content">
+            <div class="modal-header">
+                <div class="modal-title"><i class="fas fa-plus"></i>/ <i class="fas fa-edit ml-1"></i> Email
+                    Settings
+                </div>
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+            </div>
+            <div class="modal-body">
+                <form [formGroup]="emailForm">
+                    <div class="card-body">
+                        <div class="card pull-down">
+                            <div class="card-header">
+                                <i class="fa fa-user mr-1"></i>Email Information
+                            </div>
+                            <div class="card-body">
+                                <div class="form-row">
+                                    <div class="form-group col-md-4">
+                                        <label for="email">Email<span class="color-red">*</span></label>
+                                        <input type="email" formControlName="emailAddress" class="form-control"
+                                            [ngClass]="{ 'is-invalid': submitted && f.emailAddress.errors }" id="email"
+                                            placeholder="Email">
+                                        <span class="color-red" *ngIf="submitted && f.emailAddress.errors">Email
+                                            {{requiredErrorText}}</span>
+                                    </div>
+                                    <div class="form-group col-md-4">
+                                        <label for="emailName">Name<span class="color-red">*</span></label>
+                                        <input type="text" formControlName="emailName" class="form-control"
+                                            [ngClass]="{ 'is-invalid': submitted && f.emailName.errors }" id="emailName"
+                                            placeholder="Name">
+                                        <span class="color-red" *ngIf="submitted && f.emailName.errors">Name
+                                            {{requiredErrorText}}</span>
+                                    </div>
+                                    <div class="form-group col-md-4">
+                                        <label for="password">Password<span class="color-red">*</span></label>
+                                        <div class="input-group">
+                                            <input [type]="fieldTextType ? 'text' : 'password'" class="form-control"
+                                                formControlName="password"
+                                                [ngClass]="{ 'is-invalid': submitted && f.password.errors }"
+                                                id="password" placeholder="Password" />
+                                            <div class="input-group-append">
+                                                <span class="input-group-text">
+                                                    <i class="fa" [ngClass]="{
+                                                      'fa-eye-slash': !fieldTextType,
+                                                      'fa-eye': fieldTextType
+                                                    }" (click)="toggleFieldTextType()"></i>
+                                                </span>
+                                            </div>
+                                        </div>
+                                        <span class="color-red" *ngIf="submitted && f.password.errors">Password
+                                            {{requiredErrorText}}</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="card pull-down">
+                            <div class="card-header">
+                                Incoming Email
+                            </div>
+                            <div class="card-body">
+                                <div class="form-row">
+                                    <div class="form-row">
+                                        <div class="form-group col-md-4">
+                                            <label for="fetchingProtocol">Fetching Protocol<span
+                                                    class="color-red">*</span></label>
+                                            <select id="fetchingProtocol" formControlName="fetchingProtocol"
+                                                class="form-control"
+                                                [ngClass]="{ 'is-invalid': submitted && f.fetchingProtocol.errors }">
+                                                <option value=null selected disabled>Select</option>
+                                                <option value="IMAP">IMAP</option>
+                                                <option value="POP3">POP3</option>
+                                                <option value="Exchange Web Services">Exchange Web
+                                                    Services</option>
+                                            </select>
+                                            <span class="color-red"
+                                                *ngIf="submitted && f.fetchingProtocol.errors">Fetching Protocol
+                                                {{requiredErrorText}}</span>
+                                        </div>
+                                        <div class="form-group col-md-4">
+                                            <label for="fetchingHost">Host Name<span class="color-red">*</span></label>
+                                            <input type="text" formControlName="fetchingHost" class="form-control"
+                                                id="fetchingHost"
+                                                [ngClass]="{ 'is-invalid': submitted && f.fetchingHost.errors }"
+                                                placeholder="Host Name">
+                                            <span class="color-red" *ngIf="submitted && f.fetchingHost.errors">Host Name
+                                                {{requiredErrorText}}</span>
+                                        </div>
+                                        <div class="form-group col-md-4">
+                                            <label for="fetchingPort">Port<span class="color-red">*</span></label>
+                                            <input type="number" formControlName="fetchingPort" class="form-control"
+                                                [ngClass]="{ 'is-invalid': submitted && f.fetchingPort.errors }"
+                                                id="fetchingPort" placeholder="Port">
+                                            <span class="color-red" *ngIf="submitted && f.fetchingPort.errors">Port
+                                                {{requiredErrorText}}</span>
+                                        </div>
+                                        <div class="form-group col-md-4">
+                                            <label for="fetchingEncryption">Encryption<span
+                                                    class="color-red">*</span></label>
+                                            <select id="fetchingEncryption" formControlName="fetchingEncryption"
+                                                class="form-control"
+                                                [ngClass]="{ 'is-invalid': submitted && f.fetchingEncryption.errors }">
+                                                <option value=null selected disabled>Select</option>
+                                                <option value="None">None</option>
+                                                <option value="SSL">SSL</option>
+                                                <option value="TLS">TLS</option>
+                                                <option value="STARTTLS">STARTTLS</option>
+                                            </select>
+                                            <span class="color-red"
+                                                *ngIf="submitted && f.fetchingEncryption.errors">Encryption
+                                                {{requiredErrorText}}</span>
+                                        </div>
+                                        <div class="form-group col-md-4" style="padding-top: 30px;">
+                                            <!-- <label class="form-control"></label> -->
+                                            <input type="checkbox" id="isDeleteEmailsOnceFetched"
+                                                formControlName="isDeleteEmailsOnceFetched"
+                                                name="isDeleteEmailsOnceFetched" value="isDeleteEmailsOnceFetched">
+                                            <label for="isDeleteEmailsOnceFetched"> &nbsp; Delete emails once
+                                                fetched</label>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="card">
+                            <div class="card-header">
+                                Outgoing Email
+                            </div>
+                            <div class="card-body">
+                                <div class="form-row">
+                                    <div class="form-row">
+                                        <div class="form-group col-md-6">
+                                            <label for="transferProtocol">Transfer Protocol<span
+                                                    class="color-red">*</span></label>
+                                            <select id="transferProtocol" formControlName="transferProtocol"
+                                                class="form-control"
+                                                [ngClass]="{ 'is-invalid': submitted && f.transferProtocol.errors }">
+                                                <option value=null selected disabled>Select</option>
+                                                <option value="SMTP">SMTP</option>
+                                                <option value="Exchange Web Services">Exchange Web
+                                                    Services</option>
+                                            </select>
+                                            <span class="color-red"
+                                                *ngIf="submitted && f.transferProtocol.errors">Transfer Protocol
+                                                {{requiredErrorText}}</span>
+                                        </div>
+                                        <div class="form-group col-md-6">
+                                            <label for="internalNotes">Internal Notes<span
+                                                    class="color-red">*</span></label>
+                                            <input type="text" formControlName="internalNotes" class="form-control"
+                                                id="internalNotes"
+                                                [ngClass]="{ 'is-invalid': submitted && f.internalNotes.errors }"
+                                                placeholder="Internal Notes">
+                                            <span class="color-red" *ngIf="submitted && f.internalNotes.errors">Internal
+                                                Notes
+                                                {{requiredErrorText}}</span>
+                                        </div>
+                                        <div class="form-group col-md-6" style="padding-top: 30px;">
+                                            <!-- <label class="form-control"></label> -->
+                                            <input type="checkbox" id="delete" formControlName="isDefault" name="delete"
+                                                value="delete">
+                                            <label for="delete">&nbsp; Make this system's default
+                                                email</label>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </form>
+            </div>
+
+            <div class="row btn-footer">
+                <hr>
+                <div class="col-md-6 pull-left" style="padding-left: 30px;">
+                    <div *ngIf="!updateButton">
+                        <button type="submit" class="btn btn-primary btn-sm" (click)="onSubmit()"><i
+                                class="fa fa-save mr-1"></i>Save</button>
+                    </div>
+                    <div *ngIf="updateButton">
+                        <button type="submit" class="btn btn-primary btn-sm" (click)="onUpdate()"><i
+                                class="fa fa-save mr-1"></i>Update</button>
+                    </div>
+                </div>
+                <div class="col-md-6 pull-right" style="padding-right: 30px;">
+                    <button type="button" *ngIf="!updateButton" id="btnComponentSave" (click)="resetTheForm()"
+                        class="button btn-warning btn-style">
+                        Clear</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

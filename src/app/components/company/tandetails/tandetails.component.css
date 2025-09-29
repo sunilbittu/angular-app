@@ -1,0 +1,42 @@
+.form-field input[type="text"], .form-field input[type="password"], .form-field input[type="email"], .form-field input[type="datetime"], .form-field input[type="phone"], .form-field input[type="numeric"], .form-field select {
+    width: 100%;
+}
+
+
+input[type="text"], input[type="password"], input[type="email"], input[type="datetime"], input[type="phone"], input[type="numeric"], textarea, select {
+    border: solid 1px #3aadf0;
+    border-radius: 3px;
+    padding: 3px;
+    display: block;
+    box-shadow: 0px 0px 2px #ccc;
+    outline: none!important;
+}
+
+.field {
+    margin-top: -10px;
+}
+
+.form-field {
+    margin-bottom: 1rem;
+}
+
+.form-section > .title {
+    margin-left: -30px;
+    font-size: 1rem;
+    font-weight: bold;
+    color: #5d6170;
+    font-style: normal;
+    margin-bottom: 1.5rem;
+}
+
+.form-section > .title > .fas {
+    margin-right: 0.5rem;
+    display: inline-block;
+    width: 20px;
+}
+
+.formContainer{
+   padding-left: 40px;
+   padding-top: 10px;
+}
+   

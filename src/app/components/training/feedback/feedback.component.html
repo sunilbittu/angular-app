@@ -1,0 +1,121 @@
+<div class="container-fluid">
+    <div class="d-flex align-items-center mt-2">
+        <div class="m-2">
+            <div class="h-size"><em class="fa fa-user"></em> <strong> Training Feedback</strong></div>
+        </div>
+        <div class="flex-fill">
+        </div>
+    </div>
+
+
+    <form [formGroup]="feedbackForm" (ngSubmit)="submit()">
+        <div class="row">
+            <div class="modal-body">
+                <div class="modal-header">
+                    <div class="modal-title"><i class="fas fa-edit ml-1"></i> Feedback Form
+                    </div>
+                </div>
+                <br>
+                <div class="row col-12 padding-field-bottom">
+                    <div class="col-2">
+                        <label for="type">Current Employee Id & Name <span class="color-red">*</span></label>
+                    </div>
+                    <div class="col-4">
+                        <input readonly type="text" class="form-control" formControlName="employee"
+                            id="employee">
+                    </div>
+                    <div class="col-2">
+                        <label for="type">Training Attended<span class="color-red">*</span></label>
+                    </div>
+                    <div class="col-4">
+                        <select class="form-control" id="training" formControlName="training"
+                            (change)="changeName()" [ngClass]="{ 'is-invalid': submitted && form_.training.errors }">
+                            <option value=null disabled>Please Select Attended</option>
+                            <option *ngFor="let data of traineesList" [value]="data.manageTrainingId">
+                                {{data.technologyName}}-{{data.trainerDetails.trainerName}}
+                            </option>
+                        </select>
+                        <span class="color-red" *ngIf="submitted && form_.training.errors">Training Attended
+                            {{requiredErrorText}}</span>
+                    </div>
+                    
+                </div>
+                <div class="row col-12 padding-field-bottom">
+                    <div class="col-2">
+                        <label for="type">Trainer Name <span class="color-red">*</span></label>
+                    </div>
+                    <div class="col-4">
+                        <input readonly type="text" class="form-control" formControlName="trainer"
+                            id="trainer">
+                        <span class="color-red" *ngIf="submitted && form_.trainer.errors">Trainer
+                            {{requiredErrorText}}</span>
+                    </div>
+                    <div class="col-2">
+                        <label>Start Date<span class="color-red">*</span></label>
+                    </div>
+                    <div class="col-4">
+                        <input readonly type="text" class="form-control" formControlName="startDate"
+                            id="startDate">
+                        <span class="color-red" *ngIf="submitted && form_.startDate.errors">Start Date
+                            {{requiredErrorText}}</span>
+                    </div>
+                    
+                </div>
+                <div class="row col-12 padding-field-bottom">
+                    <div class="col-2">
+                        <label>End Date<span class="color-red">*</span></label>
+                    </div>
+                    <div class="col-4">
+                        <input readonly type="text" class="form-control" formControlName="endDate"
+                            id="endDate">
+                        <span class="color-red" *ngIf="submitted && form_.endDate.errors">End Date
+                            {{requiredErrorText}}</span>
+                    </div>
+                    <div class="col-2">
+                        <label for="rating">Feedback Rating <span class="color-red">*</span></label>
+                    </div>
+                    <div class="col-4">
+                        <select class="form-control" id="rating" formControlName="rating"
+                            [ngClass]="{ 'is-invalid': submitted && form_.rating.errors }">
+                            <option value=null disabled>Please Select Rating</option>
+                            <option *ngFor="let data of ratingList" [value]="data">
+                                {{data}}
+                            </option>
+                        </select>
+                        <span class="color-red" *ngIf="submitted && form_.rating.errors">Feedback Rating
+                            {{requiredErrorText}}</span>
+                    </div>
+                </div>
+                <div class="row col-12 padding-field-bottom">
+                    <div class="col-2">
+                        <label for="comments">Comments <span class="color-red">*</span></label>
+                    </div>
+                    <div class="col-10">
+                        <textarea type="text" class="form-control" formControlName="comments"
+                            id="comments"></textarea>
+                            <span class="color-red" *ngIf="submitted && form_.comments.errors">Comments
+                                {{requiredErrorText}}</span>
+                    </div>
+                </div>
+                <hr>
+                <div *ngIf="isFeedbackSubmitted" class="color-red pull-left-5">
+                    <strong>Feedback already submitted with above Training Attended</strong>
+                </div>
+                <div class="row" *ngIf="!isFeedbackSubmitted">
+                    <div class="col-md-6 pull-left">
+                        <button type="submit" id="btnComponentSave" [disabled]="submitProcessing"
+                            class="button btn-primary btn-style"><i class="fas fa-save"></i>
+                            {{submitText}} <i class="fa fa-spinner fa-spin" *ngIf="submitProcessing"
+                                style="font-size:19px"></i></button>
+                    </div>
+                    <div class="col-md-6 pull-right">
+                        <button type="button" id="btnComponentSave" (click)="clear()"
+                            class="button btn-warning btn-style" [disabled]="submitProcessing">
+                            Clear</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+
+</div>

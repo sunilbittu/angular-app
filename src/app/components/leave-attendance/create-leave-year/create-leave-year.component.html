@@ -1,0 +1,96 @@
+<div class="container-fluid">
+    <div class="d-flex align-items-center mt-2">
+        <div class="m-2">
+            <div class="h-size"><i class="fa fa-user"></i> <b> Leave Year</b></div>
+        </div>
+        <div class="flex-fill">
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-12">
+            <table class="table table-bordered table-hover table-sm">
+                <thead class="t-head">
+                    <tr>
+                        <th *ngFor="let head of headers"><a>{{head}}</a></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let data of leaveYearList | paginate
+                    : {
+                        itemsPerPage: itemsPerPage,
+                        currentPage: currentPage,
+                        totalItems: totalItems
+                      };let i=index">
+                        <td>{{data.leaveYear}}</td>
+
+                        <td>
+                            <a title="Edit" (click)="modelShowEdit(data)" class="icon-margin"><i
+                                    class="fas fa-user-edit"></i></a>
+                            <a title="Delete" class="icon-margin" mwlConfirmationPopover [popoverTitle]="popoverTitle"
+                                [popoverMessage]="popoverMessage" placement="left" (confirm)="delete(data.leaveYearId)"
+                                (cancel)="cancelClicked = true"><span class="fas fa-trash"></span></a>
+                        </td>
+                    </tr>
+                </tbody>
+
+            </table>
+            <div class="row" *ngIf="totalElements!=0">
+                <div class="col-md-6 pull-left"><span class="show-entry">Showing
+                        <span>{{showingFrom}} to {{showingTo}} of {{totalElements}} entries</span></span>&nbsp;
+                </div>
+  
+                <div class="col-md-6 pull-right" *ngIf="totalItems > 0">
+                    <pagination-controls (pageChange)="pageChanged($event)"></pagination-controls>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-12">
+            <button id="btn_add" type="button" class="button btn-primary button" data-toggle="modal"
+                data-target="#create" (click)="addClick()"><i class="fas fa-user-plus"></i>Add</button>
+        </div>
+    </div>
+</div>
+<div class="modal fade common-model" id="create">
+    <div class="modal-dialog " data-hidden="true" style="width: 30%;padding-top: 3%;">
+        <div class="modal-content">
+            <form [formGroup]="yearForm" (ngSubmit)="submit()">
+                <div class="modal-header">
+                    <div class="modal-title"><i class="fas fa-plus"></i>/ <i class="fas fa-edit ml-1"></i>Leave Year
+                    </div>
+                    <button type="button" data-dismiss="modal" class="close"
+                        data-target="#mod_add_edit_leave_year_details">×</button>
+                </div>
+                <div class="modal-body">
+                    <div class="row col-12 padding-field-bottom">
+                        <div class="col-4">
+                            <label>Year<span class="color-red">*</span></label>
+                        </div>
+                        <div class="col-8">
+                            <input type="number" class="form-control" placeholder="Please Enter Year"
+                                formControlName="year" (keyup)="check()" max="9999">
+                            <span class="color-red" *ngIf="submitted && form_.year.errors">Leave Year
+                                can't be blank</span>
+                            <span class="color-red" *ngIf="isYearExist">Leave Year is already exist in DB.</span>
+                        </div>
+                    </div>
+                    <hr>
+                    <div class="row">
+                        <div class="col-md-6 pull-left">
+                            <button type="submit" id="btnComponentSave" [disabled]="submitProcessing"
+                                class="button btn-primary btn-style"><i class="fas fa-save"></i>
+                                {{submitText}} <i class="fa fa-spinner fa-spin" *ngIf="submitProcessing"
+                                    style="font-size:19px"></i></button>
+                        </div>
+                        <div class="col-md-6 pull-right" *ngIf="submitText == 'Save'">
+                            <button type="button" id="btnComponentSave" (click)="clear()"
+                                class="button btn-warning btn-style" [disabled]="submitProcessing">
+                                Clear</button>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

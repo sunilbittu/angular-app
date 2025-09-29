@@ -1,0 +1,22 @@
+.padding-top-25 {
+    padding-top: 25px;
+}
+.green {
+    color: green;
+}
+.table thead th {
+    vertical-align: unset;
+    border-bottom: 2px solid #dee2e6;
+}
+
+.table tr th, .table tr td {
+    border: solid 1px #a3a2a3!important;
+    font-size: 14px;
+}
+.back-btn {
+    background-color: #bbbbbb;
+}
+.blue {
+    color: blue;
+    cursor: pointer;
+}

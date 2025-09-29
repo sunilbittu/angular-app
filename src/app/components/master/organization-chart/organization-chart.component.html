@@ -1,0 +1,31 @@
+<div class="row padding-left">
+    <div class="col-12">
+        <div>
+            <br>
+            <div class="h-size"><b>Organization Chart</b></div>
+            <br>
+        </div>
+        <div class="row">
+            <div class="col-12 pb-0">
+                <input type="checkbox" name="co"> Display Designation
+            </div>
+        </div>
+        <br>
+        <div class="row">
+            <div class="col-12 pb-0">
+                <table class="org-table table-bordered table-hover table-sm">
+                    <thead class="t-head">
+                        <tr>
+                            <th *ngFor="let head of header"><a>{{head}}</a></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let d of data">
+                            <td>{{d.name | titlecase}}</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>

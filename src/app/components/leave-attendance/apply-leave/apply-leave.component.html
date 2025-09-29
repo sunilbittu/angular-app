@@ -1,0 +1,113 @@
+<div class="container-fluid">
+    <div class="d-flex align-items-center mt-2">
+        <div class="m-20">
+            <div class="h-size"> <b>Apply Leave</b></div>
+        </div>
+    </div>
+    <form [formGroup]="form" (ngSubmit)="CreateLeave()">
+        <div class="row">
+            <div class="col-md-3">
+                <label>Leave type: <span class="color-red">*</span></label>
+                <select formControlName="LeaveType" [ngClass]="{ 'is-invalid': submitted && form_.LeaveType.errors }"
+                    class="form-group form-control text">
+                    <option value="">Please Select Leave Type</option>
+                    <option *ngFor="let type of LeaveTypesObject" [value]="type.leaveTypeCode"> {{type.leaveTypeCode}} - {{type.leaveTypeDescription}}
+                    </option>
+                    <!-- <option [ngValue]="true">Yes</option>  
+            <option [ngValue]="false" selected>No</option> -->
+                </select>
+                <span class="color-red" *ngIf="submitted && form_.LeaveType.errors">LeaveType
+                    {{requiredErrorText}}</span>
+            </div>
+            <div class="col-md-3">
+                <label>Start Date: <span class="color-red">*</span></label>
+
+                <input *ngIf="(permisionsArray | search4:'Leave-attendance/previous-leave-apply') == false " type="text" formControlName="startDate" bsDatepicker placeholder="Please Select Date"
+                    [minDate]="toDay" [maxDate]="form_.endDate.value"
+                    [ngClass]="{ 'is-invalid': submitted && form_.startDate.errors }" readonly
+                    [bsConfig]="{ isAnimated: true, dateInputFormat: 'DD-MM-YYYY' }" bsDatepicker
+                    (bsValueChange)="onStartDateValueChange($event)" placement="bottom" class="text form-control"
+                    maxlength="50" />
+                <input *ngIf="(permisionsArray | search4:'Leave-attendance/previous-leave-apply') == true " type="text" formControlName="startDate" bsDatepicker placeholder="Please Select Date"
+                    [minDate]="form_.startDate.value" [maxDate]="form_.endDate.value"
+                    [ngClass]="{ 'is-invalid': submitted && form_.startDate.errors }" readonly
+                    [bsConfig]="{ isAnimated: true, dateInputFormat: 'DD-MM-YYYY' }" bsDatepicker
+                    (bsValueChange)="onStartDateValueChange($event)" placement="bottom" class="text form-control"
+                    maxlength="50" />
+                <span class="color-red" *ngIf="submitted && form_.startDate.errors">Start Date
+                    {{requiredErrorText}}</span>
+            </div>
+            <div class="col-md-3">
+                <label>End Date: <span class="color-red">*</span></label>
+
+                <input type="text" formControlName="endDate" bsDatepicker placeholder="Please Select Date"
+                    [minDate]="form_.startDate.value" readonly (bsValueChange)="onEndDateValueChange($event)"
+                    [ngClass]="{ 'is-invalid': submitted && form_.endDate.errors }" readonly
+                    [bsConfig]="{ isAnimated: true, dateInputFormat: 'DD-MM-YYYY' }" bsDatepicker placement="bottom"
+                    class="text form-control" maxlength="50" />
+                <span class="color-red" *ngIf="submitted && form_.endDate.errors">End Date
+                    {{requiredErrorText}}</span>
+            </div>
+            <div class="col-md-3 select-days">
+                <span *ngFor="let data of daysToShow;let i=index">
+                    <div>
+                        <strong>{{data.date| date:'dd-MM-YYYY'}}</strong>&nbsp;&nbsp;
+                        <span *ngFor="let d of data.data;let j=index">
+                            <input id="d{{i}}" class="radio-size" name="d{{i}}" type="radio" value="d{{i}}"
+                                style="cursor: pointer;" (click)="handleDateType(i, j, data)">
+                            <label class="remove-margin">&nbsp;{{d}}&nbsp;&nbsp;</label>
+                        </span>
+                    </div>
+                    <span class="color-red" *ngIf="submitted && !daysToShow[i].selected">Type
+                        {{requiredErrorText}}</span>
+                </span>
+            </div>
+        </div>
+        <br>
+        <div class="row">
+            <div class="col-md-3">
+                <label>No of Days</label>
+                <input type="number" class="text form-control" formControlName="noDays" readonly maxlength="50" />
+            </div>
+            <div class="col-md-3">
+                <label>Internal Manager </label>
+                <input type="text" class="text form-control" formControlName="manager" readonly value={{managerName}}
+                    maxlength="50" />
+            </div>
+            <div class="col-md-3">
+                <label>Client Manager </label>
+                <input type="text" class="text form-control" formControlName="externalmanager" readonly
+                    maxlength="50" />
+            </div>
+            <div class="col-md-3 padding-field-bottom">
+                <label>Add Attachment</label>
+
+                <input type="file" formControlName="selectedFile" class="form-control height-45"
+                    (change)="onFileChanged($event)">
+            </div>
+        </div>
+        <br>
+        <div class='row'>
+            <div class='col-sm-12'>
+                <div class="form-group">
+                    <label class="control-label">Letter Content <span class="color-red">*</span></label>
+                    <textarea class="form-control" formControlName="letterContent"> </textarea>
+                    <!-- <ckeditor
+                formControlName="letterContent" 
+                [config]="{extraPlugins: 'uploadimage,button,panelbutton,panel,floatpanel,colorbutton,colordialog,menu,contextmenu,dialogadvtab,div,elementspath,enterkey,entities,popup,filebrowser,find,fakeobjects,flash,floatingspace,listblock,richcombo,dialogui,dialog,a11yhelp,about,basicstyles,bidi,blockquote,clipboard,font,format,forms,horizontalrule,htmlwriter,iframe,image,indent,indentblock,indentlist,justify,link,list,liststyle,magicline,maximize,newpage,pagebreak,pastefromword,pastetext,preview,print,removeformat,resize,save,menubutton,scayt,selectall,showblocks,showborders,smiley,sourcearea,specialchar,stylescombo,tab,table,tabletools,templates,toolbar,undo,wsc,wysiwygarea'}"
+                debounce="600">
+              </ckeditor> -->
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-12">
+                <button id="btn_add" type="submit" class="btn btn-primary button"><i class="fas fa-save"></i>
+                    Apply Leave</button>
+                <button id="btn_add" type="button" class="btn btn-warning button" (click)="cancel()"> Cancel</button>
+
+            </div>
+        </div>
+    </form>
+</div>

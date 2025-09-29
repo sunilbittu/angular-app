@@ -1,0 +1,21 @@
+.submitButton{
+    margin-top: 34px;
+}
+
+
+.invalid-feedback {
+    
+    font-size: 95%;
+    
+}
+
+ 
+.form-control{
+    height: 30px ;
+    margin: 5px;
+}
+
+
+::ng-deep ngb-datepicker-navigation-select select:first-child {
+    display: none;
+  }

@@ -1,0 +1,28 @@
+.modal-header {
+    padding: 8px;
+    border-bottom: 1px solid #e5e5e5;
+    display: flex;
+    align-content: center;
+    align-items: center;
+    background-color: #cdd6e0;
+    border-top-left-radius: 5px;
+    border-top-right-radius: 5px;
+}
+
+.modal-title {
+    font-size: 1.20rem;
+    font-weight: bold;
+    text-align: center;
+    flex: 1;
+    color: rgb(70, 68, 68);
+}
+
+.btn-warning {
+    background-color: #f8b64c;
+    border: solid 1px #f8b64c;
+    color: #ffffff;
+}
+
+.modal{
+    margin-top: 50px;
+}

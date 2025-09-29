@@ -1,0 +1,14 @@
+.flex{
+    display: flex;
+}
+.inv-headers{
+    background-color: #d0e5f9;
+
+}
+.flex div{
+    padding: 20px;
+    padding-left: 30px !important;
+}
+.mt-50{
+    margin-top: 50px;
+}

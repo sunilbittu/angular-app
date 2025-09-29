@@ -1,0 +1,251 @@
+<div class="container-fluid">
+  <div class="d-flex align-items-center mt-2">
+    <div class="m-2">
+      <div class="h-size"><em class="fa fa-user"></em> <strong> Income Tax Slab</strong></div>
+    </div>
+    <div class="flex-fill"></div>
+  </div>
+  <br>
+  <div class="alert alert-success success-alert" *ngIf="saveAlert">
+    <h4><em class="icon fa fa-check"></em> Saved!</h4>
+    Record has been Saved successfully.
+  </div>
+  <div class="alert alert-success success-alert" *ngIf="updateAlert">
+    <h4><em class="icon fa fa-check"></em> Updated!</h4>
+    Record has been Updated successfully.
+  </div>
+  <div class="alert alert-danger success-alert" *ngIf="deleteAlert">
+    <h4><em class="icon fa fa-check"></em> Deleted!</h4>
+    Record has been Deleted successfully.
+  </div>
+  <div>
+    <table class="table table-striped table-bordered">
+      <thead class="t-head">
+        <tr>
+          <th *ngFor="let head of incometaxHeaders" id="headers"><a>{{head}}</a></th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngIf="!toggleLoader">
+          <td colspan="6">
+            <img src="./assets/images/loader-icon.gif" class="loader-margin img-responsive" alt="loading....">
+          </td>
+        </tr>
+        <tr *ngFor="let data of slabData">
+          <td>{{data.slabId}}</td>
+          <td>{{data.financialYearName}}</td>
+          <td>{{data.lowerLimit}}</td>
+          <td>{{data.upperLimit}}</td>
+          <td>{{data.slabPercentage}}</td>
+          <td class="action-width align-center">
+            <a title="Edit" class="icon-margin edit"><em class="fas fa-user-edit" data-toggle="modal" data-target="#add"
+                (click)="edit(data)"></em></a>
+            <a title="Delete" class="icon-margin"><em class="fa fa-trash" data-toggle="modal"
+                data-target="#confirmDelete" (click)="remove(data)"></em></a>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div>
+    <div class="row m-2">
+      <div class="col-12 p-0 pull-down-8">
+        <button id="btn_add" type="button" data-toggle="modal" data-target="#add" class="button btn-primary button"
+          (click)="addClick()"><em class="fas fa-user-plus"></em>
+          Add</button>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="modal fade common-model" id="add">
+  <div class="modal-dialog modal-md">
+    <div class="modal-content model">
+      <form [formGroup]="form" (ngSubmit)="check()">
+        <div class="modal-header">
+          <div class="modal-title"><em class="fas fa-plus"></em>/ <em class="fas fa-edit ml-1"></em>Add Income Tax Slab
+          </div>
+          <button type="button" class="close" data-dismiss="modal" (click)="resetTheForm()">&times;</button>
+        </div>
+        <div class="modal-body">
+          <div class="row">
+
+            <div class="col-md-12">
+              <div>
+                <table class="model-tbl">
+                  <tr>
+                    <td class="td-width-1">
+                      <label>Financial Year<span class="color-red">*</span></label>
+                    </td>
+                    <td class="td-width">
+                      <select [(ngModel)]="financialYearModel" [ngModelOptions]="{standalone: true}"
+                        class="custom-select-box form-control">
+                        <option value="" disabled>Please select financial year</option>
+                        <option *ngFor="let year of financialYearList" [value]=year.financialYearId>
+                          {{year.financialYear}}
+                        </option>
+                      </select>
+                      <span span class="color-red" *ngIf="submitted && financialYearModel == ''">Financial Year can't be blank.</span>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td class="padding-top-5">
+                      <label>Lower Limit<span class="color-red">*</span></label>
+                    </td>
+                    <td><input type="text" class="form-control pull-top-5" placeholder="Please Enter Lower Limit"
+                        formControlName="lowerLimit">
+                      <span class="color-red" *ngIf="submitted && form_.lowerLimit.errors">Lower Limit
+                          can't be blank
+                      </span>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td class="padding-top-5">
+                      <label>Upper Limit<span class="color-red">*</span></label>
+                    </td>
+                    <td><input type="text" class="form-control pull-top-5" placeholder="Please Enter Upper Limit"
+                        formControlName="upperLimit">
+                        <span class="color-red" *ngIf="submitted && form_.upperLimit.errors">Upper Limit
+                          can't be blank
+                      </span></td>
+                  </tr>
+                  <tr>
+                    <td class="padding-top-5">
+                      <label>Slab Percentage<span class="color-red">*</span></label>
+                    </td>
+                    <td><input type="text" class="form-control pull-top-5" placeholder="Please Enter Slab Percentage"
+                        formControlName="slabPercentage">
+                        <span class="color-red" *ngIf="submitted && form_.slabPercentage.errors">Slab Percentage
+                          can't be blank
+                      </span></td>  
+                  </tr>
+                  <tr>
+                    <td class="padding-top-5">
+                      <label>Order<span class="color-red">*</span></label>
+                    </td>
+                    <td><input type="text" class="form-control pull-top-5" placeholder="Please Enter Slab Order"
+                        formControlName="remarks">
+                        <span class="color-red" *ngIf="submitted && form_.remarks.errors">Order
+                          can't be blank
+                      </span></td>
+                  </tr>
+                </table>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!-- Modal footer -->
+        <span class="color-red pull-left-5" *ngIf="isTaxSlabExist && submitText =='Save'">Income Tax Slab is already exist with Financial Year and Order in DB.</span>
+        <hr>
+        <div class="row btn-footer">
+          <div class="col-md-6 pull-left">
+            <button type="submit" id="btnComponentSave" class="button btn-primary btn-style"><em
+                class="fas fa-save"></em>
+              {{submitText}}</button>
+          </div>
+          <div class="col-md-6 pull-right"  *ngIf="submitText == 'Save'">
+            <button type="button" class="button btn-warning btn-style" (click)="resetTheForm()">Clear</button>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+<!-- <div class="modal fade common-model" id="add">
+  <div class="modal-dialog modal-md">
+    <div class="modal-content model">
+      <div class="modal-header">
+        <div class="modal-title"><em class="fas fa-plus"></em>/ <em class="fas fa-edit ml-1"></em>Add Income Tax Slab
+        </div>
+        <button type="button" class="close" data-dismiss="modal" (click)="resetTheForm()">&times;</button>
+      </div>
+      <div class="modal-body">
+        <div *ngFor="let slab of taxSlabList;let i=index">
+          <div class="row">
+            <div class="col-md-12">
+              <div>
+                <h3><u>Level {{i+1}} Income tax slab</u></h3>
+                <table class="model-tbl">
+                  <tr>
+                    <td class="td-width-1">
+                      <label>Financial Year<span class="color-red">*</span></label>
+                    </td>
+                    <td class="td-width">
+                      <select [(ngModel)]="taxSlabList[i].financialYear" [ngModelOptions]="{standalone: true}"
+                        class="custom-select-box form-control" (change)="financialYearChange($event)">
+                        <option value="" disabled>Please select financial year</option>
+                        <option *ngFor="let year of financialYearList" [value]=year.financialYearId>
+                          {{year.financialYear}}
+                        </option>
+                      </select>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td class="padding-top-5">
+                      <label>Lower Limit<span class="color-red">*</span></label>
+                    </td>
+                    <td><input type="text" class="form-control pull-top-5" placeholder="Please Enter Lower Limit"
+                        [(ngModel)]="taxSlabList[i].lowerLimit" name="name{{i}}"></td>
+                  </tr>
+                  <tr>
+                    <td class="padding-top-5">
+                      <label>Upper Limit<span class="color-red">*</span></label>
+                    </td>
+                    <td><input type="text" class="form-control pull-top-5" placeholder="Please Enter Upper Limit"
+                        [(ngModel)]="taxSlabList[i].upperLimit" name="name{{i}}"></td>
+                  </tr>
+                  <tr>
+                    <td class="padding-top-5">
+                      <label>Slab Percentage<span class="color-red">*</span></label>
+                    </td>
+                    <td><input type="text" class="form-control pull-top-5" placeholder="Please Enter Slab Percentage"
+                        [(ngModel)]="taxSlabList[i].slabPercentage" name="name{{i}}"></td>
+                  </tr>
+                  <tr>
+                    <td class="padding-top-5">
+                      <label>Order<span class="color-red">*</span></label>
+                    </td>
+                    <td><input type="text" class="form-control pull-top-5" placeholder="Please Enter Slab Order"
+                        [(ngModel)]="taxSlabList[i].remarks" name="name{{i}}"></td>
+                  </tr>
+                </table>
+                <hr>
+              </div>
+            </div>
+          </div>
+        </div>
+        <button id="btn_add" type="button" class="button btn-primary button" (click)="addNew()"><em
+            class="fas fa-user-plus"></em>
+          Add</button>
+      </div>
+      <hr>
+      <div class="row btn-footer">
+        <div class="col-md-6 pull-left">
+          <button type="submit" (click)="saveIncomeSlab()" id="btnComponentSave" class="button btn-primary btn-style"><em class="fas fa-save"></em>
+            {{submitText}}</button>
+        </div>
+        <div class="col-md-6 pull-right" *ngIf="submitText == 'Save'">
+          <button type="button" class="button btn-warning btn-style" (click)="resetTheForm()">Clear</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div> -->
+
+<!-- Delete model Pop up -->
+
+<div class="modal fade" id="confirmDelete" role="dialog">
+  <div class="modal-dialog">
+
+    <!-- Modal content-->
+    <div class="modal-content">
+      <div class="modal-body"><button type="button" class="close" data-dismiss="modal">&times;</button>
+        <p>Are you sure you want to delete selected items?</p>
+      </div>
+      <div class="modal-footer" style="justify-content: flex-end;">
+        <button type="button" class="btn btn-default btn-sm" data-dismiss="modal">Close</button>
+        <button type="button" data-dismiss="modal" class="btn btn-primary btn-sm" (click)="deleteSlab()">Ok</button>
+      </div>
+    </div>
+  </div>
+</div>

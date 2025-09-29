@@ -1,0 +1,161 @@
+<div class="container-fluid">
+    <div class="d-flex align-items-center mt-2">
+        <div class="m-2">
+            <div class="h-size"><i class="fa fa-user"></i> <b> Resource Recruitment Request Processing</b></div>
+        </div>
+        <div class="flex-fill">
+        </div>
+        <div class="m-3"><input class="form-control rounded-pill py-2 border-right-0 border" type="search"
+            placeholder="search" id="example-search-input" >
+    </div>
+    </div>
+    <div class="row">
+        <div class="col-md-12">
+            <table class="table table-bordered table-hover table-sm">
+                <thead class="t-head">
+                    <tr>
+                        <th *ngFor="let head of headers2" id="headers1"><a>{{head}}</a></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngIf="toggleLoader">
+                        <td colspan="11">
+                            <img src="./assets/images/loader-icon.gif" class="loader-margin img-responsive"
+                                alt="loading....">
+                        </td>
+                    </tr>
+                    <tr *ngFor="let resource of resourceList; let i=index" [class.active]="i === highlightRow">
+                        <td class="action-width align-center">{{i + 1}}</td>
+                        <td>{{resource.requestRaisedByFirstName}} {{resource.requestRaisedByLastName}}</td>
+                        <td>{{resource.requestDate}}</td>
+                        <td>{{resource.resourceTitle}}</td>
+                        <td>{{resource.project.projectName}}</td>
+                        <td><span *ngIf="(i == highlightRow && btnDisabled)">
+                                <input type="text" [(ngModel)]="resource.hiringStartDate" bsDatepicker
+                                    placeholder="Please Select Date" readonly
+                                    [bsConfig]="{ isAnimated: true, dateInputFormat: 'DD-MM-YYYY' }" bsDatepicker
+                                    (bsValueChange)="onHiringStartDateValueChange($event)" placement="bottom"
+                                    class="text form-control pull-top-5" maxlength="50" />
+                            </span>
+                            <span *ngIf="!(i == highlightRow && btnDisabled)">
+                                <!-- <input type="text" class="form-control" [(ngModel)]="resource.hiringStartDate"
+                                    placeholder="Please Select Date" readonly> -->
+                                {{resource.hiringStartDate}}
+                            </span>
+                        </td>
+                        <td><a title="View JD" data-toggle="modal" data-target="#view-jd" (click)="viewJD(resource)"
+                                class="icon-margin edit">{{resource.jobId}}</a>
+                        </td>
+                        <td>
+                            <span><input id="deny" class="radio-size" type="radio" value="DENY" name="{{i}}"
+                                    [(ngModel)]="resource.budgetApprovalAction"
+                                    [checked]="resource.budgetApprovalAction == 'DENY'"
+                                    [disabled]="!(i == highlightRow && btnDisabled)">
+                                <label> Deny</label></span>&nbsp;
+                            <span><input id="approve" class="radio-size" type="radio" value="APPROVED" name="{{i}}"
+                                    [(ngModel)]="resource.budgetApprovalAction"
+                                    [checked]="resource.budgetApprovalAction == 'APPROVED'"
+                                    [disabled]="!(i == highlightRow && btnDisabled)">
+                                <label> Approve</label></span>
+                        </td>
+                        <td><span *ngIf="resource.budgetApprovalAction == 'APPROVED'"><i
+                                    class="fa fa-check-circle green fa-2x" aria-hidden="true"></i></span>
+                            <span *ngIf="resource.budgetApprovalAction == 'DENY'"><i class="fa fa-times-circle fa-2x"
+                                    aria-hidden="true"></i></span>
+                        </td>
+                        <td><input type="text" class="form-control" placeholder="Please Enter Remarks"
+                                [(ngModel)]="resource.budgetApprovalRemarks"
+                                [disabled]="!(i == highlightRow && btnDisabled)"></td>
+                        <td *ngIf="i !== highlightRow"><button id="btn_add" type="button" [disabled]="btnDisabled"
+                                (click)="clickUpdate(i,resource.jobId, resource)" class="button btn-primary button">
+                                <i class="fas fa-user-edit"></i> Edit</button></td>
+                        <td *ngIf="btnDisabled && i == highlightRow">
+                            <button id="btn_add" type="button" [disabled]="submitProcessing" (click)="submit()"
+                                class="button btn-primary button"><i class="fas fa-save"></i> Update <i
+                                    class="fa fa-spinner fa-spin" *ngIf="submitProcessing"
+                                    style="font-size:19px"></i></button>
+                            <button id="btn_add" type="button" (click)="cancel()" [disabled]="submitProcessing"
+                                class="button btn-warning button"> Cancel</button>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+<div class="modal fade common-model" id="view-jd">
+    <div class="modal-dialog modal-xl">
+        <div class="modal-content model width">
+            <!-- Modal Header -->
+            <div class="modal-header">
+                <div class="modal-title"><i class="fa fa-eye" aria-hidden="true"></i> View JD
+                </div>
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+            </div>
+            <!-- Modal body -->
+            <div class="modal-body">
+                <div>
+                    <div class="row col-12 padding-field-bottom">
+                        <div class="col-2">
+                            <label>Resource Title</label>
+                        </div>
+                        <div class="col-10">
+                            {{newResourceIndent.resourceTitle}}
+                        </div>
+
+                    </div>
+                    <div class="row col-12 padding-field-bottom">
+                        <div class="col-2">
+                            <label>For which project</label>
+                        </div>
+                        <div class="col-10">
+                            {{newResourceIndent.projectName}}
+                        </div>
+                    </div>
+                    <div class="row col-12 padding-field-bottom">
+                        <div class="col-2">
+                            <label>Number Required</label>
+                        </div>
+                        <div class="col-10">
+                            {{newResourceIndent.numberRequired}}
+                        </div>
+                    </div>
+                    <div class="row col-12 padding-field-bottom">
+                        <div class="col-2">
+                            <label>Request Reason</label>
+                        </div>
+                        <div class="col-10">
+                            {{newResourceIndent.requestReason}}
+                        </div>
+                    </div>
+
+                    <div class="row col-12 padding-field-bottom">
+                        <div class="col-2">
+                            <label>Hiring Start Date</label>
+                        </div>
+                        <div class="col-10">
+                            {{newResourceIndent.hiringStartDate}}
+                        </div>
+                    </div>
+                    <div class="row col-12 padding-field-bottom">
+                        <div class="col-2">
+                            <label>Job Description</label>
+                        </div>
+                        <div class="col-10 align-justify">{{newResourceIndent.jobDescription}}</div>
+                    </div>
+                    <div class="row col-12 padding-field-bottom">
+                        <div class="col-2">
+                            <label>Attachment</label>
+                        </div>
+                        <div class="col-10">
+                            <a title="Download to View" class="icon-margin"
+                                (click)="downloadDocumentAttachment(newResourceIndent.filePath, newResourceIndent.fileName)"
+                                target="_blank"><i class="fas fa-download"></i></a>
+                            {{newResourceIndent.fileName}}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

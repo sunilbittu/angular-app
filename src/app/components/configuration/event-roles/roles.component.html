@@ -1,0 +1,256 @@
+<div class="container-fluid">
+    <div class="d-flex align-items-center mt-2">
+        <div class="m-2">
+            <div class="h-size"><i class="fa fa-user"></i> <b>Roles</b></div>
+        </div>
+        <div class="flex-fill">
+        </div>
+        <!-- <div class="m-3"><i class="fa fa-search"></i>
+            <span> Search </span><input type="text" value="" (keyup)="getCurrencyListBySearchParam($event)">
+        </div> -->
+    </div>
+    <div class="row">
+        <div class="col-md-12">
+            <table class="table table-bordered table-hover table-sm">
+                <thead class="t-head">
+                    <tr>
+                        <th *ngFor="let head of headers"><a>{{head}}</a></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let role of roleList">
+                        <td>{{role.roleName}}</td>
+                        <td>{{role.roleDescreption}}</td>
+                        <td>
+                            <!-- <a title="View" class="icon-margin" (click)="getRolePermissionDetails(role)"
+                                data-toggle="modal" data-target="#rolePermission_modal"><span
+                                    class="fas fa-eye"></span></a> -->
+                            <a title="Edit" class="icon-margin" (click)="editRole(role)" data-toggle="modal"
+                                data-target="#rolePopup"><i class="fas fa-user-edit"></i></a>
+                            <a title="Delete" class="icon-margin" mwlConfirmationPopover [popoverTitle]="popoverTitle"
+                                [popoverMessage]="popoverMessage" placement="left"
+                                (confirm)="deleteRoleById(role.roleId)" (cancel)="cancelClicked = true"><span
+                                    class="fas fa-trash"></span></a>
+                        </td>
+                    </tr>
+                </tbody>
+
+            </table>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-12">
+            <button type="button" class="btn btn-primary btn-sm" (click)="modelShow()" data-toggle="modal"
+                data-target="#rolePopup">
+                <i class="fas fa-user-plus"></i> Add
+            </button>
+        </div>
+    </div>
+
+    <form [formGroup]=roleMastersForm (ngSubmit)="onSubmit()">
+        <div class="modal fade" id="rolePopup" tabindex="-1" role="dialog" aria-labelledby="rolePopupTitle"
+            aria-hidden="true">
+            <div class="modal-dialog modal-lg" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h4 class="modal-title"><i class="fas fa-plus mr-1"></i> / <i class="fas fa-edit mr-1"></i>Role
+                            Details </h4>
+
+                        <button type="button" class="close" #closebutton data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="container">
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label for="roleName" class="col-form-label">Role Name<span
+                                                class="color-red">*</span></label>
+                                        <input type="text" formControlName="roleName"
+                                            (input)=checkIfalreadyExist2()
+                                            class="form-control form-control-sm" id="roleName">
+                                        <span class="color-red" *ngIf="submitted && form_.roleName.errors">Role
+                                            Name
+                                            {{requiredErrorText}}</span>
+                                        <span class="color-red" *ngIf="exist2"> Role Name Already Exist</span>
+                                    </div>
+                                </div>
+
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label for="roleDescreption" class="col-form-label">Role Description <span
+                                                class="color-red">*</span>
+
+                                        </label>
+                                        <input type="text" formControlName="roleDescreption"
+                                            (input)=checkIfalreadyExist()
+                                            class="form-control form-control-sm" id="roleDescreption">
+                                        <span class="color-red" *ngIf="submitted && form_.roleDescreption.errors">Role
+                                            Description
+                                            {{requiredErrorText}}</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+
+                        <div *ngIf=editButtonEnable>
+
+                            <button type="button" class="btn btn-warning btn-sm" data-dismiss="modal">Cancel</button>
+                            <button type="button" class="btn btn-success btn-sm"
+                                (click)="updateRoleMaster(0)">Update</button>
+                        </div>
+
+                        <div *ngIf=!editButtonEnable>
+
+                            <button type="button" class="btn btn-warning btn-sm" data-dismiss="modal">Cancel</button>
+                            <button type="submit" class="btn btn-primary btn-sm">Save</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+
+</div>
+
+<div class="modal fade common-model" id="rolePermission_modal" style="margin-top:40px;">
+    <div class="modal-dialog modal-xl" style="max-width: 1270px;">
+        <div class="modal-content">
+            <!-- <form > -->
+            <div class="modal-header">
+                <div class="modal-title"> Role Permissions Details</div>
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="container-fluid">
+                        <div class="d-flex align-items-center mt-2">
+                            <div class="m-2">
+                                <div class="h-size"><em class="fa fa-user"></em> <strong> Permissions Assignment to Role
+                                        : {{permissionRoleName}}</strong></div>
+                            </div>
+                            <div class="flex-fill">
+                            </div>
+                        </div>
+                        <section class="content">
+                            <div class="alert alert-danger" *ngIf="isFormValuesSame">
+                                Source and destination form values are same, please check once.
+                            </div>
+                            <div class="row">
+                                <div class="col-md-5 column-1">
+
+                                    <div class="text-center">
+                                        <b>Permissions List :</b>
+                                    </div>
+                                    <div>
+                                        <input type="text" class="form-control" [(ngModel)]="searchItem"
+                                            placeholder="Search..." />
+                                    </div>
+                                    <div class="border-design over">
+                                        <label class="margin-left-10 s-lable font-15 text-center"><b><u>Please select
+                                                    Permissions</u></b></label>
+                                        <table class="margin-left-10">
+                                            <tr>
+                                                <th>
+                                                    <input type="checkbox" class="select-all" name="allStudents"
+                                                        [checked]="permissionsList.length == 0"
+                                                        [value]="permissionsList" (change)="selectAll($event)"
+                                                        [disabled]="permissionsList.length == 0">
+                                                </th>
+                                                <th>
+                                                    <label class="s-lable">&nbsp;Permissions</label>
+                                                </th>
+                                            </tr>
+                                            <tr *ngIf="toggleLoader">
+                                                <td colspan="2">
+                                                    <img src="./assets/images/loader-icon.gif"
+                                                        class="loader-margin img-responsive" alt="loading....">
+                                                </td>
+                                            </tr>
+                                            <tr *ngFor="let emp of permissionsList | search2 : searchItem">
+                                                <td>
+                                                    <input type="checkbox" class="status-check select-all"
+                                                        [checked]="emp.selected" (change)="onClickCheckBox(emp)"
+                                                        name="status">
+                                                </td>
+                                                <td>&nbsp;{{emp.permission}}</td>
+                                            </tr>
+                                        </table>
+                                    </div>
+                                </div>
+                                <div class="col-md-1 text-center column-2">
+                                    <div>
+                                        <a (click)="addRight()" class="btn btn-success"><i
+                                                class="fas fa-angle-double-right fa-lg"
+                                                style="margin-top: 7px;"></i></a>
+                                        <br><br>
+                                        <a (click)="addLeft()" class="btn btn-danger"><i class="fas fa-angle-double-left fa-lg"
+                                                style="margin-top: 7px;"></i></a>
+                                    </div>
+                                </div>
+                                <div class="col-md-5 column-1">
+                                    <div class="text-center">
+                                        <b>Assigned Permissions List :</b>
+                                    </div>
+                                    <div>
+                                        <input type="text" class="form-control" [(ngModel)]="searchInput"
+                                            placeholder="Search..." />
+                                    </div>
+                                    <div class="border-design over">
+                                        <label class="margin-left-10 s-lable font-15"><strong><u>Please select
+                                                    Permissions</u></strong></label>
+                                        <table class="margin-left-10">
+                                            <tr>
+                                                <th>
+                                                    <input type="checkbox" class="select-all" name="allStudents"
+                                                        [checked]="destinationPermissionsList.length == 0"
+                                                        [value]="destinationPermissionsList"
+                                                        (change)="selectAllDestination($event)"
+                                                        [disabled]="destinationPermissionsList.length == 0">
+                                                </th>
+                                                <th>
+                                                    <label class="s-lable">&nbsp;Assigned Permissions</label>
+                                                </th>
+                                            </tr>
+                                            <tr *ngIf="toggleLoaderDestination">
+                                                <td colspan="2">
+                                                    <img src="./assets/images/loader-icon.gif"
+                                                        class="loader-margin img-responsive" alt="loading....">
+                                                </td>
+                                            </tr>
+                                            <tr *ngFor="let emp of destinationPermissionsList | search2 : searchInput">
+                                                <td>
+                                                    <input type="checkbox" class="status-check select-all"
+                                                        [checked]="emp.selected"
+                                                        (change)="onClickCheckBoxDestination(emp)" name="status">
+                                                </td>
+                                                <td>&nbsp;{{emp.permission}}</td>
+                                            </tr>
+                                        </table>
+                                    </div>
+                                </div>
+                                <!-- </div> -->
+                            </div>
+                            <br>
+                            <div class="row">
+                                <div class="col-md-12 text-center">
+                                    <button type="submit" id="btnComponentSave" class="button btn-primary btn-style"
+                                        (click)="update()"><i class="fas fa-save"></i>
+                                        Update</button>
+                                    <button type="submit" id="btnComponentSave" class="button btn-warning btn-style"
+                                        (click)="onClick()">
+                                        Clear</button>
+                                    <!-- <button type="submit" id="btnComponentSave" class="button btn-danger btn-style" (click)="onClick()">
+                                        Cancel</button> -->
+                                </div>
+                            </div>
+                        </section>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

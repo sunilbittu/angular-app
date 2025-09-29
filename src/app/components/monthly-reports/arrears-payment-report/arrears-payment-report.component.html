@@ -1,0 +1,83 @@
+<div class="container-fluid">
+    <div class="d-flex align-items-center mt-2">
+        <div class="m-2">
+            <div class="h-size"><em class="fa fa-user mr-1"></em> <strong>Arrears Payment Report</strong>
+            </div>
+        </div>
+    </div>
+    <br>
+    <div>
+        <div class="row">
+            <div class="form-group col-md-3">
+                <label for="empbranch">Branch <span class="color-red">*</span></label>
+                <select id="empbranch" [(ngModel)]="branchModel" class="form-control" name="branch" #branch
+                    (change)="onchangeBranch(branch.value)">
+                    <option value="" disabled selected>Select Branch</option>
+                    <option *ngFor="let data of branchDetailsList" [value]="data.companyBranchDetailsId">
+                        {{data.branchName}}</option>
+                </select>
+                <span *ngIf="!branchModel && submitted" class="color-red pull-left-5">
+                    &nbsp;<strong>Please Select Branch</strong></span>
+            </div>
+            <div class="form-group col-md-3">
+                <label for="libraryType">Department <span class="color-red">*</span></label>
+                <select id="libraryType" [(ngModel)]="departmentModel" name="department" class="form-control"
+                    name="department" (change)="getDepartmentheadsDetails()">
+                    <option value="" disabled selected>Select Department</option>
+                    <option *ngFor="let data of departmentsList" [value]="data.departmentId">
+                        {{data.departmentName}}</option>
+                </select>
+                <span *ngIf="!departmentModel && submitted" class="color-red pull-left-5">
+                    &nbsp;<strong>Please Select Department</strong></span>
+            </div>
+            <div class="form-group col-md-2" style="padding-top: 25px;">
+                <button type="submit" id="btn_projection" class="button btn-primary btn-size"
+                    (click)="submit()">Search</button>
+                &nbsp;
+                <button type="button" id="btn_projection" (click)="clear()"
+                    class="button btn-danger m-auto btn-size">Clear</button>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-12">
+            <table class="table table-bordered table-hover table-sm">
+                <thead class="t-head">
+                    <tr>
+                        <th *ngFor="let head of arrearHeaders" id="headers1"><a>{{head}}</a></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let data of arrearsList;let i=index">
+                        <td>{{data.employeeId.employeeCode}}</td>
+                        <td>{{data.employeeId.firstName}} {{data.employeeId.lastName}}</td>
+                        <td>{{data.employeeId.branchDetail.branchName}}</td>
+                        <td>{{data.employeeId.department.departmentName}}</td>
+                        <td>{{data.arrearsAmount}}</td>
+                    </tr>
+                </tbody>
+                <tfoot *ngIf="totalAmount>0">
+                    <tr>
+                        <th></th>
+                        <th></th>
+                        <th></th>
+                        <th></th>
+                        <th>{{totalAmount}}</th>
+                    </tr>
+                </tfoot>
+            </table>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-6">
+            <button type="button" [disabled]="arrearsList.length == 0" class="btn btn-labeled btn-outline-danger btn-sm"
+                (click)="exportTable('PDF')">
+                <span class="btn-label"><i class="fa fa-file-pdf-o" aria-hidden="true"></i></span>&nbsp;Export To
+                PDF</button>&nbsp;&nbsp;&nbsp;
+            <button type="button" [disabled]="arrearsList.length == 0"
+                class="btn btn-labeled btn-outline-success btn-sm" (click)="exportTable('EXCEL')">
+                <span class="btn-label"><i class="fa fa-file-excel-o" aria-hidden="true"></i></span>&nbsp;Export To
+                Excel</button>
+        </div>
+    </div>
+</div>

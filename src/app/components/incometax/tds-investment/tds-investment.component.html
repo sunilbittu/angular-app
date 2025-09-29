@@ -1,0 +1,97 @@
+<div class="container-fluid">
+    <div class="d-flex align-items-center mt-2">
+        <div class="m-2">
+            <div class="h-size"><i class="fa fa-user"></i> <b>TDS Investment Limits</b></div>
+        </div>
+        <div class="flex-fill">
+        </div>
+
+    </div>
+    <br>
+    <div class="row">
+        <div class="col-md-12">
+            <table class="table table-bordered table-hover table-sm">
+                <thead class="t-head">
+                    <tr>
+                        <th *ngFor="let head of headers"><a>{{head}}</a></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let data of investmentLimits;let i=index">
+                        <td>{{i+1}}</td>
+                        <td>{{data.financialYearName}}</td>
+                        <td>{{data.investmentType}}</td>
+                        <td>{{data.tdsLimit}}</td>
+                        <td>{{data.limitRemarks}}</td>
+                        <td>
+                            <!-- <a  title="View" class="icon-margin"><span class="fas fa-eye"></span></a> -->
+                            <a title="Edit" class="icon-margin" (click)="editTdsLimits(data)" data-toggle="modal"
+                                data-target="#myModal-add"><i class="fas fa-user-edit"></i></a>
+                        </td>
+                    </tr>
+                </tbody>
+
+            </table>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-12">
+            <button id="btn_add" type="button" class="btn btn-primary button" data-toggle="modal"
+                data-target="#myModal-add"><i class="fas fa-user-plus"></i>Add</button>
+        </div>
+    </div>
+</div>
+<div class="modal fade common-model" id="myModal-add">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+
+            <!-- Modal Header -->
+            <div class="modal-header">
+                <h4 class="modal-title" head><em class="fas fa-plus mr-1"></em> / <em class="fas fa-edit mr-1"></em>Add
+                    TDS Investment Limits</h4>
+
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+            </div>
+
+            <!-- Modal body -->
+            <div class="form-group ml-50">
+                <label for="city">Financial Year:<span class="color-red">*</span></label>
+                <select class="form-control" width="100%" [(ngModel)]="yearModel" name=year>
+                    <option>Please Select Year</option>
+                    <option *ngFor="let year of investmentYear" value={{year.financialYearId}}>{{year.financialYear}}
+                    </option>
+                </select>
+                <span span class="color-red" *ngIf="submitted && yearModel == ''">Financial Year can't be blank.</span>
+            </div>
+            <div class="form-group ml-50">
+                <label for="city">Investment Type:<span class="color-red">*</span></label>
+                <select class="form-control" [(ngModel)]="InvestmentType" name="type">
+                    <option value="">Please Select Year</option>
+                    <option *ngFor="let type of invtypes" value={{type.type}}>{{type.type}}</option>
+                </select>
+                <span span class="color-red" *ngIf="submitted && InvestmentType == ''">Investment Type can't be
+                    blank.</span>
+            </div>
+            <div class="form-group ml-50">
+                <label for="city">TDS Limit:<span class="color-red">*</span></label>
+                <input class="form-control form-control-sm" type="number" [(ngModel)]="tdsLimit" id="nationality1">
+                <span span class="color-red" *ngIf="submitted && tdsLimit == ''">TDS Limit can't be blank.</span>
+            </div>
+            <div class="form-group ml-50">
+                <label for="city">Remarks:</label>
+                <textarea class="form-control form-control-sm" [(ngModel)]="Remarks"></textarea>
+            </div>
+
+            <!-- Modal footer -->
+
+            <div class="modal-footer">
+                <button type="button" class="btn btn-warning btn-sm" (click)="clear()">Clear</button>
+                <button type="button" class="btn btn-success btn-sm" *ngIf="togglebtn"
+                    (click)="createInvestment()">Save</button>
+                <button type="button" class="btn btn-success btn-sm" *ngIf="!togglebtn"
+                    (click)="UpdateInvestment()">Update</button>
+
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,533 @@
+<div class="container-fluid">
+    <div class="d-flex align-items-center mt-2">
+        <div class="flex-fill">
+        </div>
+        <div class="m-3"><a data-action="live-emp" class="tab-lnk active"><i class="fas fa-user"></i><span
+                    class="info-text font-bold fnt-5 ml-2 mr-1"
+                    id="spnLiveEmployeeCount">{{totalActiveEmployees}}</span>Live Employees</a>
+        </div>
+        <div class="m-3"><a data-action="left-emp" class="tab-lnk" routerLink="/HRMS/Monthly-reports/terminated-employee-report"><i class="fas fa-user"></i><span
+                    class="danger-text font-bold fnt-5 ml-2 mr-1"
+                    id="spnLeftEmployeeCount">{{totalResignEmployees}}</span>Left Employees</a>
+        </div>
+        <div class="m-3"><a data-action="total-emp" class="tab-lnk"><i class="fas fa-users"></i><span
+                    class="warning-text font-bold fnt-5 ml-2 mr-1"
+                    id="spnTotalEmployeeCount">{{totalActiveEmployees+totalResignEmployees}}</span>Total
+                Employees</a>
+        </div>
+        <div class="m-3"><a data-action="no-ss" class="tab-lnk" routerLink="../emp-sal-structure"><i class="fas fa-users"></i><span
+                    class="warning-text font-bold fnt-5 ml-2 mr-1" id="spnSSNotFound">{{totalSSNotFoundEmployees}}</span>SS Not Found</a></div>
+        <div class="m-3"><input class="form-control rounded-pill py-2 border-right-0 border" type="search"
+                placeholder="search" id="example-search-input" [(ngModel)]="searchModel"
+                (ngModelChange)="getAllEmployees()">
+                
+        </div>
+        <div class="m-3">
+            <button id="btn_add" type="button" class="button btn-primary button" (click)="addEmployee()"><i
+                class="fas fa-user-plus"></i>Add</button>
+        </div>
+
+    </div>
+    <div class="row">
+        <div class="col-md-12">
+            <table sortable-table (sorted)="onSorted($event)" class="table table-bordered table-hover table-sm">
+                <thead class="t-head">
+                    <tr>
+                        <!-- <th *ngFor="let head of headers"><a>{{head}}</a></th> -->
+                        <th sortable-column="employeeId"><a> Employee Id</a></th> 
+                        <th sortable-column="employeeCode"><a> Employee Code</a></th>
+                        <th sortable-column="firstName"><a> Employee Name</a></th>
+                        <th sortable-column="branchName"><a> Branch</a></th>
+                        <th sortable-column="departmentName"><a> Department</a></th>
+                        <th sortable-column="designationName"><a> Designation</a></th>
+                        <th sortable-column="divisionName"><a> Division</a></th>
+                        <th sortable-column="gradeName"><a> Grade</a></th>
+                        <th sortable-column="categoryName"><a> Category</a></th>
+                        <th sortable-column="projectName"><a> Project</a></th>
+                        <th><a> Action</a></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let employee of sortedData | paginate: {
+                        itemsPerPage: itemsPerPage,
+                        currentPage: currentPage,
+                        totalItems: totalItems
+                      };let i=index">
+                        <td>{{employee.employeeId}}</td>
+                        <td>{{employee.employeeCode}}</td>
+                        <td><span class="mr-2">{{employee.firstName | titlecase}}</span> <span>{{employee.lastName | titlecase}}</span></td>
+                        <td>{{employee.branchName}}</td>
+                        <td>{{employee.departmentName}}</td>
+                        <td>{{employee.designationName}}</td>
+                        <td>{{employee.divisionName}}</td>
+                        <td>{{employee.gradeName}}</td>
+                        <td>{{employee.categoryName}}</td>
+                        <td *ngIf="employee.project!=null">{{employee.project.projectName}}</td>
+                        <td *ngIf="employee.project==null"></td>
+                        <td class="action-width">
+                            <a *ngIf="role!='ROLE_EMPLOYEE'" title="View" class="icon-margin"
+                                (click)="getEmployeeDetailsById(employee.employeeId)" data-toggle="modal"
+                                data-target="#emp_modal"><span class="fas fa-eye"></span></a>
+                            <a *ngIf="role!='ROLE_EMPLOYEE'" title="Edit" class="icon-margin"
+                                (click)="viewEmployee(employee.employeeId, employee.departmentName)"><i class="fas fa-user-edit"></i></a>
+                            <a *ngIf="role!='ROLE_EMPLOYEE'" title="Delete" class="icon-margin" mwlConfirmationPopover
+                                [popoverTitle]="popoverTitle" [popoverMessage]="popoverMessage" placement="left"
+                                (confirm)="deleteEmployeeById(employee.employeeId)"
+                                (cancel)="cancelClicked = true"><span class="fas fa-trash"></span></a>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+            <div class="row" *ngIf="totalElements!=0">
+                <div class="col-md-6 pull-left"><span class="show-entry">Showing
+                        <span>{{showingFrom}} to {{showingTo}} of {{totalElements}} entries</span></span>&nbsp;
+                </div>
+
+                <div class="col-md-6 pull-right" *ngIf="totalItems > 0">
+                    <pagination-controls (pageChange)="pageChanged($event)"></pagination-controls>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-12">
+            <button id="btn_add" type="button" class="button btn-primary button" (click)="addEmployee()"><i
+                    class="fas fa-user-plus"></i>Add</button>
+
+            <button id="btn_add" type="button" class="button btn-primary button" data-toggle="modal"
+                data-target="#importModel"><i class="fas fa-file-excel-o"></i>Import Employees</button>
+            <!-- disabled="disabled" -->
+        </div>
+    </div>
+</div>
+<div class="modal fade common-model" id="emp_modal" style="margin-top:40px;" *ngIf="showEmployeeDetails">
+    <div class="modal-dialog modal-xl" style="max-width: 1270px;">
+        <div class="modal-content">
+            <!-- <form > -->
+            <div class="modal-header">
+                <div class="modal-title"> Employee View </div>
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="row" *ngIf="empData">
+                    <div class="col-4">
+                        <table>
+                            <tr>
+                                <td><label>Emp Code</label></td>
+                                <td><input type="text" value="{{empData.employeeCode}}" class="text form-control"
+                                        readonly />
+                                </td>
+                            </tr>
+                            <tr>
+                                <td><label>Title</label></td>
+                                <td><input type="text" value="{{empData.title}}" class="text form-control" readonly />
+                                </td>
+                            </tr>
+                            <tr>
+                                <td><label>First Name</label></td>
+                                <td><input type="text" value="{{empData.firstName}}" class="text form-control"
+                                        readonly /></td>
+                            </tr>
+                            <tr>
+                                <td><label>Middle Name</label></td>
+                                <td><input type="text" value="{{empData.middleName}}" class="text form-control"
+                                        readonly /></td>
+                            </tr>
+                            <tr>
+                                <td><label>Last Name</label></td>
+                                <td><input type="text" value="{{empData.lastName}}" class="text form-control"
+                                        readonly /></td>
+                            </tr>
+                            <tr>
+                                <td><label for="gender">Gender</label></td>
+                                <td><input type="text" value="{{empData.gender}}" class="text form-control" readonly />
+                                </td>
+                            </tr>
+                            <tr>
+                                <td><label>Father Name</label></td>
+                                <td><input type="text" value="{{empData.fatherName}}" class="text form-control"
+                                        readonly /></td>
+                            </tr>
+                            <tr>
+                                <td><label>Mother Name</label></td>
+                                <td><input type="text" value="{{empData.motherName}}" class="text form-control"
+                                        readonly /></td>
+                            </tr>
+                            <tr>
+                                <td><label>Spouse Name</label></td>
+                                <td><input type="text" value="{{empData.spouseName}}" class="text form-control"
+                                        readonly /></td>
+                            </tr>
+                            <br>
+                            <tr class="title">
+                                <td></td>
+                                <td><i class="fas fa-id-badge"></i> Identity card details </td>
+                            </tr>
+                            <tr>
+                                <td><label>Tax No.</label></td>
+                                <td><input type="text" value="{{empData.panNo}}" class="text form-control" id="Tax"
+                                        readonly />
+                                </td>
+                            </tr>
+                            <tr>
+                                <td><label>National Identity No</label></td>
+                                <td>
+                                    <input type="text" value="{{empData.aadhaarNo}}" class="text form-control"
+                                        id="aadhaarNo" readonly />
+                                </td>
+                            </tr>
+                            <tr>
+                                <td><label>Voter ID</label></td>
+                                <td>
+                                    <input type="text" value="{{empData.voterId}}" class="text form-control"
+                                        id="voterId" readonly />
+                                </td>
+                            </tr>
+                            <br>
+                            <tr class="title">
+                                <td></td>
+                                <td><i class="fas fa-piggy-bank"></i> Bank details </td>
+                            </tr>
+                            <tr>
+                                <td><label for="paymentMode">Payment Mode</label></td>
+                                <td><input type="text" value="{{empData.paymentMode}}" class="text form-control"
+                                        readonly /></td>
+                            </tr>
+                            <tr>
+                                <td><label for="bankName">Bank Name</label></td>
+                                <td><input type="text" value="{{empData.motherName}}" class="text form-control"
+                                        readonly /></td>
+                            </tr>
+                            <tr>
+                                <td><label>Account Number</label></td>
+                                <td>
+                                    <input type="text" value="{{empData.accountNo}}" class="text form-control"
+                                        id="txt_accountNumber" readonly />
+                                </td>
+                            </tr>
+                            <tr>
+                                <td><label>IFSC Code</label></td>
+                                <td>
+                                    <input type="text" value="{{empData.ifscCode}}" class="text form-control"
+                                        id="txt_IfscCode" readonly />
+                                </td>
+                            </tr>
+                            <tr>
+                                <td><label>Account Name</label></td>
+                                <td>
+                                    <input type="text" value="{{empData.accountName}}" class="text form-control"
+                                        id="txt_accountName" readonly />
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+                    <div class="col-4">
+                        <table>
+                            <tr class="title">
+                                <td></td>
+                                <td><i class="fas fa-user-check"></i> Joining details </td>
+                            </tr>
+                            <br>
+                            <tr>
+                                <td><label>Date of Birth<i></i> </label></td>
+                                <td>
+                                    <input type="text" value="{{empData.dob | date:'dd-MM-yyyy'}}" placeholder="Date of Birth" readonly
+                                        class="text form-control" id="dateOfBirth" readonly />
+                                </td>
+                            </tr>
+                            <tr>
+                                <td><label>Date of Joining</label></td>
+                                <td>
+                                    <input type="text" value="{{empData.dateOfJoining | date:'dd-MM-yyyy'}}" placeholder="Date of Joining"
+                                        class="text form-control" id="dateOfJoining" readonly readonly />
+                                </td>
+                            </tr>
+                            <tr>
+                                <td><label>Date of Confirmation </label></td>
+                                <td>
+                                    <input type="text" value="{{empData.dateOfJoiningConfirmation | date:'dd-MM-yyyy'}}"
+                                        class="text form-control" placeholder="Date of Confirmation" readonly
+                                        readonly />
+                                </td>
+                            </tr>
+                            <tr>
+                                <td><label>Provision Date</label></td>
+                                <td>
+                                    <input type="text" value="{{empData.provisionDate | date:'dd-MM-yyyy'}}" placeholder="Probation Date"
+                                        class="text form-control" id="provisionDate" readonly readonly />
+                                </td>
+                            </tr>
+                            <br>
+                            <tr class="title">
+                                <td></td>
+                                <td><i class="fas fa-list"></i> PF / ESIC details </td>
+                            </tr>
+                            <tr>
+                                <td><label for="pfapplicable">PF Applicable</label></td>
+                                <td *ngIf="empData.pfApplicable"><input type="text" value="Yes"
+                                        class="text form-control" readonly /></td>
+                                <td *ngIf="!empData.pfApplicable"><input type="text" value="No"
+                                        class="text form-control" readonly /></td>
+                            </tr>
+                            <tr>
+                                <td><label for="pfApplicableDate">PF Applicable Date</label></td>
+                                <td>
+                                    <input type="text" value="{{empData.pfApplicableDate}}"
+                                        placeholder="PF Applicable Date" readonly class="text form-control" readonly />
+                                </td>
+                            </tr>
+                            <tr>
+                                <td><label>PF Number</label></td>
+                                <td>
+                                    <input value="{{empData.pfNumber}}" type="text" class="text form-control"
+                                        id="pfNumber" readonly />
+                                </td>
+                            </tr>
+                            <tr>
+                                <td><label>UAN</label></td>
+                                <td>
+                                    <input value="{{empData.uanNo}}" type="text " class="text form-control" id="uanNo"
+                                        readonly />
+                                </td>
+                            </tr>
+                            <tr>
+                                <td><label>Is International Worker</label></td>
+                                <td *ngIf="empData.isInternationalWorker"><input type="text" value="Yes"
+                                        class="text form-control" readonly /></td>
+                                <td *ngIf="!empData.isInternationalWorker"><input type="text" value="No"
+                                        class="text form-control" readonly /></td>
+                            </tr>
+                            <tr>
+                                <td><label for="EsicApplicable"> ESIC Applicable</label></td>
+                                <td *ngIf="empData.esicApplicable"><input type="text" value="Yes"
+                                        class="text form-control" readonly /></td>
+                                <td *ngIf="!empData.esicApplicable"><input type="text" value="No"
+                                        class="text form-control" readonly /></td>
+                            </tr>
+                            <tr>
+                                <td><label>ESIC Application Date</label></td>
+                                <td>
+                                    <input type="text" value="{{empData.esicApplicableDate}}"
+                                        placeholder="ESIC Application Date" readonly placement="bottom"
+                                        class="text form-control" id="esicApplicableDate" readonly />
+                                </td>
+                            </tr>
+                            <tr>
+                                <td><label>ESIC Number</label></td>
+                                <td>
+                                    <input type="text" value="{{empData.esisNumber}}" class="text form-control"
+                                        id="esisNumber" readonly />
+                                </td>
+                            </tr>
+                            <tr>
+                                <td><label for="ptApplicable">PT Applicable</label></td>
+                                <td *ngIf="empData.ptApplicable"><input type="text" value="Yes"
+                                        class="text form-control" readonly /></td>
+                                <td *ngIf="!empData.ptApplicable"><input type="text" value="No"
+                                        class="text form-control" readonly /></td>
+                            </tr>
+                            <br>
+                            <tr class="title">
+                                <td></td>
+                                <td><i class="fas fa-user-slash"></i> Date of Leaving </td>
+                            </tr>
+                            <tr>
+                                <td><label for="dateOfLeaving">Date of Leaving</label></td>
+                                <td><input type="text" value="" class="text form-control" readonly /></td>
+                            </tr>
+                        </table>
+                    </div>
+                    <div class="col-4">
+                        <table>
+                            <tr class="title">
+                                <td></td>
+                                <td><i class="fas fa-user-cog"></i> Employee work details </td>
+                            </tr>
+                            <br>
+                            <tr>
+                                <td><label for="branch">Nationality</label></td>
+                                <td><input type="text" value="{{empData.nationality?.nationalityName}}"
+                                        class="text form-control" readonly /></td>
+                            </tr>
+                            <tr>
+                                <td><label for="branch">Branch</label></td>
+                                <td><input type="text" value="{{empData.branchDetail.branchName}}"
+                                        class="text form-control" readonly /></td>
+                            </tr>
+                            <tr>
+                                <td><label for="grade">Grade</label></td>
+                                <td><input type="text" value="{{empData.gradeMaster.gradeName}}"
+                                        class="text form-control" readonly /></td>
+                            </tr>
+                            <tr>
+                                <td><label for="department">Department</label></td>
+                                <td><input type="text" value="{{empData.department.departmentName}}"
+                                        class="text form-control" readonly /></td>
+                            </tr>
+                            <tr>
+                                <td><label>Is Department Head</label></td>
+                                <td *ngIf="empData.departmentHead"><input type="text" value="Yes"
+                                        class="text form-control" readonly /></td>
+                                <td *ngIf="!empData.departmentHead"><input type="text" value="No"
+                                        class="text form-control" readonly /></td>
+                            </tr>
+                            <tr>
+                                <td><label for="designation">Designation</label></td>
+                                <td><input type="text" value="{{empData.designation.designationName}}"
+                                        class="text form-control" readonly /></td>
+                            </tr>
+                            <tr>
+                                <td><label for="costCenteer">Cost Center</label></td>
+                                <td><input type="text" value="{{empData.costCenterMaster.costCenterName}}"
+                                        class="text form-control" readonly /></td>
+                            </tr>
+                            <tr>
+                                <td><label for="project"> Project</label></td>
+                                <td><input type="text" value="{{empData.projectMaster.projectName}}"
+                                        class="text form-control" readonly /></td>
+                            </tr>
+                            <tr>
+                                <td><label for="category"> Category</label></td>
+                                <td><input type="text" value="{{empData.categoryMaster.categoryName}}"
+                                        class="text form-control" readonly /></td>
+                            </tr>
+                            <tr>
+                                <td><label for="reportingHead"> Reporting Head</label></td>
+                                <td><input type="text"
+                                        value="{{reportingHeadObj?.firstName + ' ' +reportingHeadObj?.lastName}}"
+                                        class="text form-control" readonly /></td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade common-model" id="importModel">
+    <div class="modal-dialog modal-xl">
+        <div class="modal-content">
+            <!-- Modal Header -->
+            <div class="modal-header">
+                <h1> <i class="fa fa-upload"></i> Import Employee</h1>
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+            </div>
+            <!-- Modal body -->
+            <div class="container-fluid">
+                <section class="content">
+                    <form id="import-student" action="/student/student-import/index" method="post"
+                        enctype="multipart/form-data">
+                        <div class="box box-primary">
+                            <div class="box-header with-border">
+                                <h3 class="box-title"><i class="fa fa-file-excel-o"></i> Select File</h3>
+                            </div>
+                            <!--./box-header-->
+                            <div class="box-body">
+                                <div class="row">
+                                    <div class="col-sm-4">
+                                        <div class="form-group field-stumaster-importfile">
+
+                                            <input type="file" id="stumaster-importfile" #inputFile name="importFile"
+                                                (change)="importFile($event)" title="Browse Excel File"
+                                                accept=".xlsx, .xls">
+
+                                            <div class="help-block"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-sm-12">
+                                        <div class="callout callout-info" style="background-color: #92b9e9 !important;">
+                                            <h4>Please follow these instructions at the time of importing data</h4>
+                                            <ol>
+                                                <li><b>The fields with red color are required and cannot be blank.</b>
+                                                </li>
+                                                <li>Employee Id/Unique ID is auto generated.</li>
+                                                <li>Employee Code must be unique.</li>
+                                                <li>Date of birth must be less than current date.</li>
+                                            </ol>
+                                            <h3>Download the sample Excel sheet format.
+                                                <b><a class="fas fa-download"
+                                                        href="./assets/excel/EmployeeImportSample.xlsx"
+                                                        target="_blank">Download</a>
+                                                </b>
+                                            </h3>
+                                        </div>
+                                        <!--./callout-->
+                                    </div>
+                                    <!--./col-->
+                                </div>
+                                <!--./row-->
+                            </div>
+                            <!--./box-body-->
+                            <div class="box-footer">
+                                <button type="submit" (click)="submitImport()" class="btn btn-primary"><i
+                                        class="fa fa-upload"></i> Import</button>
+                            </div>
+                        </div>
+                        <!--./box-->
+                    </form>
+                    <div class="box box-solid" *ngIf="listOfEmployeeResults.length != 0">
+                        <div class="box-header with-border">
+                            <h3 class="box-title"><i class="fa fa-upload"></i> Import Employee Result</h3>
+                        </div>
+                        <div class="alert alert-success alert-dismissable flash-msg-hide" id="flash-msg"
+                            *ngIf="showSuccessMsg">
+                            <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+                            <h4><i class="icon fa fa-check"></i> Imported!</h4> {{successCount}} Employee successfully.
+                        </div>
+                        <div *ngIf="showErrorMsg" class="alert alert-danger alert-dismissable flash-msg-hide">
+                            <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+                            <h4><i class="icon fa fa-check"></i> Error!</h4> {{errorCount}} Employees importing error.
+                        </div>
+                        <div class="box-body table-responsive table-wrapper-scroll-y table-wrapper-scroll-x"
+                            style="max-height: 300px;">
+                            <div id="w1">
+                                <div id="w2" class="grid-view">
+                                    <div id="loader-img">
+
+                                        <img *ngIf="listOfEmployeeResults.length == 0" src="./assets/images/loader.gif"
+                                            class="loader img-responsive" alt="loading....">
+
+                                    </div>
+                                    <table class="table table-striped table-borders myTable">
+                                        <thead>
+                                            <tr>
+                                                <th>Sr No</th>
+                                                <th>Employee Code</th>
+                                                <th>Employee Name</th>
+                                                <th>Status</th>
+                                                <th>Remarks/Message(s)</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <ng-container *ngFor="let employee of listOfEmployeeResults;let i=index;">
+                                                <tr [class.danger]="employee.errorList.length != 0"
+                                                    [class.success]="employee.errorList.length == 0">
+                                                    <td>{{i+1}}</td>
+                                                    <td>{{employee.employeeCode}}</td>
+                                                    <td>{{employee.firstname}} {{employee.lastName}}</td>
+                                                    <td>{{employee.status}}</td>
+                                                    <td [class.success]="employee.errorList.length == 0">
+                                                        <ng-container *ngIf="employee.errorList.length != 0">
+                                                            Please fix the following errors:
+                                                            <ul *ngFor="let error of employee.errorList">
+                                                                <li> {{error}}</li>
+                                                            </ul>
+                                                        </ng-container>
+                                                    </td>
+                                                </tr>
+                                            </ng-container>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+            </div>
+        </div>
+    </div>
+</div>

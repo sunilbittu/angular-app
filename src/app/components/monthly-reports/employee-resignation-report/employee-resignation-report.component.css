@@ -1,0 +1,12 @@
+.bun-size {
+    height: 35px;
+}
+.padding-top-25 {
+    padding-top: 25px;
+}
+button:disabled,
+button[disabled] {
+    border: 1px solid #999999;
+    background-color: #cccccc;
+    color: #666666;
+}

@@ -1,0 +1,138 @@
+
+<div class="container-fluid">
+    <div class="d-flex align-items-center mt-2">
+        <div class="m-2">
+            <div class="h-size"><i class="fa fa-user"></i> <b>Grade Master</b></div>
+        </div>
+        <div class="flex-fill">
+        </div>
+        <div class="m-3"><input class="form-control rounded-pill py-2 border-right-0 border" type="search"
+            placeholder="search" id="example-search-input" value="" (keyup)="getGradeListBySearchParam($event)">
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-12">
+            <table class="table table-bordered table-hover table-sm">
+                <thead class="t-head">
+                    <tr>
+                        <th *ngFor="let head of headers"><a>{{head}}</a></th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                         <tr *ngFor="let grade of gradeList | paginate
+                         : {
+                             itemsPerPage: itemsPerPage,
+                             currentPage: currentPage,
+                             totalItems: totalItems
+                           };let i=index">
+                             <td>{{grade.gradeCode}}</td>
+                             <td>{{grade.gradeName | titlecase}}</td>
+                             
+            
+                             <td>
+                                <a title="Edit" class="icon-margin" (click)="editGradeMaster(grade.gradeId)" data-toggle="modal" data-target="#employeeModelPopup"><i class="fas fa-user-edit"></i></a>
+
+                                
+                                <a title="Delete" class="icon-margin"
+                                  mwlConfirmationPopover [popoverTitle]="popoverTitle" 
+                                  [popoverMessage]="popoverMessage" placement="left" (confirm)="deleteGradeById(grade.gradeId)"
+                                  (cancel)="cancelClicked = true"><span
+                                    class="fas fa-trash"></span></a>
+
+                             </td>
+                         </tr>
+                    </tbody>
+
+            </table>
+            <div class="row" *ngIf="totalElements!=0">
+                <div class="col-md-6 pull-left"><span class="show-entry">Showing
+                        <span>{{showingFrom}} to {{showingTo}} of {{totalElements}} entries</span></span>&nbsp;
+                </div>
+
+                <div class="col-md-6 pull-right" *ngIf="totalItems > 0">
+                    <pagination-controls (pageChange)="pageChanged($event)"></pagination-controls>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-12">
+            <button type="button" class="btn btn-primary btn-sm" (click)="modelShow()" data-toggle="modal" data-target="#employeeModelPopup">
+                <i class="fas fa-user-plus"></i> Add
+            </button>
+        </div>
+    </div>
+
+    <form [formGroup]= gradeMastersForm (ngSubmit)="onSubmit()">
+        <app-employee-model-popup>
+    
+
+
+    <h4 class="modal-title" head><i class="fas fa-plus mr-1"></i> / <i class="fas fa-edit mr-1"></i>Grade Details </h4>
+
+
+    <div body>
+       
+        <div class="container">
+
+          
+
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="gradeCode" class="col-form-label">Grade Code <span class="color-red">*</span>
+                        </label>
+                        <input type="text" formControlName="gradeCode" (input)=checkIfalreadyExist2($event.target.value) class="form-control form-control-sm"  id="gradeCode">
+                        <span class="color-red" *ngIf="submitted && form_.gradeCode.errors">Grade Code
+                            {{requiredErrorText}}</span>
+                            <span  class="color-red" *ngIf="exist2"> Grade Code Already Exist</span>
+                    </div>
+                </div>
+
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="gradeName" class="col-form-label">Grade Name <span class="color-red">*</span>
+                        </label>
+                        <input type="text" formControlName="gradeName" (input)=checkIfalreadyExist($event.target.value) class="form-control form-control-sm" id="gradeName">
+                        <span class="color-red" *ngIf="submitted && form_.gradeName.errors">Grade Name
+                            {{requiredErrorText}}</span>
+                            <span  class="color-red" *ngIf="exist"> Grade Name Already Exist</span>
+                    </div>
+                </div>
+            </div>
+
+          
+
+           
+
+
+        </div>
+
+
+    </div>
+
+    <div footer>
+
+     <div *ngIf=editButtonEnable>
+
+         <button type="button" class="btn btn-warning btn-sm" data-dismiss="modal">Cancel</button>
+         <button type="button" class="btn btn-success btn-sm" (click)="updateGradeMaster(0)" >Update</button>
+          
+
+     </div>
+
+     <div *ngIf=!editButtonEnable>
+         
+     <button type="button" class="btn btn-warning btn-sm" data-dismiss="modal">Cancel</button>
+     <button type="submit" class="btn btn-primary btn-sm"  >Save</button>
+      
+     
+     </div>
+     
+
+
+    </div>
+
+</app-employee-model-popup>
+</form>
+</div>

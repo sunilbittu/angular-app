@@ -1,0 +1,163 @@
+<div class="container-fluid">
+    <div class="d-flex align-items-center mt-2">
+        <div class="m-2">
+            <div class="h-size"><em class="fa fa-user"></em> <strong> Jobs Report </strong></div>
+        </div>
+        <div class="flex-fill">
+        </div>
+    </div>
+    <section class="content">
+
+        <div class="row">
+            <div class="col-md-5 column-1">
+                <div class="row">
+                    <div class="drop-down-width text-center">
+                        <label><b>Status </b></label>
+
+                        <ng-multiselect-dropdown [placeholder]="'Select Status'" [settings]="dropdownSettingsStatus"
+                            [data]="statusList" [(ngModel)]="selectedItemsStatus" [ngModelOptions]="{standalone: true}"
+                            (onSelect)="onItemSelectStatus($event)" (onDeSelect)="OnItemStatusDeSelect($event)"
+                            (onSelectAll)="onSelectAllStatus($event)">
+                        </ng-multiselect-dropdown>
+                    </div>
+
+                    <div class="drop-down-width text-center">
+                        <label><b>Client </b></label>
+
+                        <ng-multiselect-dropdown [placeholder]="'Select Client'" [settings]="dropdownSettingsClient"
+                            [data]="clientList" [(ngModel)]="selectedItemsClient" [ngModelOptions]="{standalone: true}"
+                            (onSelect)="onItemSelectClient($event)" (onDeSelect)="OnItemClientDeSelect($event)"
+                            (onSelectAll)="onSelectAllClient($event)">
+                        </ng-multiselect-dropdown>
+                    </div>
+
+                    <div class="drop-down-width text-center">
+                        <label><b>Contract Details </b></label>
+
+                        <ng-multiselect-dropdown [placeholder]="'Select Contract Details'"
+                            [settings]="dropdownSettingsContract" [data]="contractDetailsList"
+                            [(ngModel)]="selectedItemsContracct" [ngModelOptions]="{standalone: true}"
+                            (onSelect)="onItemSelectContract($event)" (onDeSelect)="OnItemDeSelect($event)"
+                            (onSelectAll)="onSelectAllContract($event)">
+                        </ng-multiselect-dropdown>
+                        <!-- <div class="align-center"><span class="color-red"
+                                    *ngIf="submitted && selectedItemsContracct.length == 0">Please select atleast one Time
+                                    Shift</span></div> -->
+                    </div>
+                    <div class="drop-down-date-width text-center">
+                        <label><b>Created Start Date</b></label>
+                        <input type="text" [(ngModel)]="startDate" [ngModelOptions]="{standalone: true}" bsDatepicker
+                            placeholder="Please Select Start Date" readonly
+                            [bsConfig]="{ isAnimated: true, dateInputFormat: 'DD-MM-YYYY' }" bsDatepicker
+                            (bsValueChange)="onStartDateValueChange($event)" placement="bottom"
+                            class="text form-control pull-top-5 read-only" maxlength="50" />
+                    </div>
+                    <div class="drop-down-date-width text-center">
+                        <label><b>Created End Date</b></label>
+                        <input type="text" [(ngModel)]="endDate" [ngModelOptions]="{standalone: true}" bsDatepicker
+                            placeholder="Please Select End Date" [minDate]="selectedStartDate" readonly
+                            [bsConfig]="{ isAnimated: true, dateInputFormat: 'DD-MM-YYYY' }" bsDatepicker
+                            (bsValueChange)="onEndDateValueChange($event)" placement="bottom"
+                            class="text form-control pull-top-5 read-only" maxlength="50" />
+                    </div>
+                    <div class="m-2" style="padding-top: 25px;">
+                        <label></label>
+                        <button id="btn_add" type="button" (click)="applyConditionFilter()"
+                            class="btn btn-primary btn-sm">Search</button>
+                        &nbsp;
+                        <button type="button" id="search" class="btn btn-warning btn-sm"
+                            (click)="clear()">Clear</button>
+                        &nbsp;&nbsp;
+                        <button title="Export" class="btn btn-primary btn-sm" mat-icon-button [matMenuTriggerFor]="menu"
+                            aria-label="Menu">
+                            <i class='fas fa-file-export'></i> Export
+                        </button>
+                        <mat-menu #menu="matMenu">
+                            <button mat-menu-item type="button" class="btn btn-labeled btn-outline-danger btn-sm"
+                                (click)="exportTable('PDF')">
+                                <span class="btn-label"><i class="fa fa-file-pdf-o" aria-hidden="true"></i></span>
+                                Export To
+                                PDF</button>
+                            <button mat-menu-item type="button" class="btn btn-labeled btn-outline-success btn-sm"
+                                (click)="exportTable('EXCEL')">
+                                <span class="btn-label"><i class="fa fa-file-excel-o" aria-hidden="true"></i></span>
+                                Export To
+                                Excel</button>
+                        </mat-menu>
+                    </div>
+                    <!-- <div class="m-3">
+                            <label></label>
+                            <button type="button" class="btn btn-labeled btn-outline-danger btn-sm"
+                                (click)="exportTable('PDF')">
+                                <span class="btn-label"><i class="fa fa-file-pdf-o" aria-hidden="true"></i></span>Export
+                                To PDF</button>
+                        </div>
+
+                        <div class="m-3">
+                            <label></label>
+                            <button type="button" class="btn btn-labeled btn-outline-success btn-sm"
+                                (click)="exportTable('EXCEL')">
+                                <span class="btn-label"><i class="fa fa-file-excel-o"
+                                        aria-hidden="true"></i></span>Export To Excel</button>
+                        </div> -->
+                </div>
+
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="table-responsive">
+                        <table class="table table-bordered table-hover table-sm">
+                            <thead class="t-head">
+
+                                <tr>
+
+                                    <th *ngFor="let head of headers"><a>{{head}}</a></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr *ngFor="let data of jobList | paginate: { itemsPerPage: numberOfEntitesToShow, currentPage: p } ; let i=index;">
+                                    <td>{{showingFrom+i}}</td>
+                                    <td>{{data.id}}</td>
+                                    <!-- <td>{{data.jobDescription}}</td> -->
+                                    <td><a class="advance">{{data.positionName}}</a></td>
+                                    <td>{{data?.clientId?.clientName}}</td>
+                                    <td>{{data.jobLocation}}</td>
+                                    <td>{{data.headCount}}</td>
+                                    <!-- <td>{{data.jobStage}}</td> -->
+                                    <td>{{data.minSalary}}</td>
+                                    <td>{{data.maxSalary}}</td>
+                                    <td>{{data.jobOwner}}</td>
+                                    <!-- <td><a title="View Team members" data-toggle="modal" data-target="#show-team-member-modal"
+                                        (click)="showTeamMembers(data.id)" class="icon-margin"><i
+                                            class="fas fa-eye"></i></a></td> -->
+                                    <td>{{data.status}}</td>
+                                    <td>{{data.createdDate | date:'dd-MM-yyyy'}}</td>
+
+                                </tr>
+                            </tbody>
+                        </table>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6 col-sm-6 col-6"><span class="show-entry">Showing
+                                <span>{{showingFrom}} to {{showingTo}} of {{totalElements}} entries</span></span>&nbsp;
+                            </div>
+                            <div class="col-md-6" *ngIf="jobList.length > 0">
+                                <pagination-controls (pageChange)="onPageChange($event)"></pagination-controls>
+                            </div>
+                        </div>
+                        <!-- <div class="row" *ngIf="totalElements!=0">
+                            <div class="col-md-6 col-sm-6 col-6"><span class="show-entry">Showing
+                                    <span>{{showingFrom}} to {{showingTo}} of {{totalElements}} entries</span></span>&nbsp;
+                            </div>
+            
+                            <div class="col-md-6" *ngIf="totalItems > 0">
+                                <pagination-controls (pageChange)="pageChanged($event)"></pagination-controls>
+                            </div>
+                        </div> -->
+                    </div>
+                </div>
+            </div>
+        </div>
+        <br>
+
+    </section>
+</div>

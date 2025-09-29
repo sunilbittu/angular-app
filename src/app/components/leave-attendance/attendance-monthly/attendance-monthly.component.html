@@ -1,0 +1,83 @@
+
+<div class="container-fluid p-10" >
+    <section class="content-header">
+         <h3 class="box-title">Employee Attendance</h3>
+
+        <ul class="breadcrumb">
+            <li>
+                    <span>Search:</span>
+                    <!-- <label class="col-sm-2 control-label" for="inputWarning">Input with warning and glyphicon</label> -->
+                      <input type="text" id="inputWarning">
+            </li>
+        </ul>
+    </section>
+    <section class="content">
+        
+        <div class="box box-solid">
+            
+            <div class="box-body table-responsive">
+                <div id="w0">
+                    <div id="w1" class="grid-view">
+                        <!-- <span *ngIf="!toggleloader"><cms-totalEntities [numberOfEntitesToShow]="numberOfEntitesToShow" [currentpageNumber]="currentPage" [totoalNumberOfItems]="totalEmployeeRecords"></cms-totalEntities></span> -->
+                            <table class="table table-bordered table-hover table-sm">
+                                <thead class="t-head">
+                                <tr>
+                                    <th *ngFor="let data of Headers"><a>{{data}}</a></th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                     <tr *ngFor="let data of AttendanceData">
+                                         <td>{{data.empCode}}</td>
+                                         <td>{{data.name}}</td>
+                                         <td>{{data.days}}</td>
+                                         <td>{{data.daysPaid}}</td>
+                                         <td><input type="text" value={{data.daysPresent}} size="2"></td>
+                                         <td>{{data.weekOff}}</td>
+                                         <td>{{data.ph}}</td>
+                                         <td>{{data.joinLeft}}</td>
+                                         <td><input type="text" value={{data.lwp}} size="2"></td>
+                                         <td><input type="text" value={{data.ab}} size="2"></td>
+                                         <td><input type="text" value={{data.otHours}} size="2"></td>
+                                         <td><input type="text" value={{data.cl}} size="2"></td>
+                                         <td><input type="text" value={{data.co}} size="2"></td>
+                                         <td><input type="text" value={{data.coCredit}} size="2"></td>
+                                         <td><input type="text" value={{data.oh}} size="2"></td>
+                                         <td><input type="text" value={{data.h}} size="2"></td>
+                                         <td>{{data.mtl}}</td>
+                                         <td><input type="text" value={{data.od}} size="2"></td>
+                                         <td><input type="text" value={{data.pl}} size="2"></td>
+                                         <td><input type="text" value={{data.rh}} size="2"></td>
+                                         <td><input type="text" value={{data.sl}} size="2"></td>
+                                         <td><input type="text" value={{data.lateMarks}} size="2"></td>
+
+                                     </tr>
+                                </tbody>
+
+                            </table>
+                            
+                    </div>
+                </div>
+            </div>
+        </div>
+        <button type="button" class="btn btn-secondary btn-sm">Save</button>
+
+    </section>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

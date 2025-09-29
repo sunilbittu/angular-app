@@ -1,0 +1,323 @@
+<div class="container-fluid" style="margin-top: 16px;">
+    <div class="row">
+        <div class="col-md-3">
+            <div>
+                <h3>
+                    <i class="fas fa-id-card"></i> &nbsp;<u><b>Work Exp. Details</b></u>
+                </h3>
+            </div>
+            <form [formGroup]=workExperienceForm (ngSubmit)="onSubmit()">
+                <table>
+                    <tr>
+                        <td>
+                            <label>Employer Name<span class="color-red">*</span></label>
+                        </td>
+                        <td>
+                            <input type="text " formControlName="employerDetails" class="text form-control"
+                                maxlength="50" />
+                            <span class="color-red" *ngIf="submitted && form_.employerDetails.errors">Employer Name
+                                {{requiredErrorText}}</span>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <label>Place<span class="color-red">*</span></label>
+                        </td>
+                        <td>
+                            <input type="text " formControlName="place" class="text form-control" maxlength="50" />
+                            <span class="color-red" *ngIf="submitted && form_.place.errors">Place
+                                {{requiredErrorText}}</span>
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td>
+                            <label>From<span class="color-red">*</span></label>
+                        </td>
+                        <td>
+                            <input type="text" formControlName="from" bsDatepicker placeholder="From"
+                                [bsConfig]="{ isAnimated: true, dateInputFormat: 'DD-MM-YYYY' }" readonly
+                                placement="bottom" class="text form-control" id="from" maxlength="50" />
+                            <span class="color-red" *ngIf="submitted && form_.from.errors">From Date
+                                {{requiredErrorText}}</span>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <label>To<span class="color-red">*</span></label>
+                        </td>
+                        <td>
+
+                            <input type="text" formControlName="to" bsDatepicker placeholder="To"
+                                [bsConfig]="{ isAnimated: true, dateInputFormat: 'DD-MM-YYYY' }" readonly
+                                placement="bottom" class="text form-control" id="to" maxlength="50" />
+                            <span class="color-red" *ngIf="submitted && form_.to.errors">To Date
+                                {{requiredErrorText}}</span>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <label>Basic Salary</label>
+                        </td>
+                        <td>
+                            <input type="number" formControlName="basicSalary" class="text form-control"
+                                maxlength="50" />
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <label>Total Salary</label>
+                        </td>
+                        <td>
+                            <input type="number" formControlName="totalSalary" class="text form-control"
+                                maxlength="50" />
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <label>Reason For Leaving</label>
+                        </td>
+                        <td>
+                            <input type="text " formControlName="reasonnForLeaving" class="text form-control"
+                                maxlength="50" />
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td>
+                            <label>Desig. Scope</label>
+                        </td>
+                        <td>
+                            <input type="text " formControlName="desigScope" class="text form-control" maxlength="50" />
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <label>Supervisor Detail</label>
+                        </td>
+                        <td>
+                            <input type="text " formControlName="supervisorDetails" class="text form-control"
+                                maxlength="50" />
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <label>Currency</label>
+                        </td>
+                        <td>
+                            <input type="text " formControlName="currency" class="text form-control" maxlength="50" />
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <label>Total Experience<span class="color-red">*</span></label>
+                        </td>
+                        <td>
+                            <input type="number" formControlName="totalExperience" class="text form-control"
+                                maxlength="50" />
+                            <span class="color-red" *ngIf="submitted && form_.totalExperience.errors">Total Experience
+                                {{requiredErrorText}}</span>
+                        </td>
+                    </tr>
+                </table>
+                <br>
+                <div *ngIf="!enableButton">
+                    <button class="btn btn-success btn-sm">Save</button>&nbsp;
+                    <button type="button" class="btn btn-warning btn-sm" (click)="clear()">Clear</button>
+                </div>
+
+            </form>
+
+            <div *ngIf="enableButton">
+                <button type="button" class="btn btn-success btn-sm" (click)="updateWorkExperience()">Update</button>
+
+            </div>
+
+        </div>
+        <div class="col-md-9 verticalLine">
+            <div class="row">
+                <div class="col-12">
+                    <button id="btn_add" type="button" class="button btn-primary button" data-toggle="modal"
+                        data-target="#importModalWD" (click)="clickImport()"><i
+                            class="fas fa-file-excel-o"></i>&nbsp;Import Excel</button>
+                </div>
+            </div>
+            <br>
+            <table class="table table-bordered table-hover table-sm">
+                <thead class="t-head">
+                    <tr>
+                        <th *ngFor="let head of headers"><a>{{head}}</a></th>
+                        <th><a>Action</a></th>
+                    </tr>
+
+                </thead>
+
+                <tbody>
+                    <tr *ngFor="let data of workExperienceList">
+                        <td>{{data.employerDetails}}</td>
+                        <td>{{data.place}}</td>
+                        <td>{{data.fromDate}}</td>
+                        <td>{{data.toDate}}</td>
+                        <td>{{data.basicSalary}}</td>
+                        <td>{{data.totalSalary}}</td>
+                        <td>{{data.reasonForLeaving}}</td>
+                        <td>{{data.desigScope}}</td>
+                        <td>{{data.supervisorDetails}}</td>
+                        <td>{{data.currency}}</td>
+                        <td>{{data.totalExperience}}</td>
+
+                        <td>
+                            <a title="Edit" class="icon-margin" (click)="editWorkExperience(data.workExperienceId)"><i
+                                    class="fas fa-user-edit"></i></a>
+
+                            <a title="Delete" class="icon-margin" mwlConfirmationPopover [popoverTitle]="popoverTitle"
+                                [popoverMessage]="popoverMessage" placement="left"
+                                (confirm)="deleteWorkExperiance(data.workExperienceId)"
+                                (cancel)="cancelClicked = true"><span class="fas fa-trash"></span></a>
+                        </td>
+
+                    </tr>
+                </tbody>
+
+            </table>
+        </div>
+    </div>
+</div>
+
+
+<div class="modal fade" id="importModalWD" role="dialog">
+    <div class="modal-dialog modal-xl">
+        <div class="modal-content model width">
+            <div class="modal-header">
+                <span style="font-size: 20px;">
+                    <i class="fa fa-upload"></i> Import Work Exp. Details
+                </span>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <section class="content">
+                    <form id="import-student">
+                        <div class="box box-primary">
+                            <div class="box-header with-border">
+                                <h3 class="box-title"><i class="fa fa-file-excel-o"></i> Select File</h3>
+                            </div>
+                            <!--./box-header-->
+                            <div class="box-body">
+                                <div class="row">
+                                    <div class="col-sm-8">
+                                        <div class="form-group field-stumaster-importfile">
+                                            <input type="file" id="stumaster-importfile" (change)="importFile($event)"
+                                                [(ngModel)]="importFileModel" #inputFile name="importFile"
+                                                title="Browse Excel File" accept=".xlsx, .xls">
+                                            <div class="help-block"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-sm-12">
+                                        <div class="callout callout-info" style="background-color:#d0e5f9 !important">
+                                            <h4>Please follow these instructions at the time of importing data.</h4>
+                                            <ol>
+                                                <li><b>The fields with red color are required and cannot be blank.</b>
+                                                </li>
+                                                <li>Marks and Passing Year should be <b>Numeric value</b></li>
+                                                <li>Leaving mandatory fields might have effect on consecutive records.
+                                                </li>
+                                            </ol>
+                                            <h4>Download the sample Excel sheet format. <b><a
+                                                        href="./assets/excel/Work_details.xlsx" target="_blank"><i
+                                                            class="fa fa-download" aria-hidden="true"></i>
+                                                        Download</a></b></h4>
+                                        </div>
+                                        <!--./callout-->
+                                    </div>
+                                    <!--./col-->
+                                </div>
+                                <!--./row-->
+                            </div>
+                            <!--./box-body-->
+                            <div class="box-footer">
+                                <button type="submit" (click)="submit()" class="btn btn-primary"
+                                    [disabled]="disableImport"><i class="fa fa-upload"></i> {{importText}}</button>
+                            </div>
+                        </div>
+                        <!--./box-->
+                    </form>
+                    <div class="box box-solid">
+                        <br>
+                        <div class="box-header with-border">
+                            <h3 class="box-title"><i class="fa fa-list"></i> Import Work Exp. Details Result</h3>
+                        </div>
+                        <div *ngIf="showSuccessMsg" class="alert alert-success alert-dismissable flash-msg-hide">
+                            <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+                            <h4><i class="icon fa fa-check"></i> Imported!</h4> {{successCount}} Work Exp. Details
+                            imported
+                            successfully.
+                        </div>
+                        <div *ngIf="showErrorMsg" class="alert alert-danger alert-dismissable flash-msg-hide">
+                            <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+                            <h4><i class="icon fa fa-check"></i> Error!</h4> {{errorCount}} Work Exp. Details
+                            importing
+                            error.
+                        </div>
+                        <div class="box-body table-responsive table-wrapper-scroll-y table-wrapper-scroll-x"
+                            style="max-height: 300px;">
+                            <div id="w1">
+                                <div id="w2" class="grid-view">
+                                    <table class="table table-striped table-borders myTable">
+                                        <thead>
+                                            <tr>
+                                                <th>Sr No</th>
+                                                <th *ngFor="let head of headers"><a>{{head}}</a></th>
+                                                <th><a>Result</a></th>
+                                                <th *ngIf="showErrorMsg"><a>Remarks/Message(s)</a></th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr *ngIf='importResult.length == 0 && !toggleLoader'>
+                                                <td colspan="11">
+                                                    <div class="empty">No Records Found.</div>
+                                                </td>
+                                            </tr>
+                                            <ng-container *ngFor="let data of importResult;let i=index;">
+                                                <tr>
+                                                    <td>{{i+1}}</td>
+                                                    <td>{{data.Exp.employerDetails}}</td>
+                                                    <td>{{data.Exp.place}}</td>
+                                                    <td>{{data.Exp.fromDate}}</td>
+                                                    <td>{{data.Exp.toDate}}</td>
+                                                    <td>{{data.Exp.basicSalary}}</td>
+                                                    <td>{{data.Exp.totalSalary}}</td>
+                                                    <td>{{data.Exp.reasonForLeaving}}</td>
+                                                    <td>{{data.Exp.desigScope}}</td>
+                                                    <td>{{data.Exp.supervisorDetails}}</td>
+                                                    <td>{{data.Exp.currency}}</td>
+                                                    <td>{{data.Exp.totalExperience}}</td>
+                                                    <td><span *ngIf="data.errors.length != 0">ERROR</span> <span
+                                                            *ngIf="data.errors.length == 0">SUCCESS</span></td>
+                                                    <td *ngIf="data.errors.length != 0">
+                                                        <ng-container *ngIf="data.errors.length != 0">
+                                                            Please fix the following errors:
+                                                            <ul *ngFor="let error of data.errors">
+                                                                <li style="color: red;"> {{error}}</li>
+                                                            </ul>
+                                                        </ng-container>
+                                                    </td>
+                                                </tr>
+                                            </ng-container>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+            </div>
+        </div>
+    </div>
+</div>

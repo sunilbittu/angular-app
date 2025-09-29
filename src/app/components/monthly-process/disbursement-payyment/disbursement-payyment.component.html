@@ -1,0 +1,87 @@
+
+<div class="container-fluid">
+    <div class="d-flex align-items-center mt-2">
+        <div class="d-flex align-items-center mt-2">
+            <div class="m-2">
+                <h3 style="color: #444; font-weight: bold; margin-top: 17px !important;">Disbursement Details</h3>
+            </div>
+            
+            <div class="m-2 d-flex align-items-center">
+                <i class="fas fa-search mr-2"></i>
+                <span class="mr-2">Search</span>
+                <div class="text-box-with-icon">
+                    <input type="text" id="txtSearchText" style="width: 220px;">
+                    <button type="button" id="btnClearSearch"><i class="fas fa-undo"></i></button>
+                </div>
+            </div>
+        </div>
+
+            
+        </div>
+       
+        
+        
+    
+    <div class="row">
+        <div class="col-md-12">
+            <table class="table table-bordered table-hover table-sm">
+                <thead class="t-head">
+                    <tr>
+                        <th *ngFor="let head of headers"><a>{{head}}</a></th>
+                    </tr>
+                    
+                
+                    </thead>
+                    <tbody>
+                         <tr *ngFor="let disbursement of disbursements">
+                            <td>{{disbursement.srNo}}</td>
+                            <td>{{disbursement.employeeCode}}</td>
+                            <td>{{disbursement.employeeName}}</td>
+                            <td>{{disbursement.department}}</td>
+                            <td>{{disbursement.netPayable}}</td>
+                            <td>{{disbursement.paymentCode}}</td>
+                            <td>{{disbursement.paidAmount}}</td>
+                            <td>{{disbursement.balance}}</td>
+                            <td>{{disbursement.disburseDate}}</td>
+                            <td>{{disbursement.balancePaid}}</td>
+                            <td>{{disbursement.date}}</td>
+                            <td>{{disbursement.remarks}}</td>
+                        
+                            
+                         </tr>
+                    </tbody>
+
+            </table>
+        </div>
+    </div>
+    <div class="row">
+            <div class="col-sm-2">
+
+                <input type="date" class="form-control">
+
+            </div>
+            <div class="col-sm-2">
+
+                <input type="text " class="form-control">
+
+            </div>
+            <div class="col-sm-8">
+                 <button id="btn_add" type="button" class="btn btn-primary button btn-sm" disabled="disabled"> Disburse All</button>
+
+                 <button id="btn_add" type="button" class="btn btn-primary button btn-sm" disabled="disabled">Filter Employee</button>
+
+                 <button id="btn_add" type="button" class="btn btn-primary button btn-sm" disabled="disabled"><img src="../Image/icon/xls.png">Export To Excel</button>
+
+                <button id="btn_add" type="button" class="btn btn-primary button btn-sm " disabled="disabled">Delete Paid Amount</button>
+                
+                <button id="btn_add" type="button" class="btn btn-primary button btn-sm " disabled="disabled">Delete Balance Paid</button>
+
+                <button id="btn_add" type="button" class="btn btn-primary button btn-sm" disabled="disabled">Release Payment</button>
+
+               
+
+            
+        </div>
+    </div>
+</div>
+

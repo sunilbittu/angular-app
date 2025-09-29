@@ -1,0 +1,132 @@
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-md-5">
+            <div class="h-size"><i class="fa fa-user mr-1"></i> <b>Employees Education Summary Report</b></div>
+        </div>
+    </div>
+    <div class="d-flex align-items-center mt-2">
+        <div class="m-2">
+            <td>
+                <label><strong>Branch Name</strong><span class="color-red">*</span></label>
+            </td>
+            <td style="width: 250px;">
+                <ng-multiselect-dropdown [placeholder]="'Please Select Branch'" [settings]="dropdownSettings"
+                    [data]="branchList" [(ngModel)]="selectedItems" [ngModelOptions]="{standalone: true}"
+                    (onSelect)="onItemSelect($event)" (onSelectAll)="onSelectAll($event)"
+                    (onDeSelectAll)="onDeSelectAll($event)" (onDeSelect)="onItemDeSelect($event)">
+                </ng-multiselect-dropdown>
+                <span class="color-red" *ngIf="submitted && !isbranchNameSelected ">Branch Name cant be blank</span>
+            </td>
+        </div>
+        <div class="m-2">
+            <td>
+                <label><strong>Qualification Name</strong><span class="color-red">*</span></label>
+            </td>
+            <td>
+                <select id="libraryType" name="qualification" class="form-control q-style" (change)="change()"
+                    [(ngModel)]="qualificationModel">
+                    <option value="">Select Qualification Name</option>
+                    <option *ngFor="let data of qualificationDetailsList" [value]="data.qualificationId">
+                        {{data.qualificationName}}</option>
+                </select>
+                <span class="color-red" *ngIf="submitted && !isqualificationNameSelecte ">Qualification Name cant be
+                    blank</span>
+            </td>
+        </div>
+        <div class="m-2">
+            <button type="button" id="btn_projection" style="height: 35px;" class="button btn-primary m-auto"
+                (click)="search()">Search</button>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-12">
+            <table class="table table-bordered table-hover table-sm">
+                <thead class="t-head">
+                    <tr>
+                        <th *ngFor="let head of headers" id="headers1"><a>{{head}}</a></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let data of educationQualificationList;let i=index">
+                        <td>{{i+1}}</td>
+                        <td>{{data.branchName}}</td>
+                        <td>{{data.qualificationname}}</td>
+                        <td>{{data.departmentName}}</td>
+                        <td class="model-button"><a data-toggle="modal" data-target="#llll"
+                                (click)="getEmployeeList(data)">{{data.noOfEmployees}}</a>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-2">
+            <button type="button" [disabled]="educationQualificationList.length == 0"
+                class="btn btn-labeled btn-outline-danger btn-sm" (click)="exportTable('PDF')">
+                <span class="btn-label"><i class="fa fa-file-pdf-o" aria-hidden="true"></i></span>Export To PDF</button>
+        </div>
+        <div class="col-md-2">
+            <button type="button" [disabled]="educationQualificationList.length == 0"
+                class="btn btn-labeled btn-outline-success btn-sm" (click)="exportTable('EXCEL')">
+                <span class="btn-label"><i class="fa fa-file-excel-o" aria-hidden="true"></i></span>Export To
+                Excel</button>
+        </div>
+    </div>
+    <div class="modal fade  mt-4" id="llll" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-xl">
+            <div class="modal-content model">
+                <div class="modal-header">
+                    <div class="modal-title"><i class="fa fa-user mr-1"></i> <b>Employees Project Wise Report</b>
+                    </div>
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-md-2">
+                            <button type="button" class="btn btn-labeled btn-outline-danger btn-sm"
+                                (click)="exportInnerTable('PDF')">
+                                <span class="btn-label"><i class="fa fa-file-pdf-o" aria-hidden="true"></i></span>Export
+                                To PDF</button>
+                        </div>
+                        <div class="col-md-2">
+                            <button type="button" class="btn btn-labeled btn-outline-success btn-sm"
+                                (click)="exportInnerTable('EXCEL')">
+                                <span class="btn-label"><i class="fa fa-file-excel-o"
+                                        aria-hidden="true"></i></span>Export To
+                                Excel</button>
+                        </div>
+                    </div>
+                    <br>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <table class="table table-bordered table-hover table-sm">
+                                <thead class="t-head">
+                                    <tr>
+                                        <th *ngFor="let head of headersCount"><a>{{head}}</a></th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr *ngFor="let employee of employeesBranchCountList  | paginate: { itemsPerPage: 10, currentPage: p ,id:'educationSummaryPagination'}">
+                                        <td>{{employee.employeeCode}}</td>
+                                        <td><span class="mr-1">{{employee.firstName}} {{employee.lastName}}</span></td>
+                                        <td>{{employee.branchName}}</td>
+                                        <td>{{employee.departmentName}}</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                            <hr>
+                            <div class="row btn-footer">
+                                <div class="col-md-6 pull-left">
+                                    <pagination-controls (pageChange)="p = $event" id="educationSummaryPagination"></pagination-controls>
+                                </div>
+                                <div class="col-md-6 pull-right">
+                                    <button type="button" class="btn btn-secondary btn-sm" data-dismiss="modal">Close</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>

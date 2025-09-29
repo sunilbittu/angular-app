@@ -1,0 +1,403 @@
+<div class="container-fluid">
+    <div class="d-flex align-items-center mt-2">
+        <div class="m-2">
+            <div class="h-size"><i class="fa fa-user mr-1"></i> <b>Emp Salary Structure</b></div>
+        </div>
+        <div class="flex-fill">
+        </div>
+        <div class="m-3"><input class="form-control rounded-pill py-2 border-right-0 border" type="search"
+                placeholder="search" id="example-search-input" [(ngModel)]="searchModel"
+                (ngModelChange)="getAllEmployees()">
+        </div>
+    </div>
+    <div class="alert alert-success success-alert" *ngIf="saveAlert">
+        <h4><i class="icon fa fa-check"></i> Success!</h4>
+        Record has been Saved successfully.
+    </div>
+    <div class="alert alert-success success-alert" *ngIf="updateAlert">
+        <h4><i class="icon fa fa-check"></i> Success!</h4>
+        Record has been Updated successfully.
+    </div>
+    <div class="row">
+        <div class="col-md-12">
+            <table class="table table-bordered table-hover table-sm  table-hover">
+                <thead class="t-head">
+                    <tr class="text-center">
+                        <th *ngFor="let head of headers"><a>{{head}}</a></th>
+                        <td class="action-width align-center"> Action </td>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let employee of employeeList | paginate: {
+                        itemsPerPage: itemsPerPage,
+                        currentPage: currentPage,
+                        totalItems: totalItems
+                      };let i=index"
+                        (click)="clickedRow(i,employee.departmentId, employee.companyBranchDetailsId,employee.employeeId, employee.salaryStatus, employee.ssresetRequired, employee.employeeCode, employee.firstName, employee.lastName)"
+                        [class.active]="i === highlightRow">
+                        <td>{{employee.employeeCode}}</td>
+                        <td>{{employee.firstName | titlecase}} {{employee.lastName | titlecase}}</td>
+                        <td>{{employee.branchName}}</td>
+                        <td>{{employee.departmentName}}</td>
+                        <td>{{employee.designationName}}</td>
+                        <td>{{employee.divisionName}}</td>
+                        <td class="action-width align-center"
+                            *ngIf="employee.salaryStatus && !employee.ssresetRequired"><i
+                                class="fa fa-check-circle green" aria-hidden="true"></i>
+                        </td>
+                        <td class="action-width align-center" *ngIf="employee.salaryStatus && employee.ssresetRequired">
+                            <i class="fa fa-undo"></i></td>
+                        <td class="action-width align-center" *ngIf="!employee.salaryStatus"><i
+                                class="fa fa-times-circle" aria-hidden="true"></i></td>
+                        <td class="action-width align-center">
+                            <span *ngIf="!employee.salaryStatus">
+                                <a title="Please Add SS" class="icon-margin"
+                                    [class.disabled]="!employee.salaryStatus"><span class="fas fa-eye"></span></a>&nbsp;
+                                <a title="Please Add SS" class="icon-margin"
+                                    [class.disabled]="!employee.salaryStatus"><i class="fas fa-user-edit"></i></a>
+                            </span>
+                            <span *ngIf="employee.salaryStatus && employee.ssresetRequired">
+                                <a title="Please Add SS" class="icon-margin"
+                                    [class.disabled]="employee.salaryStatus && employee.ssresetRequired"><span
+                                        class="fas fa-eye"></span></a>&nbsp;
+                                <a title="Please Add SS" class="icon-margin"
+                                    [class.disabled]="employee.salaryStatus && employee.ssresetRequired"><i
+                                        class="fas fa-user-edit"></i></a>
+                            </span>
+                            <span *ngIf="employee.salaryStatus && !employee.ssresetRequired">
+                                <a title="View" class="icon-margin" (click)="view(employee.employeeId)"><span
+                                        class="fas fa-eye"></span></a>&nbsp;
+                                <a title="Edit" class="icon-margin" (click)="edit(employee.employeeId)"><i
+                                        class="fas fa-user-edit"></i></a>
+                            </span>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+            <div class="row" *ngIf="totalElements!=0">
+                <div class="col-md-6 pull-left"><span class="show-entry">Showing
+                        <span>{{showingFrom}} to {{showingTo}} of {{totalElements}} entries</span></span>&nbsp;
+                </div>
+
+                <div class="col-md-6 pull-right" *ngIf="totalItems > 0">
+                    <pagination-controls (pageChange)="pageChanged($event)"></pagination-controls>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-12">
+            <button id="btn_add" type="button" (click)="onclickAdd()" class="btn-primary button" data-toggle="modal"
+                *ngIf="showSS"><i class="fas fa-user-plus"></i> Add</button>
+            <button id="btn_add" type="button" class="btn-secondary button" title="Please Select Employee"
+                *ngIf="!showSS"><i class="fas fa-user-plus"></i> Add</button>
+            <!-- <button id="btn_all" type="button" class="btn-primary button" data-toggle="modal"
+                data-target="#mod_cal_msg"><i class="fa fa-calculator"></i>Calculate For All</button>
+            <button id="btn_link" type="button" class="btn-primary button"><i class="fa fa-filter"></i>Filter Report
+                for
+                Salary Structure</button>
+            <button id="btn_get_all" type="button" class="btn-primary button" data-toggle="modal"
+                data-target="#empfilter"><i class="fa fa-table"></i>Get Full Salary Structure Report</button>
+            <button id="btn_ss_approval" type="button" class="btn-primary button hide"><i
+                    class="fas fa-street-view"></i>Waiting For Approval</button> -->
+        </div>
+    </div>
+</div>
+<div class="modal alert-modal fade" id="mod_msg" role="dialog" style="display: none;">
+    <div class="modal-dialog modal-md">
+        <div class="modal-content model">
+            <div class="modal-header " id="msg_header">
+                <h4 class="modal-title">Message</h4>
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+            </div>
+            <div class="modal-body">
+                <h5 id="msg">Salary structure already exists.</h5>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal alert-modal fade in" role="document" id="mod_cal_msg" data-keyboard="false" data-backdrop="static"
+    style="margin-top: 41px;">
+    <div class="modal-dialog " data-hidden="true">
+        <div class="modal-content">
+            <div class="modal-header align">
+                <div class="modal-title ">
+                    <span style="font-size: 15px; font-weight: bold;">Confirmation Message !!! </span>
+                </div>
+                <button type="button" data-dismiss="modal" class="close" data-target="#mod_cal_msg">&times;</button>
+            </div>
+            <div class="modal-body">
+                <span style="font-size: 15px;">Are you Sure You Want To Calculate for All ?</span><br />
+                <br />
+                <h4>
+                    <input type="radio" id="rd_chk_all" name="grp_sal" checked="checked"
+                        style="vertical-align: text-bottom;" />&nbsp;Calculate for All
+                </h4>
+                <br />
+                <h4>
+                    <input type="radio" id="rd_chk_new_join" name="grp_sal"
+                        style="vertical-align: text-bottom;" />&nbsp;Calculate for New Joinees
+                </h4>
+            </div>
+            <div class="modal-footer">
+                <button type="button" id="btn_cal_ok" class="btn btn-primary btn-sm btnWithLoader"><i
+                        class="fas fa-check"></i>Yes</button>
+                <button type="button" class="btn btn-warning btn-sm" data-dismiss="modal" data-target="#mod_cal_msg"><i
+                        class="fas fa-times"></i>No</button>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal fade common-model" id="view_emp" style="margin-top:40px;">
+    <div class="modal-dialog modal-xl">
+        <div class="modal-content">
+            <!-- <form > -->
+            <div class="modal-header">
+                <div class="modal-title"><i class="fas fa-plus"></i>/ <i class="fas fa-edit ml-1"></i> Salary Status
+                </div>
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-4">
+                        <label>Employee Code</label>                        
+                            <input type="text" readonly [ngModelOptions]="{standalone: true}"
+                                [(ngModel)]="employeeCodeSample" placeholder="Employee Name" class="form-control"
+                                id="emp-name" maxlength="50" />                        
+                    </div>
+
+                    <div class="col-8">
+                        <label>Employee Name</label>
+                            <input type="text" readonly [ngModelOptions]="{standalone: true}"
+                                [(ngModel)]="employeeNameSample" placeholder="Employee Name" class="form-control"
+                                id="emp-name" maxlength="50" />
+                    </div>
+                </div>
+
+                        <!-- <table class="table">
+                           
+                            <tbody>
+                                <tr>
+                                    <label>Employee Code</label>
+                                    
+                                        <input type="text" readonly [ngModelOptions]="{standalone: true}"
+                                            [(ngModel)]="employeeCodeSample" placeholder="Employee Name" class="form-control"
+                                            id="emp-name" maxlength="50" />
+                                    
+                                    <label>Employee Name</label>
+                                    
+                                        <input type="text" readonly [ngModelOptions]="{standalone: true}"
+                                            [(ngModel)]="employeeNameSample" placeholder="Employee Name" class="form-control"
+                                            id="emp-name" maxlength="50" />
+                                    
+                                </tr>
+                            </tbody>
+                        </table> -->
+                <div class="row pt-2">
+                    <div class="col-4 pb-0">
+                        <table class="table table-striped table-bordered">
+                            <thead class="t-head">
+                                <tr>
+                                    <th width="150">EARNINGS</th>
+                                    <td>Amount</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr *ngFor="let data of earningList;let j=index">
+                                    <td>{{data.componentName | titlecase}}</td>
+                                    <td><input type="number" [(ngModel)]="data.componentValue" name="name{{j}}"
+                                            (ngModelChange)="sumOfEarnings()" class="form-control" #name="ngModel"
+                                            required [readonly]="isForView" /></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="col-4 pb-0">
+                        <table class="table table-striped table-bordered">
+                            <thead class="t-head">
+                                <tr>
+                                    <th width="150">DEDUCTIONS</th>
+                                    <td>Amount</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr *ngFor="let data of deductionList;let j=index">
+                                    <td>{{data.componentName | titlecase}}</td>
+                                    <td><input type="number" [(ngModel)]="data.componentValue" name="name{{j}}"
+                                            (ngModelChange)="sumOfDeductions()" class="form-control" #name="ngModel"
+                                            required [readonly]="isForView" /></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="col-4 pb-0">
+                        <table class="table table-striped table-bordered">
+                            <thead class="t-head">
+                                <tr>
+                                    <th width="150">OTHERS</th>
+                                    <td>Amount</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr *ngFor="let data of otherList;let j=index">
+                                    <td>{{data.componentName | titlecase}}</td>
+                                    <td><input type="number" [(ngModel)]="data.componentValue" name="name{{j}}"
+                                            class="form-control" #name="ngModel" required [readonly]="isForView" /></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <div class="row" *ngIf="!toggleLoader">
+                    <img src="./assets/images/loader-icon.gif" class="loader-margin img-responsive" alt="loading....">
+                </div>
+            </div>
+            <div class="modal-footer pt-0 pb-0">
+                <div class="col-12">
+                    <div class="d-flex fnt-3">
+                        <div class="inner-border-right pl-3">
+                            <i class="fas fa-money-bill success-text"></i>
+                            <span class="font-bold"> Gross Salary :</span>
+                            <span id="spnGrossSal" class="pr-3 ml-2 success-text font-bold">{{grossSalary}}</span>
+                        </div>
+                        <div class="inner-border-right pl-3">
+                            <i class="fas fa-money-bill danger-text"></i>
+                            <span class="font-bold"> Total Deduction :</span>
+                            <span id="spnTotalDed" class="pr-3 ml-2 danger-text font-bold">{{totalDeductions}}</span>
+                        </div>
+                        <div class="pl-3">
+                            <i class="fas fa-money-bill success-text"></i>
+                            <span class="font-bold"> Net Pay :</span>
+                            <span id="spnNetPay" class="ml-2 success-text font-bold">{{netPay}}</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row btn-footer" *ngIf="!isForView">
+                <div class="col-md-6 pull-left">
+                    <button type="submit" [disabled]="submitProcessing || netPay <= 0" id="btnComponentSave"
+                        (click)="onclickSubmit()" class="button btn-primary btn-style"><i class="fas fa-save"></i>
+                        {{submitText}}</button>
+                </div>
+                <div class="col-md-6 pull-right" *ngIf="submitText == 'Save'">
+                    <button type="button" class="button btn-warning btn-style" (click)="reset()">Clear</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal fade common-model" id="empfilter" style="margin-top: 50px;">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <!-- Modal Header -->
+            <div class="modal-header">
+                <h4 class="modal-title align-center"><i class="fas fa-filter"></i> Employees Filter</h4>
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+            </div>
+            <!-- Modal body -->
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-6">
+                        <div class="title-headers">
+                            <h2 style="font-size: 12px;
+                    margin-bottom: 11px;"><i class="fas fa-filter"></i> Master Filter
+                                <button type="button" class="btn btn-secondary btn-sm">Apply Filter</button>
+                                <button type="button" class="btn btn-secondary btn-sm">Clear Filter</button>
+                            </h2>
+                        </div>
+                        <div>
+                            <table class="model-tbl mt-10">
+                                <tr>
+                                    <td>
+                                        <h4>Branch</h4>
+                                    </td>
+                                    <td><input type="text" class="form-control"></td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <h4>Grade</h4>
+                                    </td>
+                                    <td><input type="text" class="form-control"></td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <h4>Department</h4>
+                                    </td>
+                                    <td><input type="text" class="form-control"></td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <h4>Designation</h4>
+                                    </td>
+                                    <td><input type="text" class="form-control"></td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <h4>Division</h4>
+                                    </td>
+                                    <td><input type="text" class="form-control"></td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <h4>Cost Center</h4>
+                                    </td>
+                                    <td><input type="text" class="form-control"></td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <h4>Project</h4>
+                                    </td>
+                                    <td><input type="text" class="form-control"></td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <h4>Category</h4>
+                                    </td>
+                                    <td><input type="text" class="form-control"></td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <h4>Bank</h4>
+                                    </td>
+                                    <td><input type="text" class="form-control"></td>
+                                </tr>
+                            </table>
+                        </div>
+                    </div>
+                    <div class="col-6">
+                        <div>
+                            <input type="text" class="form-control">
+                        </div>
+                        <br>
+                        <div>
+                            <table>
+                                <tr>
+                                    <th>
+                                        <input type="checkbox" class="select-all">
+                                    </th>
+                                    <th>
+                                        <label class="s-lable"> Emp Code</label>
+                                    </th>
+                                    <th>
+                                        <label class="s-lable"> Emp Name</label>
+                                    </th>
+                                </tr>
+                                <tr>
+                                    <td><input type="checkbox" class="select-all"></td>
+                                    <td><label class="s-lable">111</label> </td>
+                                    <td><label class="s-lable">Bharath</label> </td>
+                                </tr>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- Modal footer -->
+            <div class="modal-footer">
+                <button type="button" class="btn btn-danger" data-dismiss="modal">Ok</button>
+                <button type="button" class="btn btn-success" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>

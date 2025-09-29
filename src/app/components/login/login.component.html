@@ -1,0 +1,109 @@
+<div class="login-block" style="background-image: url(assets/images/hrms.jpg);">
+    <div class="register-photo">
+        <div class="form-container">
+            <div class="image-holder"></div>
+            <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
+                <h2 class="text-center"><strong class="main-heading">HRMS Login</strong> </h2>
+                <!-- <div class="tabs">
+                    <span (click)="tabClick()" data-tab-value="#tab_1">Internal</span>
+                    <span (click)="tabClick()" data-tab-value="#tab_2">External</span>
+                </div> -->
+                <div class="form-group">
+                    <div class="inputWithIcon">
+                        <input type="text" placeholder="Username" class="form-control " formControlName="username"
+                            [ngClass]="{ 'is-invalid': submitted && form.username.errors }">
+                        <i class="fa fa-user fa-lg fa-fw" aria-hidden="true"></i>
+                        <div *ngIf="submitted && form.username.errors" class="invalid-feedback">
+                            <div *ngIf="form.username.errors.required">User name is required</div>
+                            <div *ngIf="form.username.errors.minlength">User name must be 6 letters</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="inputWithIcon">
+                        <input type="password" placeholder="Password" class="form-control text-lowercase"
+                            formControlName="password" class="form-control"
+                            [ngClass]="{ 'is-invalid': submitted && form.password.errors }">
+                        <i class="fa fa-key fa-lg fa-fw" aria-hidden="true"></i>
+                        <div *ngIf="submitted && form.password.errors" class="invalid-feedback">
+                            <div *ngIf="form.password.errors.required">Password name is required</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group"><button class="btn btn-success btn-block" type="submit"><i class="fa fa-sign-in"
+                            style="color:#fff;margin-right: 5px;"></i> Login</button></div>
+
+                <div class="row col-12 margin-footer" style="margin-left: 5px;">
+                    <div>
+                        <a class="already" (click)="handleForgotPassword()">
+                            <i class="fa fa-lock" style="color:#424040;margin-right: 5px;"></i>
+                            Forgot password?</a>
+                    </div>
+                    <!-- <div class="col-5">
+                        <a class="" (click)="handleRegisterPage()"><i class="fa fa-address-card"
+                                style="color:#0867c5;margin-right: 2px;"></i> Sign Up For External User</a>
+                    </div> -->
+                </div>
+                <div class="row col-12 margin-footer" style="margin-left: 5px;">
+                    <!-- <div class="col-7">
+                        <a class="already" (click)="handleForgotPassword()">
+                            <i class="fa fa-lock" style="color:#424040;margin-right: 5px;"></i>
+                            Forgot password?</a>
+                    </div> -->
+                    <div>
+                        <a class="" (click)="handleRegisterPage()"><i class="fa fa-address-card"
+                                style="color:#0867c5;margin-right: 2px;"></i> External user? Click here to register </a>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<div class="modal alert-modal fade" id="alert_modal" role="dialog" style="display: none;">
+    <div class="modal-dialog modal-md">
+        <div class="modal-content model" *ngIf="showAlert">
+            <div class="modal-header " id="msg_header">
+                <h4 class="modal-title">Alert!</h4>
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+            </div>
+            <div class="modal-body">
+                <h3 id="msg">Password successfully sent to your Mail Id, Please check your mail.</h3>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="close" class="button btn-danger btn-style"
+                    data-dismiss="modal">Close</button>
+            </div>
+        </div>
+        <div class="modal-content model" *ngIf="!showAlert">
+            <div class="modal-header " id="msg_header">
+                <h4 class="modal-title">Alert!</h4>
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="row col-12 padding-field-bottom">
+                    <div class="col-4">
+                        <label>User Name<span class="color-red">*</span></label>
+                    </div>
+                    <div class="col-8">
+                        <input type="text" class="form-control pull-top-5" placeholder="Please Enter User Name"
+                            [(ngModel)]="userName" (ngModelChange)="changeUserName()">
+                        <span class="color-red" *ngIf="userNameSubmitted && !userName">
+                            User Name can't be blank.
+                        </span>
+                        <span class="color-red" *ngIf="userNameSubmitted && matchNotFoundInDB">User Name not found in
+                            DB, Please check once.
+                        </span>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" id="btnComponentSave" (click)="submitUserName()"
+                    class="button btn-primary btn-style"><em class="fas fa-save"></em>
+                    Submit</button>
+                <button type="button" class="close" class="button btn-danger btn-style"
+                    data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,57 @@
+<div class="container-fluid">
+    <br>
+    <div class="row">
+        <div class="col-md-12">
+            <table class="table table-bordered table-hover table-sm">
+                <thead class="t-head">
+                    <tr>
+                        <th *ngFor="let head of headers"><a>{{head}}</a></th>
+                    </tr>
+                    <tr >
+                        <td *ngFor="let head of headers">
+                            <input type="text" class="form-control" name="{{head}}">
+                        </td>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let employee of employees">
+                        <td>{{employee.code}}</td>
+                        <td>{{employee.name}}</td>
+                        <td>{{employee.branch}}</td>
+                        <td>{{employee.department}}</td>
+                        <td>{{employee.designation}}</td>
+                        <td>{{employee.grade}}</td>
+                        <td>{{employee.category}}</td>
+                        <td>{{employee.division}}</td>
+                        <td>{{employee.costCenter}}</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-12">
+            <table class="table table-bordered table-hover table-sm">
+                <thead class="t-head">
+                    <tr>
+                        <th *ngFor="let head of leaveHeader"><a>{{head}}</a></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let leave of leaveData">
+                        <td>{{leave.sno}}</td>
+                        <td>{{leave.leave}}</td>
+                        <td>{{leave.cl}}</td>
+                        <td>{{leave.h}}</td>
+                        <td>{{leave.mtl}}</td>
+                        <td>{{leave.od}}</td>
+                        <td>{{leave.pl}}</td>
+                        <td>{{leave.rh}}</td>
+                        <td>{{leave.sl}}</td>
+                    </tr>
+                </tbody>
+            </table>
+            <span><input type="checkbox"> Manual</span>
+        </div>
+    </div>
+</div>

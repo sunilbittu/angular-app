@@ -1,0 +1,113 @@
+<div class="container-fluid">
+    <div class="d-flex align-items-center mt-2">
+        <div class="m-2">
+            <div class="h-size"><em class="fa fa-user mr-1"></em> <strong>Leaderboard Report</strong></div>
+        </div>
+        
+
+        <div class="form-group col-md-3">
+            <label for="empbranch">Employee Branch <span class="color-red">*</span></label>
+            <select id="empbranch" class="form-control"   name="branch" #branch (change)="onchangeBranch(branch.value)">
+                <option value="" disabled selected>Select Branch</option>
+                <option *ngFor="let data of branchDetailsList" [value]="data.companyBranchDetailsId">
+                    {{data.branchName}}</option>
+            </select>
+            <span class="color-red" *ngIf="submitted && !isbranchNameSelected ">Branch Name cant be blank</span>
+
+        </div> 
+
+        <div class="form-group col-md-3">
+            <label for="libraryType">Department Name<span class="color-red">*</span></label>
+             <select id="libraryType"  [(ngModel)]="departmentModel" name="department" (change)="onDepartmentChange()" class="form-control">
+                <option value="" disabled selected>-Select Department Name-</option>
+                <option *ngFor="let data of departmentsList" [value]="data.departmentId">
+                    {{data.departmentName}}</option>
+                </select>
+            <span class="color-red" *ngIf="submitted && !isDepartmentSelected ">Department Name cant be blank</span>
+
+        </div>
+
+        <div class="form-group col-md-3">
+            <label for="leaderboard">Leaderboard<span class="color-red">*</span></label>
+             <select id="leaderboard"  [(ngModel)]="leaderboardModel" name="leaderboard" (change)="onLeaderboardChange()" class="form-control">
+                <option value="" disabled selected>-Select Performance-</option>
+                <option *ngFor="let data of leaderBoardList" [value]="data">
+                    {{data}}</option>
+                </select>
+            <!-- <span class="color-red" *ngIf="submitted && !isDepartmentSelected ">Leaderboard cant be blank</span> -->
+
+        </div>
+          
+        
+        <div class="m-2">
+            <button type="button" id="btn_projection" style="height: 35px;" class="button btn-primary m-auto" (click)="search()">Search</button>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-12">
+            <table class="table table-bordered table-hover table-sm">
+                <thead class="t-head">
+                    <tr *ngIf="leaderboardModel=='Candidate'">
+                        <th *ngFor="let head of candidateHeaders" id="headers1"><a>{{head}}</a></th>
+                    </tr>
+                    <tr *ngIf="leaderboardModel=='Recruitment'">
+                        <th *ngFor="let head of recruitmentHeaders" id="headers1"><a>{{head}}</a></th>
+                    </tr>
+                    <tr *ngIf="leaderboardModel=='Job'">
+                        <th *ngFor="let head of jobHeaders" id="headers1"><a>{{head}}</a></th>
+                    </tr>
+                </thead>
+                <tbody *ngIf="leaderboardModel=='Candidate'">
+                    <tr *ngFor="let data of candidateReportList;let i=index">
+                        <td>{{i+1}}</td>
+                        <td>{{data.employeeCode}}</td>
+                        <td>{{data.firstName}}</td>
+                        <td>{{data.createdCandidates}}</td>
+                        <td>{{data.submittedCandidates}}</td>
+                        <td>{{data.placementCandidates}}</td>
+                        <!-- <td>{{data.ownedCandidates}}</td> -->
+                                    
+                    </tr>
+                </tbody>
+                <tbody *ngIf="leaderboardModel=='Recruitment'">
+                    <tr *ngFor="let data of recruitmentReportList;let i=index">
+                        <td>{{i+1}}</td>
+                        <td>{{data.employeeCode}}</td>
+                        <td>{{data.firstName}}</td>
+                        <td>{{data.matchesCandidates}}</td>
+                        <td>{{data.placementCandidates}}</td>
+                        <td>{{data.dropedCandidates}}</td>
+                        <!-- <td>{{data.createdJobs}}</td> -->
+                        
+                       
+                    </tr>
+                </tbody>
+                <tbody *ngIf="leaderboardModel=='Job'">
+                    <tr *ngFor="let data of jobReportList;let i=index">
+                        <td>{{i+1}}</td>
+                        <td>{{data.employeeCode}}</td>
+                        <td>{{data.firstName}}</td>
+                        <td>{{data.createdJobs}}</td>
+                        <td>{{data.activeJobs}}</td>
+                        <td>{{data.completedJobs}}</td>
+                        <td>{{data.cancelledJobs}}</td>
+                        <td>{{data.onHoldJobs}}</td>
+                                         
+                    </tr>
+                </tbody>
+
+            </table>
+        </div>
+    </div>
+    
+    <div class="row">
+    <div class="col-md-2">
+        <button type="button" class="btn btn-labeled btn-outline-danger btn-sm" (click)="exportTable('PDF')">
+            <span class="btn-label"><i class="fa fa-file-pdf-o" aria-hidden="true"></i></span>Export To PDF</button>
+    </div>
+
+    <div class="col-md-2">
+        <button type="button" class="btn btn-labeled btn-outline-success btn-sm" (click)="exportTable('EXCEL')">
+            <span class="btn-label"><i class="fa fa-file-excel-o" aria-hidden="true"></i></span>Export To Excel</button>
+    </div>
+   </div>

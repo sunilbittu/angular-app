@@ -1,0 +1,43 @@
+.padding-top-25 {
+    padding-top: 25px;
+}
+.green {
+    color: green;
+}
+.table thead th {
+    vertical-align: unset;
+    border-bottom: 2px solid #dee2e6;
+}
+
+.table tr th, .table tr td {
+    border: solid 1px #a3a2a3!important;
+    font-size: 14px;
+}
+.back-btn {
+    background-color: #bbbbbb;
+}
+.blue {
+    color: blue;
+    cursor: pointer;
+}
+.error-msg {
+    margin: 10px 0;
+    padding: 10px;
+    border-radius: 3px 3px 3px 3px;
+    color: #D8000C;
+    background-color: #FFBABA;
+}
+b, strong {
+    font-weight: 500;
+}
+.modal-title {
+    font-size: 20px;
+    font-weight: 500;
+    text-align: center;
+    flex: 1;
+    color: #000;
+}
+a {
+    color: blue;
+    cursor: pointer;
+}

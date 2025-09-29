@@ -1,0 +1,190 @@
+.align {
+    text-align: center;
+}
+
+h1, h2, h3, h4, h5, h6 {
+    margin: 0px;
+}
+
+.s-lable {
+    padding-left: 10px;
+}
+
+.no-border {
+    border: none !important;
+    box-shadow: none !important;
+}
+
+.right-content {
+    text-align: right;
+}
+
+.light-text {
+    color: white;
+}
+
+.flex-center-align {
+    align-items: center;
+    justify-content: center;
+}
+
+.d-flex {
+    display: flex;
+}
+
+.p-0 {
+    padding: 0px !important;
+}
+
+.flex-center-align {
+    align-items: center;
+    justify-content: center;
+}
+
+.no-border {
+    border: none !important;
+    box-shadow: none !important;
+}
+
+.modal-body {
+    max-height: calc(100vh - 250px);
+    overflow-y: auto;
+}
+
+.margin-20 {
+    margin-left: 20px;
+}
+
+.table {
+    cursor: pointer;
+}
+
+.table tr.active td {
+    background-color: #9ABCEA !important;
+    color: white;
+}
+
+.green {
+    color: green;
+}
+
+.modal-title {
+    font-size: 1.1rem;
+    font-weight: bold;
+    text-align: center;
+    flex: 1;
+    color: #000;
+}
+
+.table thead th {
+    vertical-align: unset;
+    border-bottom: 2px solid #dee2e6;
+}
+
+.table tr th, .table tr td {
+    border: solid 1px #a3a2a3 !important;
+    font-size: 14px;
+}
+
+.btn-footer {
+    margin: 1px;
+    padding-bottom: 10px;
+    padding-top: 10px;
+    background-color: rgb(231, 225, 225);
+}
+
+button:disabled,
+button[disabled] {
+    border: 1px solid #999999;
+    background-color: #cccccc;
+    color: #666666;
+}
+
+.modal-footer {
+    padding: 0.5rem;
+    text-align: center;
+    background-color: #cdd6e0;
+    border-bottom-left-radius: 5px;
+    border-bottom-right-radius: 5px;
+    font-size: 15px;
+}
+
+.pt-0 {
+    padding-top: 5px !important;
+}
+
+.pb-0 {
+    padding-bottom: 5px !important;
+}
+
+.success-text {
+    color: #02a523;
+}
+
+.pr-3 {
+    padding-right: 0.75rem;
+}
+
+.ml-2 {
+    margin-left: 0.5rem !important;
+}
+
+.font-bold {
+    font-weight: bold;
+}
+
+.danger-text {
+    color: #f1543f;
+}
+
+.inner-border-right {
+    position: relative;
+}
+
+h5 {
+    font-size: 1.1rem;
+}
+
+h5 {
+    color: #707070;
+    margin: 0px;
+    text-align: center;
+}
+
+a.disabled {
+    color: gray;
+    cursor: not-allowed;
+    text-decoration: underline;
+}
+
+.fa-circle {
+    color: #008db8;
+}
+
+.padding-field-bottom {
+    padding-bottom: 10px;
+    margin-left: 0px;
+}
+
+.form-control::-webkit-input-placeholder {
+    font-family: FontAwesome;
+    font-weight: normal;
+    overflow: visible;
+    vertical-align: top;
+    display: inline-block !important;
+    padding-left: 1px;
+    padding-top: 2px;
+    color: hsl(9, 17%, 24%);
+    cursor: pointer;
+}
+
+.back-btn {
+    background-color: #bbbbbb;
+}
+
+.margin-right-30 {
+    margin-right: 30px;
+}
+.date-field-bg {
+    background-color: #fcfdff;
+}

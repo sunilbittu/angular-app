@@ -1,0 +1,234 @@
+<div class="container-fluid">
+<div class="d-flex align-items-center mt-2">
+    <div class="m-2">
+        <div class="h-size"><i class="fas fa-cogs"></i> <b>HR Team Appraisal Status</b></div>
+    </div>
+</div>
+<div class="row" *ngIf="!toggleScreen2">
+    <div class="col-md-4">
+        <label for="financialYear"> Financial Year : </label>
+        <select class="form-control" [(ngModel)]="financialYearModel" name="year" (change)="getFinancialYear()"
+            id="financialYear">
+            <option disabled selected>Please Select Year</option>
+            <option *ngFor="let year of FinancialYearData" value={{year.financialYearId}}>{{year.financialYear}}
+            </option>
+        </select>
+
+    </div>
+    <div class="col-md-4">
+        <label for="department">Department : </label>
+        <select class="form-control" [(ngModel)]="departmentModel" name="department" (change)="getDepartment('dep')"
+            id="department">
+            <option disabled selected>Please Select Department</option>
+            <option *ngFor="let dep of departmentData" value={{dep.departmentId}}>{{dep.departmentName}}</option>
+        </select>
+
+    </div>
+    <div class="col-md-4 tttt">
+        <button class="btn btn-primary btn-sm" (click)="getEmployees()">Search</button>&nbsp;
+
+        <button class="btn btn-danger btn-sm" (click)="clearData()">Cancel</button>
+    </div>
+</div>
+
+
+<div class="container-fluid" *ngIf="toggleScreen">
+    <div class="row">
+        <div class="col-md-12">
+            <table class="table table-bordered table-hover table-sm table-eg ">
+                <tr>
+                    <th class=" t-head">
+                        Total number of employees in the department :
+                    </th>
+                    <td>
+                        {{totalEmployeesInDepartment}}
+                    </td>
+                </tr>
+                <tr>
+                    <th class="t-head">
+                        Total eligible employees in the department for appraisals this FY :
+                    </th>
+                    <td>
+                        {{totalEmployeesInDepartment}}
+                    </td>
+                </tr>
+                <tr>
+                    <th class="t-head">
+                        Total number of employees submited self-appraisal
+                    </th>
+                    <td>
+                        {{employeeSelfAppraisalCount}}
+                    </td>
+                </tr>
+                <tr>
+                    <th class="t-head">
+                        Total number of employees appraisals review submited
+                    </th>
+                    <td>
+                        {{employeeAppraisalCount}}
+                    </td>
+                </tr>
+                <tr>
+                    <th class="t-head">
+                        Total number of employees appraisals review finalzed
+                    </th>
+                    <td>
+                        {{employeefinalizedCount}}
+                    </td>
+                </tr>
+            </table>
+        </div>
+    </div>
+</div>
+<br>
+<div class="container-fluid" *ngIf="toggleScreen">
+    <div class="row">
+        <table class="table table-bordered table-hover table-sm">
+            <tr>
+                <th class="t-head head-width" *ngFor="let head of headers4" id="headers4">
+                    {{head}}
+                </th>
+            </tr>
+            <tbody>
+                <tr *ngFor="let count of gradeEmployeeCount">
+                    <td>{{count.gradeName}}</td>
+                    <td><a class="icon-margin" title="Cilck hear to view the Employees and their Appraisals"
+                            (click)="totalemployeesInGrade(count)"><span>{{count.count}}</span></a></td>
+                    <td><a class="icon-margin" title="Cilck hear to view the Employees With S Rating"
+                            (click)="totalemployeesInGradeS(count)"><span>{{count.s}}</span></a></td>
+                    <td><a class="icon-margin" title="Cilck hear to view the Employees With M Rating"
+                            (click)="totalemployeesInGradeM(count)"><span>{{count.m}}</span></a></td>
+                    <td><a class="icon-margin" title="Cilck hear to view the Employees With A Rating"
+                            (click)="totalemployeesInGradeA(count)"><span>{{count.a}}</span></a></td>
+                    <td><a class="icon-margin" title="Cilck hear to view the Employees With R Rating"
+                            (click)="totalemployeesInGradeR(count)"><span>{{count.r}}</span></a></td>
+                    <td><a class="icon-margin" title="Cilck hear to view the Employees With T Rating"
+                            (click)="totalemployeesInGradeT(count)"><span>{{count.t}}</span></a></td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+<div class="container-fluid" *ngIf="toggleScreen2">
+    <div class="row">
+        <button id="backButton" class="btn btn-primary btn-sm" (click)=backToFirstPage()> <em class="fa fa-backward"
+                aria-hidden="true"></em>Back</button>
+        <br>
+    </div>
+    <div class="row">
+        <div class="col-md-12">
+            <table class="table table-bordered table-hover table-sm">
+                <th class="t-head" *ngFor="let head of headers2" id="headers2">
+                    <tr>
+                        {{head}}
+                    </tr>
+                </th>
+
+                <tbody>
+                    <tr *ngFor="let employee of employeeList ; let i=index">
+                        <td>{{employee.employeeCode}}</td>
+                        <td>{{employee.firstName}} {{employee.lastName}}</td>
+                        <td>{{employee.departmentName}}</td>
+                        <td>{{employee.branchName}}</td>
+                        <td>{{employee.designationName}}</td>
+                        <td>{{employee.gradeName}}</td>
+                        <td>{{employee.categoryName}}</td>
+                        <td>{{employee.projectName}}</td>
+                        <td><span *ngIf="editIncrement==true && i==highlightedrow"><input type="number"  [(ngModel)]="employee.increment"></span>
+                        <span *ngIf="editIncrement==false || i!=highlightedrow">{{employee.increment}}</span>
+                        </td>
+                        <td *ngIf="editIncrement==false">
+                            <a title="View" class="icon-margin" (click)="employeeViewClick(employee)"><span
+                                    class="fas fa-eye" data-toggle="modal" data-target="#view-appraisals"></span></a>
+                                    <a *ngIf="employee.increment == null" title="edit" class="icon-margin"  (click)="incrementEmployee(i)"><span
+                                        class="fas fa-user-edit"></span></a>
+                                        
+                        </td>
+                        <td *ngIf="editIncrement==true && i==highlightedrow " >
+                            <button class="btn btn-sm btn-primary" (click)="updateIncrement(employee)">Update</button>
+                            <button class="btn btn-sm btn-danger" (click)="cancelEditIncrement()">Cancel</button>
+                        </td>
+                        </tr>
+                </tbody>
+
+            </table>
+            <!-- <button *ngIf=" multipleIncrement==false && editIncrement==false" class="btn btn-sm btn-primary" (click)="editMultipleIncrement()">Edit Increments</button> -->
+            <!-- <button *ngIf=" multipleIncrement==true " class="btn btn-sm btn-primary" (click)="updateMultipleIncrement()">Update</button> -->
+            <!-- <button *ngIf=" multipleIncrement==true " class="btn btn-sm btn-danger" (click)="cancelMultipleIncrement()">Cancel</button> -->
+        </div>
+    </div>
+</div>
+
+<!-- <div class="container-fluid" *ngIf="toggleScreen3">
+    <div class="row">
+        <button id="backButton" class="btn btn-primary btn-sm" (click)=backToFirstPage()> <em class="fa fa-backward"
+                aria-hidden="true"></em>Back</button>
+        <br>
+    </div>
+    <div class="row">
+        <div class="col-md-12">
+            <table class="table table-bordered table-hover table-sm">
+                <th class="t-head" *ngFor="let head of headers5" id="headers2">
+                    <tr>
+                        {{head}}
+                    </tr>
+                </th>
+
+                <tbody>
+                    <tr *ngFor="let employee of employeeList3">
+                        <td>{{employee.employeeCode}}</td>
+                        <td>{{employee.firstName}} {{employee.lastName}}</td>
+                        <td>{{employee.departmentName}}</td>
+                        <td>{{employee.branchName}}</td>
+                        <td>{{employee.designationName}}</td>
+                        <td>{{employee.gradeName}}</td>
+                        <td>{{employee.categoryName}}</td>
+                        <td>{{employee.projectName}}</td>
+                      
+                        </tr>
+                </tbody>
+
+            </table>
+            <button *ngIf=" multipleIncrement==true " class="btn btn-sm btn-danger" (click)="cancelMultipleIncrement()">Cancel</button>
+        </div>
+    </div>
+</div> -->
+
+
+<div class="modal fade common-model" id="view-appraisals">
+    <div class="modal-dialog modal-xl">
+        <div class="modal-content model width">
+            <!-- Modal Header -->
+            <div class="modal-header">
+                <div class="modal-title"><i class="fa fa-eye" aria-hidden="true"></i> Employee Appraisal Details
+                </div>
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+            </div>
+            <!-- Modal body -->
+            <div class="modal-body sample">
+                <table class="table table-bordered table-hover table-sm">
+                    <th class="t-head" *ngFor="let head of headers3" id="headers3">
+                        <tr>
+                            {{head}}
+                        </tr>
+                    </th>
+
+                    <tbody>
+                        <tr *ngFor="let kpa of employeeKpaList">
+                            <td>{{kpa.kpaName}}</td>
+                            <td>{{kpa.kpaWeighttage}}</td>
+                            <td>{{kpa.targetedResults}}</td>
+                            <td>{{kpa.appraiserRating}}</td>
+                            <td>{{kpa.deptHeadRating}}</td>
+                            <td>
+                                <span *ngIf="kpa.isFinalized==true">Finalized</span>
+                                <span *ngIf="kpa.isFinalized==false">In-Progress</span>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+</div>

@@ -1,0 +1,28 @@
+.modal-title {
+    font-size: 1.1rem;
+    font-weight: bold;
+    text-align: center;
+    flex: 1;
+    color: #000;
+}
+
+.edit {
+    cursor: pointer;
+  }
+
+.table tr th {
+    font-size: 14px;
+}
+
+.table tr td {
+    font-size: 14px;
+}
+
+.btn-footer {
+    margin: 1px;
+    margin-bottom: 15px;
+}
+.model-tbl tr td input {
+    height: 32px;
+    width: 310px;
+}

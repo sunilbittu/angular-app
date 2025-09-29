@@ -1,0 +1,95 @@
+<div class="container-fluid">
+    <div class="d-flex align-items-center mt-2">
+        <div class="m-2">
+            <div class="h-size"><em class="fa fa-user"></em> <strong> Feedback List</strong></div>
+        </div>
+        <div class="flex-fill">
+        </div>
+    </div>
+    <div class="modal-body">
+        <form [formGroup]="feedbackForm">
+            <div class="row">
+                <div class="col-10 row">
+
+                    <div class="col-3">
+                        <label for="type">Training Technology<span class="color-red">*</span></label>
+                        <select class="form-control" id="technology" formControlName="technology"
+                            (change)="changeName()" [ngClass]="{ 'is-invalid': submitted && form_.technology.errors }">
+                            <option value=null disabled>Please Select Technology</option>
+                            <option *ngFor="let tech of technologies" [value]="tech.technologyId">
+                                {{tech.technologyName}}
+                            </option>
+                        </select>
+                        <span class="color-red" *ngIf="submitted && form_.technology.errors">Technology
+                            {{requiredErrorText}}</span>
+                    </div>
+                    <div class="col-3">
+                        <label for="type">Trainer Name <span class="color-red">*</span></label>
+                        <select class="form-control" id="trainer" formControlName="trainer" (change)="handleTrainer()"
+                            [ngClass]="{ 'is-invalid': submitted && form_.trainer.errors }">
+                            <option [value]=null disabled>Please Select Trainer</option>
+                            <option *ngFor="let t of trainersList" [value]="t.trainerId">
+                                {{t.trainerDetails.trainerName}}
+                            </option>
+                        </select>
+                        <span class="color-red" *ngIf="submitted && form_.trainer.errors">Trainer
+                            {{requiredErrorText}}</span>
+                    </div>
+                    <div class="col-3">
+                        <label for="type">Training Id</label>
+                        <select class="form-control" id="trainingId" formControlName="trainingId"
+                            [ngClass]="{ 'is-invalid': submitted && form_.trainingId.errors }">
+                            <option value=null disabled>Please Select Training</option>
+                            <option *ngFor="let tech of trainingList" [value]="tech.manageTrainingId">
+                                {{tech.manageTrainingId}}-{{tech.batchName}}
+                            </option>
+                        </select>
+                        <span class="color-red" *ngIf="submitted && form_.trainingId.errors">Training
+                            {{requiredErrorText}}</span>
+                    </div>
+                    <div class="col-3" style="margin-top: 28px;">
+                        <button (click)="search()" class="btn btn-primary btn-sm"
+                            style="font-size: 16px;">Search</button>&nbsp;&nbsp;
+                        <button (click)="clear()" class="btn btn-warning btn-sm" style="font-size: 16px;">Clear</button>
+                    </div>
+
+                </div>
+            </div>
+        </form>
+    </div>
+    <div class="row">
+        <div class="col-md-12">
+            <table class="table table-bordered table-hover table-sm">
+                <thead class="t-head">
+                    <tr>
+                        <th *ngFor="let head of headers"><a>{{head}}</a></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let data of feedbackList">
+                        <td>{{data.manageTrainingId.manageTrainingId}}</td>
+                        <td>{{data.manageTrainingId.technologyId.technologyName}}</td>
+                        <td>{{data.empId}}</td>
+                        <td>{{data.employeeName}}</td>
+                        <td>{{data.manageTrainingId.trainerId.trainerDetails.trainerName}}</td>
+                        <td>{{data.rating}}</td>
+                        <td>{{data.comments}}</td>
+                    </tr>
+                    <tr *ngIf="feedbackList && feedbackList.length > 0">
+                        <td style="text-align: right;" colspan="5"><b>Overall Rating: </b></td>
+                        <td colspan="2"><b>{{totalRating}}</b></td>
+                    </tr>
+                </tbody>
+            </table>
+            <div class="row" *ngIf="totalElements!=0">
+                <div class="col-md-6 col-sm-6 col-6  pagination-area"><span class="show-entry">Showing
+                        <span>{{showingFrom}} to {{showingTo}} of {{totalElements}} entries</span></span>&nbsp;
+                </div>
+
+                <div class="col-md-6 pull-right" *ngIf="totalElements > pageSize">
+                    <pagination-controls (pageChange)="pageChanged($event)"></pagination-controls>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

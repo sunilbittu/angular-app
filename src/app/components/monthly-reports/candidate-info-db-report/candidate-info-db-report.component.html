@@ -1,0 +1,210 @@
+<div class="container-fluid">
+    <div class="d-flex align-items-center mt-2">
+        <div class="m-2">
+            <div class="h-size"><em class="fa fa-user"></em> <strong> Candidates Detailed Report</strong></div>
+        </div>
+        <div class="flex-fill"></div>
+        <div class="m-2"></div>
+        <div class="m-3"></div>
+    </div>
+    <div class="row">
+        <!-- <div class="form-group col-md-4"> -->
+            <!-- <label for="stage">Stage <span class="color-red"></span></label>
+            <ng-multiselect-dropdown [placeholder]="'Select Stage'" [settings]="dropdownSettingsStage"
+                [data]="stageList" [(ngModel)]="selectedItemsStage" (onSelect)="onItemSelectStage($event)"
+                (onDeSelect)="OnStageItemDeSelect($event)" (onSelectAll)="onSelectAllStage($event)">
+            </ng-multiselect-dropdown>
+        </div> -->
+        <div class="form-group col-md-2">
+            <label for="contract">Sourcing channel <span class="color-red"></span></label>
+            <select class="form-control" id="technology" [(ngModel)]="source">
+                <option value=null disabled>Please Select Source</option>
+                <option *ngFor="let source of sources" [value]="source">
+                    {{source}}
+                </option>
+            </select>
+        </div>
+        <div class="form-group col-md-2" *ngIf="source === 'Referral'">
+            <label for="user">Referrer <span class="color-red"></span></label>
+            <select class="form-control" id="technology" [(ngModel)]="referrer">
+                <option value=null disabled>Please Select Referrer</option>
+                <option *ngFor="let data of referralList" [value]="data.id">
+                    {{data.name}}
+                </option>
+            </select>
+        </div>
+        <div class="form-group col-md-2">
+            <label for="user">User <span class="color-red"></span></label>
+            <ng-multiselect-dropdown [placeholder]="'Select User'" [settings]="dropdownSettingsUser" [data]="userList"
+                [(ngModel)]="selectedItemsUser" (onSelect)="onItemSelectUser($event)"
+                (onDeSelect)="OnUserItemDeSelect($event)" (onSelectAll)="onSelectAllUser($event)">
+            </ng-multiselect-dropdown>
+        </div>
+        <div class="form-group col-md-2">
+            <label>Created Start Date</label>
+            <input type="text" [(ngModel)]="startDate" bsDatepicker placeholder="Please Select Start Date" readonly
+                [bsConfig]="{ isAnimated: true, dateInputFormat: 'DD-MM-YYYY' }" bsDatepicker
+                (bsValueChange)="onStartDateValueChange($event)" placement="bottom"
+                class="text form-control pull-top-5 read-only" maxlength="50" />
+        </div>
+        <div class="form-group col-md-2">
+            <label>Created End Date</label>
+            <input type="text" [(ngModel)]="endDate" bsDatepicker placeholder="Please Select End Date"
+                [minDate]="selectedStartDate" readonly [bsConfig]="{ isAnimated: true, dateInputFormat: 'DD-MM-YYYY' }"
+                bsDatepicker (bsValueChange)="onEndDateValueChange($event)" placement="bottom"
+                class="text form-control pull-top-5 read-only" maxlength="50" />
+        </div>
+        <div class="form-group col-md-2 padding-top-25">
+            <!-- <button type="button" id="search" class="btn btn-primary btn-sm" (click)="searchFilter()">Search</button>
+            &nbsp; -->
+            <button type="button" id="search" class="btn btn-warning btn-sm" (click)="clear()">Clear</button>
+        </div>
+    </div>
+    <hr />
+    <div class="row">
+        <div class="col-md-4">
+            <h2>Candidate Details</h2>
+            <table>
+                <thead>
+                    <tr>
+                        <div class="card-body" style="font-size: 18px;padding: 0.5rem;cursor: pointer;"
+                            (click)="selectAllCandidateDetails($event)">
+                            <td class="align-center">
+                                <input type="checkbox" style="height: 16px; width: 20px;cursor: pointer;"
+                                    [checked]="candidateDetails.length == selectedCandidateCount"
+                                    [value]="candidateDetails">
+                            </td>
+                            <td><a>Select All</a></td>
+                        </div>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let data of candidateDetails">
+                        <div class="card-body" style="font-size: 16px;padding: 0.5rem;cursor: pointer;"
+                            (click)="onClickCheckBox(data.value, 'Summary')">
+                            <td class="align-center">
+                                <input type="checkbox" style="height: 14px; width: 18px;cursor: pointer;" name="status"
+                                    [checked]="data.selected">
+                            </td>
+                            <td> {{data.value}}</td>
+                        </div>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div class="col-md-4">
+            <h2>Additional Details</h2>
+            <table>
+                <thead>
+                    <tr>
+                        <div class="card-body" style="font-size: 18px;padding: 0.5rem;cursor: pointer;"
+                            (click)="selectAllAdditionalDetails($event)">
+                            <td class="align-center">
+                                <input type="checkbox" style="height: 16px; width: 20px;cursor: pointer;"
+                                    [checked]="candidateDetails.length == selectedCandidateCount"
+                                    [value]="candidateDetails">
+                            </td>
+                            <td><a>Select All</a></td>
+                        </div>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let data of additionalDetails">
+                        <div class="card-body" style="font-size: 16px;padding: 0.5rem;cursor: pointer;"
+                            (click)="onClickCheckBox(data.value, 'Additional')">
+                            <td class="align-center">
+                                <input type="checkbox" style="height: 14px; width: 18px;cursor: pointer;" name="status"
+                                    [checked]="data.selected">
+                            </td>
+                            <td> {{data.value}}</td>
+                        </div>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div class="col-md-4">
+            <h2>Log Book Details</h2>
+            <table>
+                <thead>
+                    <tr>
+                        <div class="card-body" style="font-size: 18px;padding: 0.5rem;cursor: pointer;"
+                            (click)="selectAllLogBookDetails($event)">
+                            <td class="align-center">
+                                <input type="checkbox" style="height: 16px; width: 20px;cursor: pointer;"
+                                    [checked]="candidateDetails.length == selectedCandidateCount"
+                                    [value]="candidateDetails">
+                            </td>
+                            <td><a>Select All</a></td>
+                        </div>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let data of logBookDetails">
+                        <div class="card-body" style="font-size: 16px;padding: 0.5rem;cursor: pointer;"
+                            (click)="onClickCheckBox(data.value, 'LogBook')">
+                            <td class="align-center">
+                                <input type="checkbox" style="height: 14px; width: 18px;cursor: pointer;" name="status"
+                                    [checked]="data.selected">
+                            </td>
+                            <td> {{data.value}}</td>
+                        </div>
+                    </tr>
+                </tbody>
+            </table>
+            <br />
+            <h2>Other Details</h2>
+            <table>
+                <tbody>
+                    <tr *ngFor="let data of otherDetails">
+                        <div class="card-body" style="font-size: 16px;padding: 0.5rem;cursor: pointer;"
+                            (click)="onClickCheckBox(data.value, 'Other')">
+                            <td class="align-center">
+                                <input type="checkbox" style="height: 14px; width: 18px;cursor: pointer;" name="status"
+                                    [checked]="data.selected">
+                            </td>
+                            <td> {{data.value}}</td>
+                        </div>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+    </div>
+    <hr />
+    <div class="box-footer">
+        <div *ngIf="validationText != ''" class="color-red pull-left-5"><strong>{{validationText}}</strong></div>
+        <button type="submit" class="btn generate btn-primary" (click)="searchData()">Generate</button>
+        &nbsp;&nbsp;
+        <button [disabled]="candidateList.length == 0" title="Export" class="btn btn-primary" mat-icon-button [matMenuTriggerFor]="menu"
+            aria-label="Menu">
+            <i class='fas fa-file-export'></i> Export
+        </button>
+        <mat-menu #menu="matMenu">
+            <button mat-menu-item type="button" class="btn btn-labeled btn-sm" (click)="exportTable('EXCEL')">
+                <span class="btn-label"><i class="fa fa-file-excel-o" aria-hidden="true"></i></span> Export To
+                Excel</button>
+        </mat-menu>
+    </div>
+    <hr />
+    <h2>Candidate Information</h2>
+    <div class="dataTables_scrollBody" style=" overflow-x: scroll;">
+        <table id="fixHeader" class="table table-striped table-striped table-borders dataTable no-footer tbl-workload"
+            role="grid">
+            <thead class="t-head">
+                <tr role="row">
+                    <th class="sorting_disabled" rowspan="1" colspan="1" style="width: 13px;">#
+                    </th>
+                    <th *ngFor="let header of headerList">{{ header.value }}</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr role="row" class="odd" *ngFor="let candidate of candidateList; let i = index">
+                    <td> {{ i+1 }} </td>
+                    <td *ngFor="let header of headerList">{{ candidate[header.key]}}</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>

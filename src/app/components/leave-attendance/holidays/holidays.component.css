@@ -1,0 +1,36 @@
+.modal{
+    margin-top:7vw;
+    }
+    .modal-footer{
+    flex-wrap: nowrap !important;
+    justify-content:center;
+    }
+    
+    .modal-footer .btn-success{
+    margin-right: 640px;
+    }
+    .table tr th {
+        font-size: 14px;
+    }
+    
+    .table tr td {
+        font-size: 14px;
+    }
+    
+    .model-tbl tr td input {
+        height: 32px;
+        width: 310px;
+    }
+    .td-width {
+        width: 65%;
+    }
+    .td-width-1 {
+        width: 37%;;
+    }
+    .modal-title {
+        font-size: 1rem;
+        font-weight: bold;
+        text-align: center;
+        flex: 1;
+        color: #000;
+    }

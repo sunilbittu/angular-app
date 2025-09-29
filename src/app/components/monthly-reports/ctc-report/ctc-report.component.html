@@ -1,0 +1,135 @@
+<div class="container-fluid">
+  <form [formGroup]="ctcForm" (ngSubmit)="onSubmit()" class="mt-3">
+
+    <div class="form-row">
+
+      <div class="form-group col-md-3">
+        <label for="type_select" class="col-sm-12 col-form-label">Select Type</label>
+        <select class="form-control" id="type_select" name="selectType" formControlName="selectType"
+          [ngClass]="{ 'is-invalid': submitted && form.selectType.errors }" (change)="onSelect()">
+          <option value="" >Select</option>
+          <option value="branch">Branch</option>
+          <option value="department">Department</option>
+          <option value="grade">Grade</option>
+
+        </select>
+
+        <div *ngIf="submitted && form.selectType.errors" class="invalid-feedback">
+          <div *ngIf="form.selectType.errors.required">Select Your Type</div>
+
+        </div>
+
+      </div>
+
+
+      <div class="form-group col-md-3" *ngIf="branch">
+
+        <label for="branch" class="col-sm-12 col-form-label">Select Branch</label>
+        <select class="form-control" id="branch" formControlName="branch"
+          [ngClass]="{ 'is-invalid': submitted && form.branch.errors }" (change)="onchangeBranch()">
+          <option value="" >Select</option>
+         
+          <option *ngFor="let data of branchDetailsList" [value]="data.companyBranchDetailsId">
+            {{data.branchName}}</option>
+        </select>
+
+        <div *ngIf="submitted && form.branch.errors" class="invalid-feedback">
+          <div *ngIf="form.branch.errors.required">Select Your Branch</div>
+
+        </div>
+
+      </div>
+
+
+      <div class="form-group col-md-3" *ngIf="department">
+
+        <label for="department" class="col-sm-12 col-form-label">Select Department</label>
+        <select class="form-control" id="department" formControlName="department"
+          [ngClass]="{ 'is-invalid': submitted && form.department.errors }">
+          <option value="" >Select</option>
+          <option *ngFor="let data of departmentMasterList" [value]="data.departmentId">
+            {{data.departmentName}}</option>
+
+        </select>
+
+        <div *ngIf="submitted && form.department.errors" class="invalid-feedback">
+          <div *ngIf="form.department.errors.required">Select Your Department</div>
+
+        </div>
+
+      </div>
+
+
+
+      <div class="form-group col-md-2" *ngIf="year">
+
+        <label for="date_year" class="col-sm-4 col-form-label">Year</label>
+        <div class="col-sm-8">
+          <input [(ngModel)]="modelDate" [ngModelOptions]="{standalone: true}" readonly autocomplete="off"
+            id="date_year" class="form-control" name="date" bsDatepicker
+            [bsConfig]="{dateInputFormat: 'YYYY',minMode: 'year'}" [minDate]="minDate" [maxDate]="maxDate"
+            (onShown)="onOpenCalendar($event)">
+
+        </div>
+
+        <!-- <bs-datepicker-inline [bsConfig]="{minMode: 'year'}"></bs-datepicker-inline> -->
+
+      </div>
+
+      <div class="form-group col-md-3" *ngIf="month">
+
+        <label for="date_year" class="col-sm-12 col-form-label">Select Month</label>
+
+        <ng-multiselect-dropdown name="month" [placeholder]="'Select Month'" [data]="months" [settings]="dropdownSettings"
+          (onDropDownClose)="onDropDownClose()" (onSelect)="onItemSelect($event)" (onSelectAll)="onSelectAll($event)">
+        </ng-multiselect-dropdown>
+
+      </div>
+
+      <div class="form-group col-md-1">
+        <button class="btn btn-outline-success   border submitButton" type="button" (click)="onSubmit()">
+          <i class="fa fa-search"></i>
+        </button>
+
+      </div>
+
+
+
+
+    </div>
+
+    <div class="form-row">
+    
+    </div>
+   
+
+
+
+  </form>
+
+
+  <div class="row">
+    <div class="col-md-12">
+      <table class="table table-bordered table-hover table-sm">
+        <thead class="t-head">
+          <tr>
+            <th *ngFor="let head of headers"><a>{{head}}</a></th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr >
+            <td>1</td>
+            <td>DSS-DOT</td>
+            <td>400000</td>
+            <td>10000</td>
+            <td>35000</td>
+           
+          </tr>
+        </tbody>
+
+      </table>
+    </div>
+  </div>
+
+
+</div>

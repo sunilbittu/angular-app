@@ -1,0 +1,19 @@
+.modal{
+    margin-top:7vw;
+}
+
+
+.modal .form-control{
+    width:25vw;
+    height: 30px ;
+    margin: 5px;
+    border: 1px solid #81badb;
+}
+
+.modal-footer .btn-success{
+    margin-right: 0vw; 
+}
+
+.ml-2 {
+    margin-left:2vw;;
+}

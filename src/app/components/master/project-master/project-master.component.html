@@ -1,0 +1,176 @@
+
+<div class="container-fluid">
+    <div class="d-flex align-items-center mt-2">
+        <div class="m-2">
+            <div class="h-size"><i class="fa fa-user"></i> <b>Project Master</b></div>
+        </div>
+        <div class="flex-fill">
+        </div>
+        <div class="m-3"><input class="form-control rounded-pill py-2 border-right-0 border" type="search"
+            placeholder="search" id="example-search-input" value="" (keyup)="getProjectListBySearchParam($event)">
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-12">
+            <table class="table table-bordered table-hover table-sm">
+                <thead class="t-head">
+                    <tr>
+                        <th *ngFor="let head of headers"><a>{{head}}</a></th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                         <tr *ngFor="let project of projectMasterList | paginate
+                         : {
+                             itemsPerPage: itemsPerPage,
+                             currentPage: currentPage,
+                             totalItems: totalItems
+                           };let i=index">
+                             <td>{{project.projectCode}}</td>
+                             <td>{{project.projectName | titlecase}}</td>
+                             <td><span *ngIf="project.isCalender">Calender Month Days</span>
+                                <span *ngIf="!project.isCalender">User Input</span></td>
+                             <td><span *ngIf="project.isCalender"></span>
+                                <span *ngIf="!project.isCalender">{{project.workingDays}}</span></td>
+            
+                             <td>
+                                
+                                <a title="Edit" class="icon-margin" (click)="editProjectMaster(project.projectId)" data-toggle="modal" data-target="#employeeModelPopup"><i class="fas fa-user-edit"></i></a>
+
+                                <a title="Delete" class="icon-margin"
+                                mwlConfirmationPopover [popoverTitle]="popoverTitle" 
+                                [popoverMessage]="popoverMessage" placement="left" (confirm)="deleteProjectMasterById(project.projectId)"
+                                (cancel)="cancelClicked = true"><span
+                                  class="fas fa-trash"></span></a>
+
+                             </td>
+                         </tr>
+                    </tbody>
+
+            </table>
+            <div class="row" *ngIf="totalElements!=0">
+                <div class="col-md-6 pull-left"><span class="show-entry">Showing
+                        <span>{{showingFrom}} to {{showingTo}} of {{totalElements}} entries</span></span>&nbsp;
+                </div>
+
+                <div class="col-md-6 pull-right" *ngIf="totalItems > 0">
+                    <pagination-controls (pageChange)="pageChanged($event)"></pagination-controls>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-12">
+            <button type="button" class="btn btn-primary btn-sm" (click)="modelShow()" data-toggle="modal" data-target="#employeeModelPopup">
+                <i class="fas fa-user-plus"></i> Add
+            </button>
+        </div>
+    </div>
+
+    <form [formGroup]= projectMastersForm (ngSubmit)="onSubmit()">
+        <app-employee-model-popup>
+    
+    
+            <h4 class="modal-title" head><i class="fas fa-plus mr-1"></i> / <i class="fas fa-edit mr-1"></i>Project Details </h4>
+       
+               <div body>
+       
+                   <div class="container">
+       
+       
+                       <div class="row">
+                           <div class="col-md-6">
+                               <div class="form-group">
+                                   <label for="projectCode" class="col-form-label">Project Code</label>
+                                   <input type="text" formControlName="projectCode"   (input)=checkIfalreadyExist2($event.target.value) class="form-control form-control-sm"  id="projectCode">
+                                   <span class="color-red" *ngIf="submitted && form_.projectCode.errors">Project Code
+                                    {{requiredErrorText}}</span>
+                                    <span  class="color-red" *ngIf="exist2"> Project Code Already Exist</span>
+                               </div>
+                           </div>
+       
+                           <div class="col-md-6">
+                               <div class="form-group">
+                                   <label for="projectName" class="col-form-label">Project Name</label>
+                                   <input type="text" formControlName="projectName" (input)=checkIfalreadyExist($event.target.value) class="form-control form-control-sm" id="projectName">
+                                   <span class="color-red" *ngIf="submitted && form_.projectName.errors">Project Name
+                                    {{requiredErrorText}}</span>
+                                    <span  class="color-red" *ngIf="exist"> Project Name Already Exist</span>
+                               </div>
+                           </div>
+                       </div>
+
+                       <div class="row">
+
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <!-- <label for="workingDaysOption" class="col-form-label">Working Days</label>
+                                <div class="form-check" id="cgtm">                        
+                                    <label class="form-check-label">
+                                       <input type="radio" class="form-check-input" name="workingDaysOption"> Calender Month Days
+                                    </label>
+                               </div>
+                               <div class="form-check" >
+                                   <label class="form-check-label">
+                                   <input type="radio" class="form-check-input" name="workingDaysOption">User Input
+                                   </label>
+                             </div> -->
+                             <h4>Working Days </h4>
+                             <label (click)="getWorkingDaysOption('calender')">Calender Month Days <input type="radio" [checked]="calender" name="workingDaysOption"
+                                     [(ngModel)]="workingDaysOption"></label>
+                             <label class="ml-50" (click)="getWorkingDaysOption('user')">User Input <input type="radio"
+                                     name="workingDaysOption"></label>
+                            </div>
+                        </div>
+
+                        <div *ngIf="!calender" class="col-md-6">
+                            <div class="form-group">
+                                <label for="workingDays" class="col-form-label">No. of Working Days In Month</label>
+                                <input type="Number" formControlName="workingDays"  class="form-control form-control-sm" min="0" value="30" max="31" id="workingDays">
+                                
+                            </div>
+                        </div>
+    
+                        <!-- <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="projectName" class="col-form-label">Project Name</label>
+                                <input type="text" formControlName="projectName" (input)=checkIfalreadyExist($event.target.value) class="form-control form-control-sm" id="projectName">
+                                <span class="color-red" *ngIf="submitted && form_.projectName.errors">Project Name
+                                 {{requiredErrorText}}</span>
+                                 <span  class="color-red" *ngIf="exist"> Project Name Already Exist</span>
+                            </div>
+                        </div> -->
+                    </div>
+
+       
+                   </div>
+       
+       
+               </div>
+       
+               <div footer>
+
+                <div *ngIf=editButtonEnable>
+    
+                    <button type="button" class="btn btn-warning btn-sm" data-dismiss="modal">Cancel</button>
+                    <button type="button" class="btn btn-success btn-sm" (click)="updateProjectMaster(0)" >Update</button>
+                     
+    
+                </div>
+    
+                <div *ngIf=!editButtonEnable>
+                    
+                <button type="button" class="btn btn-warning btn-sm" data-dismiss="modal">Cancel</button>
+                <button type="submit" class="btn btn-primary btn-sm"  >Save</button>
+                 
+                
+                </div>
+                
+    
+    
+               </div>
+       
+           </app-employee-model-popup>
+      </form>
+
+
+</div>

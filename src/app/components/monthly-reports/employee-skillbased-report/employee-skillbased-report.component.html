@@ -1,0 +1,144 @@
+<div class="container-fluid">
+    <div class="d-flex align-items-center mt-2">
+        <div class="m-2">
+            <div class="h-size"><em class="fa fa-user mr-1"></em> <strong>Employees Skill based Report</strong>
+            </div>
+        </div>
+        <div class="flex-fill">
+        </div>
+        <div class="m-3">
+        </div>
+    </div>
+    <br>
+    <div>
+        <div class="row">
+            <div class="form-group col-md-3">
+                <label for="empbranch">Branch <span class="color-red"></span></label>
+                <select id="empbranch" [(ngModel)]="branchModel" class="form-control" name="branch" #branch
+                    (change)="onchangeBranch(branch.value)">
+                    <option value="" disabled selected>Select Branch</option>
+                    <option *ngFor="let data of branchDetailsList" [value]="data.companyBranchDetailsId">
+                        {{data.branchName}}</option>
+                </select>
+            </div>
+            <div class="form-group col-md-3">
+                <label for="libraryType">Department <span class="color-red"></span></label>
+                <select id="libraryType" [(ngModel)]="departmentModel" name="department" class="form-control"
+                    name="department">
+                    <option value="" disabled selected>Select Department</option>
+                    <option *ngFor="let data of departmentsList" [value]="data.departmentId">
+                        {{data.departmentName}}</option>
+                </select>
+            </div>
+            <div class="form-group col-md-3">
+                <label for="empskill">Skill <span class="color-red">*</span></label>
+                <select id="empskill" class="form-control" [(ngModel)]="skillName" name="skill" #skill
+                    (ngModelChange)="onChangeSkill()">
+                    <option value="" disabled selected>Select Skill</option>
+                    <option *ngFor="let skilldata of skillDetaisList">
+                        {{skilldata.skillName}}</option>
+                </select>
+                <span class="color-red" *ngIf="invalidSkill">Skill can't be blank </span>
+            </div>
+            <div class="form-group col-md-3 padding-top-25">
+                <button type="submit" id="btn_projection" class="button btn-primary btn-size"
+                    (click)="submit(branch.value,departmentModel,skillName)">Search</button>
+                &nbsp;
+                <button type="button" id="btn_projection" (click)="clear()"
+                    class="button btn-danger m-auto btn-size">Clear</button>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-12">
+            <table class="table table-bordered table-hover table-sm">
+                <thead class="t-head">
+                    <tr>
+                        <th *ngFor="let head of headers"><a>{{head}}</a></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let employee of employeesSkillCountList">
+                        <td>{{employee.branch_name}}</td>
+                        <td>{{employee.department_name}}</td>
+                        <td>{{employee.skill_name}}</td>
+                        <td class="model-button"><a data-toggle="modal" data-target=".branchCount-model" (click)="fetchEmployeesSkillsData(employee.branch_id,employee.department_id,
+                            employee.skill_name)">{{employee.noofresources}}</a>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <div class="modal fade branchCount-model mt-4" data-backdrop="static" tabindex="-1" role="dialog"
+        aria-labelledby="myLargeModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-xl">
+            <div class="modal-content model">
+                <div class="modal-header">
+                    <div class="modal-title"><i class="fa fa-user mr-1"></i> <b>Employees Project Wise Report</b>
+                    </div>
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-md-2">
+                            <button type="button" class="btn btn-labeled btn-outline-danger btn-sm"
+                                (click)="exportTable2('PDF')">
+                                <span class="btn-label"><i class="fa fa-file-pdf-o" aria-hidden="true"></i></span>Export
+                                To PDF</button>
+                        </div>
+                        <div class="col-md-2">
+                            <button type="button" class="btn btn-labeled btn-outline-success btn-sm"
+                                (click)="exportTable2('EXCEL')">
+                                <span class="btn-label"><i class="fa fa-file-excel-o"
+                                        aria-hidden="true"></i></span>Export To
+                                Excel</button>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <table class="table table-bordered table-hover table-sm">
+                                <thead class="t-head">
+                                    <tr>
+                                        <th *ngFor="let head of headersCount"><a>{{head}}</a></th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr
+                                        *ngFor="let employee of employeesSkillDetaisList  | paginate: { itemsPerPage: 10, currentPage: p }">
+                                        <td>{{employee.employeeCode}}</td>
+                                        <td>{{employee.fullName}}</td>
+                                        <td>{{employee.skillName}}</td>
+                                        <td>{{employee.experience}}</td>
+                                        <td>{{employee.skillRemarks}}</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                            <hr>
+                            <div class="row btn-footer">
+                                <div class="col-md-6 pull-left">
+                                    <pagination-controls (pageChange)="p = $event"></pagination-controls>
+                                </div>
+                                <div class="col-md-6 pull-right">
+                                    <button type="button" class="btn btn-secondary btn-sm" (click)="onModelClose()"
+                                        data-dismiss="modal">Close</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-4">
+            <button type="button" class="btn btn-labeled btn-outline-danger btn-sm" (click)="exportTable('PDF')">
+                <span class="btn-label"><i class="fa fa-file-pdf-o" aria-hidden="true"></i></span>Export To PDF</button>
+            &nbsp;
+            <button type="button" class="btn btn-labeled btn-outline-success btn-sm" (click)="exportTable('EXCEL')">
+                <span class="btn-label"><i class="fa fa-file-excel-o" aria-hidden="true"></i></span>Export To
+                Excel</button>
+        </div>
+    </div>
+</div>

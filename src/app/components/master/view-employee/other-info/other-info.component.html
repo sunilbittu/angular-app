@@ -1,0 +1,563 @@
+<div class="container-fluid" style="margin-top: 16px;">
+
+
+    <!-- vacination details -->
+
+
+    <div class="row">
+
+
+
+        <div class="col-md-6">
+            <form [formGroup]=employeeVaccineForm (ngSubmit)="onVaccineSubmit()">
+                <table>
+                    <tr>
+                        <th>
+                            <i class="fas fa-id-card"></i> Vaccination Details
+                        </th>
+                    </tr>
+                    <tr>
+                        <td>
+                            <label>Vaccine Name <span class="color-red">*</span> </label>
+                        </td>
+                        <td>
+                            <!-- <input type="text "   formControlName="employeeOncontract" class="text form-control" maxlength="50" /> -->
+
+                            <div class="form-group">
+                                <!-- <select formControlName="employeeOncontract" class="form-control">
+
+                                    <option value="">Select Vaccine</option>
+                                    <option value="Covaxin">Covaxin</option>
+                                    <option value="Covishield">Covishield</option>
+                                </select> -->
+                                <select id="vaccine" formControlName="employeeOncontract" class="form-control"
+                                    name="vaccination" #vaccination>
+                                    <option value="" disabled selected>Select Vacination Name</option>
+                                    <option *ngFor="let vaccination of vaccinationList"
+                                        [value]="vaccination.vaccinationName">
+                                        {{vaccination.vaccinationCode}}-{{vaccination.vaccinationName}}</option>
+                                </select>
+                                <span class="color-red" *ngIf="submitted2 && form2_.employeeOncontract.errors">Vaccine
+                                    Name
+                                    {{requiredErrorText}}</span>
+                            </div>
+
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <label>Date <span class="color-red">*</span> </label>
+                        </td>
+                        <td>
+
+                            <input (bsValueChange)="datechange($event)" type="text" formControlName="fromDate"
+                                bsDatepicker placeholder="Date"
+                                [bsConfig]="{ isAnimated: true, dateInputFormat: 'DD-MM-YYYY' }" readonly
+                                placement="bottom" class="text form-control" id="dateOfBirth" maxlength="50" />
+                            <span class="color-red" *ngIf="submitted2 && !isDateSelected">Date
+                                {{requiredErrorText}}</span>
+
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td>
+                            <label>Dose Type</label>
+                        </td>
+                        <!-- <td>
+                            <input type="text" formControlName="toDate" bsDatepicker placeholder="To date"
+                            [bsConfig]="{ isAnimated: true, dateInputFormat: 'DD-MM-YYYY' }"
+                             readonly
+                            placement="bottom" class="text form-control" id="dateOfBirth" maxlength="50" />
+                    </td> -->
+                        <div class="form-group">
+                            <select formControlName="doseType" class="form-control">
+
+                                <option value="">Select Dose Type</option>
+                                <option value="First">First</option>
+                                <option value="Second">Second</option>
+                                <option value="Third">Third</option>
+                            </select>
+
+
+                        </div>
+                    </tr>
+                    <tr>
+                        <td>
+                            <label>Attach File <span class="color-red">*</span> </label>
+                        </td>
+                        <td>
+                            <div class="form-group">
+                                <input type="file" formControlName="documentFile" (change)="onFileChanged($event)"
+                                    class="text form-control" maxlength="50" #attachFile />
+                                <span class="color-red" *ngIf="submitted2 && !isfileSelected">Attach File
+                                    {{requiredErrorText}}</span>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <label>Remarks</label>
+                        </td>
+                        <td>
+                            <input type="text " formControlName="contractDetailsRemarks" class="text form-control"
+                                maxlength="50" />
+                        </td>
+                    </tr>
+
+                </table>
+
+                <div *ngIf="!enableEditButton">
+                    <button class="btn btn-success">Save</button>
+                </div>
+
+            </form>
+
+
+
+            <div *ngIf="enableEditButton">
+                <button class="btn btn-success" (click)="updateEmployeeContract()">Update</button>
+            </div>
+
+
+
+            <br>
+            <br>
+
+        </div>
+
+        <div class="col-md-6">
+            <table class="table table-bordered table-hover table-sm">
+                <thead class="t-head">
+                    <tr>
+                        <th>Vaccine Name</th>
+                        <th>Date</th>
+                        <th>Dose Type</th>
+                        <th>Certificate</th>
+                        <th>Remarks</th>
+                        <th>Action</th>
+                    </tr>
+
+                </thead>
+
+                <tbody>
+                    <tr *ngFor="let data of employeeVaccineList">
+                        <td>{{data.vaccineName}}</td>
+                        <td>{{data.vaccineDate | date:'dd-MM-YYYY'}}</td>
+                        <td>{{data.vaccineDoseType}}</td>
+                        <td>
+
+                            {{data.vaccineFileName}}<a title="Download to View" class="icon-margin"
+                                (click)="downloadDocumentAttachment(data.vaccineFileName,data.vaccineFileName)"
+                                target="_blank"><i class="fas fa-download"></i></a>
+
+                        </td>
+                        <td>{{data.vaccineDetailsRemarks}}</td>
+
+                        <td>
+                            <!-- <a title="Edit" class="icon-margin" (click)="editEmployeeContract(data.employeeContractId)"><i class="fas fa-user-edit"></i></a> -->
+
+                            <a title="Delete" class="icon-margin" mwlConfirmationPopover [popoverTitle]="popoverTitle"
+                                [popoverMessage]="popoverMessage" placement="left"
+                                (confirm)="deleteEmployeeVaccine(data.employeeVaccineId)"
+                                (cancel)="cancelClicked = true"><span class="fas fa-trash"></span></a>
+
+
+                        </td>
+                    </tr>
+                </tbody>
+
+            </table>
+
+
+        </div>
+
+
+    </div>
+    <div class="row">
+
+
+
+        <div class="col-md-6">
+            <form [formGroup]=employeeContractForm (ngSubmit)="onContractSubmit()">
+                <table>
+                    <tr>
+                        <th>
+                            <i class="fas fa-id-card"></i> Contract Details
+                        </th>
+                    </tr>
+                    <tr>
+                        <td>
+                            <label>Employee on Contract<span class="color-red">*</span></label>
+                        </td>
+                        <td>
+                            <!-- <input type="text "   formControlName="employeeOncontract" class="text form-control" maxlength="50" /> -->
+
+                            <div class="form-group">
+                                <select formControlName="employeeOncontract" class="form-control">
+
+                                    <option value="">Select</option>
+                                    <option value="Yes">Yes</option>
+                                    <option value="No">No</option>
+                                </select>
+                                <span class="color-red" *ngIf="submitted && form_.employeeOncontract.errors">This field
+                                    {{requiredErrorText}}</span>
+                            </div>
+
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <label>From</label>
+                        </td>
+                        <td>
+
+                            <input type="text" formControlName="fromDate" bsDatepicker placeholder="From date"
+                                [bsConfig]="{ isAnimated: true, dateInputFormat: 'DD-MM-YYYY' }" readonly
+                                placement="bottom" class="text form-control" id="dateOfBirth" maxlength="50" />
+
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td>
+                            <label>To</label>
+                        </td>
+                        <td>
+                            <input type="text" formControlName="toDate" bsDatepicker placeholder="To date"
+                                [bsConfig]="{ isAnimated: true, dateInputFormat: 'DD-MM-YYYY' }" readonly
+                                placement="bottom" class="text form-control" id="dateOfBirth" maxlength="50" />
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <label>Remarks<span class="color-red">*</span></label>
+                        </td>
+                        <td>
+                            <input type="text " formControlName="contractDetailsRemarks" class="text form-control"
+                                maxlength="50" />
+                            <span class="color-red" *ngIf="submitted && form_.contractDetailsRemarks.errors">Remarks
+                                {{requiredErrorText}}</span>
+                        </td>
+                    </tr>
+
+                </table>
+
+                <div *ngIf="!enableEditButton">
+                    <button class="btn btn-success">Save</button>
+                </div>
+                <button id="btn_add" type="button" class="button btn-primary button" data-toggle="modal"
+                    data-target="#myModal"><i class="fas fa-file-excel-o"></i>Import Contract</button>
+            </form>
+
+
+
+            <div *ngIf="enableEditButton">
+                <button class="btn btn-success" (click)="updateEmployeeContract()">Update</button>
+            </div>
+
+
+
+            <br>
+            <br>
+
+        </div>
+
+        <div class="col-md-6">
+            <table class="table table-bordered table-hover table-sm">
+                <thead class="t-head">
+                    <tr>
+                        <th>From</th>
+                        <th>To</th>
+                        <th>Remarks</th>
+                        <th>Action</th>
+                    </tr>
+
+                </thead>
+
+                <tbody>
+                    <tr *ngFor="let data of employeeContractList">
+                        <td>{{data.contractFrom | date:'dd-MM-YYYY'}}</td>
+                        <td>{{data.contractTo | date:'dd-MM-YYYY'}}</td>
+                        <td>{{data.contractDetailsRemarks}}</td>
+
+                        <td>
+                            <a title="Edit" class="icon-margin"
+                                (click)="editEmployeeContract(data.employeeContractId)"><i
+                                    class="fas fa-user-edit"></i></a>
+
+                            <a title="Delete" class="icon-margin" mwlConfirmationPopover [popoverTitle]="popoverTitle"
+                                [popoverMessage]="popoverMessage" placement="left"
+                                (confirm)="deleteEmployeeContract(data.employeeContractId)"
+                                (cancel)="cancelClicked = true"><span class="fas fa-trash"></span></a>
+
+
+                        </td>
+                    </tr>
+                </tbody>
+
+            </table>
+
+
+        </div>
+
+
+    </div>
+
+
+
+
+
+
+
+</div>
+
+<div id="myModal" class="modal fade" role="dialog">
+    <div class="modal-dialog modal-xl">
+
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1> <i class="fa fa-upload"></i> Import Contract Details</h1>
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+            </div>
+            <div class="container-fluid">
+                <section class="content">
+                    <form id="import-student" action="/student/student-import/index" method="post"
+                        enctype="multipart/form-data">
+                        <div class="box box-primary">
+                            <div class="box-header with-border">
+                                <h3 class="box-title"><i class="fa fa-file-excel-o"></i> Select File</h3>
+                            </div>
+                            <!--./box-header-->
+                            <div class="box-body">
+                                <div class="row">
+                                    <div class="col-sm-4">
+                                        <div class="form-group field-stumaster-importfile">
+
+                                            <input type="file" id="stumaster-importfile" #inputFile name="importFile"
+                                                (change)="importFileSkill($event)" title="Browse Excel File"
+                                                accept=".xlsx, .xls">
+
+                                            <div class="help-block"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-sm-12">
+                                        <div class="callout callout-info" style="background-color: #92b9e9 !important;">
+                                            <h4>Please follow these instructions at the time of importing data</h4>
+                                            <ol>
+                                                <li><b>The fields with red color are required and cannot be blank.</b>
+                                                </li>
+                                            </ol>
+                                            <h3>Download the sample Excel sheet format.
+                                                <b><a class="fas fa-download"
+                                                        href="./assets/excel/EmployeeContractDetailsImportSample.xlsx"
+                                                        target="_blank">Download</a>
+                                                </b>
+                                            </h3>
+                                        </div>
+                                        <!--./callout-->
+                                    </div>
+                                    <!--./col-->
+                                </div>
+                                <!--./row-->
+                            </div>
+                            <!--./box-body-->
+                            <div class="box-footer">
+                                <button type="submit" (click)="submitImportSkill()" class="btn btn-primary"><i
+                                        class="fa fa-upload"></i> Import</button>
+                            </div>
+                        </div>
+                        <!--./box-->
+                    </form>
+                    <div class="box box-solid" *ngIf="listOfEmployeeResults1.length != 0">
+                        <div class="box-header with-border">
+                            <h3 class="box-title"><i class="fa fa-upload"></i> Import Contract Details Result</h3>
+                        </div>
+                        <div class="alert alert-success alert-dismissable flash-msg-hide" id="flash-msg"
+                            *ngIf="showSuccessMsg">
+                            <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+                            <h4><i class="icon fa fa-check"></i> Imported!</h4> {{successCount}} Contract Details
+                            successfully.
+                        </div>
+                        <div *ngIf="showErrorMsg" class="alert alert-danger alert-dismissable flash-msg-hide">
+                            <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+                            <h4><i class="icon fa fa-check"></i> Error!</h4> {{errorCount}}Contract Details importing
+                            error.
+                        </div>
+                        <div class="box-body table-responsive table-wrapper-scroll-y table-wrapper-scroll-x"
+                            style="max-height: 300px;">
+                            <div id="w1">
+                                <div id="w2" class="grid-view">
+                                    <div id="loader-img">
+
+                                        <img *ngIf="listOfEmployeeResults1.length == 0" src="./assets/images/loader.gif"
+                                            class="loader img-responsive" alt="loading....">
+
+                                    </div>
+                                    <table class="table table-striped table-borders myTable">
+                                        <thead>
+                                            <tr>
+                                                <th>S.No</th>
+                                                <th>Remarks</th>
+                                                <th>Status</th>
+                                                <th>Remarks/Message(s)</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <ng-container *ngFor="let employee of listOfEmployeeResults1;let i=index;">
+                                                <tr [class.danger]="employee.errorList.length != 0"
+                                                    [class.success]="employee.errorList.length == 0">
+                                                    <td>{{i+1}}</td>
+                                                    <td>{{employee.contractDetailsRemarks}}</td>
+                                                    <td>{{employee.status}}</td>
+                                                    <td [class.success]="employee.errorList.length == 0">
+                                                        <ng-container *ngIf="employee.errorList.length != 0">
+                                                            Please fix the following errors:
+                                                            <ul *ngFor="let error of employee.errorList">
+                                                                <li> {{error}}</li>
+                                                            </ul>
+                                                        </ng-container>
+                                                    </td>
+                                                </tr>
+                                            </ng-container>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<div class="modal fade " id="importModelSkills">
+    <div class="modal-dialog ">
+        <div class="modal-content">
+            <!-- Modal Header -->
+            <div class="modal-header">
+                <h1> <i class="fa fa-upload"></i> Import Contract Details</h1>
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+            </div>
+            <!-- Modal body -->
+            <div class="container-fluid">
+                <section class="content">
+                    <form id="import-student" action="/student/student-import/index" method="post"
+                        enctype="multipart/form-data">
+                        <div class="box box-primary">
+                            <div class="box-header with-border">
+                                <h3 class="box-title"><i class="fa fa-file-excel-o"></i> Select File</h3>
+                            </div>
+                            <!--./box-header-->
+                            <div class="box-body">
+                                <div class="row">
+                                    <div class="col-sm-4">
+                                        <div class="form-group field-stumaster-importfile">
+
+                                            <input type="file" id="stumaster-importfile" #inputFile name="importFile"
+                                                (change)="importFileSkill($event)" title="Browse Excel File"
+                                                accept=".xlsx, .xls">
+
+                                            <div class="help-block"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-sm-12">
+                                        <div class="callout callout-info" style="background-color: #92b9e9 !important;">
+                                            <h4>Please follow these instructions at the time of importing data</h4>
+                                            <ol>
+                                                <li><b>The fields with red color are required and cannot be blank.</b>
+                                                </li>
+                                            </ol>
+                                            <h3>Download the sample Excel sheet format.
+                                                <b><a class="fas fa-download"
+                                                        href="./assets/excel/EmployeeContractDetailsImportSample.xlsx"
+                                                        target="_blank">Download</a>
+                                                </b>
+                                            </h3>
+                                        </div>
+                                        <!--./callout-->
+                                    </div>
+                                    <!--./col-->
+                                </div>
+                                <!--./row-->
+                            </div>
+                            <!--./box-body-->
+                            <div class="box-footer">
+                                <button type="submit" (click)="submitImportSkill()" class="btn btn-primary"><i
+                                        class="fa fa-upload"></i> Import</button>
+                            </div>
+                        </div>
+                        <!--./box-->
+                    </form>
+                    <div class="box box-solid" *ngIf="listOfEmployeeResults1.length != 0">
+                        <div class="box-header with-border">
+                            <h3 class="box-title"><i class="fa fa-upload"></i> Import Contract Details Result</h3>
+                        </div>
+                        <div class="alert alert-success alert-dismissable flash-msg-hide" id="flash-msg"
+                            *ngIf="showSuccessMsg">
+                            <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+                            <h4><i class="icon fa fa-check"></i> Imported!</h4> {{successCount}} Contract Details
+                            successfully.
+                        </div>
+                        <div *ngIf="showErrorMsg" class="alert alert-danger alert-dismissable flash-msg-hide">
+                            <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+                            <h4><i class="icon fa fa-check"></i> Error!</h4> {{errorCount}}Contract Details importing
+                            error.
+                        </div>
+                        <div class="box-body table-responsive table-wrapper-scroll-y table-wrapper-scroll-x"
+                            style="max-height: 300px;">
+                            <div id="w1">
+                                <div id="w2" class="grid-view">
+                                    <div id="loader-img">
+
+                                        <img *ngIf="listOfEmployeeResults1.length == 0" src="./assets/images/loader.gif"
+                                            class="loader img-responsive" alt="loading....">
+
+                                    </div>
+                                    <table class="table table-striped table-borders myTable">
+                                        <thead>
+                                            <tr>
+                                                <th>S.No</th>
+                                                <th>Policy No.</th>
+                                                <th>Status</th>
+                                                <th>Remarks/Message(s)</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <ng-container *ngFor="let employee of listOfEmployeeResults1;let i=index;">
+                                                <tr [class.danger]="employee.errorList.length != 0"
+                                                    [class.success]="employee.errorList.length == 0">
+                                                    <td>{{i+1}}</td>
+                                                    <td>{{employee.policyNo}}</td>
+                                                    <td>{{employee.status}}</td>
+                                                    <td [class.success]="employee.errorList.length == 0">
+                                                        <ng-container *ngIf="employee.errorList.length != 0">
+                                                            Please fix the following errors:
+                                                            <ul *ngFor="let error of employee.errorList">
+                                                                <li> {{error}}</li>
+                                                            </ul>
+                                                        </ng-container>
+                                                    </td>
+                                                </tr>
+                                            </ng-container>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+            </div>
+        </div>
+    </div>
+</div>

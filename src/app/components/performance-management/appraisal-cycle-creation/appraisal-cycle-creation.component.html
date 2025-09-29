@@ -1,0 +1,196 @@
+<div class="container-fluid">
+    <div class="d-flex align-items-center mt-2">
+        <div class="m-2">
+            <div class="h-size"><em class="fa fa-user"></em> <strong> Appraisal Cycle Creation</strong></div>
+        </div>
+        <div class="flex-fill">
+        </div>
+       <div class="m-3"><input class="form-control rounded-pill py-2 border-right-0 border" type="search"
+            placeholder="search" id="example-search-input" [(ngModel)]="searchModel"
+            (ngModelChange)="search()">
+    </div>
+    </div>
+    <div class="row">
+        <div class="col-md-12">
+            <table class="table table-bordered table-hover table-sm">
+                <thead class="t-head">
+                    <tr>
+                        <th *ngFor="let head of headers" id="header"><a>{{head}}</a></th>
+                    </tr>
+                </thead> 
+                <tbody>
+                    <tr *ngIf="toggleLoader">
+                        <td colspan="9">
+                            <img src="./assets/images/loader-icon.gif" class="loader-margin img-responsive"
+                                alt="loading....">
+                        </td>
+                    </tr>
+                    <tr
+                        *ngFor="let data of appraisalCycleList | paginate: {
+                            itemsPerPage: itemsPerPage,
+                            currentPage: currentPage,
+                            totalItems: totalItems
+                          };let i=index">
+                        <td>{{i+1}}</td>
+                        <td>{{data.financialYearId.financialYear}}</td>
+                        <td>{{data.department.departmentName}}</td>
+                        <td>{{data.designation.designationName}}</td>
+                        <td>{{data.days}}</td>
+                        <td>{{data.startDate}}</td>
+                        <td>{{data.endDate}}</td>
+                        <td>{{data.apraisalRemarks}}</td>
+                        <td>
+                            <a title="Edit" class="icon-margin"><em class="fas fa-user-edit" data-toggle="modal"
+                                    data-target="#myModal-add"
+                                    (click)="editAppraisalCycle(data.appraisalCycleId)"></em></a>
+                            <a title="Delete" class="icon-margin" mwlConfirmationPopover [popoverTitle]="popoverTitle"
+                                [popoverMessage]="popoverMessage" placement="left"
+                                (confirm)="deleteappraisalCycle(data.appraisalCycleId)"
+                                (cancel)="cancelClicked = true"><span class="fas fa-trash"></span></a>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+            <div class="row" *ngIf="totalElements!=0">
+                <div class="col-md-6 col-sm-6 col-6"><span class="show-entry">Showing
+                        <span>{{showingFrom}} to {{showingTo}} of {{totalElements}} entries</span></span>&nbsp;
+                </div>
+
+                <div class="col-md-6" *ngIf="totalItems > 0">
+                    <pagination-controls (pageChange)="pageChanged($event)"></pagination-controls>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-12">
+            <button id="btn_add" type="button" class="btn btn-primary button btn-sm" data-toggle="modal"
+                data-target="#myModal-add" (click)="clickAdd()"><em class="fas fa-user-plus"></em>Add</button>
+        </div>
+    </div>
+</div>
+<!-- Add Model Pop Up For Add -->
+
+<div class="modal fade common-model" id="myModal-add">
+    <div class="modal-dialog modal-md">
+        <div class="modal-content model">
+            <form [formGroup]="apprisalForm" (ngSubmit)="createAppraisalCycle()">
+                <!-- Modal Header -->
+                <div class="modal-header">
+                    <div class="modal-title"><i class="fas fa-plus"></i>/ <i class="fas fa-edit ml-1"></i>
+                        {{submitText}}
+                        Appraisal Cycle
+                    </div>
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                </div>
+                <!-- Modal body -->
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <table class="model-tbl">
+                                <tr>
+                                    <td class="td-width-1">
+                                        <label for="financialYear">Year:<span class="color-red">*</span></label>
+                                    </td>
+                                    <td class="td-width">
+                                        <select [(ngModel)]="financialYearModel" id="financialYear"
+                                            class="form-control " formControlName="financialYear">
+                                            <option value="" disabled>Please select financial year</option>
+                                            <option *ngFor="let year of financialYearList"
+                                                [value]="year.financialYearId">
+                                                {{year.financialYear}}
+                                            </option>
+                                        </select>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="td-width-1">
+                                        <label for="empDepartment">Department:<span class="color-red">*</span></label>
+                                    </td>
+                                    <td class="td-width">
+                                        <select [(ngModel)]="departmentNameModel" id="empDepartment"
+                                            class="form-control " formControlName="departmentName">
+                                            <option value='' selected disabled>-Select Department-</option>
+                                            <option *ngFor="let data of departmentsList" [value]="data.departmentId">
+                                                {{data.departmentName}}</option>
+                                        </select>
+                                    </td>
+                                </tr>
+
+                                <tr>
+                                    <td class="td-width-1">
+                                        <label for="empDesignation">Level:<span class="color-red">*</span></label>
+                                    </td>
+                                    <td class="td-width">
+                                        <select [(ngModel)]="designationNameModel" id="empDesignation"
+                                            class="form-control " formControlName="designationName">
+                                            <option value='' selected disabled>-Select Designation-</option>
+                                            <option *ngFor="let data of designationsList" [value]="data.designationId">
+                                                {{data.designationName}}</option>
+                                        </select>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="td-width-1">
+                                        <label for="days">Days:<span class="color-red">*</span></label>
+                                    </td>
+                                    <td class="td-width">
+                                        <input class="form-control form-control-sm" type="text" id="days"
+                                            formControlName="days" placeholder="Please Enter Day(s)">
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="td-width-1">
+                                        <label for="startDate">Start Date:<span class="color-red">*</span></label>
+                                    </td>
+                                    <td class="td-width">
+                                        <input type="text" formControlName="startDate" bsDatepicker
+                                            placeholder="Please select Start Date"
+                                            [bsConfig]="{ isAnimated: true, dateInputFormat: 'YYYY-MM-DD' }" readonly
+                                            placement="bottom" class="text form-control" id="startDate"
+                                            maxlength="50" />
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="td-width-1">
+                                        <label for="endDate">End Date:<span class="color-red">*</span></label>
+                                    </td>
+                                    <td class="td-width">
+                                        <input type="text" formControlName="endDate" bsDatepicker
+                                            placeholder="Please select End Date"
+                                            [bsConfig]="{ isAnimated: true, dateInputFormat: 'YYYY-MM-DD' }" readonly
+                                            placement="bottom" class="text form-control" id="endDate" maxlength="50" />
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="td-width-1">
+                                        <label for="remarks">Remarks:<span class="color-red">*</span></label>
+                                    </td>
+                                    <td class="td-width">
+                                        <input class="form-control form-control-sm" type="text" id="remarks"
+                                            formControlName="apraisalRemarks" placeholder="Please enter Remarks">
+                                    </td>
+                                </tr>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+                <!-- Modal footer -->
+                <hr>
+                <div class="row btn-footer">
+                    <div class="col-md-6 pull-left">
+                        <button type="submit" id="btnComponentSave" [disabled]="submitProcessing"
+                            class="button btn-primary btn-style"><i class="fas fa-save"></i>
+                            {{submitText}} <i class="fa fa-spinner fa-spin" *ngIf="submitProcessing"
+                                style="font-size:19px"></i></button>
+                    </div>
+                    <div class="col-md-6 pull-right" *ngIf="submitText == 'Save'">
+                        <button type="button" id="btnComponentSave" (click)="resetTheForm()"
+                            class="button btn-warning btn-style" [disabled]="submitProcessing">
+                            Clear</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,76 @@
+<div class="container-fluid">
+    <div class="d-flex align-items-center mt-2">
+        <div class="m-2">
+            <div class="h-size"><em class="fa fa-user mr-1"></em> <strong>Vendor Asset Report</strong>
+            </div>
+        </div>
+        <div class="flex-fill">
+        </div>
+        <div class="m-3">
+        </div>
+    </div>
+    <br>
+    <div>
+        <div class="row">
+            <div class="form-group col-md-3">
+                <label for="vendor">Vendor <span class="color-red"></span></label>
+                <ng-multiselect-dropdown [placeholder]="'Select Vendor'" [settings]="dropdownSettingsVendor"
+                    [data]="VendorDetailsList" [(ngModel)]="selectedItems" (onSelect)="onItemSelectVendor($event)"
+                    (onSelectAll)="onSelectAllVendor($event)">
+                </ng-multiselect-dropdown>
+                <div *ngIf="selectedItems.length == 0 && submitted" class="color-red pull-left-5">
+                    &nbsp;<strong>Please Select Vendor</strong></div>
+            </div>
+            <div class="form-group col-md-3">
+                <label for="libraryType">Status <span class="color-red"></span></label>
+                <select id="libraryType" [(ngModel)]="statusModel" name="status" class="form-control" name="status">
+                    <option value="" disabled selected>Select status</option>
+                    <option *ngFor="let status of statusList" [value]="status">
+                        {{status}}</option>
+                </select>
+                <span *ngIf="!statusModel && submitted" class="color-red pull-left-5">
+                    &nbsp;<strong>Please Select Status</strong></span>
+            </div>
+            <div class="form-group col-md-3 padding-top-25">
+                <button type="submit" id="btn_projection" class="button btn-primary btn-size"
+                    (click)="search()">Search</button>
+                &nbsp;
+                <button type="button" id="btn_projection" (click)="clear()"
+                    class="button btn-danger m-auto btn-size">Clear</button>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-12">
+            <table class="table table-bordered table-hover table-sm">
+                <thead class="t-head">
+                    <tr>
+                        <th *ngFor="let head of headers"><a>{{head}}</a></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let data of reportList">
+                        <td>{{data.assetName}}</td>
+                        <td>{{data.barCode}}</td>
+                        <td>{{data.vendorName}}</td>
+                        <td>{{data.description}}</td>
+                        <td>{{data.resolvedProblem}}</td>
+                        <td>{{data.repairDate | date:'dd-MM-yyyy'}}</td>
+                        <td>{{data.amount}}</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-4">
+            <button type="button" class="btn btn-labeled btn-outline-danger btn-sm" (click)="exportTable('PDF')">
+                <span class="btn-label"><i class="fa fa-file-pdf-o" aria-hidden="true"></i></span>Export To PDF</button>
+            &nbsp;
+            <button type="button" class="btn btn-labeled btn-outline-success btn-sm" (click)="exportTable('EXCEL')">
+                <span class="btn-label"><i class="fa fa-file-excel-o" aria-hidden="true"></i></span>Export To
+                Excel</button>
+        </div>
+    </div>
+</div>

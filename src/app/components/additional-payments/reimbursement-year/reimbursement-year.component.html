@@ -1,0 +1,72 @@
+
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-6">        
+                <div class="h-size m-2" style="text-align: justify;"><b>Reimbursement Year: Financial</b></div>
+        </div>
+        <div class="clo-6">
+                <div class="h-size m-2" style="text-align: justify;"><b>Reimbursement Setting</b></div>
+        </div>
+    </div>
+            
+    
+    <div class="row">
+        <div class="col-md-4">
+            <table class="table table-bordered table-hover table-sm" style="margin-top: 5px; text-align: justify;">
+                <thead class="t-head">
+                    <tr>
+                        <th *ngFor="let head of headers1" ><a>{{head}}</a></th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                         <tr *ngFor="let employee of employees1">
+                             <td>{{employee.employeeCodet}}</td>
+                             <td>{{employee.name}}</td>
+                             <td>{{employee.doj}}</td>
+                            
+                             
+                             
+                         </tr>
+                    </tbody>
+
+                </table>
+            <button id="btn_add" type="button" class="btn btn-primary button btn-sm" disabled="disabled"><i
+                    class="fas fa-user-plus"></i> Add</button>
+            
+            
+
+        </div>
+        <div class="col-8">
+            <table class="table table-bordered table-hover table-sm" style="margin-top: 5px;">
+                <thead class="t-head">
+                    <tr>
+                        <th *ngFor="let head of headers2" ><a>{{head}}</a></th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                         <tr *ngFor="let employee of employees2">
+                             <td>{{employee.employeeCode}}</td>
+                             <td>{{employee.name}}</td>
+                             <td>{{employee.doj}}</td>
+                             <td>{{employee.noOfYears}}</td>
+                             <td>{{employee.lastSalary}}</td>
+                             <td>{{employee.calculatedSalary}}</td>
+                             <td>{{employee.calculatedGratuity}}</td>
+                             <td>{{employee.maximumGratuity}}</td>
+                             
+                             
+                         </tr>
+                    </tbody>
+
+                </table>
+            <button id="btn_add" type="button" class="btn btn-primary button btn-sm" disabled="disabled"><i
+                    class="fas fa-save"></i> Update</button>
+        </div>
+    </div>
+</div>
+
+
+
+
+
+ 

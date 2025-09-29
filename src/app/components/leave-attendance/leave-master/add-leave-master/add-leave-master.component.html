@@ -1,0 +1,354 @@
+<div class="container-fluid">
+    <div class="d-flex align-items-center mt-2">
+        <div class="m-2">
+            <div class="h-size"><i class="fa fa-user"></i> <b> {{title}} Leave Master</b></div>
+            <div class="left-btn">
+                <button class="btn btn-success btn-sm" (click)="backClicked()"> Back <i class="fas fa-long-arrow-alt-left"></i></button>
+            </div>
+        </div>
+    </div>
+    <hr class="line_break">
+    <form [formGroup]="form" >
+        <div class="row">
+            <div class="col-md-4">
+                <table>
+                    <tr>
+                        <td>
+                            <label>Leave type </label>
+                        </td>
+                        <td>
+                            <select id="txt_emp_payment" formControlName="leaveType" class="form-control text" >
+                                <option value="--Select--" selected="selected">--Select leave--</option>
+                            </select>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <label>No. of days</label>
+                        </td>
+                        <td>
+                            <input type="text" class="text form-control" formControlName="noDays"  maxlength="50" />
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <label>Leave description</label>
+                        </td>
+                        <td>
+                            <input type="text"  class="text form-control" formControlName="leaveDescription" maxlength="50" />
+                        </td>
+                    </tr>
+    
+                    <tr>
+                        <td>
+                            <label>Entitlement</label>
+                        </td>
+                        <td>
+                            <select id="txt_emp_payment"  class="form-control text" formControlName="Entitlement">
+                                <option value="--Select--" selected="selected">--Select leave--</option>
+                            </select>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <label>Accrual</label>
+                        </td>
+                        <td>
+                            <select id="txt_emp_payment"  class="form-control text" formControlName="Accrual">
+                                <option value="--Select--" selected="selected">--Select leave--</option>
+                            </select>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <label>Credit on min. days</label>
+                        </td>
+                        <td>
+                            <select id="txt_emp_payment"  class="form-control text" formControlName="creditminDays">
+                                <option value="--Select--" selected="selected">--Select days--</option>
+                            </select>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <label>Eligible for credit of leave</label>
+                        </td>
+                        <td>
+                            <select id="txt_emp_payment"  class="form-control text" formControlName="creditLeaves">
+                                <option value="--Select--" selected="selected">--Select --</option>
+                            </select>
+                            <!-- <input type="text" class="form-control" style="width: 50%;display: inline;"> -->
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <label>Avail after</label>
+                        </td>
+                        <td>
+                            <select id="txt_emp_payment"  class="form-control text" formControlName="availAfter">
+                                <option value="--Select--" selected="selected">--Select --</option>
+                            </select>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <label>Do not club with </label>
+                        </td>
+                        <td>
+                            <select id="txt_emp_payment"  class="form-control text" formControlName="donotClub">
+                                <option value="--Select--" selected="selected">--Select --</option>
+                            </select>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <label>Round of leave days</label>
+                        </td>
+                        <td>
+                            <select id="txt_emp_payment"  class="form-control text" formControlName="leaveDays">
+                                <option value="--Select--" selected="selected">--Select --</option>
+                            </select>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <label>Remark</label>
+                        </td>
+                        <td>
+                            <textarea style="width:214px" formControlName="remark"></textarea>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+            <div class="col-md-4">
+                <table>
+                    <tr>
+                        <td>
+                            <label>Allow carryforward</label>
+                        </td>
+                        <td>
+                            <select id="txt_emp_payment"  class="form-control text" formControlName="carryforward">
+                                <option value="--Select--" selected="selected">No</option>
+                            </select>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <label>Prior approval required</label>
+                        </td>
+                        <td>
+                            <select id="txt_emp_payment"  class="form-control text" formControlName="priorApproval">
+                                <option value="--Select--" selected="selected">No</option>
+                            </select>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <label>Count Intervening Week Off</label>
+                        </td>
+                        <td>
+                            <select id="txt_emp_payment"  class="form-control text" formControlName="InterveningWeekoff">
+                                <option value="--Select--" selected="selected">No</option>
+                            </select>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <label>Count Intervening Holidays</label>
+                        </td>
+                        <td>
+                            <select id="txt_emp_payment"  class="form-control text" formControlName="InterveningHolidays">
+                                <option value="--Select--" selected="selected">No</option>
+                            </select>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <label>Allow half day</label>
+                        </td>
+                        <td>
+                            <select id="txt_emp_payment"  class="form-control text" formControlName="allowHalf">
+                                <option value="--Select--" selected="selected">No</option>
+                            </select>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <label>Allow negative leave balance</label>
+                        </td>
+                        <td>
+                            <select id="txt_emp_payment"  class="form-control text" formControlName="allowNegative">
+                                <option value="--Select--" selected="selected">No</option>
+                            </select>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <label>Pro rata</label>
+                        </td>
+                        <td>
+                            <select id="txt_emp_payment"  class="form-control text" formControlName="proRata">
+                                <option value="--Select--" selected="selected">No</option>
+                            </select>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <label>Allow encashable</label>
+                        </td>
+                        <td>
+                            <select id="txt_emp_payment"  class="form-control text" formControlName="allowEncash">
+                                <option value="--Select--" selected="selected">No</option>
+                            </select>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <label>Apply from ESS</label>
+                        </td>
+                        <td>
+                            <select id="txt_emp_payment"  class="form-control text" formControlName="applyEss">
+                                <option value="--Select--" selected="selected">No</option>
+                            </select>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <label>Display in Payslip</label>
+                        </td>
+                        <td>
+                            <select id="txt_emp_payment"  class="form-control text" formControlName="payslip">
+                                <option value="--Select--" selected="selected">No</option>
+                            </select>
+                        </td>
+                    </tr>
+                    
+                    
+                    
+                </table>
+            </div>
+            <div class="col-md-4">
+                <table>
+                    
+                    <tr>
+                        <td>
+                            <label>Carryforward limit</label>
+                        </td>
+                        <td>
+                            <input type="text"  class="text form-control" formControlName="CarryforwardLimit" maxlength="50" />
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <label>Maximum leave at once</label>
+                        </td>
+                        <td>
+                            <input type="text"  class="text form-control" formControlName="MaximumLeave" maxlength="50" />
+                        </td>
+                    </tr>
+    
+                    <tr>
+                        <td>
+                            <label>Minimum leave at once</label>
+                        </td>
+                        <td>
+                            <input type="text" class="text form-control" formControlName="minLeave" maxlength="50" />
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <label>Maximum leave in a month</label>
+                        </td>
+                        <td>
+                            <input type="text" class="text form-control" formControlName="maxLeavesMonth" maxlength="50" />
+    
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <label>Display message for more than</label>
+                        </td>
+                        <td>
+                            <input type="text"  class="text form-control" formControlName="displayMsg" maxlength="50" />
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <label>No leave in case ESIC deducted</label>
+                        </td>
+                        <td>
+                            <input type="checkbox" class="text form-control form-checkbox" formControlName="ESIC" style="height: 20px !important;" maxlength="50" />
+                        </td>
+                    </tr>
+                    <!-- <tr>
+                        <td>
+                            <label>Branch</label>
+                        </td>
+                        <td>
+                            <ng-multiselect-dropdown
+                                [placeholder]="'Please Select Branch'"
+                                [settings]="dropdownSettings"
+                                [data]="branches"
+                                [(ngModel)]="selectedItems"
+                                (onSelect)="onItemSelect($event)"
+                                (onSelectAll)="onSelectAll($event)"
+                                >
+                                </ng-multiselect-dropdown>
+                            
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <label>Grade</label>
+                        </td>
+                        <td>
+                            <ng-multiselect-dropdown
+                                [placeholder]="'Please Select Division'"
+                                [settings]="dropdownSettings"
+                                [data]="grades"
+                                [(ngModel)]="selectedItems"
+                                (onSelect)="onItemSelect($event)"
+                                (onSelectAll)="onSelectAll($event)"
+                                >
+                                </ng-multiselect-dropdown>
+                            
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <label>Division</label>
+                        </td>
+                        <td>
+                            <ng-multiselect-dropdown
+                                [placeholder]="'Please Select Division'"
+                                [settings]="dropdownSettings"
+                                [data]="divisions"
+                                [(ngModel)]="selectedItems"
+                                (onSelect)="onItemSelect($event)"
+                                (onSelectAll)="onSelectAll($event)"
+                                >
+                                </ng-multiselect-dropdown>
+                                
+                                
+                        </td>
+                    </tr> -->
+                </table>
+                <!-- <ng-select [items]="categories"
+                                            bindLabel="name"
+                                            placeholder="Select Category"
+                                            appendTo="body"
+                                            [multiple]="true"
+                                            >
+                                </ng-select> -->
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-12">
+                <button id="btn_add" type="button" *ngIf="togglebtn" class="btn btn-primary button" (click)="saveLeaveMaster()" ><i class="fas fa-save"></i> Save</button>
+                <button id="btn_add" type="button" *ngIf="!togglebtn" class="btn btn-primary button" (click)="updateLeaveMaster()"><i class="fas fa-save"></i> Update</button>
+    
+            </div>
+        </div>
+    </form>
+    
+</div>

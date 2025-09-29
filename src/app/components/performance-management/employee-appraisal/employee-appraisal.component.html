@@ -1,0 +1,234 @@
+<div class="container-fluid">
+    <div class="d-flex align-items-center mt-2">
+        <div class="m-2">
+            <div class="h-size"><i class="fas fa-cogs"></i> <b>Employee Appraisal</b></div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-12">
+            <table class="table table-bordered table-hover table-sm table-eg">
+
+
+                <tr>
+                    <th>Name:</th>
+                    <td>{{employeeData?.firstName}}</td>
+
+                    <th>Manager:</th>
+                    <td>{{managerName}}</td>
+                </tr>
+                <tr>
+                    <th>Designation:</th>
+                    <td>{{employeeData?.designation?.designationName}}</td>
+
+                    <th>Department:</th>
+                    <td>{{employeeData?.department?.departmentName}}</td>
+                </tr>
+                <tr>
+                    <th>Grade:</th>
+                    <td>{{employeeData?.gradeMaster?.gradeName}}</td>
+
+                    <th>Branch:</th>
+                    <td>{{employeeData?.branchDetail?.branchName}}</td>
+                </tr>
+                <tr>
+
+                    <th>Days remaining for submission:</th>
+                    <td>{{remainingDay}}</td>
+                    <th>Appraisal Year:</th>
+                    <td>
+                        <select class="form-control" [(ngModel)]="yearModel" style="width: 30%;" name="year"
+                            (change)="getKpaList()">
+                            <option value="">Please Select Year</option>
+                            <option *ngFor="let year of investmentYear" value={{year.financialYearId}}>
+                                {{year.financialYear}}</option>
+                        </select>
+                    </td>
+                </tr>
+
+                <tbody>
+
+                </tbody>
+
+            </table>
+
+        </div>
+    </div>
+
+    <br>
+    <form #form="ngForm">
+        <div class="row" *ngIf="togglelist">
+            <div class="col-md-12">
+
+                <div class="row">
+                    <div class="col-md-6">
+
+
+                        <button type="button" class="btn btn-primary ">Previous Appraisals</button>
+
+
+                    </div>
+
+                    <div class="col-md-3 offset-md-3">
+
+                        <button type="button" class="btn btn-primary">
+                            Employee Rating: <span class="badge badge-light">{{employeeRating.employeeRating}}</span>
+                          </button>
+
+
+                     
+                    </div>
+                </div>
+
+
+                <div class="d-flex align-items-center mt-2">
+
+                    <div class="m-2">
+                        <div class="h-size"><i class="fa fa-user"></i> <b>Assigned Ratings List for Kpa's</b></div>
+                    </div>
+                    <div class="flex-fill">
+                    </div>
+                    <!-- <div class="m-3">
+                        <button type="button" class="btn btn-warning btn-sm" >
+                            <i class="fas fa-edit"></i> edit
+                        </button>
+                    </div> -->
+                </div>
+                <table class="table table-bordered table-hover table-sm">
+                    <thead class="t-head">
+                        <tr>
+                            <th>S.No</th>
+                            <th>Key Performance Area</th>
+                            <th> Weightage in %</th>
+                            <th>Targeted Results</th>
+                            <th>Self Rating (1-5)</th>
+                            <th>Appraiser Rating</th>
+                            <th>Appraiser's Comments</th>
+                            <th >Department Head Rating</th>
+                            <th >Department Head Comments</th>
+                        </tr>
+
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let data of kpaTableData;let i=index">
+                            <td>{{i+1}}</td>
+                            <td>{{data.kpaName}}</td>
+                            <td>{{data.kpaWeighttage}}</td>
+                            <td>{{data.targetedResults}}</td>
+                            <td style="width: 10%;">
+                                <input type="number" [(ngModel)]="data.selfRating"
+                                    [ngClass]="{ 'is-invalid': submitted &&(data.selfRating>5 || selfrating?.errors) }"
+                                    class="form-control" #selfrating="ngModel" name="selfrating{{i}}">
+                                <!-- <span *ngIf="data.selfRating !=null">{{data.selfRating}}</span> -->
+                            </td>
+                            <td>
+                                <span *ngIf="data.appraiserRating != null">{{data.appraiserRating}}</span>
+                                <span class="badge badge-warning" *ngIf="data.appraiserRating == null">Not yet
+                                    Reviewed</span>
+                            </td>
+                            <td>
+                                <span *ngIf="data.appraisersComments != null">{{data.appraisersComments}}</span>
+                                <span class="badge badge-warning" *ngIf="data.appraisersComments == null">Not yet
+                                    Reviewed</span>
+
+                            </td>
+                            <td>
+                                <span *ngIf="data.appraiserRating != null">{{data.deptHeadRating}}</span>
+                                <span class="badge badge-warning" *ngIf="data.deptHeadRating == null">Not yet
+                                    Reviewed</span>
+                            </td>
+                            <td>
+                                <span *ngIf="data.appraisersComments != null">{{data.deptHeadRemarks}}</span>
+                                <span class="badge badge-warning" *ngIf="data.deptHeadRemarks == null">Not yet
+                                    Reviewed</span>
+
+                            </td>
+                        </tr>
+                    </tbody>
+
+                </table>
+            </div>
+            <div class="col-12" *ngIf="isnotFinalized==true">
+                <button type="button" class="btn btn-primary btn-sm" (click)="onSubmit(form)">
+                    <i class="fas fa-user-plus"></i>
+                    <span *ngIf="kpaTableData[0]?.selfRating ==null">Submit </span>
+                    <span *ngIf="kpaTableData[0]?.selfRating !=null">Update </span>
+                </button>
+            </div>
+            
+        </div>
+        <br>
+        <br>
+        <br>
+        <table *ngIf="showRatingsTable" class="table table-bordered table-hover table-sm">
+            <thead class="t-head">
+                <tr>
+                    <th >Self Rating</th>
+                    <th >Appraiser Rating</th>
+                    <th >Appraiser Score</th>
+                    <th >Department Head Rating</th>
+                    <th >Department Head Score</th>
+                    <th >Finalized</th>
+                    <th >Increment(%)</th>
+                </tr>
+               
+                </thead>
+                <tbody>
+                    <tr >
+                        <td>{{kpaTableData2.employeeRating}}</td>
+                        <td>{{kpaTableData2.managerRating}}</td>
+                        <td>{{kpaTableData2.managerTotalScore}}</td>
+                        <td>{{kpaTableData2.deptHeadRating}}</td>
+                        <td>{{kpaTableData2.deptHeadTotalScore}}</td>
+                        <td>
+                            <span *ngIf="setfinalizedfordisplay==true">Yes</span>
+                                     <span *ngIf="setfinalizedfordisplay==false">No</span>
+                        </td>
+                        <td>{{kpaTableData2.increment}}</td>
+
+                     
+                        
+                        <!-- <td *ngIf= "==null">No</td>
+                        <td *ngIf= "{{data.isFinalized}}==true">Yes</td> -->
+                     
+                    </tr>
+                </tbody> 
+
+        </table>
+    
+    </form>
+    <br>
+    <div class="col-md-6">
+        <table class="table table-bordered table-hover table-sm">
+            <thead class="t-head">
+                <tr>
+                    <th>Average Of KPA Scores</th>
+                    <th>Rating</th>
+                </tr>
+    
+            </thead>
+            <tbody>
+                <tr>
+                  <td>4.5-5</td>
+                  <td>S</td>
+                </tr> 
+                <tr>
+                    <td>3.5–4.49</td>
+                    <td>M</td>
+                  </tr>
+                  <tr>
+                    <td>2.5–3.49</td>
+                    <td>A</td>
+                  </tr>
+                  <tr>
+                    <td>1.5–2.49</td>
+                    <td>R</td>
+                  </tr>
+                  <tr>
+                    <td>0  –1.49</td>
+                    <td>T</td>
+                  </tr>
+            </tbody>
+    
+        </table>
+     </div>
+</div>

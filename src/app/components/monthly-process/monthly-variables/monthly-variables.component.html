@@ -1,0 +1,56 @@
+<div class="container-fluid p-10" >
+    <section class="content-header">
+    <h3 class="box-title"><i class="fas fa-calendar-week"></i>Monthly Variables</h3>
+    
+    <ul class="breadcrumb">
+    <li>
+    <span>Search:</span>
+    <!-- <label class="col-sm-2 control-label" for="inputWarning">Input with warning and glyphicon</label> -->
+    <input type="text" id="inputWarning">
+    </li>
+    </ul>
+    </section>
+    <section class="content">
+    <div class="box box-solid">
+    <div class="box-body table-responsive">
+    <div id="w0">
+    <div id="w1" class="grid-view">
+    <!-- <span *ngIf="!toggleloader"><cms-totalEntities [numberOfEntitesToShow]="numberOfEntitesToShow" [currentpageNumber]="currentPage" [totoalNumberOfItems]="totalEmployeeRecords"></cms-totalEntities></span> -->
+    <table class="table table-bordered table-hover table-sm">
+    <thead class="t-head">
+    <tr>
+    <th *ngFor="let data of Headers"><a>{{data}}</a></th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr *ngFor="let data of variablesData">
+    <td>{{data.empCode}}</td>
+    <td>{{data.empName}}</td>
+    <td>{{data.tds}}</td>
+    <td>{{data.withoutHelmet}}</td>
+    <td>{{data.otherDeduction}}</td>
+    <td>{{data.labourWelfareFund}</td>
+    <td>{{data.trasportDed}}</td>
+    <td>{{data.canteenDeduction}}</td>
+    <td>{{data.securityDepositDays}}</td>
+    <td>{{data.Gatepasss}}</td>
+    <td>{{data.hold_Salary}}</td>
+    <td>{{data.remarks}}</td>
+    <td>{{data.action}}</td>
+    
+    <td>
+    <a title="View" class="icon-margin"><span class="fas fa-eye"></span></a>
+    <a title="Edit" class="icon-margin"><i class="fas fa-user-edit"></i></a>
+    </td>
+    </tr>
+    </tbody>
+    
+    </table>
+    </div>
+    </div>
+    </div>
+    </div>
+    <button type="button" class="btn btn-secondary btn-sm">Export to Excel</button>
+    </section>
+    </div>
+    

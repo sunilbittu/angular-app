@@ -1,0 +1,428 @@
+<div class="container-fluid">
+    <div class="d-flex align-items-center mt-2">
+        <div class="m-2">
+            <div class="h-size"><em class="fa fa-user mr-1"></em> <strong>Offer Letter Rollout</strong></div>
+        </div>
+        <div class="flex-fill">
+        </div>
+        <div class="m-3"><input class="form-control rounded-pill py-2 border-right-0 border" type="search"
+                placeholder="search" id="example-search-input">
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-12">
+            <table class="table table-bordered table-hover table-sm">
+                <thead class="t-head">
+                    <tr>
+                        <th *ngFor="let head of headers" id="headers1"><a>{{head}}</a></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let candidate of candidateData">
+                        <td>{{candidate.candidetId}}</td>
+                        <td>{{candidate.candidetName}}</td>
+                        <td> <a title="View JD" (click)="viewJD(candidate.resourceIndentRequest.jobId)"
+                                class="icon-margin edit">{{candidate.resourceIndentRequest.jobId}}
+                            </a>
+                        </td>
+
+                        <td>{{candidate.interviewerName}}</td>
+                        <td>{{candidate.hrName}}</td>
+                        <td>{{candidate.hrScreeningStatus}}</td>
+                        <td>{{candidate.candidetStatus}}</td>
+
+                        <td>
+                            <a title="View Salary & Leaves Details" class="icon-margin" data-toggle="modal"
+                                data-target="#view_emp" (click)="viewSalaryLeave(candidate)" ><span class="fas fa-eye"></span></a>
+                            <a title="Edit" class="icon-margin" (click)="editCandidate(candidate)" data-toggle="modal"
+                                data-target="#myModal-edit"><em class="fas fa-user-edit"></em></a>
+                            <a title="Send Mail" class="icon-margin" data-toggle="modal"
+                                (click)="sendMailToCandidate(candidate)" data-target="#myModal-mail"><span
+                                    class="fas fa-envelope"></span></a>
+                            <a *ngIf="candidate.fileName != null" title="Download Offer Letter" class="icon-margin"
+                                (click)="download(candidate)"><span class="fas fa-download"></span></a>
+                        </td>
+                    </tr>
+                </tbody>
+
+            </table>
+        </div>
+    </div>
+</div>
+<div class="modal fade common-model" id="view-jd">
+    <div class="modal-dialog modal-xl">
+        <div class="modal-content model width">
+            <!-- Modal Header -->
+            <div class="modal-header">
+                <div class="modal-title"><i class="fa fa-eye" aria-hidden="true"></i> View JD
+                </div>
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+            </div>
+            <!-- Modal body -->
+            <div class="modal-body sample">
+                <div *ngFor="let data of newResourceIndent">
+                    <div class="row col-12 padding-field-bottom">
+                        <div class="col-2">
+                            <label>Resource Title :</label>
+                        </div>
+                        <div class="col-10">
+                            {{data.resourceTitle}}
+                        </div>
+
+                    </div>
+                    <div class="row col-12 padding-field-bottom">
+                        <div class="col-2">
+                            <label>For which project :</label>
+                        </div>
+                        <div class="col-10">
+                            {{data.project.projectName}}
+                        </div>
+                    </div>
+                    <div class="row col-12 padding-field-bottom">
+                        <div class="col-2">
+                            <label>Number Required :</label>
+                        </div>
+                        <div class="col-10">
+                            {{data.numberRequired}}
+                        </div>
+                    </div>
+                    <div class="row col-12 padding-field-bottom">
+                        <div class="col-2">
+                            <label>Request Reason :</label>
+                        </div>
+                        <div class="col-10">
+                            {{data.requestReason}}
+                        </div>
+                    </div>
+
+                    <div class="row col-12 padding-field-bottom">
+                        <div class="col-2">
+                            <label>Hiring Start Date :</label>
+                        </div>
+                        <div class="col-10">
+                            {{data.hiringStartDate}}
+                        </div>
+                    </div>
+                    <div class="row col-12 padding-field-bottom">
+                        <div class="col-2">
+                            <label>Job Description :</label>
+                        </div>
+                        <div class="col-10 align-justify">{{data.jobDescription}}</div>
+                    </div>
+                    <div class="row col-12 padding-field-bottom">
+                        <div class="col-2">
+                            <label>Attachment :</label>
+                        </div>
+                        <div class="col-10">
+                            <a title="Download to View" class="icon-margin"
+                                (click)="downloadDocumentAttachment(data.filePath, data.fileName)" target="_blank"><em
+                                    class="fas fa-download"></em></a>
+                            {{data.fileName}}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade common-model" id="myModal-edit">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content model">
+            <!-- Modal Header -->
+            <div class="modal-header">
+                <div class="modal-title"><i class="fas fa-plus"></i>/ <i class="fas fa-edit ml-1"></i> Candidate Details
+                </div>
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+            </div>
+            <!-- <div class="alert alert-success success-alert" *ngIf="saveAlert">
+                <h4><i class="icon fa fa-check"></i> Success!</h4>
+                Record has been Saved successfully.
+            </div>
+            <div class="alert alert-success success-alert" *ngIf="updateAlert">
+                <h4><i class="icon fa fa-check"></i> Success!</h4>
+                Record has been Updated successfully.
+            </div> -->
+            <!-- Modal body -->
+            <div class="modal-body">
+                <div>
+                    <form [formGroup]="CandidatesForm">
+                        <div class="row col-12 padding-field-bottom">
+                            <div class="col-6">
+                                <label>Candidate Name </label>
+                                <input type="text" class="form-control" placeholder="Please Enter Candidate Name"
+                                    formControlName="candidetName">
+                            </div>
+                            <div class="col-6">
+                                <label>Phone Number </label>
+                                <input type="text" class="form-control" placeholder="Please Phone Numbert"
+                                    formControlName="phonenumber">
+                            </div>
+                        </div>
+                        <div class="row col-12 padding-field-bottom">
+                            <div class="col-6">
+                                <label>Email Id </label>
+                                <input type="text" class="form-control" placeholder="Please enter Email Id"
+                                    formControlName="emailId"
+                                    [ngClass]="{ 'is-invalid': submitted && form_.emailId.errors }">
+
+                            </div>
+                            <div class="col-6">
+                                <label>JD Id </label>
+                                <input type="text" class="form-control" placeholder="Please enter Email Id"
+                                    formControlName="jobId"
+                                    [ngClass]="{ 'is-invalid': submitted && form_.jobId.errors }">
+                            </div>
+                        </div>
+                        <div class="row col-12 padding-field-bottom">
+                            <div class="col-6">
+                                <label>Status <span class="color-red">* </span></label>
+                                <select formControlName="candidetStatus" (change)="statusChanged()"
+                                    [(ngModel)]="candidateStatusValue" class="custom-select-box form-control">
+                                    <option value="" disabled>Please Select Status</option>
+                                    <option value="Offer Letter Rollout">Offer Letter Rollout</option>
+                                    <option value="Offer Accepted">Offer Accepted</option>
+                                    <option value="Negotiation">Negotiation</option>
+                                </select>
+                                <span class="color-red" *ngIf="submitted && !isStatusSelected">Status
+                                    {{requiredErrorText}}</span>
+                            </div>
+                            <div  class="col-6">
+                                <label>Offer Letter Attachment </label>
+                                <input type="file" formControlName="selectedFile" class="form-control height-45"
+                                    [(ngModel)]="selectedFileValue" (change)="onFileChanged($event)">
+                                
+
+                            </div>
+                        </div>
+                        <hr>
+                        <div class="row">
+                            <div class="col-md-6 pull-left">
+                                <button type="button" class="button btn-primary btn-style"
+                                    (click)="updateReferalRecruitment()">Update</button>
+                            </div>
+                            <div class="col-md-6 pull-right">
+                                <button type="button" id="btnComponentSave" (click)="clear()"
+                                    class="button btn-warning btn-style">
+                                    Clear</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade common-model" id="myModal-mail">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content model">
+            <!-- Modal Header -->
+            <div class="modal-header">
+                <div class="modal-title"><i class="fas fa-plus"></i>/ <i class="fas fa-edit ml-1"></i> Candidate Details
+                </div>
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+            </div>
+            <!-- <div class="alert alert-success success-alert" *ngIf="saveAlert">
+                <h4><i class="icon fa fa-check"></i> Success!</h4>
+                Record has been Saved successfully.
+            </div>
+            <div class="alert alert-success success-alert" *ngIf="updateAlert">
+                <h4><i class="icon fa fa-check"></i> Success!</h4>
+                Record has been Updated successfully.
+            </div> -->
+            <!-- Modal body -->
+            <div class="modal-body">
+                <div>
+                    <form [formGroup]="CandidatesForm">
+                        <div class="row col-12 padding-field-bottom">
+                            <div class="col-6">
+                                <label>Candidate Name </label>
+                                <input type="text" class="form-control" placeholder="Please Enter Candidate Name"
+                                    formControlName="candidetName">
+                            </div>
+                            <div class="col-6">
+                                <label>Phone Number </label>
+                                <input type="text" class="form-control" placeholder="Please Phone Numbert"
+                                    formControlName="phonenumber">
+                            </div>
+                        </div>
+                        <div class="row col-12 padding-field-bottom">
+                            <div class="col-6">
+                                <label>Email Id </label>
+                                <input type="text" class="form-control" placeholder="Please enter Email Id"
+                                    formControlName="emailId"
+                                    [ngClass]="{ 'is-invalid': submitted && form_.emailId.errors }">
+
+                            </div>
+                            <div class="col-6">
+                                <label>JD Id </label>
+                                <input type="text" class="form-control" placeholder="Please enter Email Id"
+                                    formControlName="jobId"
+                                    [ngClass]="{ 'is-invalid': submitted && form_.jobId.errors }">
+                            </div>
+                        </div>
+                        <div class="row col-12 padding-field-bottom">
+                            <div class="col-6">
+                                <label>Status </label>
+                                <input type="text" class="form-control" placeholder="Please enter Email Id"
+                                    formControlName="candidetStatus" readonly
+                                    [ngClass]="{ 'is-invalid': submitted && form_.candidetStatus.errors }">
+                            </div>
+                        </div>
+                        <div class="row col-12 padding-field-bottom">
+                            <div class="col-12">
+                                <label>Mail Body </label>
+                                <textarea id="w3review" class="form-control" placeholder="Please enter Email Body"
+                                    formControlName="mailBody" name="w3review" rows="4" cols="100">
+                                    </textarea>
+                            </div>
+                        </div>
+
+                        <hr>
+                        <div class="row">
+                            <div class="col-md-6 pull-left">
+                                <button type="button" class="button btn-primary btn-style"
+                                    (click)="mailReferalRecruitment()">Send Mail</button>
+                            </div>
+
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade common-model" id="view_emp" style="margin-top:40px;">
+    <div class="modal-dialog modal-xl">
+        <div class="modal-content">
+            <!-- <form > -->
+            <div class="modal-header">
+                <div class="modal-title"><i class="fas fa-plus"></i>/ <i class="fas fa-edit ml-1"></i> Salary Details
+                </div>
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="row col-12 margin-field">
+                    <div class="col-4 pb-0">
+                        <table class="table table-striped table-bordered">
+                            <thead class="t-head">
+                                <tr>
+                                    <th>EARNINGS</th>
+                                    <td>Amount</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr *ngFor="let data of earningList;let j=index">
+                                    <td>{{data.componentName}}</td>
+                                    <td><input type="number" disabled [(ngModel)]="data.componentValue" name="name{{j}}"
+                                            (ngModelChange)="sumOfEarnings()" class="form-control" #name="ngModel"
+                                            required /></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="col-4 pb-0">
+                        <table class="table table-striped table-bordered">
+                            <thead class="t-head">
+                                <tr>
+                                    <th>DEDUCTIONS</th>
+                                    <td>Amount</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr *ngFor="let data of deductionList;let j=index">
+                                    <td>{{data.componentName}}</td>
+                                    <td><input type="number" disabled [(ngModel)]="data.componentValue" name="name{{j}}"
+                                            (ngModelChange)="sumOfDeductions()" class="form-control" #name="ngModel"
+                                            required /></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="col-4 pb-0">
+                        <table class="table table-striped table-bordered">
+                            <thead class="t-head">
+                                <tr>
+                                    <th>OTHERS</th>
+                                    <td>Amount</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr *ngFor="let data of otherList;let j=index">
+                                    <td>{{data.componentName}}</td>
+                                    <td><input type="number" disabled [(ngModel)]="data.componentValue" name="name{{j}}"
+                                            class="form-control" #name="ngModel" required /></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer pt-0 pb-0">
+                <div class="col-12">
+                    <div class="d-flex fnt-3">
+                        <div class="inner-border-right pl-3">
+                            <i class="fas fa-money-bill success-text"></i>
+                            <span class="font-bold"> Gross Salary :</span>
+                            <span id="spnGrossSal" class="pr-3 ml-2 success-text font-bold">{{grossSalary}}</span>
+                        </div>
+                        <div class="inner-border-right pl-3">
+                            <i class="fas fa-money-bill danger-text"></i>
+                            <span class="font-bold"> Total Deduction :</span>
+                            <span id="spnTotalDed" class="pr-3 ml-2 danger-text font-bold">{{totalDeductions}}</span>
+                        </div>
+                        <div class="pl-3">
+                            <i class="fas fa-money-bill success-text"></i>
+                            <span class="font-bold"> Net Pay :</span>
+                            <span id="spnNetPay" class="ml-2 success-text font-bold">{{netPay}}</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="modal-content model">
+            <!-- Modal Header -->
+            <div class="modal-header">
+                <div class="modal-title"><i class="fas fa-plus"></i>/ <i class="fas fa-edit ml-1"></i> Leave Details
+                </div>
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+            </div>
+            <!-- <div class="alert alert-success success-alert" *ngIf="saveAlert">
+                <h4><i class="icon fa fa-check"></i> Success!</h4>
+                Record has been Saved successfully.
+            </div>
+            <div class="alert alert-success success-alert" *ngIf="updateAlert">
+                <h4><i class="icon fa fa-check"></i> Success!</h4>
+                Record has been Updated successfully.
+            </div> -->
+            <!-- Modal body -->
+            <div class="modal-body">
+                <div>
+
+
+                    <div class="row col-12 padding-field-bottom">
+
+                        <table class="table table-bordered table-hover table-sm">
+                            <tr>
+                                <th>Headers</th>
+                                <th *ngFor="let leaveInfo of leavesList">{{leaveInfo.leaveTypeCode}}</th>
+                            </tr>
+                            <tr>
+                                <th>Opening</th>
+                                <td *ngFor="let leaveInfo2 of leavesList;let k=index">
+                                    <input type="text" disabled [(ngModel)]="leaveInfo2.currentBal" name="name2{{k}}"
+                                        class="form-control" #name2="ngModel"  />
+                                </td>
+                            </tr>
+                        </table>
+
+                    </div>
+
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

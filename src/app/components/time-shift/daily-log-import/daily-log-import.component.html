@@ -1,0 +1,38 @@
+<div class="row container-fluid">
+    <div class="col-4">
+        <div class="row">
+            <fieldset class="field-set">
+                <legend class="legend">Select option:</legend>
+                <span *ngFor="let item of itemsList">
+                    <input type="radio" [(ngModel)]="radioSelected" name="list_name" value="{{item.name}}"
+                        (change)="onItemChange(item)" />
+                    {{item.name}}
+                </span>
+                <hr class="line_break">
+                <div>
+                    <input type="file" class="logo-form margin">
+                    <button type="button" class="btn btn-secondary btn-sm margin">Upload</button>
+                </div>
+
+            </fieldset>
+        </div>
+        <div class="row">
+            <fieldset class="field-set">
+                <legend class="legend-2">Format for Import:</legend>
+                <h4>{{radioSel.value}}</h4>
+            </fieldset>
+        </div>
+    </div>
+    <div class="col-8">
+        <div class="row">
+            <fieldset class="field-set">
+                <legend class="legend-2">Employee Shift:</legend>
+                <br>
+                <hr class="line_break">
+                <div>
+                    <button type="button" class="btn btn-secondary btn-sm margin">Close</button>
+                </div>
+            </fieldset>
+        </div>
+    </div>
+</div>

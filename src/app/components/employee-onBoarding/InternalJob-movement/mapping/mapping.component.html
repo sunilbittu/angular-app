@@ -1,0 +1,69 @@
+<div class="container-fluid">
+    <div class="d-flex align-items-center mt-2">
+        <div class="m-2">
+            <h3 class="heading"><i class="fa fa-user mr-1"></i><b>Internal Job Movement</b></h3>
+        </div>
+    </div>
+    <form class="form-inline">
+        <div class="form-group mb-2">
+            <input type="text" readonly class="form-control-plaintext" id="employeeid" value="EmployeeId :">
+        </div>
+        <div class="form-group mx-sm-3 mb-2">
+            <label for="employeeIdText" class="sr-only">Employee Name</label>
+            <input type="text" name="search" class="form-control" id="employeeIdText" #searchTerm
+                [(ngModel)]="searchWord" placeholder="Search By Employee Name">
+        </div>
+        <button type="submit" (click)="getAllEmployeeBySearchTerm(searchTerm.value)"
+            class="btn btn-primary mb-2">Search</button>&nbsp;&nbsp;&nbsp;
+            <button type="submit" (click)="getbenchResources()"
+            class="btn btn-primary mb-2">Bench Resources</button>
+    </form>
+    <div class="row mt-2">
+        <div class="col-md-12">
+            <table class="table table-bordered table-hover table-sm">
+                <thead class="t-head">
+                    <tr>
+                        <th *ngFor="let head of headers"><a>{{head}}</a></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let employee of employeeList">
+                        <td>{{employee.employeeCode}}</td>
+                        <td><span class="mr-2">{{employee.firstName}}</span> <span>{{employee.lastName}}</span></td>
+                        <td>{{employee.branchName}}</td>
+                        <td>{{employee.departmentName}}</td>
+                        <td>{{employee.designationName}}</td>
+                        <td>{{employee.divisionName}}</td>
+                        <td>{{employee.gradeName}}</td>
+                        <td>{{employee.categoryName}}</td>
+                        <td>{{employee.projectName}}</td>
+                        <td *ngIf="employee.jobId != null">
+                            <select class="form-control" (change)="getJobId($event)"
+                                [disabled]="employee.jobId != null" [(ngModel)]="employee.jobId">
+                                <option value="" disabled>Select Job-Id</option>
+                                <option *ngFor="let data of jobIdList" [value]="data.jobId">{{data.jobId}}
+                                    {{data.resourceTitle}}</option>
+                            </select>
+                        </td>
+                        <td *ngIf="employee.jobId == null">
+                            <select class="form-control" (change)="getJobId($event)"
+                                [disabled]="employee.jobId != null">
+                                <option value="" disabled>Select Job-Id</option>
+                                <option *ngFor="let data of jobIdList" [value]="data.jobId">{{data.jobId}}
+                                    {{data.resourceTitle}}</option>
+                            </select>
+                        </td>
+                        <td>
+                            <button class="btn btn-sm btn-success" [disabled]="employee.jobId != null"
+                                (click)="mapJobIdWithData(employee.employeeId)">
+                                <i class="fas fa-user-plus mr-1"></i>Map Employee</button>
+                            <div *ngIf="employee.jobId != null" style="width: 135px;">
+                                <h3 class="text-center text-danger">Employee Already Mapped</h3>
+                            </div>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>

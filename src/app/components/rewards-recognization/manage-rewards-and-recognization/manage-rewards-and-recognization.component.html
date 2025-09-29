@@ -1,0 +1,197 @@
+<div class="container-fluid">
+    <div class="d-flex align-items-center mt-2">
+        <div class="m-2">
+            <div class="h-size"><em class="fa fa-user"></em> <strong> Manage Reward & Recognition</strong></div>
+        </div>
+        <div class="flex-fill">
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-12">
+            <table class="table table-bordered table-hover table-sm">
+                <thead class="t-head">
+                    <tr>
+                        <th *ngFor="let head of headers"><a>{{head}}</a></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let data of rrsList">
+                        <td>{{data.departmentId.departmentName}}</td>
+                        <td style="padding-left: 10px;">
+                            <a title="Show Employees" (click)="handleEmployees(data)" data-toggle="modal"
+                                data-target="#show_employees" class="icon-margin"><i
+                                    class="fa fa-address-card fa-lg"></i></a>
+                        </td>
+                        <td>{{data.rewardRecognitionId.type}}</td>
+                        <td>{{data.rewardRecognitionId.name}}</td>
+                        <td>{{data.rewardRecognitionId.budget}}</td>
+                        <td>{{data.remarks}}</td>
+                        <td>{{data.mgmtStatus}}</td>
+                        <td>
+                            <a title="Edit" (click)="modelShowEdit(data)" class="icon-margin"><i
+                                    class="fas fa-user-edit"></i></a>
+                            <a title="Delete" class="icon-margin" mwlConfirmationPopover [popoverTitle]="popoverTitle"
+                                [popoverMessage]="popoverMessage" placement="left" (confirm)="delete(data.id)"
+                                (cancel)="cancelClicked = true"><span class="fas fa-trash"></span></a>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+            <div class="row" *ngIf="totalElements!=0">
+                <div class="col-md-6 col-sm-6 col-6  pagination-area"><span class="show-entry">Showing
+                        <span>{{showingFrom}} to {{showingTo}} of {{totalElements}} entries</span></span>&nbsp;
+                </div>
+
+                <div class="col-md-6 pull-right" *ngIf="totalElements > pageSize">
+                    <pagination-controls (pageChange)="pageChanged($event)"></pagination-controls>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-12">
+            <button type="button" class="btn btn-primary btn-sm" (click)="modelShow()" data-toggle="modal"
+                data-target="#add-edit-popup">
+                <i class="fas fa-user-plus"></i> Add
+            </button>
+        </div>
+    </div>
+</div>
+<div class="modal fade common-model" id="add-edit-popup">
+    <div class="modal-dialog modal-xl">
+        <div class="modal-content model" style="width: 1045px;">
+            <form [formGroup]="rrsForm">
+                <div class="modal-header">
+                    <div class="modal-title"><i class="fa fa-pencil-square-o"></i> Manage Reward & Recognition</div>
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                </div>
+                <div class="modal-body">
+                    <div class="row col-12">
+                        <div class="col-2">
+                            <label for="type">Department<span class="color-red">*</span></label>
+                        </div>
+                        <div class="col-4">
+                            <select class="form-control" id="department" formControlName="department"
+                                [ngClass]="{ 'is-invalid': submitted && form_.department.errors }"
+                                (change)="getDepartmentheadsDetails()">
+                                <option value=null disabled>Please Select Department</option>
+                                <option *ngFor="let department of departmentList" [value]=department.departmentId>
+                                    {{department.departmentName}}
+                                </option>
+                            </select>
+                            <span class="color-red" *ngIf="submitted && form_.department.errors">Department
+                                {{requiredErrorText}}</span>
+                        </div>
+                        <div class="col-2">
+                            <label for="type">Department Head<span class="color-red">*</span></label>
+                        </div>
+                        <div class="col-4">
+                            <ng-multiselect-dropdown [placeholder]="'Please Select Member'"
+                                [disabled]="isForViewAndSubmitDisabled" [settings]="dropdownSettings"
+                                [data]="employeeDetails" [(ngModel)]="selectedItems"
+                                [ngModelOptions]="{standalone: true}" (onSelect)="onItemSelect($event)"
+                                (onSelectAll)="onSelectAll($event)" (onDeSelectAll)="onDeSelectAll($event)"
+                                (onDeSelect)="onItemDeSelect($event)">
+                            </ng-multiselect-dropdown>
+                            <span class="color-red" *ngIf="submitted && selectedItems.length == 0">Department Head
+                                {{requiredErrorText}}</span>
+                        </div>
+                    </div>
+                    <hr>
+                    <div class="row col-12 padding-field-bottom radio-font" style="margin-left: 40%;">
+                        <span><input id="deny" class="radio-size" name="rr" type="radio" value="Reward"
+                                (ngModelChange)="handleType('Reward')" [ngModelOptions]="{standalone: true}"
+                                [(ngModel)]="type" style="cursor: pointer;" checked>
+                            <label>&nbsp;Reward</label></span>&nbsp;
+                        <span><input id="approve" class="radio-size" name="rr" type="radio" value="Recognition"
+                                (ngModelChange)="handleType('Recognition')" [ngModelOptions]="{standalone: true}"
+                                [(ngModel)]="type">
+                            <label>&nbsp;Recognition</label></span>
+                    </div>
+                    <div class="row col-12 padding-field-bottom">
+                        <div class="col-2">
+                            <label>{{type}} Name<span
+                                    class="color-red">*</span></label>
+                        </div>
+                        <div class="col-4">
+                            <select class="form-control" id="rrId" formControlName="rrId" (change)="changeRR()"
+                                [ngClass]="{ 'is-invalid': submitted && form_.rrId.errors }">
+                                <option value=null disabled>Please Select {{type}}</option>
+                                <option *ngFor="let r of rr" [value]="r.rewardRecognitionId">
+                                    {{r.name}}
+                                </option>
+                                <option value=null *ngIf="rr.length == 0" disabled>No Data Found!</option>
+                            </select>
+                            <span class="color-red" *ngIf="submitted && form_.technology.errors">{{type}}
+                                {{requiredErrorText}}</span>
+                        </div>
+                        <div class="col-2" *ngIf="type == 'Reward'">
+                            <label for="type">Reward Amount<span class="color-red">*</span></label>
+                        </div>
+                        <div class="col-4" *ngIf="type == 'Reward'">
+                            <input type="text" class="form-control" placeholder="Reward Amount"
+                                formControlName="rewardAmount" readonly>
+                            <span class="color-red" *ngIf="submitted && form_.rewardAmount.errors">Reward Amount
+                                {{requiredErrorText}}</span>
+                        </div>
+                        <div class="col-2" *ngIf="type == 'Recognition'">
+                            <label for="type">Remarks<span class="color-red">*</span></label>
+                        </div>
+                        <div class="col-4" *ngIf="type == 'Recognition'">
+                            <textarea type="text" class="form-control" placeholder="Please Enter Remarks"
+                                formControlName="remarks"></textarea>
+                            <span class="color-red" *ngIf="submitted && form_.remarks.errors">Remarks
+                                {{requiredErrorText}}</span>
+                        </div>
+                    </div>
+                    <hr>
+                    <div class="row">
+                        <div class="col-md-6 pull-left">
+                            <button type="submit" id="btnComponentSave" (click)="submit()" [disabled]="submitProcessing"
+                                class="button btn-primary btn-style"><i class="fas fa-save"></i>
+                                {{submitText}} <i class="fa fa-spinner fa-spin" *ngIf="submitProcessing"
+                                    style="font-size:19px"></i></button>
+                        </div>
+                        <div class="col-md-6 pull-right" *ngIf="submitText !== 'Update'">
+                            <button type="button" id="btnComponentSave" (click)="clear()"
+                                class="button btn-warning btn-style" [disabled]="submitProcessing">
+                                Clear</button>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<div class="modal alert-modal fade" id="show_employees" role="dialog" style="display: none;">
+    <div class="modal-dialog modal-md">
+        <div class="modal-content model">
+            <div class="modal-header " id="msg_header">
+                <h4 class="modal-title">Employees</h4>
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="col-md-12">
+                    <table class="table table-bordered table-hover table-sm">
+                        <thead class="t-head">
+                            <tr>
+                                <th><a>Sr No</a></th>
+                                <th><a>Employee Id</a></th>
+                                <th><a>Employee Name</a></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr *ngFor="let data of employeeList; let i=index">
+                                <td>{{i + 1}}</td>
+                                <td>{{data.employeeId}}</td>
+                                <td>{{data.fullName}}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

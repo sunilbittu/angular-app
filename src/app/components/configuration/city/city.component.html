@@ -1,0 +1,150 @@
+<div class="container-fluid">
+  <div class="d-flex align-items-center mt-2">
+    <div class="m-2">
+      <div class="h-size"><em class="fa fa-user"></em> <strong>City</strong></div>
+    </div>
+    <div class="flex-fill">
+    </div>
+    <div class="m-3"><input class="form-control rounded-pill py-2 border-right-0 border" type="search"
+        placeholder="search" id="example-search-input" [(ngModel)]="searchModel" (ngModelChange)="fetchAllCities()">
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-md-12">
+      <table class="table table-bordered table-hover table-sm">
+        <thead class="t-head">
+          <tr>
+            <th *ngFor="let head of headers" id="headers"><a>{{head}}</a></th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let city of cityObject | paginate
+          : {
+              itemsPerPage: itemsPerPage,
+              currentPage: currentPage,
+              totalItems: totalItems
+            };let i=index">
+            <td>{{city.cityId}}</td>
+            <td>{{city.cityName | uppercase}}</td>
+            <td>{{city.pincode}}</td>
+            <td>{{city.stateName | uppercase}}</td>
+            <td>
+              <a title="Edit" class="icon-margin" data-toggle="modal" data-target="#myModal-edit"
+                (click)="editCity(city)"><em class="fas fa-user-edit"></em></a>
+              <a title="Delete" class="icon-margin" data-toggle="modal" data-target="#confirmDelete"
+                (click)="removeCity(city)"><em class="fa fa-trash"></em></a>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+      <div class="row" *ngIf="totalElements!=0">
+        <div class="col-md-6 pull-left"><span class="show-entry">Showing
+                <span>{{showingFrom}} to {{showingTo}} of {{totalElements}} entries</span></span>&nbsp;
+        </div>
+
+        <div class="col-md-6 pull-right" *ngIf="totalItems > 0">
+            <pagination-controls (pageChange)="pageChanged($event)"></pagination-controls>
+        </div>
+    </div>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-12">
+      <button id="btn_add" type="button" (click)="clear()" class="btn btn-primary button btn-sm" data-toggle="modal"
+        data-target="#myModal-add"><em class="fas fa-user-plus"></em>Add</button>
+    </div>
+  </div>
+</div>
+<!-- add modal pop up -->
+<div class="modal fade common-model" id="myModal-add">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <!-- Modal Header -->
+      <div class="modal-header">
+        <h4 class="modal-title" head><em class="fas fa-plus mr-1"></em> / <em class="fas fa-edit mr-1"></em>Add City
+        </h4>
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+      </div>
+      <!-- Modal body -->
+      <div class="form-group ml-2">
+        <label for="cbo">State:<span class="color-red">*</span></label>
+        <select class="form-control form-control-sm" id="sc" [(ngModel)]="stateModel">
+          <option value="">--Select State--</option>
+          <option *ngFor="let state of states" [value]="state.stateId">{{state.stateName}}</option>
+        </select>
+        <span span class="color-red" *ngIf="submitted && stateModel == ''">State can't be blank.</span>
+      </div>
+      <div class="form-group ml-2">
+        <label for="city">City:<span class="color-red">*</span></label>
+        <input class="form-control form-control-sm" type="text" id="city" [(ngModel)]="cityModel"
+          (ngModelChange)="check()">
+        <span class="color-red" *ngIf="isCityExist">City is already exist in DB with same State.</span>
+        <span span class="color-red" *ngIf="submitted && cityModel == ''">City can't be blank.</span>
+      </div>
+      <div class="form-group ml-2">
+        <label for="city">Pincode:<span class="color-red">*</span></label>
+        <input class="form-control form-control-sm" type="text" id="city1" [(ngModel)]="cityPincodeModal">
+        <span span class="color-red" *ngIf="submitted && cityPincodeModal == ''">Pin code can't be blank.</span>
+      </div>
+      <!-- Modal footer -->
+      <div class="modal-footer">
+        <button type="button" class="btn btn-danger btn-sm" (click)="clear()">Clear</button>
+        <button type="button" class="btn btn-success btn-sm" (click)="createCity()">Save</button>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- edit modal pop up -->
+<div class="modal fade common-model" id="myModal-edit">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <!-- Modal Header -->
+      <div class="modal-header">
+        <h4 class="modal-title" head><em class="fas fa-plus mr-1"></em> / <em class="fas fa-edit mr-1"></em>Edit City
+        </h4>
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+      </div>
+      <!-- Modal body -->
+      <div class="form-group ml-2">
+        <label for="cbo">State:<span class="color-red">*</span></label>
+        <select class="form-control form-control-sm" id="sce" [(ngModel)]="stateModel1">
+          <option value="">--Select State--</option>
+          <option *ngFor="let state of states" [value]="state.stateId">{{state.stateName}}</option>
+        </select>
+        <span span class="color-red" *ngIf="submitted && stateModel1 == ''">State can't be blank.</span>
+      </div>
+      <div class="form-group ml-2">
+        <label for="city">City:<span class="color-red">*</span></label>
+        <input class="form-control form-control-sm" type="text" id="city1" [(ngModel)]="cityModel1"
+          (ngModelChange)="check1()">
+        <span class="color-red" *ngIf="isCityExist">City is already exist in DB with same State.</span>
+        <span span class="color-red" *ngIf="submitted && cityModel1 == ''">City can't be blank.</span>
+      </div>
+      <div class="form-group ml-2">
+        <label for="city">Pincode:<span class="color-red">*</span></label>
+        <input class="form-control form-control-sm" type="text" id="city1" [(ngModel)]="cityPincodeModal1">
+        <span span class="color-red" *ngIf="submitted && cityPincodeModal1 == ''">Pin code can't be blank.</span>
+      </div>
+      <!-- Modal footer -->
+      <div class="modal-footer">
+        <button type="button" class="btn btn-danger btn-sm" (click)="clear()">Clear</button>
+        <button type="button" class="btn btn-success btn-sm" (click)="updateCity()">Update</button>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- Delete model Pop up -->
+<div class="modal fade" id="confirmDelete" role="dialog">
+  <div class="modal-dialog">
+    <!-- Modal content-->
+    <div class="modal-content">
+      <div class="modal-body"><button type="button" class="close" data-dismiss="modal">&times;</button>
+        <p>Are you sure you want to delete selected items?</p>
+      </div>
+      <div class="modal-footer" style="justify-content: flex-end;">
+        <button type="button" class="btn btn-default btn-sm" data-dismiss="modal">Close</button>
+        <button type="button" data-dismiss="modal" class="btn btn-primary btn-sm" (click)="deleteCity()">Ok</button>
+      </div>
+    </div>
+  </div>
+</div>

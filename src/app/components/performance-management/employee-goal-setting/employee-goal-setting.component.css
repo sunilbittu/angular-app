@@ -1,0 +1,22 @@
+
+.table-eg tr th{
+    background-color: #d0e5f9;
+    width: 20%;
+    color: #555;
+}
+.h-size{
+    padding-bottom: 6px;
+}
+.inputField {
+    color: #ccc;
+}
+.inputField .c-token{
+    background: #38d574 !important;
+}
+.inputField .pure-checkbox label::before {
+    border-color: #38d574 !important;
+}
+.inputField .pure-checkbox input[type="checkbox"]:checked + 
+ label[_ngcontent-c1]:before {
+    background: #38d574 !important;
+}

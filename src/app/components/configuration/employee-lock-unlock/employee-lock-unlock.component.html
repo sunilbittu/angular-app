@@ -1,0 +1,66 @@
+<div class="container-fluid">
+    <div class="d-flex align-items-center mt-2 row">
+            <div class="col-md-10">
+                    <div class="h-size"><i class="fa fa-user mr-1"></i> <b>Employee Lock & Unlock</b></div>
+            </div>
+            <div class="col-md-2">
+                <input class="form-control rounded-pill py-2 border-right-0 border" type="search"
+                        placeholder="search" id="example-search-input" [(ngModel)]="searchModel"
+                        (ngModelChange)="getAllEmployees()">
+            </div>
+    </div>
+    <br>
+    <div class="row">
+        <div class="col-md-12">
+            <table class="table table-bordered table-hover table-sm">
+                <thead class="t-head">
+                    <tr>
+                        <th *ngFor="let head of headers"><a>{{head}}</a></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let employee of employeeList | paginate: {
+                        itemsPerPage: itemsPerPage,
+                        currentPage: currentPage,
+                        totalItems: totalItems
+                      };let i=index">
+                        <td>{{employee.employeeId}}</td>
+                        <td>{{employee.employeeCode}}</td>
+                        <td><span class="mr-2">{{employee.firstName}}</span> <span>{{employee.lastName}}</span></td>
+                        <td>{{employee.branchName}}</td>
+                        <td>{{employee.departmentName}}</td>
+                        <td>{{employee.designationName}}</td>
+                        <td>{{employee.divisionName}}</td>
+                        <td>{{employee.gradeName}}</td>
+                        <td>{{employee.categoryName}}</td>
+                        <td *ngIf="employee.project!=null">{{employee.project.projectName}}</td>
+                        <td *ngIf="employee.project==null"></td>
+                        <td class="action-width">
+
+                            <a *ngIf="employee.status == 'Active'" title="Lock Employee" class="icon-margin" mwlConfirmationPopover
+                                [popoverTitle]="popoverTitle" [popoverMessage]="popoverMessage" placement="left"
+                                (confirm)="resetEmployeePassword(employee)"
+                                (cancel)="cancelClicked = true"><span class='fa fa-lock' style='color: red;cursor: pointer;'></span></a>
+
+                            <a *ngIf="employee.status == 'InActive'" title="Un Lock Employee" class="icon-margin" mwlConfirmationPopover
+                                [popoverTitle]="unlockpopoverTitle" [popoverMessage]="unlockpopoverMessage" placement="left"
+                                (confirm)="unlockEmployee(employee)"
+                                (cancel)="cancelClicked = true"><span class="fa fa-unlock" style='color:#4ef109;cursor: pointer;'></span></a>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+            <div class="row" *ngIf="totalElements!=0">
+                <div class="col-md-6 pull-left"><span class="show-entry">Showing
+                        <span>{{showingFrom}} to {{showingTo}} of {{totalElements}} entries</span></span>&nbsp;
+                </div>
+
+                <div class="col-md-6 pull-right" *ngIf="totalItems > 0">
+                    <pagination-controls (pageChange)="pageChanged($event)"></pagination-controls>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+</div>

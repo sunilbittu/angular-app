@@ -1,0 +1,250 @@
+.form-control::-webkit-input-placeholder {
+    font-family: FontAwesome;
+    font-weight: normal;
+    overflow: visible;
+    vertical-align: top;
+    display: inline-block !important;
+    padding-left: 1px;
+    padding-top: 2px;
+    color: hsl(9, 17%, 24%);
+    cursor: pointer;
+  }
+  
+  .read-only {
+    background-color: #fcfcff;
+    cursor: pointer;
+  }
+  
+  .edit {
+    cursor: pointer;
+  }
+  
+  .padding-field-bottom {
+    padding-bottom: 10px;
+    margin-left: 0px;
+  }
+  
+  label {
+    display: inline-block;
+    margin-bottom: .5rem;
+    font-size: 16px;
+  }
+  
+  .height-45 {
+    height: 45px;
+  }
+  
+  .custom-select-box {
+    width: 100%;
+    font-weight: 500;
+    background-color: white;
+    height: 38px;
+    font-size: 1.06rem;
+    color: #2d3135;
+    font-family: none;
+    cursor: pointer;
+  }
+  
+  .modal-title {
+    font-size: 22px;
+    font-weight: 500;
+    cursor: text;
+    text-align: center;
+    flex: 1;
+    color: #000;
+  }
+  
+  .table tr th, .table tr td {
+    border: solid 1px #a3a2a3 !important;
+    font-size: 14px;
+  }
+  
+  input, textarea {
+    font-size: 1.06rem;
+    cursor: pointer;
+  }
+  
+  .col-2 {
+    flex: 0 0 16.666667%;
+    max-width: 16.666667%;
+    margin-top: 2px;
+  }
+  
+  .col-6 {
+    flex: 0 0 50%;
+    max-width: 50%;
+    padding-top: 8px;
+  }
+  
+  button:disabled,
+  button[disabled] {
+    border: 1px solid #999999;
+    background-color: #cccccc;
+    color: #666666;
+  }
+  
+  .padd-right-0 {
+    padding-right: 0px;
+  }
+  
+  .radio-font {
+    text-align: center;
+    font-size: x-large;
+    font-weight: 500;
+    cursor: pointer;
+  }
+  
+  .btn-group.myapp-select .btn.dropdown-toggle {
+    color: blue;
+    background: #cecece;
+    border-radius: 2px;
+  }
+  
+  .btn-group.myapp-select.open .btn.dropdown-toggle {
+    background-color: #afafaf;
+    font-weight: bold;
+  }
+  
+  .myapp-select>ul.dropdown-menu {
+    max-height: 300px;
+    overflow-y: auto;
+    border-radius: 2px;
+  }
+  
+  .myapp-select>ul.dropdown-menu>li {
+    color: blue;
+    background: #cecece;
+  }
+  .radio-font {
+    margin-top: -8px;
+    padding-top: 0px;
+    font-size: xxx-large;
+  }
+
+  .reports-box{
+    height: 100%;
+    background-color: rgb(231, 225, 225);
+    width: 227px;
+}
+.reports-box h2{
+   color: #707070;
+   font-size: 20px;
+}
+.reports-box ul li{
+    list-style: none;
+    color:#55799A ;
+    padding-bottom: 8px;
+    font-size: 16px;
+    cursor: pointer;
+    margin-left: -23px;
+}
+.repoprt-select{
+    width: 80% !important;
+    padding:0px;
+    background-color: #cbc6c6 !important;
+    margin-left: 24px;
+}
+
+.btn-outline-secondary{
+    margin-left: 54px;
+    background: white;
+}
+.select-all{
+    /* width: 25% !important; */
+    width: 20px;
+    height: 15px
+}
+.s-lable{
+    padding-left: 1px;
+
+}
+.model-table td{
+    vertical-align: middle !important;
+    padding: 6px !important;
+}
+.head-margin {
+    margin-left: 15px;
+}
+
+.align-center{
+    margin-left: 300px !important;
+}
+
+.btn-header{
+    color: white;
+    margin-left: 10px;
+
+}
+.title-headers h2{
+  display: contents;
+
+}
+.ml-40{
+    margin-left: 40px;
+}
+
+.model-tbl tr td h4{
+    padding-right: 50px;
+}
+.model-tbl tr td input{
+    height: 32px;
+    width: 230px;
+}
+.mt-10{
+    margin-top: 10px;
+}
+.modal-header{
+    padding: 8px 18px !important;
+}
+.modal-dialog {
+    margin-top: 0px  !important;
+}
+.error-msg {
+    margin: 10px 0;
+    padding: 10px;
+    border-radius: 3px 3px 3px 3px;
+    color: #D8000C;
+    background-color: #FFBABA;
+}
+b, strong {
+    font-weight: 500;
+}
+.btn-footer {
+    margin: 1px;
+    margin-bottom: 15px;
+}
+button:disabled,
+button[disabled]{
+  border: 1px solid #999999;
+  background-color: #cccccc;
+  color: #666666;
+}
+
+.pull-left-5 {
+    margin-left: 5px;
+}
+
+.q-style {
+    margin-bottom: 0px;
+    border-color: #adadad;
+    height: 35px;
+}
+
+.td-width {
+  width: 83%;
+  padding-bottom: 5px;
+  padding-left: 10px;
+}
+.emp-scroll {
+    height: 245px;
+    overflow-x: scroll;
+}
+.select-year {
+    margin-left: 14px;
+    width: 103%;
+    font-size: 16px;
+}
+.scroll-tab {
+    overflow-x: scroll;
+    overflow-y: scroll;
+}

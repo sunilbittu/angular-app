@@ -1,0 +1,217 @@
+<div class="container-fluid">
+    <div class="d-flex align-items-center mt-2">
+        <div class="m-2">
+            <div class="h-size"><em class="fa fa-user"></em> <strong> Time Shift Report </strong></div>
+        </div>
+        <div class="flex-fill">
+        </div>
+    </div>
+    <section class="content">
+
+        <div class="row">
+            <div class="col-md-5 column-1">
+
+                <form [formGroup]="form">
+                    <div class="row">
+                        <div class="drop-down-width  text-center">
+                            <label><b>Branch </b><span class="color-red">*</span></label>
+                            <select formControlName="branch" class="custom-select-box form-control text-center"
+                                [(ngModel)]="sourceBranch" (change)="changeBranch(sourceBranch)">
+                                <option value='' disabled>--Select Branch--</option>
+                                <option *ngFor="let branch of branchList" [ngValue]="branch">
+                                    {{branch.branchName}}
+                                </option>
+                            </select>
+                            <div class="align-center"><span class="color-red"
+                                    *ngIf="submitted && sourceBranch == ''">Branch
+                                    {{requiredErrorText}}</span></div>
+                        </div>
+                        <div class="drop-down-width  text-center">
+                            <label><b>Department </b><span class="color-red">*</span></label>
+                            <select formControlName="department" [(ngModel)]="sourceDept"
+                                (change)="changeDepartment(sourceDept)"
+                                class="custom-select-box form-control text-center">
+                                <option value="" disabled>--Select Department--</option>
+                                <option *ngFor="let dept of departmentList" [ngValue]="dept">
+                                    {{dept.departmentName}}
+                                </option>
+                            </select>
+                            <div class="align-center"><span class="color-red"
+                                    *ngIf="submitted && sourceDept == ''">Department
+                                    {{requiredErrorText}}</span></div>
+                        </div>
+                        <div class="drop-down-width  text-center">
+                            <label><b>Project </b><span class="color-red">*</span></label>
+                            <select id="project" formControlName="project" [(ngModel)]="sourceProject"
+                                (change)="changeProject(sourceProject)"
+                                class="form-control custom-select-box text-center">
+                                <option value="" selected disabled>--Select Project--</option>
+                                <option *ngFor="let project of projectList" [ngValue]="project">
+                                    {{project.projectName}}
+                                </option>
+                            </select>
+                            <div class="align-center"><span class="color-red"
+                                    *ngIf="submitted && sourceProject == ''">Project
+                                    {{requiredErrorText}}</span></div>
+                        </div>
+
+                        <div class="drop-down-width text-center">
+                            <label><b>Time Shift </b><span class="color-red">*</span></label>
+                            <!-- <select class="custom-select-box form-control" [(ngModel)]="destinationBranch"
+                                (change)="changeBranchDestination(destinationBranch)" formControlName="branch1">
+                                <option value='' disabled>--Select Shift--</option>
+                                <option *ngFor="let branch of shiftList" [ngValue]="branch">
+                                    {{branch.name}}
+                                </option>
+                            </select> -->
+                            <ng-multiselect-dropdown [placeholder]="'Select Time Shift'"
+                                [settings]="dropdownSettingsBranch" [data]="shiftList" [(ngModel)]="selectedItemsBranch"
+                                (onSelect)="onItemSelectBranch($event)" (onDeSelect)="OnItemDeSelect($event)"
+                                (onSelectAll)="onSelectAllBranch($event)">
+                            </ng-multiselect-dropdown>
+                            <div class="align-center"><span class="color-red"
+                                    *ngIf="submitted && selectedItemsBranch.length == 0">Please select atleast one Time
+                                    Shift</span></div>
+                        </div>
+                        <div class="drop-down-width text-center">
+                            <label><b>Start Date </b><span class="color-red">*</span></label>
+
+                            <input type="text" formControlName="department1" bsDatepicker [(ngModel)]="destinationDept"
+                                (change)="changeDepartmentDestination(destinationDept)" placeholder="Start Date"
+                                [bsConfig]="{ isAnimated: true, dateInputFormat: 'DD-MM-YYYY' }"
+                                class="text form-control" id="department1" maxlength="50" placement="bottom" />
+
+                            <div class="align-center"><span class="color-red"
+                                    *ngIf="submitted && destinationDept == ''">Please select Start Date</span></div>
+                        </div>
+                        <div class="drop-down-width text-center">
+                            <label><b>End Date </b><span class="color-red">*</span></label>
+
+                            <input type="text" formControlName="project1" bsDatepicker [(ngModel)]="destinationProject"
+                                (change)="changeProjectDestination(destinationProject)" placeholder="End Date"
+                                [bsConfig]="{ isAnimated: true, dateInputFormat: 'DD-MM-YYYY' }"
+                                class="text form-control" id="project1" maxlength="50" placement="bottom" />
+
+                            <div class="align-center"><span class="color-red"
+                                    *ngIf="submitted && destinationProject == ''">Please select End Date</span></div>
+                        </div>
+
+                        <div class="m-2">
+                            <label class="control-label">&nbsp;</label>
+                            <button id="btn_add" type="button" (click)="update()"
+                                class="btn btn-primary button">Search</button>
+                        </div>
+
+                        <!-- <div class="m-3"><input class="form-control rounded-pill py-2 border-right-0 border" type="search"
+                            placeholder="Search By Employee Id" id="example-search-input" [(ngModel)]="searchModel"
+                            (keypress)="getSearchByEmployees($event)">
+                        </div> -->
+
+                        <div class="m-3"><input class="form-control rounded-pill py-2 border-right-0 border"
+                                type="search" placeholder="search" id="example-search-input" [ngModel]="searchModel"
+                                (ngModelChange)="getSearchByEmployees($event)">
+                        </div>
+
+                        <!-- <div class="row"> -->
+                            <div class="m-3">
+                                <button type="button" class="btn btn-labeled btn-outline-danger btn-sm" (click)="exportTable('PDF')">
+                                    <span class="btn-label"><i class="fa fa-file-pdf-o" aria-hidden="true"></i></span>Export To PDF</button>
+                            </div>
+                        
+                            <div class="m-3">
+                                <button type="button" class="btn btn-labeled btn-outline-success btn-sm" (click)="exportTable('EXCEL')">
+                                    <span class="btn-label"><i class="fa fa-file-excel-o" aria-hidden="true"></i></span>Export To Excel</button>
+                            </div>
+                           <!-- </div> -->
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-12">
+                            <table class="table table-bordered table-hover table-sm">
+                                <thead class="t-head">
+                                    <tr>
+                                        <th *ngFor="let head of headers"><a>{{head}}</a></th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr *ngFor="let employee of searchEmployeeList| paginate: {
+                                        itemsPerPage: itemsPerPage,
+                                        currentPage: currentPage,
+                                        totalItems: totalItems
+                                      };let i=index">
+                                        <td>{{employee.employeeId}}</td>
+                                        <td>{{employee.employeeName}}</td>
+                                        <td>{{employee.shiftName}}</td>
+                                        <td>{{employee.dateOfShift}}</td>
+                                        <!-- <td>
+                                            <button class="btn btn-primary btn-sm" *ngIf="!(hideStatus ==i && toggleStatus)"
+                                                (click)="changeStatus(i)">Change Shift</button>
+                                            <button class="btn btn-primary btn-sm" *ngIf="hideStatus ==i "
+                                                (click)="updateShift(employee.employeeShiftId)">Update Shift</button>
+            
+                                        </td> -->
+                                    </tr>
+                                </tbody>
+                            </table>
+                            <div class="row" *ngIf="totalElements!=0">
+                                <div class="col-md-6 pull-left"><span class="show-entry">Showing
+                                        <!-- <span>{{showingFrom}} to {{showingTo}} of {{totalElements}} entries</span></span>&nbsp; -->
+                                        <span>1 to 20 of 20 entries</span>
+                                    </span>&nbsp;
+                                </div>
+
+                                <div class="col-md-6 pull-right" *ngIf="totalItems > 0">
+                                    <pagination-controls (pageChange)="pageChanged($event)"></pagination-controls>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </form>
+
+
+
+                <!-- <div class="text-center">
+                    <b>Employee List :</b>
+                </div> -->
+                <!-- <div>
+                    <input type="text" class="form-control" [(ngModel)]="searchItem" placeholder="Search..." />
+                </div>
+                <div class="border-design over">
+                    <label class="margin-left-10 s-lable font-15 text-center"><b><u>Please select
+                                employee(s)</u></b></label>
+                    <table class="margin-left-10">
+                        <tr>
+                            <th>
+                                <input type="checkbox" class="select-all" name="allStudents"
+                                    [checked]="employeeList.length == 0" [value]="employeeList"
+                                    (change)="selectAll($event)" [disabled]="employeeList.length == 0">
+                            </th>
+                            <th>
+                                <label class="s-lable">&nbsp;Employee Name</label>
+                            </th>
+                        </tr>
+                        <tr *ngIf="toggleLoader">
+                            <td colspan="2">
+                                <img src="./assets/images/loader-icon.gif" class="loader-margin img-responsive"
+                                    alt="loading....">
+                            </td>
+                        </tr>
+                        <tr *ngFor="let emp of employeeList | search : searchItem">
+                            <td>
+                                <input type="checkbox" class="status-check select-all" [checked]="emp.selected"
+                                    (change)="onClickCheckBox(emp.employeeId)" name="status">
+                            </td>
+                            <td>&nbsp;{{emp.firstName}} {{emp.lastName}}</td>
+                        </tr>
+                    </table>
+                </div> -->
+            </div>
+
+
+            <!-- </div> -->
+        </div>
+        <br>
+
+    </section>
+</div>

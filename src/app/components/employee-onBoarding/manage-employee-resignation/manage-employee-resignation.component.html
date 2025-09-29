@@ -1,0 +1,228 @@
+<div class="container-fluid">
+    <div class="d-flex align-items-center mt-2">
+        <div class="m-2">
+            <div class="h-size"><em class="fa fa-user"></em> <strong> Manage Employee Resignations</strong></div>
+        </div>
+        <div class="flex-fill">
+        </div>
+        <!-- <div class="m-3"><input class="form-control rounded-pill py-2 border-right-0 border" type="search"
+                placeholder="search" id="example-search-input" [(ngModel)]="searchModel" (ngModelChange)="search()">
+        </div> -->
+    </div>
+
+    <div class="row">
+        <div class="col-md-12">
+            <table class="table table-bordered table-hover table-sm">
+                <thead class="t-head">
+                    <tr>
+                        <th *ngFor="let head of headers"><a>{{head}}</a></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let data of empList">
+                        <td>{{data.empId}}</td>
+                        <td>{{data.fullName}}</td>
+                        <td>{{data.noticePeriod}} Days</td>
+                        <td>{{data.resignationDate | date:'dd-MM-yyyy'}}</td>
+                        <td>{{data.lastWorkingDate | date:'dd-MM-yyyy'}}</td>
+                        <td>{{data.reason}}</td>
+                        <td>{{data.status}}</td>
+                        <!-- <td>
+                            <a title="Edit" (click)="modelShowEdit(data)" class="icon-margin"><i
+                                    class="fas fa-user-edit"></i></a>
+                        </td> -->
+                        <td>
+                            <a title="Edit" *ngIf="(data.status == 'Rejoin' && !data.rejoinDate) || data.status == 'Active' || data.status == 'Accept'" (click)="modelShowEdit(data)"
+                                class="icon-margin"><i class="fas fa-user-edit"></i></a>
+                            <a title="Edit" *ngIf="(data.status == 'Rejoin' && data.rejoinDate) || data.status == 'Relieved'" class="disabled icon-margin"><i
+                                    class="fas fa-user-edit disabled"></i></a>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <!-- <div class="row" *ngIf="empList == 0">
+        <div class="col-12">
+            <button type="button" class="btn btn-primary btn-sm" (click)="modelShow()" data-toggle="modal"
+                data-target="#applyPopup">
+                <i class="fas fa-user-plus"></i> Apply Resignation
+            </button>
+        </div>
+    </div> -->
+</div>
+<div class="modal fade common-model" id="applyPopup">
+    <div class="modal-dialog modal-xl">
+        <div class="modal-content model">
+            <form [formGroup]="empForm" (ngSubmit)="submit()">
+                <!-- Modal Header -->
+                <div class="modal-header">
+                    <div class="modal-title" *ngIf="!isForViewAndSubmitDisabled"><i class="fas fa-plus"></i>/ <i
+                            class="fas fa-edit ml-1"></i> Manage Employee Resignation
+                    </div>
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                </div>
+                <!-- Modal body -->
+                <div class="modal-body">
+                    <div class="row col-12 padding-field-bottom">
+                        <div class="col-1">
+                            <label for="type">Employee Id <span class="color-red">*</span></label>
+                        </div>
+                        <div class="col-3">
+                            <input type="text" class="form-control" placeholder="Please Enter Employee Id"
+                                formControlName="employeeId">
+                            <span class="color-red" *ngIf="submitted && form_.employeeId.errors">Employee Id
+                                {{requiredErrorText}}</span>
+                        </div>
+                        <div class="col-1">
+                            <label>Employee Name <span class="color-red">*</span></label>
+                        </div>
+                        <div class="col-3">
+                            <input type="text" class="form-control" placeholder="Please Enter Employee Name"
+                                formControlName="employeeName">
+                        </div>
+                        <div class="col-1">
+                            <label>Reporting manager<span class="color-red">*</span></label>
+                        </div>
+                        <div class="col-3">
+                            <input type="text" class="form-control" placeholder="Please Enter Reporting manager"
+                                formControlName="reportingManager"
+                                [ngClass]="{ 'is-invalid': submitted && form_.reportingManager.errors }">
+                            <span class="color-red" *ngIf="submitted && form_.reportingManager.errors">Reporting manager
+                                {{requiredErrorText}}</span>
+                        </div>
+                    </div>
+                    <div class="row col-12 padding-field-bottom">
+                        <div class="col-1">
+                            <label>Department <span class="color-red">*</span></label>
+                        </div>
+                        <div class="col-3">
+                            <input type="text" [ngClass]="{ 'is-invalid': submitted && form_.department.errors }"
+                                class="form-control" placeholder="Please Enter Department" formControlName="department">
+                            <span class="color-red" *ngIf="submitted && form_.department.errors">Department
+                                {{requiredErrorText}}</span>
+                        </div>
+                        <div class="col-1">
+                            <label>Designation <span class="color-red">*</span></label>
+                        </div>
+                        <div class="col-3">
+                            <input type="text" [ngClass]="{ 'is-invalid': submitted && form_.designation.errors }"
+                                class="form-control" placeholder="Please Enter Designation"
+                                formControlName="designation">
+                            <span class="color-red" *ngIf="submitted && form_.designation.errors">Designation
+                                {{requiredErrorText}}</span>
+                        </div>
+                        <div class="col-1">
+                            <label>Project</label>
+                        </div>
+                        <div class="col-3">
+                            <input type="text" class="form-control" placeholder="Please Enter Project"
+                                formControlName="project">
+                        </div>
+                    </div>
+                    <div class="row col-12 padding-field-bottom">
+                        <div class="col-1">
+                            <label>Category<span class="color-red">*</span></label>
+                        </div>
+                        <div class="col-3">
+                            <input type="text" [ngClass]="{ 'is-invalid': submitted && form_.category.errors }"
+                                class="form-control" placeholder="Please Enter Category" formControlName="category">
+                            <span class="color-red" *ngIf="submitted && form_.category.errors">Category
+                                {{requiredErrorText}}</span>
+                        </div>
+                        <div class="col-1">
+                            <label>Cost Center<span class="color-red">*</span></label>
+                        </div>
+                        <div class="col-3">
+                            <input type="text" [ngClass]="{ 'is-invalid': submitted && form_.costCenter.errors }"
+                                class="form-control" placeholder="Please Enter Cost Center"
+                                formControlName="costCenter">
+                            <span class="color-red" *ngIf="submitted && form_.costCenter.errors">Cost Center
+                                {{requiredErrorText}}</span>
+                        </div>
+                        <div class="col-1">
+                            <label>Notice Period<span class="color-red">*</span></label>
+                        </div>
+                        <div class="col-3">
+                            <input type="text" [ngClass]="{ 'is-invalid': submitted && form_.noticePeriod.errors }"
+                                class="form-control" placeholder="Please Enter Notice Period"
+                                formControlName="noticePeriod">
+                            <span class="color-red"
+                                *ngIf="submitted && (form_.noticePeriod.errors || isNoticePeriodInvalid)">Notice Period
+                                {{requiredErrorText}}</span>
+                        </div>
+                    </div>
+                    <div class="row col-12 padding-field-bottom">
+                        <div class="col-1">
+                            <label>Resignation Date<span class="color-red">*</span></label>
+                        </div>
+                        <div class="col-3">
+                            <input type="text" formControlName="resignationDate" bsDatepicker
+                                placeholder="Please Select Date"
+                                [ngClass]="{ 'is-invalid': submitted && form_.resignationDate.errors }" readonly
+                                [minDate]="now" [bsConfig]="{ isAnimated: true, dateInputFormat: 'DD-MM-YYYY' }"
+                                bsDatepicker (bsValueChange)="onDateValueChange($event)" placement="bottom"
+                                class="text form-control pull-top-5 date-bg-color" maxlength="50" />
+                            <span class="color-red" *ngIf="submitted && form_.resignationDate.errors">Resignation Date
+                                {{requiredErrorText}}</span>
+                        </div>
+                        <div class="col-1">
+                            <label>Last Working Date<span class="color-red">*</span></label>
+                        </div>
+                        <div class="col-3">
+                            <input type="text" [ngClass]="{ 'is-invalid': submitted && form_.lastWorkingDate.errors }"
+                                class="form-control" placeholder="Please Enter Last Working Date"
+                                formControlName="lastWorkingDate">
+                            <span class="color-red" *ngIf="submitted && form_.lastWorkingDate.errors">Last Working Date
+                                {{requiredErrorText}}</span>
+                        </div>
+
+                        <div class="col-1">
+                            <label>Status<span class="color-red">*</span></label>
+                        </div>
+                        <div class="col-3">
+                            <!-- <input type="text" [ngClass]="{ 'is-invalid': submitted && form_.noticePeriod.errors }"
+                                class="form-control" placeholder="Please Enter Status"
+                                formControlName="status">
+                            <span class="color-red"
+                                *ngIf="submitted && (form_.noticePeriod.errors || isNoticePeriodInvalid)">Status
+                                {{requiredErrorText}}</span> -->
+
+                            <select id="status" 
+                                formControlName="status" class="form-control text">
+                                <option value="" selected disabled hidden>--Select--</option>
+                                <option *ngFor="let data of statusList" value={{data}}>{{data}}</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="row col-12 padding-field-bottom">
+                        <div class="col-1">
+                            <label>Reason<span class="color-red">*</span></label>
+                        </div>
+                        <div class="col-7">
+                            <textarea type="text" class="form-control" placeholder="Please Enter Serial No"
+                                formControlName="reason"
+                                [ngClass]="{ 'is-invalid': submitted && form_.reason.errors }"></textarea>
+                            <span class="color-red" *ngIf="submitted && form_.reason.errors">Reason
+                                {{requiredErrorText}}</span>
+                        </div>
+                    </div>
+                    <hr>
+                    <div class="row" *ngIf="!isForViewAndSubmitDisabled">
+                        <div class="col-md-6 pull-left">
+                            <button type="submit" id="btnComponentSave" [disabled]="submitProcessing"
+                                class="button btn-primary btn-style"><i class="fas fa-save"></i>
+                                {{submitText}} <i class="fa fa-spinner fa-spin" *ngIf="submitProcessing"
+                                    style="font-size:19px"></i></button>
+                        </div>
+                        <div class="col-md-6 pull-right" *ngIf="submitText == 'Apply'">
+                            <button type="button" id="btnComponentSave" (click)="clear()"
+                                class="button btn-warning btn-style" [disabled]="submitProcessing">
+                                Clear</button>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

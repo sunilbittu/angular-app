@@ -1,0 +1,382 @@
+<div class="container-fluid">
+    <h2 class="company-title"><i class="fas fa-user"></i><b> Employee Onboarding</b></h2>
+    <!-- Nav tabs -->
+    <ul class="nav nav-tabs menu-tabs" role="tablist">
+        <li class="nav-item">
+            <a class="nav-link active" data-toggle="tab" href="#personalInfo"><i class="fas fa-info"></i> Personal Details</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" data-toggle="tab" href="#documents"><i class="fas fa-file-invoice"></i> Document Upload</a>
+        </li>
+        <li class="nav-item" >
+            <a class="nav-link" data-toggle="tab" href="#otherInfo"><i class="fas fa-puzzle-piece"></i> Other Info</a>
+        </li>
+        
+    </ul>
+    <!-- <div class="alert alert-success success-alert" *ngIf="updateAlert">
+        <h4><i class="icon fa fa-check"></i> Success!</h4>
+        Record has been Updated successfully.
+    </div> -->
+    <!-- Tab panes --> 
+    <div class="tab-content">
+        <!-- Personal Info -->
+        <div id="personalInfo" class="container ml-10 tab-pane active">
+            <br>
+            <br>
+                <form [formGroup]="form" >
+                    <div class="row ">
+                        <div class="col-md-6 pb-0">
+                            <div class="form-section">
+                                
+                                <div >
+                                    <div class="row">
+                                        <div class="col-6 pb-0">
+                                            <label>First Name<span class="color-red">*</span><i class="req-field"></i></label>
+                                        </div>
+                                        <div class="col-6 pb-0">
+                                            <input type="text" class="form-control" formControlName="firstName">
+                                            <span class="color-red" *ngIf="submitted && form_.firstName.errors">First Name
+                                                {{requiredErrorText}}</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div >
+                                    <div class="row">
+                                        <div class="col-6 pb-0">
+                                            <label>Middle Name<i class="req-field"></i></label>
+                                        </div>
+                                        <div class="col-6 pb-0">
+                                            <input type="text" class="form-control" formControlName="middleName" maxlength="50">
+                                            
+                                        </div>
+                                    </div>
+                                </div>
+                                <div >
+                                    <div class="row">
+                                        <div class="col-6 pb-0">
+                                            <label>Last Name<span class="color-red">*</span><i class="req-field"></i></label>
+                                        </div>
+                                        <div class="col-6 pb-0">
+                                            <input type="text" class="form-control" formControlName="lastName">
+                                            <span class="color-red" *ngIf="submitted && form_.lastName.errors">Last Name
+                                                {{requiredErrorText}}</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div >
+                                    <div class="row">
+                                        <div class="col-6 pb-0">
+                                            <label>Gender<span class="color-red">*</span><i class="req-field"></i></label>
+                                        </div>
+                                        <div class="col-6 pb-0">
+                                            <select  class="form-control"  formControlName="gender">
+                                                <option value="" disabled>Please select gender</option>
+                                                <option value="MALE">MALE</option>
+                                                <option value="FEMALE">FEMALE</option>
+
+                                            </select>
+                                            <span class="color-red" *ngIf="submitted && form_.gender.errors">Gender
+                                                {{requiredErrorText}}</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div >
+                                    <div class="row">
+                                        <div class="col-6 pb-0">
+                                            <label>Father Name<span class="color-red">*</span></label>
+                                        </div>
+                                        <div class="col-6 pb-0">
+                                            <input type="text" class="form-control" formControlName="fatherName">
+                                            <span class="color-red" *ngIf="submitted && form_.fatherName.errors">Father Name
+                                                {{requiredErrorText}}</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div >
+                                    <div class="row">
+                                        <div class="col-6 pb-0">
+                                            <label>Mother Name</label>
+                                        </div>
+                                        <div class="col-6 pb-0">
+                                            <input type="text" class="form-control" formControlName="motherName">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div >
+                                    <div class="row">
+                                        <div class="col-6 pb-0">
+                                            <label>Tax No <span class="color-red">*</span><i class="req-field"></i></label>
+                                        </div>
+                                        <div class="col-6 pb-0">
+                                            <input type="text" class="form-control" formControlName="panNo" maxlength="50">
+                                            <span class="color-red" *ngIf="submitted && form_.panNo.errors">Tax No
+                                                {{requiredErrorText}}</span>
+                                        </div>
+                                    </div>
+                                </div>
+    
+                                <div >
+                                    <div class="row">
+                                        <div class="col-6 pb-0">
+                                            <label>Adhaar No<span class="color-red">*</span></label>
+                                        </div>
+                                        <div class="col-6 pb-0">
+                                            <input type="number" class="form-control" formControlName="adhaarNo" maxlength="50">
+                                            <span class="color-red" *ngIf="submitted && form_.adhaarNo.errors">Adhaar No
+                                                {{requiredErrorText}}</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div >
+                                    <div class="row">
+                                        <div class="col-6 pb-0">
+                                            <label>Voter Id</label>
+                                        </div>
+                                        <div class="col-6 pb-0">
+                                            <input type="text" class="form-control" formControlName="voterId" maxlength="50">
+                                        </div>
+                                    </div>
+                                </div>
+    
+                            </div>
+                        </div>
+                        
+                        <div class="col-6 ">
+
+                                    
+                            <div >
+                                <div class="row">
+                                    <div class="col-6 pb-0">
+                                        <label>Date Of Birth<span class="color-red">*</span><i class="req-field"></i></label>
+                                    </div>
+                                    <div class="col-6 pb-0">
+                                        <!-- <input type="date" class="form-control" formControlName="dob"> -->
+                                        <input type="text"  bsDatepicker placeholder="Please Select Date" formControlName="dob" readonly [bsConfig]="{ isAnimated: true, dateInputFormat: 'DD-MM-YYYY' }" bsDatepicker
+                                        (bsValueChange)="onDobChange($event)" placement="bottom" class="text form-control pull-top-5" maxlength="50" />
+                                        <span class="color-red" *ngIf="submitted && !isDateOfBirthEntered">Date Of Birth
+                                            {{requiredErrorText}}</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div >
+                                <div class="row">
+                                    <div class="col-6 pb-0">
+                                        <label>Date Of Joining<span class="color-red">*</span><i class="req-field"></i></label>
+                                    </div>
+                                    <div class="col-6 pb-0">
+                                        <!-- <input type="date" class="form-control" formControlName="dateOfJoining" > -->
+                                        <input type="text"  bsDatepicker placeholder="Please Select Date" formControlName="doj" readonly [bsConfig]="{ isAnimated: true, dateInputFormat: 'DD-MM-YYYY' }" bsDatepicker
+                                       (bsValueChange)="onDojChange($event)" placement="bottom" class="text form-control pull-top-5" maxlength="50" />
+                                       <span class="color-red" *ngIf="submitted && !isDateOfJoiningEntered">Date Of Joining
+                                        {{requiredErrorText}}</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div >
+                                <div class="row">
+                                    <div class="col-6 pb-0">
+                                        <label>Digital Signature <span class="color-red">*</span></label>
+                                    </div>
+                                    <div class="col-6 pb-0">
+                                        <!-- <input type="file" class="form-control" (change)="onFileChanged($event)" > -->
+                                        <label for="upload-photo" class="label-file" style="width:255px">
+                                            <span class="file-btn">Choose file</span>
+                                            <span class="ml-10">{{selectedDocument2 | slice :0:18}} </span>
+                                        </label>
+                                         <input type="file" id="upload-photo" (change)="onFileChanged($event)" name="docuentPhoto"/>
+                                         <span class="color-red" *ngIf="submitted && !isFileSelected">Digital Signature
+                                            {{requiredErrorText}}</span>
+                                     
+                                    </div>
+                                </div>
+                            </div>
+                            <div >
+                                <div class="row">
+                                    <div class="col-6 pb-0">
+                                        <label>Mobile No<span class="color-red">*</span><i class="req-field"></i></label>
+                                    </div>
+                                    <div class="col-6 pb-0">
+                                        <input type="text" class="form-control" formControlName="mobileNo" maxlength="50">
+                                        <span class="color-red" *ngIf="submitted && form_.mobileNo.errors">Mobile No
+                                            {{requiredErrorText}}</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div >
+                                <div class="row">
+                                    <div class="col-6 pb-0">
+                                        <label>Email<span class="color-red">*</span><i class="req-field"></i></label>
+                                    </div>
+                                    <div class="col-6 pb-0">
+                                        <input type="text" class="form-control" formControlName="email" maxlength="50">
+                                        <span class="color-red" *ngIf="submitted && form_.email.errors">Email
+                                            {{requiredErrorText}}</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div >
+                                <div class="row">
+                                    <div class="col-6 pb-0">
+                                        <label>Alternative Email</label>
+                                    </div>
+                                    <div class="col-6 pb-0">
+                                        <input type="text" class="form-control" formControlName="alternativeEmail" maxlength="50">
+                                    </div>
+                                </div>
+                            </div>
+                            <div >
+                                <div class="row">
+                                    <div class="col-6 pb-0">
+                                        <label> Current Address <span class="color-red">*</span></label>
+                                    </div>
+                                    <div class="col-6 pb-0">
+                                        <textarea formControlName="currentAddress" class="form-control"></textarea>
+                                        <span class="color-red" *ngIf="submitted && form_.currentAddress.errors">Current Address
+                                            {{requiredErrorText}}</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div >
+                                <div class="row">
+                                    <div class="col-6 pb-0">
+                                        <label> Parmanent Address <span class="color-red">*</span></label>
+                                    </div>
+                                    <div class="col-6 pb-0 txml">
+                                        <textarea formControlName="parmanentAddress" class="form-control"></textarea>
+                                        <span class="color-red" *ngIf="submitted && form_.parmanentAddress.errors">Parmanent Address
+                                            {{requiredErrorText}}</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                    <div class="row">
+                        
+                    <div class="col-12 pb-0">
+                        <div class="btn-middle">
+                            <button type="submit" class="btn btn-primary" *ngIf="togglebtn" (click)="saveOnBoardingEmployee()">Save</button>
+                            <button type="submit" class="btn btn-primary" *ngIf="!togglebtn" (click)="updateOnBoardingEmployee()">Update</button>
+
+                        </div>
+                    </div>
+                    </div>
+                </form>
+        </div>
+        <!-- documents -->
+
+        <div id="documents" class="container-fluid tab-pane fade"><br>
+            <h2 class="company-title"><i class="fas fa-file"></i> Add Documents</h2>
+
+               
+                <div>
+                    <form>
+
+                        <table class="table table-bordered table-hover table-sm " style="width: 100%;">
+                            <thead class="t-head">
+                                <tr>
+                                    <th>Document Type</th>
+                                    <th>Document Name</th>
+                                    <th>Select File</th>
+                                    <th>Action</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                     <tr>
+                                         <td>
+                                            <select  class="form-control"  class="custom-select-box selct-doc" [(ngModel)]="docuentTypeModel"  name="documentType" (change)="onChangeDocType()">
+                                                <option value="">Please select Document type</option>
+                                                <option  *ngFor="let type of documentTypes" value={{type.documentTypeId}}>{{type.documentTypeName}}</option>
+
+                                            </select>
+                                         </td>
+                                         <td>
+                                            <select  class="form-control"  class="custom-select-box selct-doc" [(ngModel)]="docuentNameModel" name="documentname">
+                                                <option value="">Please select Document Name</option>
+                                                <option *ngFor="let data of documentNames" value={{data.documentId}} >{{data.documentName}}</option>
+                                            </select>
+                                         </td>
+                                         <td >
+                                             <label for="upload-file" class="label-file">
+                                                <span class="file-btn">Choose file</span>
+                                                <span class="ml-10">{{selectedDocument1 | slice :0:40}} </span>
+                                            </label>
+                                             <input type="file"  id="upload-file" (change)="uploadFileDocuments($event)" name="docuentFile"/>
+                                         </td>
+                                         <td>
+                                             <button class="btn btn-warning btn-sm" (click)="uploadDocumnet()">Upload</button>
+                                             <!-- <button class="btn btn-warning btn-sm" (click)="cancel()">cancel</button> -->
+
+                                         </td>
+
+                                     </tr>
+                                </tbody> 
+            
+                        </table>
+    
+                    </form>
+                </div>
+              
+              
+        <div class="list-table">
+            <h2 class="company-title"><i class="fas fa-list"></i> List of Documents</h2>
+            <table class="table table-bordered table-hover table-sm">
+                <thead class="t-head">
+                    <tr>
+                        <th>Sr No</th>
+                        <th>Document Type</th>
+                        <th>Document Name</th>
+                        <th>File</th>
+                        <th>Action</th>
+                    </tr>
+                    </thead>
+                    <tbody>  
+                        <tr *ngFor="let data of documentsList;let i=index">
+                            <td>{{i+1}}</td>
+                            <td>{{data.documentTypeName}}</td>
+                            <td>{{data.documentName}}</td>
+                            <td><a (click)="downloadFile(data.filePath)">{{data.fileName}}</a></td>
+                            <td>
+                                <!-- <a  title="View" class="icon-margin"><span class="fas fa-eye"></span></a> -->
+                                <a title="Edit" class="icon-margin" (click)="editDocuments(data)" ><i class="fas fa-user-edit"></i></a>
+                                <a title="Delete" class="icon-margin" data-toggle="modal" data-target="#confirmDelete" (click)="deleteItem(data.onBoardingEmployeeDocumentId)"><span class="fas fa-trash-alt"></span></a>
+                             </td>
+                        </tr>
+                    </tbody> 
+
+            </table> 
+        </div>
+        </div>
+        <!-- other info -->
+        <div id="otherInfo" class="container tab-pane fade"><br>
+            <div class="form-group">
+                <label>Other info:</label>
+                <textarea class="form-control" style="width:40%" [(ngModel)]="otherInfoModel" name="otherinfo"></textarea>
+            </div>
+            <br>
+            <div class="form-group">
+               <input type="checkbox" style="width: 32px;height: 20px;" [(ngModel)]="termsModel">
+               <span>"I hearby declare that all the information furnishied is true to the best of my belief." "I hearby declare that the perticulars of facts and information stated are true , correct and complete to the best of my belief and knoledge." </span>
+            </div>
+            <br>
+            <button class="btn btn-success" (click)="submitOnboarding()">Submit</button>
+        </div>
+    </div>
+</div>
+
+
+<div class="modal fade" id="confirmDelete" role="dialog" style="margin-top: 80px;">
+    <div class="modal-dialog">
+    
+      <!-- Modal content-->
+      <div class="modal-content">
+        <div class="modal-body"><button type="button" class="close" data-dismiss="modal">&times;</button>
+          <p>Are you sure you want to delete selected items?</p>
+        </div>
+        <div class="modal-footer" style="justify-content: flex-end;">
+          <button type="button" class="btn btn-default btn-sm" data-dismiss="modal">Close</button>
+          <button type="button" data-dismiss="modal" class="btn btn-primary btn-sm"  (click)="deleteDocument()" >Ok</button>
+        </div>
+      </div>
+    </div>
+</div>

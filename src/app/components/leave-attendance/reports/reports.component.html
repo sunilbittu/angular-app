@@ -1,0 +1,185 @@
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-md-2 reports-box">
+            <h2 class="head-margin">Leave Reports</h2>
+            <label class="control-label select-year">Select Year:
+                <select class="form-control" name="leaveYear" [(ngModel)]="selectedYear">
+                    <option value="" disabled>Select Year</option>
+                    <option *ngFor="let data of years" [value]="data.leaveYear">{{data.leaveYear}}</option>
+                </select>
+                <span class="color-red" *ngIf="!selectedYear && showError">Please select Year</span>
+            </label>
+            <ul>
+                <li (click)="onClick('Monthly')"><i class="fa fa-file-pdf-o"></i> Monthly Leave Summary</li>
+                <!--<li data-toggle="modal" data-target="#myModal" (click)="onClick('yearly-leaves')"><i
+                        class="fa fa-file-pdf-o"></i> Yearly Leave Balance</li> -->
+                <li (click)="onClick('Yearly')"><i class="fa fa-file-pdf-o"></i> Yearly Leave Summary
+                </li>
+            </ul>
+            <!-- <button class="btn btn-outline-secondary"><i class="fas fa-file-excel"></i> Export To Excel</button> -->
+        </div>
+
+        <div class="col-md-10" *ngIf="type === 'Monthly'">
+            <div>Company : <b>{{companyName}}</b></div>
+            <div>Monthly Leave Summary Report for the Year : <b>{{selectedYear}}</b></div>
+            <div class="row col-12 padding-field-bottom">
+                <div class="col-6">
+                    <ng-multiselect-dropdown [placeholder]="'Please Select Month'" [settings]="dropdownSettings"
+                        [data]="months" [(ngModel)]="selectedItems" [ngModelOptions]="{standalone: true}"
+                        (onSelect)="onItemSelect($event)" (onSelectAll)="onSelectAll($event)"
+                        (onDeSelectAll)="onDeSelectAll($event)" (onDeSelect)="onItemDeSelect($event)">
+                    </ng-multiselect-dropdown>
+                    <span class="color-red" *ngIf="showErrorForEmp && selectedItems.length == 0">Please Select
+                        Month(s)</span>
+                </div>
+                <div class="col-3">
+                    <button title="Select Employees" (click)="selectEmployee()"
+                        class="button btn-primary btn-style">Select
+                        Employees</button>
+                </div>
+            </div>
+            <table class="table table-bordered table-hover table-sm">
+                <thead class="t-head">
+                    <tr>
+                        <th>Employee Code</th>
+                        <th>Employee Name</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngIf="toggleLoader">
+                        <td [attr.colspan]="3">
+                            <img src="./assets/images/loader-icon.gif" class="loader-margin img-responsive"
+                                alt="loading....">
+                        </td>
+                    </tr>
+                    <tr class="align-center" *ngIf="epmloyeeList.length==0 && !toggleLoader">
+                        <td [attr.colspan]="3">No Records Found</td>
+                    </tr>
+                    <tr *ngFor="let employee of epmloyeeList">
+                        <td>{{employee.employeeCode}}</td>
+                        <td>{{employee.firstName}} {{employee.lastName}}</td>
+                        <td>
+                            <button title="Click here to View Leave Summary" class="icon-margin"
+                                (click)="viewLeaveSummary(employee.employeeId, employee.firstName, employee.lastName, employee.employeeCode)">View
+                                Leave Summary</button>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div class="col-md-10 scroll-tab" *ngIf="type === 'Yearly'">
+            <div>Company : <b>{{companyName}}</b></div>
+            <div>Yearly Leave Summary Report for the Year : <b>{{selectedYear}}</b></div>
+            <table class="table table-bordered table-hover table-sm">
+                <thead class="t-head">
+                    <tr>
+                        <th>Employee Code</th>
+                        <th>Employee Name</th>
+                        <ng-container *ngFor="let head of LeaveTypesObject">
+                            <th>{{head.leaveTypeCode}} Opening</th>
+                            <th>{{head.leaveTypeCode}} Used / Expired</th>
+                            <th>{{head.leaveTypeCode}} Balance</th>
+                        </ng-container>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngIf="toggleLoader">
+                        <td [attr.colspan]="spanLength">
+                            <img src="./assets/images/loader-icon.gif" class="loader-margin img-responsive"
+                                alt="loading....">
+                        </td>
+                    </tr>
+                    <tr class="align-center" *ngIf="epmloyeeList.length==0 && !toggleLoader">
+                        <td [attr.colspan]="spanLength">No Records Found</td>
+                    </tr>
+                    <tr *ngFor="let employee of epmloyeeList">
+                        <td>{{employee.employeeCode}}</td>
+                        <td>{{employee.firstName}} {{employee.lastName}}</td>
+                        <ng-container *ngFor="let leaveTypeInfo of employee.leaveTypeInfoObj">
+                            <td>{{leaveTypeInfo.currentBal}}</td>
+                            <td>{{leaveTypeInfo.openingBal}}</td>
+                            <td>{{leaveTypeInfo.currentBal - leaveTypeInfo.openingBal}}</td>
+                        </ng-container>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+<div class="modal fade common-model" id="myModal">
+    <app-common-employee-filter (filterObj)="filterObj($event)"></app-common-employee-filter>
+</div>
+<div class="modal fade common-model" id="monthly-report-emp-summary">
+    <div class="modal-dialog modal-xl">
+        <div class="modal-content model">
+            <!-- Modal Header -->
+            <div class="modal-header">
+                <div class="modal-title"><i class="fa fa-eye"></i> View Employee Monthly Leave Sumamry
+                </div>
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+            </div>
+            <!-- Modal body -->
+            <div class="modal-body">
+
+                <div class="d-flex align-items-center mt-2">
+                    <div class="col-md-10">
+                        <div>Company : <strong>{{companyName}}</strong></div>
+                        <div>Employee Code : <strong>{{employeeCode}}</strong>, &nbsp;&nbsp;&nbsp; Employee Name :
+                            <strong>{{employeeName}}</strong>
+                        </div>
+                        <div>Monthly Leave Summary Report for the Year : <strong>{{selectedYear}}</strong></div>
+                        <div>Monthly Leave Summary Report for the Month(s) : <strong>{{monthsSelected}}</strong></div>
+                    </div>
+                    <div class="col-md-2">
+                        <button type="button" class="btn btn-labeled btn-outline-danger btn-sm"
+                            (click)="exportTable('PDF')">
+                            <span class="btn-label"><i class="fa fa-file-pdf-o" aria-hidden="true"></i></span>Export To
+                            PDF</button>
+                    </div>
+                    <!-- <div class="col-md-2">
+                        <button type="button" class="btn btn-labeled btn-outline-success btn-sm"
+                            (click)="exportTable('EXCEL')">
+                            <span class="btn-label"><i class="fa fa-file-excel-o" aria-hidden="true"></i></span>Export
+                            To
+                            Excel</button>
+                    </div> -->
+                </div>
+                <div class="scroll-tab">
+                    <table class="table table-bordered table-hover table-sm">
+                        <thead class="t-head">
+                            <tr>
+                                <th>Month</th>
+                                <ng-container *ngFor="let head of LeaveTypesObject">
+                                    <th>{{head.leaveTypeCode}} Opening</th>
+                                    <th>{{head.leaveTypeCode}} Used / Expired</th>
+                                    <th>{{head.leaveTypeCode}} Balance</th>
+                                </ng-container>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr *ngIf="toggleLoader">
+                                <td [attr.colspan]="spanLength">
+                                    <img src="./assets/images/loader-icon.gif" class="loader-margin img-responsive"
+                                        alt="loading....">
+                                </td>
+                            </tr>
+                            <tr class="align-center" *ngIf="results.length==0 && !toggleLoader">
+                                <td [attr.colspan]="spanLength">No Records Found</td>
+                            </tr>
+                            <tr *ngFor="let data of results">
+                                <td>{{data.month}}</td>
+                                <ng-container *ngFor="let leaveTypeInfo of data.balanceDTOs">
+                                    <td>{{leaveTypeInfo.openingBal}}</td>
+                                    <td>{{leaveTypeInfo.taken}}</td>
+                                    <td>{{leaveTypeInfo.currentBal}}</td>
+                                </ng-container>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

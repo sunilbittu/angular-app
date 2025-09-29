@@ -1,0 +1,146 @@
+<div class="container-fluid">
+    <div class="d-flex align-items-center mt-2">
+        <div class="m-2">
+            <div class="h-size"><i class="fa fa-user"></i> <b> Assets</b></div>
+        </div>
+    </div>
+    <div class="d-flex align-items-center mt-2">
+        <div class="m-2">
+            <i class="fa fa-search"></i>
+            <span> Search </span><input type="text" value="">
+        </div>
+        <div class="flex-fill">
+        </div>
+        <div class="m-2">
+            <button id="btn_add" type="button" class="btn-primary button" (click)="asset_master()"><i class="fas fa-user-plus"></i>Asset
+                Master</button>
+            <button id="btn_add" type="button" class="btn-primary button" (click)="asset_issues()"><i class="fas fa-user-edit"></i>Asset
+                Issue</button>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-12">
+            <table class="table table-bordered table-hover table-sm">
+                <thead class="t-head">
+                    <tr>
+                        <th *ngFor="let head of headers"><a>{{head}}</a></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let employee of employees">
+                        <td>{{employee.empCode}}</td>
+                        <td>{{employee.name | titlecase}}</td>
+                        <td>{{employee.assetName | titlecase}}</td>
+                        <td>{{employee.assetCode}}</td>
+                        <td>{{employee.serialNo}}</td>
+                        <td>{{employee.issueDt}}</td>
+                        <td>{{employee.dueDt}}</td>
+                        <td>{{employee.recievedDt}}</td>
+                        <td>{{employee.remarks}}</td>
+                        <td>
+                            <!-- <a title="View" class="icon-margin"><span class="fas fa-eye"></span></a>
+                            <a title="Edit" class="icon-margin"><i class="fas fa-user-edit"></i></a> -->
+                            <!-- <i class="fa fa-exchange" aria-hidden="true"></i> -->
+                            
+                            <a title="Asset Movement" class="icon-margin"  type="button" data-toggle="modal" href="#mod_add_edit_AssetMovement_details"><i class="fas fa-exchange-alt"></i></a>
+                        </td>
+                    </tr>
+                </tbody>
+
+            </table>
+        </div>
+    </div>
+    <div class="d-flex align-items-center mt-2">
+        <div class="m-2">
+            <button id="btn_add" type="button" class="btn-primary button" (click)="asset_import()"><i class="fas fa-user-plus"></i>Asset Issue Import</button>
+            <!-- <button id="btn_add" type="button" data-toggle="modal" data-target="#mod_add_edit_AssetMovement_details" class="btn-primary button">Asset Movement</button> -->
+        </div>
+        <div class="flex-fill">
+        </div>
+        <div class="m-2">
+            <button id="btn_add" type="button" class="btn-primary button"><i class="fa fa-download"
+                    aria-hidden="true"></i>Export To Excel</button>
+        </div>
+    </div>
+
+
+
+
+
+    <div class="modal fade in" role="document" id="mod_add_edit_AssetMovement_details" data-keyboard="false" data-backdrop="static">
+        <div class="modal-dialog " data-hidden="true" style="width: 35%; padding-top: 3%;">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <div class="modal-title"><i class="fas fa-plus"></i>/ <i class="fas fa-edit ml-1"></i>Asset</div>
+                    <!-- <button type="button" data-dismiss="modal" class="close" data-target="#mod_add_edit_AssetMovement_details">&times;</button> -->
+                </div>
+                <div class="modal-body">
+                    <form [formGroup]="assetmovement">
+                    <div class="row">
+                        <div class="col-6">
+                            <div class="form-field">
+                                <label>Asset</label>
+                                <select   class="form-control" formControlName="asset_title">
+                                    <option value="001">LP-001</option>
+                                    <option value="002">LP-002</option>
+                                   
+                                </select>
+
+                                
+                            </div>
+                            <div class="form-field">
+                                <label for="txt_Movementissue_date">Issue Date</label>
+                                <!-- <input type="text" bsDatepicker maxlength="10"  readonly="readonly" /> -->
+                                <input type="text"   class="form-control"  formControlName="issue_date" bsDatepicker placeholder="Issue Date" readonly placement="bottom"  id="dateOfBirth1" maxlength="50" />
+                            </div>
+                            <div class="form-field">
+                                <label for="txt_Movementdue_date">Due Date</label>
+                                <input type="text"  class="form-control"  formControlName="due_date" maxlength="10" readonly="readonly" />
+                            </div>
+                            <div class="form-field">
+                                <label for="txt_Movementreturn_date">Return Date</label>
+                                <input type="text"   class="form-control" formControlName="return_date" id="txt_Movementreturn_date" maxlength="10" readonly="readonly" />
+                            </div>
+                            <div class="form-field">
+                                <label for="txt_Movementremarks">Remarks</label>
+                                <textarea   class="form-control"  formControlName="remarks" id="txt_Movementremarks"></textarea>
+                            </div>
+                        </div>
+                        <div class="col-6" style="margin-top:72px">
+                            <div class="form-field">
+                                <label for="ddl_employee">Transfer To</label>
+                                <select id="ddl_employee" formControlName="empcode"  class="form-control">
+                                <option value="">Select Employee</option>
+                               <option value="001">LE0006</option>
+                               <option value="002">LE0007</option>
+                            </select>
+                            </div>
+                            <div class="form-field">
+                                <label for="txt_Transferissue_date">Issue Date</label>
+                                <input type="text" class="form-control" formControlName="tranfer_issuedate" maxlength="10" readonly="readonly" />
+                            </div>
+                            <div class="form-field">
+                                <label for="txt_Transferdue_date">Due Date</label>
+                                <input type="text" class="form-control"   formControlName="transfer_duedate" id="txt_Transferdue_date" maxlength="10" readonly="readonly" />
+                            </div>
+                            <div class="form-field">
+                                <label for="txt_Transferremarks">Remarks</label>
+                                <textarea  class="form-control" formControlName="transfer_remarks" id="txt_Transferremarks"></textarea>
+                            </div>
+                        </div>
+
+                    </div>
+                    </form>
+                    <br>
+                    <div class="row">
+                        <div class="col-9 left-content">
+                            <button type="button" id="btnMovementUpdate" class="btn btn-primary btn-sm" (click)="assets_assign();"><i class="fas fa-save"></i>Update</button>&nbsp;
+                           
+							<button type="button" id="btnMovementcancel" class="btn btn-warning btn-sm" data-dismiss="modal" data-target="#mod_add_edit_AssetMovement_details"><i class="fas fa-times"></i>Cancel</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

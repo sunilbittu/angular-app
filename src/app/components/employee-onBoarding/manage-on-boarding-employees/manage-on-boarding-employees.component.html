@@ -1,0 +1,79 @@
+<div class="container-fluid">
+    <div class="d-flex align-items-center mt-2">
+        <div class="m-2">
+            <div class="h-size"><i class="fa fa-user"></i> <b> Manage Onboarding Emploees</b></div>
+        </div>
+        <div class="flex-fill">
+        </div>
+        <div class="m-3">
+            <!-- <input type="text" placeholder="&#61442; Search" class="form-control" name="search"> -->
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-12">
+            <table class="table table-bordered table-hover table-sm">
+                <thead class="t-head">
+                    <tr>
+                        <th>S No.</th>
+                        <th>Name</th>
+                        <th>Email</th>
+                        <th>Date of Joining</th>
+                        <th>Mobile Number</th>
+                        <th>Tax No</th>
+                        <th>Documents</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let data of employeesList; let i=index">
+                        <td class="action-width align-center">{{i + 1}}</td>
+                        <td>{{data.firstName}} {{data.lastName}}</td>
+                        <td>{{data.email}}</td>
+                        <td>{{data.doj}}</td>
+                        <td>{{data.mobileNo}}</td>
+                        <td>{{data.panNo}}</td>
+                        <td><a (click)="getDocuments(data.firstName,data.onBoardingEmployeeId)">Click</a></td>
+                        <td style="width: 260px;">
+                            <button id="btn_add" type="button" (click)="intakeEmployee(data)"
+                                class="btn-primary button" *ngIf="!data.employeeOnBoarded">
+                                Intake Onboarding Employee <i class="fas fa-long-arrow-alt-right"></i></button>
+                            <button *ngIf="data.employeeOnBoarded" id="btn_add" type="button" class="btn-primary button"
+                                [disabled]="data.employeeOnBoarded" title="Employee already on boarded"
+                                data-toggle="tooltip" data-placement="top">
+                                Intake Onboarding Employee <i class="fas fa-long-arrow-alt-right"></i></button>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <br>
+    <div class="list-table" *ngIf="togglrList">
+
+        <h2 class="company-title"><i class="fas fa-list"></i> Documents of {{fName}} </h2>
+
+        <table class="table table-bordered table-hover table-sm">
+            <thead class="t-head">
+                <tr>
+                    <th>Sr No</th>
+                    <th>Document Type</th>
+                    <th>Document Name</th>
+                    <th>File</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let data of documentsList;let i=index">
+                    <td>{{i+1}}</td>
+                    <td>{{data.documentTypeName}}</td>
+                    <td>{{data.documentName}}</td>
+                    <td><a (click)="downloadFile(data.filePath)">{{data.fileName}}</a></td>
+
+                </tr>
+            </tbody>
+
+        </table>
+        <br>
+        <button class="btn btn-danger btn-sm" style="margin-left: 95%;" (click)="close()">close</button>
+
+    </div>
+</div>

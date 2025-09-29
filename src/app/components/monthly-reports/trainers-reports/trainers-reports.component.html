@@ -1,0 +1,37 @@
+<div class="container-fluid">
+    <div class="d-flex align-items-center mt-2">
+        <div class="col-md-8">
+            <div class="h-size"><em class="fa fa-user"></em> <strong>Trainers Report</strong></div>
+        </div>
+        <div class="col-md-2">
+            <button type="button" class="btn btn-labeled btn-outline-danger btn-sm" (click)="exportTable('PDF')">
+                <span class="btn-label"><i class="fa fa-file-pdf-o" aria-hidden="true"></i></span>Export To PDF</button>
+        </div>
+        <div class="col-md-2">
+            <button type="button" class="btn btn-labeled btn-outline-success btn-sm" (click)="exportTable('EXCEL')">
+                <span class="btn-label"><i class="fa fa-file-excel-o" aria-hidden="true"></i></span>Export To
+                Excel</button>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-12">
+            <table class="table table-bordered table-hover table-sm">
+                <thead class="t-head">
+                    <tr>
+                        <th *ngFor="let head of headers"><a>{{head}}</a></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let data of trainersList">
+                        <td>{{data.trainerName}}</td>
+                        <td>{{data.technology}}</td>
+                        <td>{{data.contactNumber}}</td>
+                        <td>{{data.email}}</td>
+                        <td>{{data.companyName}}</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>

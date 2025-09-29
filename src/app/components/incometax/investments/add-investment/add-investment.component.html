@@ -1,0 +1,237 @@
+<div class="form-group">
+    <label>Investment Year</label>
+    <select class="form-control" [(ngModel)]="yearModel" style="width: 30%;" name="year"
+        (change)="getTdsInvestmentList()">
+        <option value="">Please Select Year</option>
+        <option *ngFor="let year of investmentYear" value={{year.financialYearId}}>{{year.financialYear}}</option>
+    </select>
+    <span span class="color-red" *ngIf="submitted && yearModel == ''">Investment Year can't be blank.</span>
+</div>
+
+<div class="row">
+    <div class="col-md-4">
+        <input type="text" class="form-control search-ip" />
+        <span span class="color-red" *ngIf="submitted && InvestmentType == ''">Investment Type can't be blank.</span>
+        <ul class="type-list">
+            <li> <b>Investment Type</b></li>
+            <li *ngFor="let data of invtypes">
+                <input type="radio" id={{data.id}} name="sections" (click)="Investmentclick($event,data.type)"
+                    [value]='false'>
+                <label for={{data.id}}>{{data.type}}</label>
+            </li>
+            <!-- <li>
+                <input type="radio" id="80ccc" name="sections" [(ngModel)]="Section80ccc">
+                <label for="80ccc">Section 80CCC</label>
+            </li>
+            <li>
+                <input type="radio" id="80ccd" name="sections" [(ngModel)]="Section80ccd">
+                <label for="80ccd">Section 80CCD</label>
+            </li>
+            <li>
+                <input type="radio" id="other" name="sections" [(ngModel)]="otherSection">
+                <label for="other">Other Section</label>
+            </li>
+            <li>
+                <input type="radio" id="rent" name="sections" [(ngModel)]="houseRent">
+                <label for="rent">House Rent Allowences</label>
+            </li>
+            <li>
+                <input type="radio" id="dib" name="sections" [(ngModel)]="dibModel">
+                <label for="dib">Deduction of Interest on borrowing</label>
+            </li>
+            <li>
+                <input type="radio" id="travel" name="sections" [(ngModel)]="travelModel">
+                <label for="travel">Leave Travel concessions </label>
+            </li> -->
+        </ul>
+    </div>
+
+    <div class="col-md-4" *ngIf="toggleSection">
+
+        <div class="form-group">
+            <label>Investment Name</label>
+            <input type="text" class="form-control" [(ngModel)]="invNameModel">
+            <span span class="color-red" *ngIf="submitted && invNameModel == ''">Investment Name can't be blank.</span>
+        </div>
+
+        <div class="form-group">
+            <label>Investment Date</label>
+            <input type="text" bsDatepicker placeholder="Please Select Date" readonly [(ngModel)]="tdsDateModal"
+                [bsConfig]="{ isAnimated: true, dateInputFormat: 'DD-MM-YYYY' }" bsDatepicker
+                (bsValueChange)="onTdsDateValueChange($event)" placement="bottom" class="text form-control pull-top-5"
+                maxlength="50" />
+            <span span class="color-red" *ngIf="submitted && tdsDateModal == ''">Investment Date can't be blank.</span>
+        </div>
+        <div class="row">
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label>Declared</label>
+                    <input type="text" class="form-control" [(ngModel)]="invDeclareModel">
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label>Made</label>
+                    <input type="text" class="form-control" [(ngModel)]="invMadeModel">
+                </div>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label>Evidence/Proof</label>
+            <input type="file" class="form-control" (change)="onFileChanged($event)" [(ngModel)]="evidanceModel">
+            <span span class="color-red" *ngIf="submitted && evidanceModel == ''">Please select Evidence/Proof.</span>
+        </div>
+        <div class="form-group">
+            <label>Remarks</label>
+            <textarea class="form-control" [(ngModel)]="invremarksModel"></textarea>
+        </div>
+        <div>
+            <button class="btn btn-secondary btn-sm" (click)="saveInvestmentSection()">Save</button>
+            <button class="btn btn-secondary btn-sm" (click)="cancel()">cancel</button>
+
+        </div>
+    </div>
+
+    <div class="col-md-4" *ngIf="togglrRent">
+
+        <!-- <div class="form-group" >
+            <label>Investment Year</label>
+            <select class="form-control" [(ngModel)]="yearModel">
+                <option value="">Please Select Year</option>
+                <option *ngFor="let year of investmentYear" value={{year.financialYearId}} > {{year.financialYear}}</option>
+            </select>
+        </div>
+         -->
+        <div class="form-group">
+            <label>Landlord Name</label>
+            <input type="text" class="form-control" [(ngModel)]="LandlordNameModel">
+        </div>
+        <div class="form-group">
+            <label>Landlord Tax No.</label>
+            <input type="text" class="form-control" [(ngModel)]="LandlordPanModel">
+        </div>
+        <div class="row">
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label>Declared</label>
+                    <input type="number" class="form-control" [(ngModel)]="LandlordDeclaredModel">
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label>Made</label>
+                    <input type="number" class="form-control" [(ngModel)]="LandlordMadeModel">
+                </div>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label>Evidence/Proof</label>
+            <input type="file" class="form-control" (change)="onFileChanged($event)" [(ngModel)]="evidanceModel">
+        </div>
+        <div class="form-group">
+            <label>Address of the landlord</label>
+            <textarea class="form-control" [(ngModel)]="landAddressModel"></textarea>
+        </div>
+
+        <div>
+            <button class="btn btn-secondary btn-sm" (click)="saveRentSection()">Save</button>
+            <button class="btn btn-secondary btn-sm">cancel</button>
+
+        </div>
+    </div>
+
+    <div class="col-md-4" *ngIf="togglrDib">
+
+        <!-- <div class="form-group" >
+            <label>Investment Year</label>
+            <select class="form-control" [(ngModel)]="yearModel">
+                <option value="">Please Select Year</option>
+                <option *ngFor="let year of investmentYear" value={{year.financialYearId}}>{{year.financialYear}}</option>
+            </select>
+        </div>
+         -->
+        <div class="form-group">
+            <label>lender Name</label>
+            <input type="text" class="form-control" [(ngModel)]="LendNameModel">
+        </div>
+        <div class="form-group">
+            <label>lender Tax No.</label>
+            <input type="text" class="form-control" [(ngModel)]="LendPanModel">
+        </div>
+        <div class="row">
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label>Declared</label>
+                    <input type="text" class="form-control" [(ngModel)]="LendDeclaredModel">
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label>Made</label>
+                    <input type="text" class="form-control" [(ngModel)]="LendMadeModel">
+                </div>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label>Evidence/Proof</label>
+            <input type="file" class="form-control" (change)="onFileChanged($event)" [(ngModel)]="evidanceModel">
+        </div>
+        <div class="form-group">
+            <label>Address of the lender</label>
+            <textarea class="form-control" [(ngModel)]="LendAddressModel"></textarea>
+        </div>
+
+        <div>
+            <button class="btn btn-secondary btn-sm" (click)="saveDIBSection()">Save</button>
+            <button class="btn btn-secondary btn-sm">cancel</button>
+
+        </div>
+    </div>
+
+    <div class="col-md-4" *ngIf="togglrLtc">
+        <!-- 
+        <div class="form-group" >
+            <label>Investment Year</label>
+            <select class="form-control" [(ngModel)]="yearModel">
+                <option value="">Please Select Year</option>
+                <option *ngFor="let year of investmentYear" value={{year.financialYearId}}>{{year.financialYear}}</option>
+            </select>
+        </div> -->
+        <div class="form-group">
+            <label>Investment Name</label>
+            <input type="text" class="form-control" [(ngModel)]="ItcNameModel">
+        </div>
+        <div class="row">
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label>Declared</label>
+                    <input type="text" class="form-control" [(ngModel)]="ItcDeclareModel">
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label>Made</label>
+                    <input type="text" class="form-control" [(ngModel)]="ItcMadeModel">
+                </div>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label>Evidence/Proof</label>
+            <input type="file" class="form-control" (change)="onFileChanged($event)" [(ngModel)]="evidanceModel">
+        </div>
+        <div class="form-group">
+            <label>Remarks</label>
+            <textarea class="form-control" [(ngModel)]="ltcRemarkModel"></textarea>
+        </div>
+
+        <div>
+            <button class="btn btn-secondary btn-sm" (click)="saveLLeaveTravelSection()">Save</button>
+            <button class="btn btn-secondary btn-sm">cancel</button>
+
+        </div>
+    </div>
+</div>

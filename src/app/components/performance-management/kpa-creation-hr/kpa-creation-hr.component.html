@@ -1,0 +1,162 @@
+<div class="container-fluid">
+    <div class="d-flex align-items-center mt-2 padding-top-set">
+        <div class="m-2">
+            <div class="h-size"><em class="fa fa-user"></em> <strong> KPA Creation</strong></div>
+        </div>
+        <div class="flex-fill">
+        </div>
+        <div class="m-3"><input class="form-control rounded-pill py-2 border-right-0 border" type="search"
+                placeholder="search" id="example-search-input" [(ngModel)]="searchModel" (keyup)="fetchList()">
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-12">
+            <table class="table table-bordered table-hover table-sm mt-4">
+                <thead class="t-head">
+                    <tr>
+                        <th *ngFor="let head of headers"><a>{{head}}</a></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let data of kpaList | paginate: {
+                        itemsPerPage: itemsPerPage,
+                        currentPage: currentPage,
+                        totalItems: totalItems
+                      };let i=index">
+                        <td>{{data.kpaName}}</td>
+                        <td>{{data.designationName}}</td>
+                        <td>{{data.departmentName}}</td>
+                        <td>{{data.gradeName}}</td>
+                        <td>{{data.financialYear}}</td>
+                        <td>{{data.kpaRemarks}}</td>
+                        <td>
+                            <a title="Edit" class="icon-margin" (click)="getKpaDetailsById(data.kpaId)"
+                                data-toggle="modal" data-target="#add"><i class="fas fa-user-edit"></i></a>
+                            <a title="Delete" class="icon-margin" mwlConfirmationPopover [popoverTitle]="popoverTitle"
+                                [popoverMessage]="popoverMessage" placement="left" (confirm)="deleteKpaData(data.kpaId)"
+                                (cancel)="cancelClicked = true"><span class="fas fa-trash"></span></a>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+            <div class="row" *ngIf="totalElements!=0">
+                <div class="col-md-6 col-sm-6 col-6"><span class="show-entry">Showing
+                        <span>{{showingFrom}} to {{showingTo}} of {{totalElements}} entries</span></span>&nbsp;
+                </div>
+
+                <div class="col-md-6" *ngIf="totalItems > 0">
+                    <pagination-controls (pageChange)="pageChanged($event)"></pagination-controls>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-12">
+            <button id="btn_add" type="button" class="btn btn-primary button btn-sm" data-toggle="modal"
+                data-target="#add" (click)="clickAdd()"><em class="fas fa-user-plus"></em>&nbsp;Add</button>
+        </div>
+    </div>
+</div>
+<!-- Large modal -->
+
+<div class="modal fade common-model" id="add">
+    <div class="modal-dialog modal-xl">
+        <div class="modal-content model">
+            <form [formGroup]=kpaCreationForm (ngSubmit)="onSubmit()">
+                <!-- Modal Header -->
+                <div class="modal-header">
+                    <div class="modal-title"><i class="fas fa-plus"></i>/ <i class="fas fa-edit ml-1"></i>
+                        {{submitText}} KPA
+                    </div>
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                </div>
+                <!-- Modal body -->
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="form-row">
+                                <div class="form-group col-md-6">
+                                    <label for="kpaName">KPA Name <span class="color-red">*</span></label>
+                                    <input type="text" formControlName="kpaName" class="form-control " id="kpaName"
+                                        placeholder="KPA Name">
+                                    <span class="color-red" *ngIf="submitted && form_.kpaName.errors">KPA Name
+                                        {{requiredErrorText}}</span>
+                                </div>
+                                <div class="form-group col-md-6">
+                                    <label for="remarksKPA">Description<span class="color-red">*</span></label>
+                                    <input type="text" class="form-control " formControlName="remarks" id="remarksKPA">
+                                    <span class="color-red" *ngIf="submitted && form_.remarks.errors">Description
+                                        {{requiredErrorText}}</span>
+                                </div>
+                            </div>
+                            <div class="form-row">
+                                <div class="form-group col-md-6">
+                                    <label for="empDepartment">Employee Department <span
+                                            class="color-red">*</span></label>
+                                    <select id="empDepartment" class="form-control " formControlName="department">
+                                        <option value="" selected>Select Department</option>
+                                        <option *ngFor="let data of departmentsList" [value]="data.departmentId">
+                                            {{data.departmentName}}</option>
+                                    </select>
+                                    <span class="color-red" *ngIf="submitted && form_.department.errors">Department
+                                        {{requiredErrorText}}</span>
+                                </div>
+                                <div class="form-group col-md-6">
+                                    <label for="empDesignation">Employee Designation <span
+                                            class="color-red">*</span></label>
+                                    <select id="empDesignation" class="form-control " formControlName="designation">
+                                        <option value="" selected disabled>Select Designation</option>
+                                        <option *ngFor="let data of designationsList" [value]="data.designationId">
+                                            {{data.designationName}}</option>
+                                    </select>
+                                    <span class="color-red" *ngIf="submitted && form_.designation.errors">Designation
+                                        {{requiredErrorText}}</span>
+                                </div>
+                            </div>
+                            <div class="form-row">
+                                <div class="form-group col-md-6">
+                                    <label for="financialYear">Financial Year <span class="color-red">*</span></label>
+                                    <select id="financialYear" class="form-control " formControlName="financialYear">
+                                        <option value="" selected>Select Year</option>
+                                        <option *ngFor="let year of financialYearList" [value]="year.financialYearId">
+                                            {{year.financialYear}}
+                                        </option>
+                                    </select>
+                                    <span class="color-red" *ngIf="submitted && form_.financialYear.errors">Finanacial
+                                        Year
+                                        {{requiredErrorText}}</span>
+                                </div>
+                                <div class="form-group col-md-6">
+                                    <label for="empGrade">Employee Grade <span class="color-red">*</span></label>
+                                    <select id="empGrade" class="form-control " formControlName="grade">
+                                        <option value="" selected>Select Grade</option>
+                                        <option *ngFor="let data of gradesList" [value]="data.gradeId">
+                                            {{data.gradeName}}</option>
+                                    </select>
+                                    <span class="color-red" *ngIf="submitted && form_.grade.errors">Grade
+                                        {{requiredErrorText}}</span>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- Modal footer -->
+                <hr>
+                <div class="row btn-footer">
+                    <div class="col-md-6 pull-left">
+                        <button type="submit" id="btnComponentSave" [disabled]="submitProcessing"
+                            class="button btn-primary btn-style"><i class="fas fa-save"></i>
+                            {{submitText}} <i class="fa fa-spinner fa-spin" *ngIf="submitProcessing"
+                                style="font-size:19px"></i></button>
+                    </div>
+                    <div class="col-md-6 pull-right" *ngIf="submitText == 'Save'">
+                        <button type="button" id="btnComponentSave" (click)="resetTheForm()"
+                            class="button btn-warning btn-style" [disabled]="submitProcessing">
+                            Clear</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

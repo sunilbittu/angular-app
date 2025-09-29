@@ -1,0 +1,99 @@
+<div class="container-fluid">
+  <div class="d-flex align-items-center mt-2">
+    <div class="m-2">
+      <div class="h-size"><i class="fa fa-user"></i> <b> Attendance Time Sheet </b></div>
+    </div>
+  </div>
+  <div class="flex-fill"></div>
+
+  <div class="d-flex align-items-center mt-2 light-blue-bg" *ngIf="isManager">
+    <div class="m-2">
+      <td>
+        <label>&nbsp;<strong>Employee</strong><span class="color-red">*</span></label>
+      </td>
+      <td>
+        <select class="custom-select-box form-control" name="employee" [(ngModel)]="employeeIdModel"
+          (change)="onchangeEmployee()">
+          <option value="" disabled selected>Select Employee</option>
+          <option *ngFor="let data of employeeList" [value]="data.employeeId">
+            {{data.firstName}} {{data.lastName}}</option>
+        </select>
+      </td>
+    </div>
+    <div class="m-2">
+      <button type="button" (click)="cancel()" class="button btn-danger m-auto">Cancel</button>
+    </div>
+  </div>
+  <br>
+  <div class="padding-change">
+    <full-calendar #fullcalendar [options]="calendarOptions"></full-calendar>
+  </div>
+</div>
+<div class="modal" id="myModal" style="margin-top: 20px;">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content model">
+
+      <div class="modal-header">
+        <div class="modal-title"><i class="fas fa-plus"></i> Time Line popup
+        </div>
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+      </div>
+
+      <div class="modal-body">
+        <div class="color-red" *ngIf="showErrorMsg">
+          <h3><b>Time Sheet not assigned to this date with logged employee </b></h3>
+        </div>
+        <form>
+          <div class="form-group">
+            <label>Time Sheet</label>
+            <select class="form-control" [(ngModel)]="timeSheetModel" [ngModelOptions]="{standalone: true}"
+              (change)="changeTimeSheet()">
+              <option value=undefined disabled>Please select Time Sheet</option>
+              <option *ngFor="let sheet of timeSheets" [ngValue]="sheet.shift">
+                {{sheet.shift.name}}
+              </option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <div class="row">
+              <div class="col-md-6">
+                <label for="date">Start Time</label>
+                <input type="text" class="form-control form-control-sm" [(ngModel)]="startTimeModel" name="startTime"
+                  id="date" placeholder="Enter Start Time" readonly>
+              </div>
+              <div class="col-md-6">
+                <label for="date">End Time</label>
+                <input type="text" class="form-control form-control-sm" [(ngModel)]="endTimeModel" name="endTime"
+                  id="date" placeholder="Enter End Time" readonly>
+              </div>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label for="date">Worked Hours</label>
+            <input type="text" class="form-control form-control-sm" [(ngModel)]="hoursModel" name="workedHours"
+              id="date" placeholder="Enter Worked Hours" readonly>
+          </div>
+
+          <div class="form-group">
+            <label for="date">Description</label>
+            <textarea class="form-control" [(ngModel)]="Description" name="description"></textarea>
+          </div>
+
+        </form>
+      </div>
+
+      <div class="row btn-footer">
+        <div class="col-md-6 pull-left">
+          <button type="submit" id="btnComponentSave" (click)="saveEvent()" [disabled]="showErrorMsg"
+            class="button btn-primary btn-style"><i class="fas fa-save"></i>
+            Save</button>
+        </div>
+        <div class="col-md-6 pull-right">
+          <button type="button" class="button btn-warning btn-style" data-dismiss="modal">Close</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

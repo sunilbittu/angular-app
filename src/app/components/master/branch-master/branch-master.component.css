@@ -1,0 +1,33 @@
+.modal-title {
+    font-size: 1rem;
+    font-weight: bold;
+    text-align: center;
+    flex: 1;
+    color: rgb(70, 68, 68);
+    font-family: sans-serif;
+}
+
+.add-title {
+    border-bottom: 1px solid #000;
+    border-bottom-style: dashed;
+}
+
+.form-check-input-reverse {
+    margin-left: 35px;
+}
+
+.form-control {
+    border: 1px solid #81badb;
+}
+
+.textarea {
+
+    height: 50px !important;
+}
+
+.btn {
+    margin: 10px;
+}
+.form-check-label {
+    padding-left: 20%;
+}

@@ -1,0 +1,322 @@
+<div class="container-fluid">
+    <div class="d-flex align-items-center mt-2">
+        <div class="m-2">
+            <div class="h-size"><em class="fa fa-user"></em> <strong> Close Repair Request</strong></div>
+        </div>
+        <div class="flex-fill">
+        </div>
+        <div class="m-3"><input class="form-control rounded-pill py-2 border-right-0 border" type="search"
+                placeholder="search" id="example-search-input" [(ngModel)]="searchModel" (keyup)="getRepairRequests()">
+        </div>
+    </div>
+    <div *ngIf="showList">
+        <div class="row">
+            <div class="col-md-12">
+                <table class="table table-bordered table-hover table-sm">
+                    <thead class="t-head">
+                        <tr>
+                            <th *ngFor="let head of headers"><a>{{head}}</a></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let data of repairRequestList | paginate
+                        : {
+                            itemsPerPage: itemsPerPage,
+                            currentPage: currentPage,
+                            totalItems: totalItems
+                          };let i=index">
+                            <td>{{data.assetId.assetName}}</td>
+                            <td>{{data.childAssetId.barCode}}</td>
+                            <td>{{data.vendorId.vendorName}}</td>
+                            <td>{{data.repairDate | date:'dd-MM-yyyy'}}</td>
+                            <td>{{data.description}}</td>
+                            <td>
+                                <a title="View" (click)="view(data)" class="icon-margin"><i
+                                        class="fa fa-eye"></i></a>
+                                <a title="Edit" (click)="edit(data)" class="icon-margin"><i
+                                        class="fas fa-user-edit"></i></a>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+                <div class="row" *ngIf="totalElements!=0">
+                    <div class="col-md-6 pull-left"><span class="show-entry">Showing
+                            <span>{{showingFrom}} to {{showingTo}} of {{totalElements}} entries</span></span>&nbsp;
+                    </div>
+      
+                    <div class="col-md-6 pull-right" *ngIf="totalItems > 0">
+                        <pagination-controls (pageChange)="pageChanged($event)"></pagination-controls>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- <div class="row">
+            <div class="col-12">
+                <button type="button" class="btn btn-primary btn-sm" (click)="clickAdd()">
+                    <i class="fas fa-user-plus"></i> Request for Repair
+                </button>
+            </div>
+        </div> -->
+    </div>
+    <div *ngIf="!showList">
+        <div class="row">
+            <div class="col-12 padding-field-bottom" style="text-align: right;">
+                <button class="btn btn-default btn-sm back-btn margin-right-30" (click)="back()"> Back <i
+                        class="fas fa-long-arrow-alt-left"></i></button>
+            </div>
+        </div>
+        <div class="row col-12 padding-field-bottom">
+            <div id="content">
+                <div class="col-1">
+                    <label for="type">Asset Name</label>
+                </div>
+                <div class="col-3">
+                    <select class="form-control" id="assetId" [(ngModel)]="assetId" (change)="changeName()"
+                        [ngModelOptions]="{standalone: true}" [attr.disabled]="submitText == 'Update' ? '' : null">
+                        <option value='' selected disabled>Select Asset Name </option>
+                        <option *ngFor="let asset of assetList" [value]="asset.assetId">
+                            {{asset.assetCode}}-{{asset.assetName}}
+                        </option>
+                    </select>
+                    <span class="color-red" *ngIf="searchValidation && !assetId">Asset Name
+                        {{requiredErrorText}}</span>
+                </div>
+                <div class="col-1">
+                    <label for="type">Barcode of Item</label>
+                </div>
+                <div class="col-3">
+                    <select class="form-control" id="barcodeOfItem" [(ngModel)]="barCodeId"
+                        [ngModelOptions]="{standalone: true}" [attr.disabled]="submitText == 'Update' ? '' : null">
+                        <option value='' selected disabled>Select Barcode of Item </option>
+                        <option *ngFor="let barcodeOfItem of barcodeItems" [value]="barcodeOfItem.childAssetId">
+                            {{barcodeOfItem.barCode}}
+                        </option>
+                    </select>
+                    <span class="color-red" *ngIf="searchValidation && !barCodeId">Barcode of Item
+                        {{requiredErrorText}}</span>
+                </div>
+                <div class="col-1">
+                    <button type="button" *ngIf="submitText == 'Save'" class="btn btn-primary btn-sm" (click)="search()">Search
+                    </button>
+                </div>
+            </div>
+        </div>
+        <br>
+        <form [formGroup]="assetForm" (ngSubmit)="submit()" *ngIf="assetData">
+            <div class="row col-12 padding-field-bottom">
+                <div class="col-1">
+                    <label for="type">Asset Owner</label>
+                </div>
+                <div class="col-3">
+                    <input type="text" class="form-control" placeholder="Please Enter Owner"
+                        formControlName="assetOwner">
+                </div>
+                <div class="col-1">
+                    <label for="type">Owner Name</label>
+                </div>
+                <div class="col-3">
+                    <input type="text" class="form-control" placeholder="Please Enter Owner"
+                        formControlName="ownerName">
+                </div>
+                <div class="col-1">
+                    <label>Purchase Date</label>
+                </div>
+                <div class="col-3">
+                    <input type="text" formControlName="purchaseDate" class="text form-control pull-top-5"
+                        maxlength="50" />
+                </div>
+            </div>
+            <div class="row col-12 padding-field-bottom">
+                <div class="col-1">
+                    <label>Price</label>
+                </div>
+                <div class="col-3">
+                    <input type="text" class="form-control" placeholder="Please Enter Price" formControlName="price">
+                </div>
+                <div class="col-1">
+                    <label>Brand</label>
+                </div>
+                <div class="col-3">
+                    <input type="text" class="form-control" placeholder="Please Enter Brand" formControlName="brand">
+                </div>
+                <div class="col-1">
+                    <label>Model No</label>
+                </div>
+                <div class="col-3">
+                    <input type="text" class="form-control" placeholder="Please Enter Model No"
+                        formControlName="modelno">
+                </div>
+            </div>
+            <div class="row col-12 padding-field-bottom">
+                <div class="col-1">
+                    <label>Mfg. Date</label>
+                </div>
+                <div class="col-3">
+                    <input type="text" formControlName="mfgDate" placeholder="Please Select Date"
+                        class="text form-control pull-top-5" maxlength="50" />
+                </div>
+                <div class="col-1">
+                    <label>Sl No</label>
+                </div>
+                <div class="col-3">
+                    <input type="text" class="form-control" placeholder="Please Enter Serial No" formControlName="slno">
+                </div>
+                <div class="col-1">
+                    <label>Exp. Date</label>
+                </div>
+                <div class="col-3">
+                    <input type="text" formControlName="expDate" placeholder="Please Select Expiry Date"
+                        class="text form-control pull-top-5" maxlength="50" />
+                </div>
+            </div>
+            <div class="row col-12 padding-field-bottom">
+                <div class="col-1">
+                    <label for="type">Mainte-nance</label>
+                </div>
+                <div class="col-3">
+                    <input type="text" class="form-control" placeholder="Please Enter maintenance"
+                        formControlName="maintenance">
+                </div>
+                <div class="col-1">
+                    <label>Description</label>
+                </div>
+                <div class="col-3">
+                    <input type="text" class="form-control" placeholder="Please Enter Description"
+                        formControlName="description">
+                </div>
+            </div>
+        </form>
+        <div class="row col-12 padding-field-bottom" *ngIf="assetData">
+            <div id="content">
+                <div class="col-1">
+                    <label for="type">Repairer Name</label>
+                </div>
+                <div class="col-3">
+                    <select class="form-control" id="vendorId" [(ngModel)]="vendorId" (change)="changeRepairName()"
+                        [ngModelOptions]="{standalone: true}" [attr.disabled]="submitText == 'Update' ? '' : null">
+                        <option value='' selected disabled>Select Repairer Name </option>
+                        <option *ngFor="let vendor of vendorList" [value]="vendor.vendorId">
+                            {{vendor.vendorCode}}-{{vendor.vendorId}}
+                        </option>
+                    </select>
+                </div>
+            </div>
+            <!-- <div class="col-1">
+                <button type="button" class="btn btn-primary btn-sm" (click)="modelShow()">Search
+                </button>
+            </div> -->
+        </div>
+        <br>
+        <form [formGroup]="repairForm" *ngIf="repairData">
+            <div class="row col-12 padding-field-bottom">
+                <div class="col-1">
+                    <label for="type">Address</label>
+                </div>
+                <div class="col-3">
+                    <input type="text" class="form-control" placeholder="Please Enter Owner" formControlName="address">
+                </div>
+                <div class="col-1">
+                    <label for="type">Point of Contact</label>
+                </div>
+                <div class="col-3">
+                    <input type="text" class="form-control" placeholder="Please Enter Owner" formControlName="poc">
+                </div>
+                <div class="col-1">
+                    <label>Phone no.</label>
+                </div>
+                <div class="col-3">
+                    <input type="text" formControlName="mobile" class="text form-control pull-top-5" maxlength="50" />
+                </div>
+            </div>
+            <div class="row col-12 padding-field-bottom">
+                <div class="col-1">
+                    <label>Email Id</label>
+                </div>
+                <div class="col-3">
+                    <input type="text" class="form-control" placeholder="Please Enter Price" formControlName="emailId">
+                </div>
+                <div class="col-1">
+                    <label>Date Sent for Repair</label>
+                </div>
+                <div class="col-3">
+                    <input type="text" formControlName="repairDate" readOnly bsDatepicker placeholder="Please Select Date"
+                        [ngClass]="{ 'is-invalid': submitted && repairForm_.repairDate.errors }" readonly
+                        [minDate]="now" [bsConfig]="{ isAnimated: true, dateInputFormat: 'DD-MM-YYYY' }" bsDatepicker
+                        (bsValueChange)="onDateValueChange($event)" placement="bottom"
+                        class="text form-control pull-top-5" maxlength="50" />
+                    <!-- <span class="color-red" *ngIf="submitted && repairForm_.repairDate.errors">Repair Date
+                        {{requiredErrorText}}</span> -->
+                </div>
+                <div class="col-1">
+                    <label>Problem Description</label>
+                </div>
+                <div class="col-3">
+                    <textarea type="text" class="form-control" readOnly placeholder="Please Enter Problem Description"
+                        formControlName="description" maxlength="255"
+                        [ngClass]="{ 'is-invalid': submitted && repairForm_.description.errors }"></textarea>
+                    <span class="color-red" *ngIf="submitted && repairForm_.description.errors">Problem Description
+                        {{requiredErrorText}}</span>
+                </div>
+
+                <div class="col-1">
+                    <label>Resolved Problem <span class="color-red">*</span></label>
+                </div>
+                <div class="col-3">
+                    <textarea type="text" class="form-control" placeholder="Please Enter Resolved Problem "
+                        formControlName="resolvedProblem" maxlength="255"
+                        [ngClass]="{ 'is-invalid': submitted && repairForm_.resolvedProblem.errors }"></textarea>
+                    <span class="color-red" *ngIf="submitted && repairForm_.resolvedProblem.errors">Resolved Problem
+                        {{requiredErrorText}}</span>
+                </div>
+
+
+                <div class="col-1">
+                    <label>Repaired Date<span class="color-red">*</span></label>
+                </div>
+                <div class="col-3">
+                    <input type="text" formControlName="repairedDate" bsDatepicker placeholder="Please Select Date"
+                        [ngClass]="{ 'is-invalid': submitted && repairForm_.repairDate.errors }" readonly
+                        [minDate]="now" [bsConfig]="{ isAnimated: true, dateInputFormat: 'DD-MM-YYYY' }" bsDatepicker
+                        (bsValueChange)="onDateValueChange($event)" placement="bottom"
+                        class="text form-control pull-top-5" maxlength="50" />
+                    <!-- <span class="color-red" *ngIf="submitted && repairForm_.repairDate.errors">Repair Date
+                        {{requiredErrorText}}</span> -->
+                </div>
+
+                <div class="col-1">
+                    <label>Amount <span class="color-red">*</span></label>
+                </div>
+                <div class="col-3">
+                    <input type="number" class="form-control" placeholder="Please Enter Amount "
+                        formControlName="amount" maxlength="255"
+                        [ngClass]="{ 'is-invalid': submitted && repairForm_.amount.errors }">
+                    <span class="color-red" *ngIf="submitted && repairForm_.amount.errors">Amount
+                        {{requiredErrorText}}</span>
+                </div>
+
+                <div class="col-1">
+                    <label>Status <span class="color-red">*</span></label>
+                </div>
+                <div class="col-3">
+                    <input type="text" class="form-control" value="Requested for Repair Closed" readOnly
+                        formControlName="status">
+                </div>
+
+            </div>
+
+        </form>
+        <div class="row">
+            <div class="col-md-6 pull-left">
+                <button type="button" *ngIf="vendorId && !readOnly" (click)="submit()" id="btnComponentSave"
+                    [disabled]="submitProcessing" class="button btn-primary btn-style"><i class="fas fa-save"></i>
+                    {{submitText}} <i class="fa fa-spinner fa-spin" *ngIf="submitProcessing"
+                        style="font-size:19px"></i></button>
+            </div>
+            <div class="col-md-6 pull-right" *ngIf="submitText == 'Save' && !readOnly">
+                <button type="button" id="btnComponentSave" (click)="clear()"
+                    class="button btn-warning margin-right-30 btn-style" [disabled]="submitProcessing">
+                    Clear</button>
+            </div>
+        </div>
+    </div>
+</div>

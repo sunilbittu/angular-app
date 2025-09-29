@@ -1,0 +1,94 @@
+<div class="container-fluid">
+    <div class="d-flex align-items-center mt-2">
+        <div class="m-2">
+            <div class="h-size"><em class="fa fa-user mr-1"></em> <strong>Employee Resignation Report</strong>
+            </div>
+        </div>
+        <div class="flex-fill">
+        </div>
+        <div class="m-3">
+        </div>
+    </div>
+    <br>
+    <div>
+        <div class="row">
+            <div class="form-group col-md-3">
+                <label for="empbranch">Branch <span class="color-red"></span></label>
+                <select id="empbranch" [(ngModel)]="branchModel" class="form-control" name="branch" #branch
+                    (change)="onchangeBranch(branch.value)">
+                    <option value="" disabled selected>Select Branch</option>
+                    <option *ngFor="let data of branchDetailsList" [value]="data.companyBranchDetailsId">
+                        {{data.branchName}}</option>
+                </select>
+                <span *ngIf="!branchModel && submitted" class="color-red pull-left-5">
+                    &nbsp;<strong>Please Select Branch</strong></span>
+            </div>
+            <div class="form-group col-md-3">
+                <label for="libraryType">Department <span class="color-red"></span></label>
+                <select id="libraryType" [(ngModel)]="departmentModel" name="department" class="form-control"
+                    name="department">
+                    <option value="" disabled selected>Select Department</option>
+                    <option *ngFor="let data of departmentsList" [value]="data.departmentId">
+                        {{data.departmentName}}</option>
+                </select>
+                <span *ngIf="!departmentModel && submitted" class="color-red pull-left-5">
+                    &nbsp;<strong>Please Select Department</strong></span>
+            </div>
+            <div class="form-group col-md-3">
+                <label for="vaccine">Status </label>
+                <select id="vaccine" class="form-control" [(ngModel)]="statusModel" name="resignation"
+                    #resignation>
+                    <option value="" disabled selected>Select Status</option>
+                    <option *ngFor="let resignation of resignationList" [value]="resignation">
+                        {{resignation}}</option>
+                </select>
+                <span *ngIf="!statusModel && submitted" class="color-red pull-left-5">
+                    &nbsp;<strong>Please Select Status</strong></span>
+            </div>
+            <div class="form-group col-md-3 padding-top-25">
+                <button type="submit" id="btn_projection" class="button btn-primary btn-size"
+                    (click)="submit()">Search</button>
+                &nbsp;
+                <button type="button" id="btn_projection" (click)="clear()"
+                    class="button btn-danger m-auto btn-size">Clear</button>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-12">
+            <table class="table table-bordered table-hover table-sm">
+                <thead class="t-head">
+                    <tr>
+                        <th *ngFor="let head of headers" id="headers1"><a>{{head}}</a></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr
+                        *ngFor="let data of resignationReportList | paginate: { itemsPerPage: 10, currentPage: p };let i=index">
+                        <td>{{i+1}}</td>
+                        <td>{{data.empId}}</td>
+                        <td>{{data.fullName}}</td>
+                        <td>{{data.project}}</td>
+                        <td>{{data.department}}</td>
+                        <td>{{data.resignationDate | date:'dd-MM-yyyy'}}</td>
+                        <td>{{data.lastWorkingDate | date:'dd-MM-yyyy'}}</td>
+                        <td>{{data.rejoinDate | date:'dd-MM-yyyy'}}</td>
+                        <td>{{data.reason}}</td>
+                        <td>{{data.status}}</td>
+                    </tr>
+                </tbody>
+            </table>
+            <pagination-controls (pageChange)="p = $event"></pagination-controls>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-6">
+            <button type="button" [disabled]="resignationReportList.length == 0" class="btn btn-labeled btn-outline-danger btn-sm" (click)="exportTable('PDF')">
+                <span class="btn-label"><i class="fa fa-file-pdf-o" aria-hidden="true"></i></span>&nbsp;Export To
+                PDF</button>&nbsp;&nbsp;&nbsp;
+            <button type="button" [disabled]="resignationReportList.length == 0" class="btn btn-labeled btn-outline-success btn-sm" (click)="exportTable('EXCEL')">
+                <span class="btn-label"><i class="fa fa-file-excel-o" aria-hidden="true"></i></span>&nbsp;Export To
+                Excel</button>
+        </div>
+    </div>
+</div>

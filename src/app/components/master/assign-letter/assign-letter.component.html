@@ -1,0 +1,65 @@
+<div class="row padding-left">
+    <div class="col-12  content-wrap">
+        <div>
+            <br>
+            <div class="h-size"><b> Letter Assign</b></div>
+            <br>
+        </div>
+        <div class="m-2">
+            <i class="fa fa-search"></i>
+            <span> Search </span><input type="text" value="">
+        </div>
+        <div class="row">
+            <div class="col-7 pb-0">
+                <table class="table table-bordered table-hover table-sm">
+                    <thead class="t-head">
+                        <tr>
+                            <th *ngFor="let head of letterAssignHeaders"><a>{{head}}</a></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let letter of letterAssignData">
+                            <td>{{letter.code}}</td>
+                            <td>{{letter.name | titlecase}}</td>
+                            <td>{{letter.branch}}</td>
+                            <td>{{letter.department}}</td>
+                            <td>{{letter.designation}}</td>
+                            <td>{{letter.division}}</td>
+                            <td>
+                                <a title="View" class="icon-margin"><span class="fas fa-eye"></span></a>
+                                <a title="Edit" class="icon-margin"><i class="fas fa-user-edit"></i></a>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+                <div>
+                    <button id="btn_add" type="button" class="btn-primary button">Select Letter</button>
+                    <button id="btn_add" type="button" class="btn-primary button">Bulk Assign</button>
+                    <button id="btn_add" type="button" class="btn-primary button">Assign Report</button>
+                </div>
+            </div>
+            <div class="col-5 pb-0">
+                <table id="gv_document" class="table">
+                    <thead class="t-head">
+                        <tr>
+                            <th><input type="checkbox" name="co"></th>
+                            <th *ngFor="let head of assignHeader"><a>{{head}}</a></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let letter of assignData">
+                            <td><input type="checkbox" name="co"></td>
+                            <td>{{letter.date}}</td>
+                            <td>{{letter.name}}</td>
+                            <td>&nbsp;</td>
+                            <td><a title="Delete" class="icon-margin"><i class="fas fa-trash-alt"></i></a></td>
+                        </tr>
+                    </tbody>
+                </table>
+                <div>
+                    <button id="btn_add" type="button" class="btn-primary button">Send Mail</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

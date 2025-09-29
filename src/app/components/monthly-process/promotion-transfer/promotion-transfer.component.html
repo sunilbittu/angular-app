@@ -1,0 +1,109 @@
+<div class="container-fluid">
+    <div class="d-flex align-items-center mt-2">
+        <div class="flex-fill">
+
+        </div>
+        
+    </div>
+    <div class="row" style="height: 315px;" >
+        <div class="col-md-12" style="overflow-y: scroll;"  >
+            <table class="table table-bordered table-hover table-sm" >
+                <thead class="t-head">
+                    <tr>
+                        <th *ngFor="let head of headers"><a>{{head}}</a></th>
+                    </tr>
+                    <tr >
+                        <td>
+                            <input type="text" class="form-control emp-no" name="employeeCode" >
+                        </td>
+                        <td>
+                            <input type="text" class="form-control" name="employeeName" >
+                        </td>
+                        <td>
+                            <input type="text" class="form-control" name="employeeBranch" >
+                        </td>
+                        <td>
+                            <input type="text" class="form-control" name="employeeDepartment" >
+                        </td>
+                        <td>
+                            <input type="text" class="form-control" name="employeeDesignation" >
+                        </td>
+                        <td>
+                            <input type="text" class="form-control" name="employeeGrade" >
+                        </td>
+                        <td>
+                            <input type="text" class="form-control" name="employeeCategory" >
+                        </td>
+                        <td>
+                            <input type="text" class="form-control" name="employeeProject" >
+                        </td>
+                        <td>
+                        </td>
+                    </tr>
+                    </thead>
+                    <tbody>
+                         <tr *ngFor="let employee of employees">
+                             <td>{{employee.code}}</td>
+                             <td>{{employee.name}}</td>
+                             <td>{{employee.branch}}</td>
+                             <td>{{employee.department}}</td>
+                             <td>{{employee.designation}}</td>
+                             <td>{{employee.grade}}</td>
+                             <td>{{employee.category}}</td>
+                             <td>{{employee.project}}</td>
+                             <td>
+                                <a  title="Delete" class="icon-margin"><i class="fa fa-trash"></i></a>
+                                <a title="Edit" class="icon-margin"><i class="fa fa-user-edit"></i></a>
+                             </td>
+                         </tr>
+                    </tbody>
+
+            </table>
+        </div>
+        
+    </div>
+    <div class="row">
+        <div class="col-md-12" style="height: 237px;" >
+            <table class="table table-bordered table-hover table-sm">
+                <thead class="t-head">
+                    <tr>
+                        <th *ngFor="let head of headers2"><a>{{head}}</a></th>
+                    </tr>
+                  
+                    </thead>
+                    <tbody>
+                         <tr *ngFor="let employee of employees2">
+                             <td>{{employee.promotionTransferType}}</td>
+                             <td>{{employee.transactionDate}}</td>
+                             <td>{{employee.eventDate}}</td>
+                             <td>{{employee.effectDate}}</td>
+                             <td>{{employee.fromEntity}}</td>
+                             <td>{{employee.toEntity}}</td>
+                             <td>{{employee.remarks}}</td>
+                             <td>
+                                <a  title="Delete" class="icon-margin"><i class="fa fa-trash"></i></a>
+                                <a title="Edit" class="icon-margin"><i class="fa fa-user-edit"></i></a>
+                             </td>
+                             
+                         </tr>
+                    </tbody>
+
+            </table>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-7">
+            <button id="btn_add" type="button" class="btn btn-primary button" disabled="disabled"><i
+                    class="fas fa-user-plus"></i>Add</button>
+        </div>
+
+        <div class="col-5">
+            From :<input type="date" style="">  To :<input type="date" style="">
+        
+        
+            <button id="btn_add" type="button" class="btn btn-primary button" disabled="disabled"><i
+                class="fas fa-user-edit"></i>Report</button>
+
+        </div>
+    </div>

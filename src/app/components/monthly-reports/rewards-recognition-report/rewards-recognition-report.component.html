@@ -1,0 +1,55 @@
+<div class="container-fluid">
+    <div class="d-flex align-items-center mt-2">
+        <div class="m-2">
+            <div class="h-size"><em class="fa fa-user"></em> <strong> Trainings Report</strong></div>
+        </div>
+        <div class="flex-fill">
+        </div>
+    </div>
+    <div class="modal-body">
+        <div class="row">
+            <div class="col-3 padding-0">
+                <label for="type">Status<span class="color-red">*</span></label>
+                <select class="form-control" id="status" [(ngModel)]="status" (change)="changeStatus()">
+                    <option value='' disabled>Please Select Status</option>
+                    <option *ngFor="let status of statuses" [value]="status">
+                        {{status}}
+                    </option>
+                </select>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-12">
+            <table class="table table-bordered table-hover table-sm">
+                <thead class="t-head">
+                    <tr *ngIf="status == 'Reward'">
+                       <th  *ngFor="let head of headers"><a>{{head}}</a></th>
+                    </tr>
+                    <tr *ngIf="status == 'Recognition'">
+                        <th  *ngFor="let head of headers2"><a>{{head}}</a></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let data of trainingList | paginate: { itemsPerPage: 20, currentPage: p }">
+                        <td>{{data.rewardRecognitionId}}</td>
+                        <td>{{data.name}}</td>
+                        <td *ngIf="status == 'Reward'">{{data.budget}}</td>
+                        <td *ngIf="status == 'Recognition'">{{data.recognisationType}}</td>
+                    </tr>
+                </tbody>
+            </table>
+            <pagination-controls (pageChange)="p = $event"></pagination-controls>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-4">
+            <button type="button" class="btn btn-labeled btn-outline-danger btn-sm" [disabled]="trainingList && trainingList.length == 0" (click)="exportTable('PDF')">
+                <span class="btn-label"><i class="fa fa-file-pdf-o" aria-hidden="true"></i></span>Export To PDF</button>
+            &nbsp;
+            <button type="button" class="btn btn-labeled btn-outline-success btn-sm" [disabled]="trainingList && trainingList.length == 0" (click)="exportTable('EXCEL')">
+                <span class="btn-label"><i class="fa fa-file-excel-o" aria-hidden="true"></i></span>Export To
+                Excel</button>
+        </div>
+    </div>
+</div>

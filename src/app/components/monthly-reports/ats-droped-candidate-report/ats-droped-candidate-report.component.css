@@ -1,0 +1,14 @@
+.table tr.active td {
+    background-color: #9ABCEA !important;
+    color: white;
+}
+
+.advance {
+    color: blue;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.padding-top-25 {
+    padding-top: 30px;
+}

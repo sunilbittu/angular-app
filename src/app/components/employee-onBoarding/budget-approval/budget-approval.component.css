@@ -1,0 +1,103 @@
+.form-control::-webkit-input-placeholder { 
+    font-family: FontAwesome;
+    font-weight: normal;
+    overflow: visible;
+    vertical-align: top;
+    display: inline-block !important;
+    padding-left: 1px;
+    padding-top: 2px;
+    color: hsl(9, 17%, 24%);
+  }
+  .read-only {
+    background-color: #eeeeef;
+    cursor: auto;
+  }
+  .edit {
+    cursor: pointer;
+  }
+  .padding-field-bottom {
+    padding-bottom: 7px;
+  }
+  label {
+    display: inline-block;
+    margin-bottom: .5rem;
+    font-size: 16px;
+  }
+  .height-45 {
+    height: 45px;
+  }
+  .custom-select-box {
+    width: 100%;
+    font-weight: 500;
+    background-color: white;
+    height: 38px;
+    font-size: 1.06rem;
+    color: #2d3135;
+    font-family: none;
+    cursor: pointer;
+  }
+  .modal-title {
+    font-size: 20px;
+    font-weight: 500;
+    text-align: center;
+    flex: 1;
+    color: #000;
+  }
+  .table tr th, .table tr td {
+    border: solid 1px #a3a2a3!important;
+    font-size: 14px;
+    vertical-align: inherit;
+    text-align: center;
+  }
+  input, textarea {
+    font-size: 1.06rem;
+    cursor: text;
+  }
+  .col-2 {
+    flex: 0 0 16.666667%;
+    max-width: 16.666667%;
+  }
+.width-9 {
+    width: 9%;
+}
+.width-10 {
+    width: 10%;
+}
+.width-5 {
+    width: 5%;
+}
+.radio-size {
+  width: 16px;
+  height: 15px;
+  cursor: pointer;
+}
+.width {
+  width: 88%;
+}
+.col-10 {
+  font-size: 15px;
+}
+.align-justify {
+  text-align: justify;
+    height: 125px;
+    overflow-y: scroll;
+    border: 1px;
+    background-color: #e7e1e1;
+    padding: 8px;
+}
+button:disabled,
+button[disabled]{
+  border: 1px solid #999999;
+  background-color: #cccccc;
+  color: #666666;
+}
+.green {
+  color: #02a523;
+}
+.table tr.active td {  
+  background-color: #9ABCEA!important;
+  color: white;  
+}
+.loader-margin {
+  margin-left: 0%;
+}

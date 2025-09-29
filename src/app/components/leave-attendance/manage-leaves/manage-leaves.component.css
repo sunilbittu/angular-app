@@ -1,0 +1,16 @@
+
+  .modal-title {
+    font-size: 1rem;
+    font-weight: bold;
+    text-align: center;
+    flex: 1;
+    color: #000;
+  }
+  .btn-footer {
+    margin: 1px;
+    margin-bottom: 15px;
+  }
+  .in {
+    width: 100%;
+    margin: 10px;
+  }

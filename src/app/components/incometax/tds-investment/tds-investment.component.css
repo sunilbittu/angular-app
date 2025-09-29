@@ -1,0 +1,9 @@
+.modal-content{
+    margin-top: 84px;
+}
+.form-control{
+    width: 50%;
+}
+.modal-footer{
+    padding:8px !important;
+}

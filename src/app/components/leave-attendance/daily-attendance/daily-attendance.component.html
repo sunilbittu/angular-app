@@ -1,0 +1,70 @@
+<div class="container-fluid">
+    <div class="d-flex align-items-center mt-2">
+        <div class="m-2">
+            <div class="h-size"><b> Attendance For The Month :- Jan 2021</b></div>
+        </div>
+    </div>
+    <div class="d-flex align-items-center mt-2">
+        <span class="left-span"> Attendance List&nbsp;</span>
+        <select class="dropdown-m-2 drop-down" name="employee">
+            <option value="">-Select-</option>
+            <option *ngFor="let s of status">{{s.name}}</option>
+        </select>
+
+        <!-- <div class="m-2">
+            <label class="control-label">&nbsp;</label>
+            <button id="btn_add" type="button" class="btn btn-primary button">Search</button>
+        </div> -->
+        <div class="m-2">
+            <i class="fa fa-search"></i><span> Daily Attendance </span><input type="text" value="">
+        </div>
+    </div>
+    <div class="row-left">
+        <div class="col-md-12">
+            <table class="table table-bordered table-hover table-sm no-wrap">
+                <thead class="t-head">
+                    <tr>
+                        <th *ngFor="let head of headers"><a>{{head}}</a></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let employee of employees">
+                        <td>{{employee.empcode}}</td>
+                        <td>{{employee.empname}}</td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                    </tr>
+                </tbody>
+
+            </table>
+        </div>
+    </div>
+
+</div>

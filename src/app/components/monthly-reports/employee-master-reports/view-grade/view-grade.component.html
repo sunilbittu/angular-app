@@ -1,0 +1,95 @@
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-md-5">
+            <div class="h-size"><i class="fa fa-user mr-1"></i> <b>Employees Grade Wise Report</b></div>
+        </div>
+        <div class="col-md-3">
+            <button type="button" class="btn btn-labeled btn-outline-danger btn-sm" (click)="exportTable('PDF')">
+                <span class="btn-label"><i class="fa fa-file-pdf-o" aria-hidden="true"></i></span>Export To PDF</button>
+        </div>
+        <div class="col-md-3">
+            <button type="button" class="btn btn-labeled btn-outline-success btn-sm" (click)="exportTable('EXCEL')">
+                <span class="btn-label"><i class="fa fa-file-excel-o" aria-hidden="true"></i></span>Export To
+                Excel</button>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-12">
+            <table class="table table-bordered table-hover table-sm">
+                <thead class="t-head">
+                    <tr>
+                        <th *ngFor="let head of headers"><a>{{head}}</a></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let employee of employeesGradeList">
+                        <td>{{employee.gradeCode}}</td>
+                        <td>{{employee.gradeName}}</td>
+                        <td class="model-button"><a data-toggle="modal" data-target=".gradeCount-model"
+                                (click)="fetchEmployeesCountListByGrade(employee.gradeId)">{{employee.liveEmployee}}</a>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <div class="modal fade gradeCount-model mt-4" data-backdrop="static" tabindex="-1" role="dialog"
+        aria-labelledby="myLargeModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-xl ">
+            <div class="modal-content model">
+                <div class="modal-header">
+                    <div class="modal-title"><i class="fa fa-user mr-1"></i> <b>Employees Grade Wise Report</b>
+                    </div>
+                    <button type="button" class="close" data-dismiss="modal" (click)="onModelClose()">&times;</button>
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-md-2">
+                            <button type="button" class="btn btn-labeled btn-outline-danger btn-sm"
+                                (click)="exportInnerTable('PDF')">
+                                <span class="btn-label"><i class="fa fa-file-pdf-o" aria-hidden="true"></i></span>Export
+                                To PDF</button>
+                        </div>
+                        <div class="col-md-2">
+                            <button type="button" class="btn btn-labeled btn-outline-success btn-sm"
+                                (click)="exportInnerTable('EXCEL')">
+                                <span class="btn-label"><i class="fa fa-file-excel-o"
+                                        aria-hidden="true"></i></span>Export To
+                                Excel</button>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <table class="table table-bordered table-hover table-sm">
+                                <thead class="t-head">
+                                    <tr>
+                                        <th *ngFor="let head of headersCount"><a>{{head}}</a></th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr
+                                        *ngFor="let employee of employeesGradeCountList | paginate: { itemsPerPage: 10, currentPage: p,id: 'gradePagination' }">
+                                        <td>{{employee.employeeCode}}</td>
+                                        <td><span class="mr-1">{{employee.firstName}} {{employee.lastName}}</span></td>
+                                        <td>{{employee.gradeCode}}</td>
+                                        <td>{{employee.gradeName}}</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                            <hr>
+                            <div class="row btn-footer">
+                                <div class="col-md-6 pull-left">
+                                    <pagination-controls (pageChange)="p = $event" id="gradePagination"></pagination-controls>
+                                </div>
+                                <div class="col-md-6 pull-right">
+                                    <button type="button" class="btn btn-secondary btn-sm" (click)="onModelClose()"
+                                        data-dismiss="modal">Close</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

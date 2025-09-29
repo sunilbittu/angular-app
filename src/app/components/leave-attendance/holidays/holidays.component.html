@@ -1,0 +1,219 @@
+<div class="container-fluid">
+  <div class=" row col-12">
+    <div class="col-8">
+      <div>
+        <br>
+        <div class="h-size"><em class="fa fa-user"></em><strong> Holidays List</strong></div>
+        <br>
+      </div>
+      <div class="col-12 pb-0">
+        <div>
+          <div class="d-flex align-items-center mt-2 light-blue-bg">
+            <div class="m-2">
+              <td>
+                <label class="control-label"><strong>Project Name<span class="color-red">*</span>:&nbsp;</strong></label>
+              </td>
+              <td>
+                <select class="custom-select-box form-control" name="branch" [(ngModel)]="branchNameModel">
+                  <option value="" disabled>--Please select Project--</option>
+                  <option *ngFor="let branch of branches" value={{branch.projectName}}>{{branch.projectName}}</option>
+                </select>
+              </td>
+            </div>
+            <div class="m-2">
+              <button id="btn_add" type="button" class="btn-primary button" (click)="filterBranch()">Search</button>
+              <!-- &nbsp;
+                <button type="button" id="btn_projection" (click)="onClick()"
+                    class="button btn-danger m-auto">Cancel</button> -->
+            </div>
+          </div>
+          <table class="table table-bordered table-hover table-sm">
+            <thead class="t-head">
+              <tr>
+                <th *ngFor="let head of holidayHeaders" id="headers1"><a>{{head}}</a></th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let day of filterHolidayList; let i=index">
+                <td>{{i + 1}}</td>
+                <td>{{day.holidayName}}</td>
+                <td>{{day.holidayDate | date:'dd/MM/YYYY'}}</td>
+                <td>{{branchName}}</td>
+                <td>
+                  <a *ngIf="role!='ROLE_EMPLOYEE'" title="Edit" class="icon-margin" data-toggle="modal" data-target="#editModal"
+                    (click)="editHoliday(day)"><em class="fas fa-user-edit"></em></a>
+                  <a *ngIf="role!='ROLE_EMPLOYEE'" title="Delete" class="icon-margin" data-toggle="modal" data-target="#confirmDelete"
+                    (click)="removeHoliday(day)"><em class="fas fa-trash-alt"></em></a>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+          <button *ngIf="role!='ROLE_EMPLOYEE'" class="btn-primary button" data-toggle="modal" data-target="#addModal">Add</button>
+        </div>
+      </div>
+    </div>
+    <div class="col-4">
+      <div>
+        <br>
+        <div class="h-size"><em class="fa fa-user"></em><strong>Week off</strong></div>
+      </div>
+      <div class="row">
+        <div class="col-12 pb-0">
+          <br>
+          <table id="gv_document" class="table">
+            <thead class="t-head">
+              <tr>
+                <th><input type="checkbox" name="day"></th>
+                <th *ngFor="let head of weekOffHeaders" id="headers2"><a>{{head}}</a></th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let day of weekOffObject">
+                <td><input type="checkbox" [checked] ="day.weekDayStatus == true" (change)="checkCheckBoxvalue($event)" value="{{day.weekDay}}" name="day"></td>
+                <td>{{day.weekDay}}</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+      <button *ngIf="role!='ROLE_EMPLOYEE'" id="weekOffUpdate" (click)="updateWeekOff()" type="button" class="btn-primary button">Update</button>
+    </div>
+  </div>
+</div>
+<!-- model popup for adding Holidays -->
+<div class="modal fade common-model" id="addModal">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <!-- Modal Header -->
+      <div class="modal-header">
+        <div class="modal-title"><i class="fas fa-plus"></i>/ <i class="fas fa-edit ml-1"></i> {{toggleTitle}} Holidays
+        </div>
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+      </div>
+      <!-- Modal body -->
+      <div class="modal-body">
+        <div class="row">
+          <div class="col-md-6">
+            <div class="title-headers">
+              <div class="col-md-8">
+                <label>Holiday Date:<span class="color-red">*</span></label>
+                <input type="date" class="form-control" [(ngModel)]="holidayDate">
+              </div>
+              <div class="col-md-8">
+                <label>Holiday:<span class="color-red">*</span></label>
+                <input type="text" class="form-control" [(ngModel)]="holidayName">
+              </div>
+              <div class="col-md-8">
+                <label>Type:<span class="color-red">*</span></label>
+                <select class="dropdown-m-2" name="holidayType" [(ngModel)]="holidayType">
+                  <option>--Select Type--</option>
+                  <option *ngFor="let ht of holidayTypes" [value]="ht">{{ht}}</option>
+                </select>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-6 ">
+            <div>
+              <table>
+                <tr>
+                  <th>
+                    <label class="s-lable"> Select Project</label>
+                  </th>
+                </tr>
+                <tr>
+                  <input type="checkbox" id="selectAllBranches" [(ngModel)]="selectAllModel"
+                    (change)="checkUncheckAll()"> Select All
+                </tr>
+                <tr *ngFor="let branch of branches;let i=index"><input type="checkbox" [(ngModel)]="branch.isSelected"
+                    value="{{branch.projectName}}" (change)="checkItem(i)"> {{branch.projectName}} </tr>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- Modal footer -->
+      <div *ngIf="role!='ROLE_EMPLOYEE'" class="modal-footer" style="flex-wrap: nowrap;">
+        <button type="button" class="btn btn-success" (click)="createHoliday()" *ngIf="togglebtn">Add</button>
+        <button type="button" class="btn btn-success" (click)="createHoliday()" *ngIf="!togglebtn">Update</button>
+        <button type="button" class="btn btn-danger" data-dismiss="modal" (click)="cancel()">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- model popup for editing Holidays -->
+<div class="modal fade common-model" id="editModal">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <!-- Modal Header -->
+      <div class="modal-header">
+        <div class="modal-title"><i class="fas fa-plus"></i>/ <i class="fas fa-edit ml-1"></i> {{toggleTitle}} Holidays
+        </div>
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+      </div>
+      <!-- Modal body -->
+      <div class="modal-body">
+        <div class="row">
+          <div class="col-md-6">
+            <div class="title-headers">
+              <div class="col-md-8">
+                <label>Holiday Date:<span class="color-red">*</span></label>
+                <input type="date" class="form-control" [(ngModel)]="holidayDate">
+              </div>
+              <div class="col-md-8">
+                <label>Holiday:<span class="color-red">*</span></label>
+                <input type="text" class="form-control" [(ngModel)]="holidayName">
+              </div>
+              <div class="col-md-8">
+                <label>Type:<span class="color-red">*</span></label>
+                <select class="dropdown-m-2" name="holidayType" [(ngModel)]="holidayType">
+                  <option *ngFor="let ht of holidayTypes" [value]="ht">{{ht}}</option>
+                </select>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-6 ">
+            <div>
+              <table style="overflow: scroll;">
+                <tr>
+                  <th>
+                    <label class="s-lable"> Select Project Name</label>
+                  </th>
+                </tr>
+                <!-- <tr>
+                  <input type="checkbox" id="selectAllBranches"> Select All
+                </tr> -->
+                <tr>
+                  <input type="checkbox" id="selectAllBranches" [(ngModel)]="selectAllModel"
+                    (change)="checkUncheckAll()"> Select All
+                </tr>
+                <tr *ngFor="let branch of branches;let i=index"><input type="checkbox" [(ngModel)]="branch.isSelected"
+                    value="{{branch.projectName}}" (change)="checkItem(i)"> {{branch.projectName}} </tr>
+                <!-- <tr *ngFor="let branch of branches"><input type="checkbox"> {{branch.branchName}} </tr> -->
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- Modal footer -->
+      <div *ngIf="role!='ROLE_EMPLOYEE'" class="modal-footer" style="flex-wrap: nowrap;">
+        <button type="button" class="btn btn-success" (click)="updateHoliday()">Update</button>
+        <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- delete popup -->
+<div class="modal fade" id="confirmDelete" role="dialog">
+  <div class="modal-dialog">
+    <!-- Modal content-->
+    <div class="modal-content">
+      <div class="modal-body"><button type="button" class="close" data-dismiss="modal">&times;</button>
+        <p>Are you sure you want to delete selected items?</p>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        <button type="button" data-dismiss="modal" class="btn btn-primary" (click)="deleteHoliday()">Ok</button>
+      </div>
+    </div>
+  </div>
+</div>

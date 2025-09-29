@@ -1,0 +1,222 @@
+<div class="container-fluid">
+    <div class="d-flex align-items-center mt-2">
+        <div class="m-2">
+            <div class="h-size"><em class="fa fa-user mr-1"></em> <strong>List of Vendors</strong></div>
+        </div>
+        <div class="flex-fill">
+        </div>
+        <div class="m-3"><input class="form-control rounded-pill py-2 border-right-0 border" type="search"
+            placeholder="search" id="example-search-input" [(ngModel)]="searchModel" (keyup)="fetchVendors()">
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-12">
+            <table class="table table-bordered table-hover table-sm">
+                <thead class="t-head">
+                    <tr>
+                        <th *ngFor="let head of headers" id="headers1"><a>{{head}}</a></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let vendor of vendorData | paginate
+                    : {
+                        itemsPerPage: itemsPerPage,
+                        currentPage: currentPage,
+                        totalItems: totalItems
+                      };let i=index">
+                        <td>{{vendor.vendorId}}</td>
+                        <td>{{vendor.vendorCode}}</td>
+                        <td>{{vendor.vendorName}}</td>
+                        <td>{{vendor.vendorType}}</td>
+                        <td>{{vendor.email}}</td>
+                        <td>
+                            <a title="Edit" class="icon-margin" (click)="editAsset(vendor)" data-toggle="modal"
+                                data-target="#myModal-add"><em class="fas fa-user-edit"></em></a>
+                            <a title="Delete" class="icon-margin" (click)="removeAsset(vendor.vendorId)"
+                                data-toggle="modal" data-target="#confirmDelete"><span class="fas fa-trash"></span></a>
+                        </td>
+                    </tr>
+                </tbody>
+
+            </table>
+            <div class="row" *ngIf="totalElements!=0">
+                <div class="col-md-6 pull-left"><span class="show-entry">Showing
+                        <span>{{showingFrom}} to {{showingTo}} of {{totalElements}} entries</span></span>&nbsp;
+                </div>
+  
+                <div class="col-md-6 pull-right" *ngIf="totalItems > 0">
+                    <pagination-controls (pageChange)="pageChanged($event)"></pagination-controls>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-12">
+            <button type="button" class="btn btn-primary btn-sm" data-toggle="modal" (click)="addClick()"
+                data-target="#myModal-add" *ngIf="!editStatusbtn">
+                <em class="fas fa-user-plus"></em> Add
+            </button>&nbsp;
+
+        </div>
+    </div>
+
+    <div class="modal fade common-model" id="myModal-add">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content model">
+                <!-- Modal Header -->
+                <div class="modal-header">
+                    <div class="modal-title"><i class="fas fa-plus"></i>/ <i class="fas fa-edit ml-1"></i> Vendor Details
+                    </div>
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                </div>
+                <!-- Modal body -->
+                <div class="modal-body">
+
+                    <form [formGroup]="vendorForm">
+                        <div class="row col-12 padding-field-bottom">
+                            <div class="col-4">
+                                <label>Name <span class="color-red">* </span></label>
+                                <input type="text" class="form-control" placeholder="Please Enter Vendor Name"
+                                    formControlName="vendorName" (keyup)="checkForDuplicates()">
+                                <span class="color-red" *ngIf="submitted && form_.vendorName.errors">Vendor Name
+                                    {{requiredErrorText}}</span>
+                                <span class="color-red" *ngIf="VendorNameExist">Vendor Name & Vendor Code Combination Already Exist
+                                </span>
+                            </div>
+                            <div class="col-4">
+                                <label>Code <span class="color-red">* </span></label>
+                                <input type="text" class="form-control" placeholder="Please Vendor Code"
+                                    formControlName="vendorCode" (keyup)="checkForDuplicates()">
+                                <span class="color-red" *ngIf="submitted && form_.vendorCode.errors">Vendor Code
+                                    {{requiredErrorText}}</span>
+                                <span class="color-red" *ngIf="VendorCodeExist">Vendor Code Already Exist
+                                </span>
+                            </div>
+                            <div class="col-4">
+                                <label>Type <span class="color-red">* </span></label>
+                                <select formControlName="vendorType" class="custom-select-box form-control">
+                                    <option value="">Select Type</option>
+                                    <option value="Supplier">Supplier</option>
+                                    <option value="Repairer">Repairer</option>
+                                    <option value="Both">Both</option>
+                                </select>
+                                <span class="color-red" *ngIf="submitted && form_.vendorType.errors">Type
+                                    {{requiredErrorText}}</span>
+                            </div>
+                        </div>
+                        <div class="row col-12 padding-field-bottom">
+                            <div class="col-4">
+                                <label>Door No <span class="color-red">* </span></label>
+                                <input type="text" class="form-control" placeholder="Please Enter Door No"
+                                    formControlName="doorNo" >
+                                <span class="color-red" *ngIf="submitted && form_.doorNo.errors">Door No
+                                    {{requiredErrorText}}</span>
+                            </div>
+                            <div class="col-8">
+                                <label>Location/Landmark <span class="color-red">* </span></label>
+                                <input type="text" class="form-control" placeholder="Please enter Landmark"
+                                    formControlName="landMark" >
+                                <span class="color-red" *ngIf="submitted && form_.landMark.errors">Vendor Code
+                                    {{requiredErrorText}}</span>
+                            </div>
+                        </div>
+                        <div class="row col-12 padding-field-bottom">
+                            <div class="col-4">
+                                    <label>Country<span class="color-red">*</span></label>
+                                    <select class="form-control form-control-sm" formControlName="PresentCountry" (change)="onChangePresentCountries()">
+                                        <option value=""  >Please select country</option>
+                                        <option *ngFor="let country of countrypresentList" [value]="country.countryId">
+                                            {{country.countryName}}
+                                        </option>
+                                      </select>
+                                      <span class="color-red" *ngIf="submitted && form_.PresentCountry.errors">Country
+                                        {{requiredErrorText}}</span>
+                             </div>
+
+                             <div class="col-4">
+                                    <label>State<span class="color-red">*</span></label>
+                                    <select class="form-control form-control-sm" formControlName="PresentState" (change)="onChangePresentState()">
+                                        <option value="" >Please select state</option>
+                                        <option *ngFor="let state of presentStateList" [value]="state.stateId">{{state.stateName}}
+                                        </option>
+                                      </select>
+                                      <span class="color-red" *ngIf="submitted && form_.PresentState.errors">State
+                                        {{requiredErrorText}}</span>
+                            </div>
+                            <div class="col-4">
+                                    <label>City <span class="color-red">*</span></label>
+                                      <select class="form-control form-control-sm" formControlName="vendorCityId" >
+                                        <option value=""   >Please select city</option>
+                                        <option *ngFor="let city of presentCityList" value={{city.cityId}}>{{city.cityName}}</option>
+                                      </select>
+                                      <span class="color-red" *ngIf="submitted && form_.vendorCityId.errors">City
+                                        {{requiredErrorText}}</span>
+                            </div>
+                        </div>
+                        <div class="row col-12 padding-field-bottom">
+                            <div class="col-4">
+                                <label>Phone No <span class="color-red">* </span></label>
+                                <input type="text" class="form-control" placeholder="Please Enter Phone No"
+                                    formControlName="mobile" >
+                                <span class="color-red" *ngIf="submitted && form_.mobile.errors">Phone No
+                                    {{requiredErrorText}}</span>
+                            </div>
+                            <div class="col-4">
+                                <label>Point Of Contact <span class="color-red">* </span></label>
+                                <input type="text" class="form-control" placeholder="Please enter Point Of Contact"
+                                    formControlName="pointOfContact" >
+                                <span class="color-red" *ngIf="submitted && form_.pointOfContact.errors">Point Of Contact
+                                    {{requiredErrorText}}</span>
+                            </div>
+                            <div class="col-4">
+                                <label>Email <span class="color-red">* </span></label>
+                                <input type="email" class="form-control" placeholder="Please enter Email"
+                                    formControlName="email" (keyup)="validateMail()" >
+                                <span class="color-red" *ngIf="submitted && form_.email.errors">Email
+                                    {{requiredErrorText}}</span>
+                                    <span class="color-red" *ngIf="' ' && !isValidEmail"> Please Enter Valid Email</span>
+
+                            </div>
+                        </div>
+                       
+                        <hr>
+                        <div class="row">
+                            <div class="col-md-6 pull-left">
+                                <button type="button" class="button btn-primary btn-style" *ngIf="togglebtn"
+                                    [disabled]="submitProcessing" (click)="onSubmit()">Save <i
+                                        class="fa fa-spinner fa-spin" *ngIf="submitProcessing"
+                                        style="font-size:19px"></i></button>
+                                <button type="button" class="button btn-primary btn-style" *ngIf="!togglebtn"
+                                    [disabled]="submitProcessing" (click)="updateAsset()">Update <i
+                                        class="fa fa-spinner fa-spin" *ngIf="submitProcessing"
+                                        style="font-size:19px"></i></button>
+                            </div>
+                            <div class="col-md-6 pull-right" *ngIf="togglebtn">
+                                <button type="button" id="btnComponentSave" (click)="clear()"
+                                    class="button btn-warning btn-style" [disabled]="submitProcessing">
+                                    Clear</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade common-model xxxyyy" id="confirmDelete">
+    <div class="modal-dialog">
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-body"><button type="button" class="close" data-dismiss="modal">&times;</button>
+                <p>Are you sure you want to delete selected items?</p>
+            </div>
+            <div class="modal-footer" style="justify-content: flex-end;">
+                <button type="button" class="btn btn-default btn-sm" data-dismiss="modal">Close</button>
+                <button type="button" data-dismiss="modal" class="btn btn-primary btn-sm"
+                    (click)="deleteAsset()">Ok</button>
+            </div>
+        </div>
+    </div>
+</div>

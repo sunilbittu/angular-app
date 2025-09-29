@@ -1,0 +1,65 @@
+<div class="container-fluid">
+    <div class="d-flex align-items-center mt-2">
+        <div class="m-2">
+            <div class="h-size"><em class="fa fa-user mr-1"></em> <strong>Employee Tenure Report</strong></div>
+        </div>
+        <div class="form-group col-md-3">
+            <label for="empbranch">Employee Branch <span class="color-red">*</span></label>
+            <select id="empbranch" class="form-control" name="branch" #branch (change)="onchangeBranch(branch.value)">
+                <option value="" disabled selected>Select Branch</option>
+                <option *ngFor="let data of branchDetailsList" [value]="data.companyBranchDetailsId">
+                    {{data.branchName}}</option>
+            </select>
+        </div>
+        <div class="form-group col-md-3">
+            <label for="libraryType">Department Name</label>
+            <select id="libraryType" [(ngModel)]="departmentModel" name="department" (change)="onDepartmentChange()"
+                class="form-control">
+                <option value="">-Select Department Name-</option>
+                <option *ngFor="let data of departmentsList" [value]="data.departmentId">
+                    {{data.departmentName}}</option>
+            </select>
+        </div>
+        <div class="flex-fill">
+        </div>
+        <div class="m-3">
+            <!-- <em class="fa fa-search"></em>
+            <span> Search </span><input type="text" value=""> -->
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-12">
+            <table class="table table-bordered table-hover table-sm">
+                <thead class="t-head">
+                    <tr>
+                        <th *ngFor="let head of headers" id="headers1"><a>{{head}}</a></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let data of tenureReportList | paginate:{itemsPerPage:10,currentPage:p,id:'performancePagination'};let i=index">
+                        <td>{{i+1}}</td>
+                        <td>{{data.employeeCode}}</td>
+                        <td>{{data.firstName}}</td>
+                        <td>{{data.dateOfJoining}}</td>
+                        <td>{{data.years}}</td>
+                        <td>{{data.months}}</td>
+                        <td>{{data.branchName}}</td>
+                        <td>{{data.departmentName}}</td>
+                    </tr>
+                </tbody>
+            </table>
+            <pagination-controls (pageChange)="p=$event" id="performancePagination"></pagination-controls>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-2">
+            <button type="button" class="btn btn-labeled btn-outline-danger btn-sm" (click)="exportTable('PDF')">
+                <span class="btn-label"><i class="fa fa-file-pdf-o" aria-hidden="true"></i></span>Export To PDF</button>
+        </div>
+        <div class="col-md-2">
+            <button type="button" class="btn btn-labeled btn-outline-success btn-sm" (click)="exportTable('EXCEL')">
+                <span class="btn-label"><i class="fa fa-file-excel-o" aria-hidden="true"></i></span>Export To
+                Excel</button>
+        </div>
+    </div>
+</div>

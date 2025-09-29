@@ -1,0 +1,107 @@
+<div class="container-fluid">
+
+    <div class="row">
+        <div class="col-md-5">
+
+            <div class="h-size"><i class="fa fa-user mr-1"></i> <b>Employees Education Wise Report</b></div>
+
+        </div>
+    <div class="d-flex align-items-center mt-2">
+        <div class="m-2">
+            <td>
+                <label><strong>Branch Name</strong><span class="color-red">*</span></label>
+            </td>
+            <td style="width: 250px;">
+                <ng-multiselect-dropdown [placeholder]="'Please Select Branch'" [settings]="dropdownSettings"
+                    [data]="branchList" [(ngModel)]="selectedItems" [ngModelOptions]="{standalone: true}"
+                    (onSelect)="onItemSelect($event)" (onSelectAll)="onSelectAll($event)" 
+                    (onDeSelectAll)="onDeSelectAll($event)" (onDeSelect)="onItemDeSelect($event)">
+                </ng-multiselect-dropdown>
+                <span class="color-red" *ngIf="submitted && !isbranchNameSelected ">Branch Name cant be blank</span>
+            </td>
+        </div>
+
+        <div class="m-2">
+            <td>
+                <label><strong>Qualification Name</strong></label>
+            </td>
+            <td>
+                <select id="libraryType" name="qualification" class="form-control q-style" [(ngModel)]="qualificationModel">
+                    <option value="">Select Qualification Name</option>
+                    <option *ngFor="let data of qualificationDetailsList" [value]="data.qualificationId">
+                        {{data.qualificationName}}</option>
+                </select>
+            </td>
+        </div>
+        <div class="m-2">
+            <button type="button" id="btn_projection" style="height: 35px;" class="button btn-primary m-auto" (click)="search()">Search</button>
+        </div>
+    </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-12">
+            <table class="table table-bordered table-hover table-sm">
+                <thead class="t-head">
+                    <tr>
+                        <th *ngFor="let head of headers"><a>{{head}}</a></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let data of employeeEducationDetails | paginate :{ itemsPerPage:10,currentPage:p,id:'educationPagination'}">
+                        <td>{{data.employeeCode}}</td>
+                        <td>{{data.firstName}}</td>
+                        <td>{{data.branchName}}</td>
+
+                     
+
+                            <table class="table" *ngIf="data.employeeQualificationMaster.length>0">
+                                <thead class="t-head">
+                                    <tr>
+                                        <th *ngFor="let head of headers1"><a>{{head}}</a></th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+
+                                    <tr *ngFor="let value of data.employeeQualificationMaster">
+                                        <td>{{value.qualificationName}}</td>
+                                        <td>{{value.board}}</td>
+                                        <td>{{value.division}}</td>
+                                        <td>{{value.institute}}</td>
+                                        <td>{{value.mainSubject}}</td>
+                                        <td>{{value.marks}}</td>
+                                        <td>{{value.passingYear}}</td>
+                                        <td>{{value.weightage}}</td>
+                                        <td>{{value.isDeleted}}</td>
+                                    </tr>
+
+                                </tbody>
+                            </table>
+
+                         
+                    
+                    </tr>
+
+                    
+
+                    
+                </tbody>
+
+            </table>
+            <pagination-controls (pageChange)="p=$event" id="educationPagination"></pagination-controls>
+        </div>
+    </div>
+
+    <div class="row">
+        <!-- <div class="col-md-2">
+            <button type="button" class="btn btn-labeled btn-outline-danger btn-sm" (click)="exportTable('PDF')">
+                <span class="btn-label"><i class="fa fa-file-pdf-o" aria-hidden="true"></i></span>Export To PDF</button>
+        </div> -->
+<!--     
+        <div class="col-md-2">
+            <button type="button" class="btn btn-labeled btn-outline-success btn-sm" (click)="exportTable('PDF')">
+                <span class="btn-label"><i class="fa fa-file-excel-o" aria-hidden="true"></i></span>Export To Excel</button>
+        </div> -->
+       </div>
+
+   

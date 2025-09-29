@@ -1,0 +1,143 @@
+.menu-tabs li {
+    width: 20%;
+}
+.menu-tabs li  a{
+    height: 50px;
+    background-color: #9ecaf161;
+    color: #495057;
+    border-color: #02070c61 #02070c61 #02070c61 #02070c61;
+    padding: 14px 30px;
+}
+.nav-tabs .nav-link.active {
+    color: #2c2f35;
+    background-color: #91eae5;
+    /* border-color:#869796; */
+    border-bottom: #ffff;
+    font-size: 15px;
+}
+.company-title{
+    padding-top: 10px;
+    color: #495057;
+
+}
+label{
+    padding: 10px;
+}
+.form-group {
+    margin-bottom: 0px;
+}
+.logo-form{
+    padding:3px !important;
+    width: 50%;
+    display: inline;
+    height: 38px;
+}
+.btn-secondary{
+    margin-left: 12px;
+}
+.btn-middle{
+    margin-left: 50%;
+    margin-top: 20px;
+    margin-bottom: 15px;
+}
+.doc-heading{
+    color: #495057;
+
+}
+
+.form-field input[type="text"], .form-field input[type="password"], .form-field input[type="email"], .form-field input[type="datetime"], .form-field input[type="phone"], .form-field input[type="numeric"], .form-field select {
+    width: 100%;
+}
+
+
+input[type="text"], input[type="password"], input[type="email"], input[type="datetime"], input[type="phone"], input[type="numeric"], textarea, select {
+    border: solid 1px #3aadf0;
+    border-radius: 3px;
+    padding: 3px;
+    display: block;
+    box-shadow: 0px 0px 2px #ccc;
+    outline: none!important;
+    cursor: text;
+}
+
+.field {
+    /* margin-top: -10px; */
+}
+
+.form-field {
+    margin-bottom: 0rem;
+}
+
+.form-section > .title {
+    margin-left: -30px;
+    font-size: 1rem;
+    font-weight: bold;
+    color: #5d6170;
+    font-style: normal;
+    margin-bottom: 1.5rem;
+}
+
+.form-section > .title > .fas {
+    margin-right: 0.5rem;
+    display: inline-block;
+    width: 20px;
+}
+
+.formContainer{
+   padding-left: 20px;
+   padding-top: 10px;
+}
+   
+.margin-field {
+    margin-top: 15px;
+    margin-left: -38px;
+}
+.custom-select-box {
+    height: auto;
+    padding-left: 8px;
+    font-size: 14px;
+    cursor: pointer;
+    font-weight: 400;
+    color: #222222;
+}
+.btn-doc-middle{
+    margin-left: 28%;
+    margin-top: 20px;
+    margin-bottom: 15px;
+}
+.text-span {
+    padding-left: 0px;
+}
+.modal-header{
+    padding: 8px 18px !important;
+}
+.modal-dialog {
+    margin-left: 400px;
+    margin-top: 0px  !important;
+}
+.model {
+    margin: 4.75rem auto;
+}
+.success-alert {
+    margin-top: 10px;
+}
+.form-control::-webkit-input-placeholder { 
+    font-family: FontAwesome;
+    font-weight: normal;
+    overflow: visible;
+    vertical-align: top;
+    display: inline-block !important;
+    padding-left: 1px;
+    padding-top: 2px;
+    color: hsl(9, 17%, 24%);
+  }
+  .custom-select-box {
+    width: 100%;
+    /* font-weight: 500; */
+    background-color: white;
+    height: 38px;
+    font-size: 1.06rem;
+    color: #2d3135;
+    font-family: inherit;
+    cursor: pointer;
+  }

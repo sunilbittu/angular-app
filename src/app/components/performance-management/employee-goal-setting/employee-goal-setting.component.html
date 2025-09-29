@@ -1,0 +1,182 @@
+<div class="container-fluid">
+    <div class="d-flex align-items-center mt-2">
+        <div class="m-2">
+            <div class="h-size"><i class="fas fa-cogs"></i> <b>Employee Goal Setting</b></div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-12">
+            <table class="table table-bordered table-hover table-sm table-eg" >
+          
+                <tr>
+                      <th>Name:</th> 
+                      <td>{{employeeData?.firstName}}</td>
+                      
+                      <th>Manager:</th> 
+                      <td>{{managerName}}</td>
+
+                    </tr>
+                    <tr>
+                        <th>Designation:</th> 
+                        <td>{{employeeData?.designation.designationName}}</td>
+                        
+                        <th>Department:</th> 
+                        <td>{{employeeData?.department.departmentName}}</td>
+                      </tr>
+                      <tr>
+                        <th>Grade:</th> 
+                        <td>{{employeeData?.gradeMaster.gradeName}}</td>
+                        
+                        <th>Branch:</th> 
+                        <td>{{employeeData?.branchDetail.branchName}}</td>
+                      </tr>
+                      <tr>
+                        <th>Goal of Fy:</th> 
+                        <td>
+                                <select class="form-control" [(ngModel)]="yearModel"  style="width: 30%;"
+                                    name="year" (change)="getKpaList()">
+                                        <option value="">Please Select Year</option>
+                                        <option *ngFor="let year of investmentYear" value={{year.financialYearId}}>{{year.financialYear}}</option>
+                                </select>
+                        </td>
+                        <th>Status:</th>
+                        <td>{{statusList.managerReviewStatus}}</td>
+                      </tr>
+        
+                    <tbody>
+                        
+                    </tbody> 
+        
+            </table>
+          
+        </div>
+    </div>
+    
+    <div *ngIf="togglelist1">
+        <div class="row">
+            <div class="col-md-6">
+                <div>
+                    <label>Select kpa's</label>
+                    
+                    <ng-multiselect-dropdown [placeholder]="'Select KPA\'s'"
+                        [settings]="dropdownSettingsBranch" [data]="kpaList" [ngModelOptions]="{standalone: true}"
+                        [(ngModel)]="selectedItemsBranch"  (onSelect)="onItemSelect($event)"
+                        (onDeSelect)="OnItemDeSelect($event)"
+                        >
+                    </ng-multiselect-dropdown>
+                </div>
+                <!-- (onSelectAll)="onSelectAllBranch($event)" -->
+
+            </div>
+            <!-- <div class="col-md-6">
+                <button (click)="appendKap()" class="btn btn-primary">Choose</button>
+            </div> -->
+        </div>
+        <br>
+    <form #form="ngForm"> 
+        <!-- <div class="row" > -->
+    
+        <div class="row" *ngIf="true">
+                <div class="col-md-12">
+                
+                    <div class="h-size"><i class="fa fa-user"></i> <b>Assign Goals</b></div>
+                    <table class="table table-bordered table-hover table-sm">
+                        <thead class="t-head">
+                            <tr>
+                                <th >S.No</th>
+                                <th >Key Performance Area-Description</th>
+                                <th > Weightage in %</th>
+                                <th >Expected Results</th>
+                                <th *ngIf="designation =='Manager'" >Manager Remarks</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                                <tr *ngFor="let data of selectedItemsBranch1;let i=index">
+                                    <td>{{i+1}}</td>
+                                    <td>{{data.kpaName}}</td>
+                                    <td style="width: 10%;">
+                                        <!-- {{data.}} -->
+                                        <input type="number" class="form-control" [ngClass]="{ 'is-invalid': submitted && weightage.errors }"  [(ngModel)]='data.kpaWeighttage' required #weightage="ngModel" name="weightage{{i}}"/></td>
+                                    <td>
+                                        <textarea name="targetRemarks{{i}}" [ngClass]="{ 'is-invalid': submitted && targetRemarks.errors }" [(ngModel)]='data.targetedResults' required #targetRemarks="ngModel" class="form-control"></textarea>
+                                    </td>
+
+                                    <td *ngIf="designation =='Manager'" >
+                                        <textarea name="managerRemarks{{i}}" [ngClass]="{ 'is-invalid': submitted && managerRemarks.errors }" [(ngModel)]='data.managerRemarks' required #managerRemarks="ngModel" class="form-control"></textarea>
+                                    </td>
+    
+                                </tr>
+                            </tbody> 
+
+                    </table>
+                </div> 
+            <br> 
+            <div class="col-12">
+                <div class="alert alert-danger" *ngIf="warningAlert">
+                    <strong>Warning!</strong>Total Weightage Should be 100% .
+                  </div>
+                  <div class="alert alert-danger" *ngIf="warningAlert1">
+                    <strong>Warning!</strong>Each KPA Weightage Should be less then or equal to 50% .
+                  </div>
+                <button type="button" class="btn btn-primary btn-sm" *ngIf="togglebtn" (click)='onSubmit(form)' >
+                    <i class="fas fa-user-plus"></i> Submit
+                </button>
+                
+                <button type="button" class="btn btn-warning btn-sm" *ngIf="!togglebtn" (click)='onUpdate(uploadForm)' >
+                    <i class="fas fa-user-plus"></i> Update
+                </button>
+            </div>
+            <div class="col-12">
+                
+            </div>
+        </div>
+    </form>
+    
+    <br>
+    </div>
+    <form #uploadForm='ngForm'>
+        <div class="row" *ngIf="togglelist">
+           
+            <div class="col-md-12">
+                
+                <div class="d-flex align-items-center mt-2">
+                    <div class="m-2">
+                            <div class="h-size"><i class="fa fa-user"></i> <b>Assigned Goals List for FY</b></div>
+                    </div>
+                    <div class="flex-fill">
+                    </div>
+                    <div class="m-3" *ngIf="isnotFinalized">
+                        <button type="button" class="btn btn-warning btn-sm" (click)="editGoals()" >
+                            <i class="fas fa-edit"></i> edit
+                        </button>
+                    </div>
+                </div>
+                <table class="table table-bordered table-hover table-sm">
+                    <thead class="t-head">
+                        <tr>
+                            <th >S.No</th>
+                            <th >Key Performance Area</th>
+                            <th >Description</th>
+                            <th > Weightage in %</th>
+                            <th >Expected Results</th>
+                            <th *ngIf="designation =='Manager'" >Manager Remarks</th>
+                        </tr>
+                     
+                        </thead>
+                        <tbody>
+                            <tr *ngFor='let data of kpaTableData ;let i= index'>
+                                <td>{{i+1}}</td>
+                                <td>{{data.kpaName}}</td>
+                                <td>{{data.kpaRemarks}}</td>
+                                <td>{{data.kpaWeighttage}}</td>
+                                <td>{{data.targetedResults}}</td>
+                                <td *ngIf="designation =='Manager'" >{{data.managerRemarks}}</td>
+                            </tr>
+                        </tbody> 
+
+                </table>
+            </div>  
+            
+        </div>
+    </form>
+</div>

@@ -1,0 +1,206 @@
+<div class="container-fluid">
+  <div class="d-flex align-items-center mt-2">
+    <div class="m-2">
+      <div class="h-size"><em class="fa fa-user"></em> <strong>Document Center</strong></div>
+    </div>
+
+    <div class="col-md-1">
+      <label for="libraryType"><b>Library Type:</b></label>
+    </div>
+    <div class="col-md-2">
+      <select id="libraryType" class="form-control" name="libraryType" [(ngModel)]="selectedLibraryType" (change)="selected()">
+        <option value="" disabled>-Select Library Type-</option>
+        <option value="Manuals">Manuals</option>
+        <option value="Internal Training" selected>Internal Training</option>
+        <option value="ULN" selected>ULN</option>
+      </select>
+    </div>
+    <div class="flex-fill">
+    </div>
+    <div class="m-3"><input class="form-control rounded-pill py-2 border-right-0 border" type="search"
+      placeholder="search" id="example-search-input"  [(ngModel)]="searchModel" (keyup)="fetchDocumentCenterList()">
+  </div>
+  </div>
+  <div class="row">
+    <div class="col-md-12">
+      <table class="table table-bordered table-hover table-sm">
+        <thead class="t-head">
+          <tr>
+            <th *ngFor="let head of headers" id="header"><a>{{head}}</a></th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let data of documentCenterList; let i=index">
+            <td>{{i+1}}</td>
+            <td>{{data.libraryType}}</td>
+            <td>{{data.title}}</td>
+            <td>{{data.uploadedType}}</td>
+            <td *ngIf="(data.uploadedType=='text')">{{data.textData}}</td>
+            <td *ngIf="(data.uploadedType =='link')"><a href={{data.textData}} target="_blank">{{data.textData}}</a>
+            </td>
+            <td *ngIf="(data.uploadedType== 'file')"><a class="file-name" (click)="downloadFile(data.filePath)">
+                {{data.fileName}}</a></td>
+            <td>
+              <a title="Edit" class="icon-margin"><em class="fas fa-user-edit" data-toggle="modal"
+                  data-target="#myModal-edit" (click)="editDocumentCenter(data)"></em></a>
+              <!-- <a title="Delete" class="icon-margin"><em class="fa fa-trash" data-toggle="modal" data-target="#confirmDelete" (click)="removeDocumentCenter(data.documentCenterId)"></em></a> -->
+              <a title="Delete" class="icon-margin" mwlConfirmationPopover [popoverTitle]="popoverTitle"
+                [popoverMessage]="popoverMessage" placement="left"
+                (confirm)="deleteDocumentCenter(data.documentCenterId)" (cancel)="cancelClicked = true"><span
+                  class="fas fa-trash"></span></a>
+
+            </td>
+          </tr>
+        </tbody>
+
+      </table>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-12">
+      <button id="btn_add" type="button" class="btn btn-primary button btn-sm" data-toggle="modal"
+        data-target="#myModal-add"><em class="fas fa-user-plus"></em>Add</button>
+    </div>
+  </div>
+</div>
+
+<!-- Add Model Pop Up For Add -->
+
+<div class="modal fade common-model" id="myModal-add">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+
+      <!-- Modal Header -->
+      <div class="modal-header">
+
+        <h4 class="modal-title" head><em class="fas fa-plus mr-1"></em> / <em class="fas fa-edit mr-1"></em>Add Document
+          Center</h4>
+
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+      </div>
+
+      <!-- Modal body -->
+      <form class="m-4">
+        <div class="form-row">
+          <div class="form-group col-md-6">
+            <label for="libraryType">Library Type:<span class="color-red">*</span></label>
+            <select id="libraryType" class="form-control" name="libraryType" [(ngModel)]="libraryType">
+              <option value="">-Select Library Type-</option>
+              <option value="Manuals">Manuals</option>
+              <option value="Internal Training">Internal Training</option>
+              <option value="ULN">ULN</option>
+            </select>
+            <span class="color-red" *ngIf="submitted && libraryType == ''">Library Type
+              can't be blank
+            </span>
+          </div>
+          <div class="form-group col-md-6">
+            <label for="empDepartment">Title:<span class="color-red">*</span></label>
+            <input class="form-control form-control-sm" type="text" name="title" id="title" [(ngModel)]="title">
+            <span class="color-red" *ngIf="submitted && title == ''">Title
+              can't be blank
+            </span>
+          </div>
+        </div>
+
+        <div class="form-row">
+          <div class="form-group col-md-6">
+            <label for="uploadedType">Uploaded Type:<span class="color-red">*</span></label>
+            <select id="uploadedType" class="form-control" (change)="changeType()" name="type"
+              [(ngModel)]="uploadedType">
+              <option value="">-Select Uploaded Type-</option>
+              <option value="link">Link</option>
+              <option value="file">File</option>
+              <option value="text">Text</option>
+            </select>
+            <span class="color-red" *ngIf="submitted && uploadedType == ''">Uploaded Type
+              can't be blank
+            </span>
+          </div>
+          <div class="form-group col-md-6">
+            <label for="textData">{{modelText}} Data:<span class="color-red">*</span></label>
+            <input class="form-control form-control-sm" (change)="onFileChanged($event)" [attr.type]="typeModel"
+              name="textData" id="textData" [(ngModel)]="textData" #attachFile>
+            <span class="color-red" *ngIf="submitted && textData == ''">{{modelText}} Data
+              can't be blank
+            </span>
+          </div>
+
+          <!-- Modal footer -->
+
+      <div class="col-md-12 pull-right">
+        <button type="button" class="btn btn-danger btn-sm" (click)="clear1()">Clear</button>  
+        <button *ngIf="!uploadDocumentButton" type="button" class="btn btn-success btn-sm"
+          (click)="createDocumentCenter()">Save</button>
+        <button *ngIf="uploadDocumentButton" type="button" class="btn btn-success btn-sm"
+          (click)="createDocumentCenterFileUpload()">Upload File</button>
+      </div>
+        </div>
+      </form>
+      
+    </div>
+  </div>
+</div>
+<!-- Edit model Pop up -->
+<div class="modal fade common-model" id="myModal-edit">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+
+      <!-- Modal Header -->
+      <div class="modal-header">
+        <h4 class="modal-title" head><em class="fas fa-plus mr-1"></em> / <em class="fas fa-edit mr-1"></em>Edit
+          Document Centre</h4>
+
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+      </div>
+
+      <!-- Modal body -->
+      <form class="m-4">
+        <div class="form-row">
+          <div class="form-group col-md-6">
+            <label for="libraryType">Library Type:<span class="color-red">*</span></label>
+            <select id="libraryType" class="form-control " name="libraryType2" [(ngModel)]="libraryType2">
+              <option value="">-Select Library Type-</option>
+              <option value="Manuals">Manuals</option>
+              <option value="Internal Training">Internal Training</option>
+              <option value="ULN">ULN</option>
+
+            </select>
+          </div>
+          <div class="form-group col-md-6">
+            <label for="empDepartment">Title:<span class="color-red">*</span></label>
+            <input class="form-control form-control-sm" type="text" name="title2" id="title" [(ngModel)]="title2">
+          </div>
+        </div>
+
+        <div class="form-row">
+          <div class="form-group col-md-6">
+            <label for="uploadedType">Uploaded Type:<span class="color-red">*</span></label>
+            <select id="uploadedType" class="form-control" (change)="changeType()" name="type"
+              [(ngModel)]="uploadedType2">
+              <option value="">-Select Uploaded Type-</option>
+              <option value="link">Link</option>
+              <option value="file">File</option>
+              <option value="text">Text</option>
+
+            </select>
+          </div>
+          <div class="form-group col-md-6">
+            <label for="textData">{{modelText}} Data:<span class="color-red">*</span></label>
+            <input class="form-control form-control-sm" [attr.type]="typeModel" name="textData2" id="textData"
+              [(ngModel)]="textData2">
+          </div>
+        </div>
+      </form>
+
+      <!-- Modal footer -->
+      <div class="modal-footer">
+        <button type="button" class="btn btn-danger btn-sm" (click)="clear2()">Clear</button>
+        <button *ngIf="!uploadDocumentButton" type="button" class="btn btn-success btn-sm" data-dismiss="modal"
+          (click)="createDocumentCenter()">Update Text/Link</button>
+        <button *ngIf="uploadDocumentButton" type="button" class="btn btn-success btn-sm" data-dismiss="modal"
+          (click)="createDocumentCenterFileUpload()">Update uploadedFile</button>
+      </div>
+    </div>
+  </div>
+</div>

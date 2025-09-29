@@ -1,0 +1,229 @@
+<div class="row padding-left">
+    <div class="col-12">
+        <div class="d-flex align-items-center mt-2">
+            <div class="m-2">
+                <div class="h-size"><em class="fa fa-user"></em> <strong>Letter Template</strong></div>
+            </div>
+            <div class="flex-fill">
+            </div>
+            <div class="m-3"><input class="form-control rounded-pill py-2 border-right-0 border" type="search"
+              placeholder="search" id="example-search-input" [(ngModel)]="searchModel" (keyup)="fetchAllLetterTemplate()">
+          </div>
+        </div>
+        <div class="row">
+            <div class="col-12 pb-0">
+                <table class="table table-bordered table-hover table-sm">
+                    <thead class="t-head">
+                        <tr>
+                            <th *ngFor="let head of letterTemplateHeaders" id="headers1"><a>{{head}}</a></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let letter of letterTemplateData">
+                            <td>{{letter.templateName | titlecase}}</td>
+                            <td>{{letter.templateSubject}}</td>
+                            <td>
+                                <a title="Edit" class="icon-margin" (click)="editLetterTemplate(letter)" data-toggle="modal" data-target="#editLetterPopup"><em
+                                        class="fas fa-user-edit"></em>&nbsp;</a>
+                                <a title="Delete" class="icon-margin" (click)="removeLetterTemplate(letter)" data-toggle="modal" data-target="#confirmDelete"><em
+                                        class="fas fa-trash-alt"></em>&nbsp;</a>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+                <button type="button" title="Add New Letter Template" class="button btn-sm btn-primary" (click)="modelShow()" data-toggle="modal" data-target="#newLetterPopup">
+                <em class="fas fa-plus mr-1"></em>New Template</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- add model popup -->
+
+<div class="modal fade common-model" id="newLetterPopup">
+    <div class="modal-dialog modal-xl">
+        <div class="modal-content model">
+            <div class="modal-header " id="msg_header">
+                <h4 class="modal-title"><em class="fas fa-plus mr-1"></em> / <em class="fas fa-edit mr-1"></em>New Letter Template</h4>
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="row col-12 padding-field-bottom">
+                    <div class="col-4">
+                        <div class="form-group">
+                            <label for="templateName">Template Name :<span class="color-red">*</span></label>
+                            <input type="text" name="templateName" placeholder="Enter Template Name" [(ngModel)]="templateName1" id="templateName" class="form-control">
+                            <span class="color-red" *ngIf="submitted && templateName1 == ''">Template Name
+                            can't be blank
+                        </span>
+                        </div>
+                    </div>
+                    <div class="col-4">
+                        <div class="form-group">
+                            <label for="isDefault">Is Appointment Letter?&nbsp;</label>
+                            <input [(ngModel)]="isAppointmentLetter1" type="checkbox" />
+                        </div>
+                    </div>
+                    <div class="col-4">
+                        <div class="form-group">
+                            <label for="dateFormat">Use Date Format :</label>
+                            <select class="form-control custom-select-box" id="dateFormat" [(ngModel)]="dateFormat1">
+                                <option disabled value=''>Select Date Format</option>
+                                <option value="dd/MM/yyyy">dd/MM/yyyy</option>
+                                <option value="dd/MMM/yyyy">dd/MMM/yyyy</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                <div class="row col-12 padding-field-bottom">
+                    <div class="col-12">
+                        <label for="templateSubject"> Template Subject <span class="color-red">*</span></label>
+                        <textarea type="text" [(ngModel)]="templateSubject1" placeholder="Enter Template Subject" name="templateSubject" id="templateSubject" class="form-control textarea" rows="4" cols="140"></textarea>
+                        <span class="color-red" *ngIf="submitted && templateSubject1 == ''">Template Subject
+                            can't be blank
+                        </span>
+                    </div>
+                </div>
+                <div class="row col-12 padding-field-bottom">
+                    <div class="col-4">
+                        <table class="table table-bordered table-hover table-sm">
+                            <thead class="t-head">
+                                <tr>
+                                    <th id="employeeDetails">Employee Details</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>Employee Name</td>
+                                </tr>
+                                <tr>
+                                    <td>Employee Code</td>
+                                </tr>
+                                <tr>
+                                    <td>Gender</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="col-8">
+                        <!-- <ckeditor [(ngModel)]="ckeditorContent1"> </ckeditor> -->
+                    </div>
+                </div>
+                <div> <span class="color-red">Note : To append the employee details in the Letter Template use them in
+                    between two curley brackets. Ex: To [[Employee Name]]. </span></div>
+
+            </div>
+            <!-- Modal footer -->
+
+            <div class="modal-footer">
+                <button type="button" class="btn btn-danger btn-sm" (click)="clear()">Clear</button>
+                <button type="button" class="btn btn-success btn-sm" (click)="save()">Save</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<!-- edit model popup -->
+
+<div class="modal fade common-model" id="editLetterPopup">
+    <div class="modal-dialog modal-xl">
+        <div class="modal-content model">
+            <div class="modal-header " id="msg_header">
+                <h4 class="modal-title"><em class="fas fa-plus mr-1"></em> / <em class="fas fa-edit mr-1"></em>Update Letter Template</h4>
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="row col-12 padding-field-bottom">
+                    <div class="col-4">
+                        <div class="form-group">
+                            <label for="templateName">Template Name :<span class="color-red">*</span></label>
+                            <input type="text" name="templateName" [(ngModel)]="templateName2" id="templateName" class="form-control">
+                            <span class="color-red" *ngIf="submitted && templateName2 == ''">Template Name
+                            can't be blank
+                        </span>
+                        </div>
+                    </div>
+                    <div class="col-4">
+                        <div class="form-group">
+                            <label for="isDefault">Is Appointment Letter?&nbsp;</label>
+                            <input [(ngModel)]="isAppointmentLetter2" type="checkbox" />
+                        </div>
+                    </div>
+                    <div class="col-4">
+                        <div class="form-group ml-2">
+                            <label for="dateFormat">Use Date Format :</label>
+                            <select class="form-control" id="dateFormat" [(ngModel)]="dateFormat2">
+                                    <option value="dd/MM/yyyy">dd/MM/yyyy</option>
+                                    <option value="dd/MMM/yyyy">dd/MMM/yyyy</option>
+                                </select>
+                        </div>
+                    </div>
+                </div>
+                <div class="row col-12 padding-field-bottom">
+                    <div class="col-12">
+                        <label for="templateSubject"> Template Subject <span class="color-red">*</span></label>
+                        <textarea type="text" [(ngModel)]="templateSubject2" name="templateSubject" id="templateSubject" class="form-control textarea" cols="140"></textarea>
+                        <span class="color-red" *ngIf="submitted && templateSubject2 == ''">Template Subject
+                                can't be blank
+                            </span>
+                    </div>
+                </div>
+                <div class="row col-12 padding-field-bottom">
+                    <div class="col-4">
+                        <table class="table table-bordered table-hover table-sm">
+                            <thead class="t-head">
+                                <tr>
+                                    <th id="employeeDetails">Employee Details</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>Employee Name</td>
+                                </tr>
+                                <tr>
+                                    <td>Employee Code</td>
+                                </tr>
+                                <tr>
+                                    <td>Gender</td>
+                                </tr>
+
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="col-8">
+                        <!-- <ckeditor [(ngModel)]="ckeditorContent2"> </ckeditor> -->
+                    </div>
+                </div>
+                <div> <span class="color-red">Note : To append the employee details in the Letter Template use them in
+                    between two curley brackets. Ex: To [[Employee Name]]. </span></div>
+            </div>
+            <!-- Modal footer -->
+
+            <div class="modal-footer">
+                <button type="button" class="btn btn-danger btn-sm" (click)="clear()">Clear</button>
+                <button type="button" class="btn btn-success btn-sm" (click)="update()">Update</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<!-- Delete model Pop up -->
+
+<div class="modal fade" id="confirmDelete" role="dialog">
+    <div class="modal-dialog">
+
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-body"><button type="button" class="close" data-dismiss="modal">&times;</button>
+                <p>Are you sure you want to delete selected items?</p>
+            </div>
+            <div class="modal-footer" style="justify-content: flex-end;">
+                <button type="button" class="btn btn-default btn-sm" data-dismiss="modal">Close</button>
+                <button type="button" data-dismiss="modal" class="btn btn-primary btn-sm" (click)="deleteLetterTemplate()">Ok</button>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,175 @@
+<div class="container-fluid">
+    <div class="d-flex align-items-center mt-2">
+        <div class="m-2">
+            <div class="h-size"><i class="fa fa-user"></i> <b> Expenses List</b></div>
+        </div>
+        <div class="flex-fill">
+        </div>
+        <div class="m-3"><input class="form-control rounded-pill py-2 border-right-0 border" type="search"
+                placeholder="search" id="example-search-input" [(ngModel)]="searchModel" (ngModelChange)="search()">
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-12">
+            <table class="table table-bordered table-hover table-sm">
+                <thead class="t-head">
+                    <tr>
+                        <th class="action-width align-center"><a>#</a></th>
+                        <th *ngFor="let head of headers"><a>{{head}}</a></th>
+                        <th class="action-width align-center">Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let expense of expensesTypeList; let i=index">
+                        <td class="action-width align-center">{{i + 1}}</td>
+                        <td>{{expense.expenseCode}}</td>
+                        <td>{{expense.expenseType}}</td>
+                        <td style="width: 30%;">{{expense.description}}</td>
+                        <td>{{expense.budgetLimit}}</td>
+                        <td>{{expense.cutOffDate}}</td>
+                        <td>{{expense.approvalWorkflow.name}}</td>
+                        <td class="action-width align-center">
+                            <a title="Edit" class="icon-margin edit"><i class="fas fa-user-edit"
+                                    (click)="editExpenseType(expense)"></i></a>
+                            <a title="Delete" class="icon-margin" mwlConfirmationPopover [popoverTitle]="popoverTitle"
+                                [popoverMessage]="popoverMessage" placement="left"
+                                (confirm)="delete(expense.expenseTypeId)" (cancel)="cancelClicked = true"><span
+                                    class="fas fa-trash"></span></a>
+                        </td>
+                    </tr>
+                </tbody>
+
+            </table>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-12">
+            <button id="btn_add" type="button" data-toggle="modal" data-target="#add-expense-type"
+                class="button btn-primary button" (click)="addExpenseType()"><i class="fas fa-user-plus"></i>
+                Add</button>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade common-model" id="add-expense-type">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content model">
+            <!-- Modal Header -->
+            <div class="modal-header">
+                <div class="modal-title"><i class="fas fa-plus"></i>/ <i class="fas fa-edit ml-1"></i> Add/Edit
+                    Expense Type
+                </div>
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+            </div>
+            <!-- Modal body -->
+            <div class="modal-body">
+                <form [formGroup]="form" (ngSubmit)="submit()">
+                    <div class="row col-12 padding-field-bottom">
+                        <div class="col-2">
+                            <label>Expense Code<span class="color-red">* </span></label>
+                        </div>
+                        <div class="col-4">
+                            <input type="text" class="form-control" placeholder="Please Enter Expense Code"
+                                formControlName="expenseCode"
+                                [ngClass]="{ 'is-invalid': submitted && form_.expenseCode.errors }">
+                            <span class="color-red" *ngIf="submitted && form_.expenseCode.errors">Expense Code
+                                {{requiredErrorText}}</span>
+                        </div>
+                        <div class="col-2">
+                            <label for="expenseType">Expense Type<span class="color-red">*</span></label>
+                        </div>
+                        <div class="col-4">
+                            <input type="text" class="form-control" placeholder="Please Enter Expense Type"
+                                formControlName="expenseType"
+                                [ngClass]="{ 'is-invalid': submitted && form_.expenseType.errors }">
+                            <span class="color-red" *ngIf="submitted && form_.expenseType.errors">Expense Type
+                                {{requiredErrorText}}</span>
+                        </div>
+                    </div>
+                    <div class="row col-12 padding-field-bottom">
+                        <div class="col-2">
+                            <label>Description<span class="color-red">* </span></label>
+                        </div>
+                        <div class="col-4">
+                            <input type="text" class="form-control" placeholder="Please Enter Description"
+                                formControlName="description"
+                                [ngClass]="{ 'is-invalid': submitted && form_.description.errors }">
+                            <span class="color-red" *ngIf="submitted && form_.description.errors">Description
+                                {{requiredErrorText}}</span>
+                        </div>
+                        <div class="col-2">
+                            <label for="budgetLimit">Budget Limit<span class="color-red">*</span></label>
+                        </div>
+
+                        <div class="col-4">
+                            <input type="number" class="form-control" placeholder="Please Enter Budget Limit"
+                                formControlName="budgetLimit" (ngModelChange)="decimalFilter($event)"
+                                [ngClass]="{ 'is-invalid': submitted && form_.budgetLimit.errors }">
+                            <span class="color-red" *ngIf="submitted && form_.budgetLimit.errors">Budget Limit
+                                {{requiredErrorText}}</span>
+
+                        </div>
+                    </div>
+                    <div class="row col-12 padding-field-bottom">
+                        <div class="col-2">
+                            <label for="advance">Advance</label>
+                        </div>
+                        <div class="col-4">
+                            <input type="number" class="form-control" placeholder="Please Enter Advance"
+                                formControlName="advance" (ngModelChange)="decimalFilter($event);validateFilter($event)"
+                                [ngClass]="{ 'is-invalid': submitted && form_.advance.errors }">
+                            <span class="color-red" *ngIf="showAdvanceError">Advance amount should not be more than
+                                <b>Budget Limit</b></span>
+                            <span class="color-red" *ngIf="showBudgetLimitError">Budget Limit
+                                {{requiredErrorText}}</span>
+                        </div>
+                        <div class="col-2">
+                            <label>Cut Off Date<span class="color-red">* </span></label>
+                        </div>
+                        <div class="col-4">
+                            <select formControlName="cutOffDate" class="custom-select-box form-control"
+                                [ngClass]="{ 'is-invalid': submitted && form_.cutOffDate.errors }">
+                                <option value='' disabled>Please Select Cut Off Date</option>
+                                <option *ngFor="let cutOffDate of cutOffDateList" [value]="cutOffDate">
+                                    {{cutOffDate}}
+                                </option>
+                            </select>
+                            <span class="color-red" *ngIf="submitted && form_.cutOffDate.errors">Cut Off Date
+                                {{requiredErrorText}}</span>
+                        </div>
+                    </div>
+                    <div class="row col-12 padding-field-bottom">
+                        <div class="col-2">
+                            <label for="grade">Approval Workflow<span class="color-red">*</span></label>
+                        </div>
+
+                        <div class="col-4">
+                            <select id="grade" formControlName="approvalWorkflow" class="form-control text" required>
+                                <option value="" disabled>--Select--</option>
+                                <option *ngFor="let approval of approvalList" [value]=approval.id>
+                                    {{approval.name}}
+                                </option>
+                            </select>
+                            <span class="color-red" *ngIf="submitted && form_.approvalWorkflow.errors">approvalWorkflow
+                                {{requiredErrorText}}</span>
+                        </div>
+                    </div>
+                    <hr>
+                    <div class="row">
+                        <div class="col-md-6 pull-left">
+                            <button type="submit" id="btnComponentSave" [disabled]="submitProcessing"
+                                class="button btn-primary btn-style"><i class="fas fa-save"></i>
+                                {{submitText}} <i class="fa fa-spinner fa-spin" *ngIf="submitProcessing"
+                                    style="font-size:19px"></i></button>
+                        </div>
+                        <div class="col-md-6 pull-right" *ngIf="submitText == 'Save'">
+                            <button type="button" id="btnComponentSave" (click)="clear()"
+                                class="button btn-warning btn-style" [disabled]="submitProcessing">
+                                Clear</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

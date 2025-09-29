@@ -1,0 +1,171 @@
+<div class="container-fluid">
+    <div class="d-flex align-items-center mt-2">
+        <div class="m-2">
+            <div class="h-size"><i class="fas fa-plus"></i> <b>Add Challan</b></div>
+        </div>
+        <div class="flex-fill">
+        </div>
+        <div class="form-group form-inline">
+            <label for="select" class="mr-2">Financial Year </label>
+            <select class="form-control" [(ngModel)]="yearModel" name="year" (change)=fetchList()>
+                <option value="">Please Select Year</option>
+                <option *ngFor="let year of investmentYear" value={{year.financialYearId}}>{{year.financialYear}}
+                </option>
+            </select>
+        </div>
+        <div class="form-group form-inline">
+            <label for="select" class="mr-2">Month </label>
+            <select class="form-control" [(ngModel)]="month" name="year" (change)=fetchList()>
+                <option value="">Please Select Year</option>
+                <option value="April">April</option>
+                <option value="May">May</option>
+                <option value="June">June</option>
+                <option value="July">July</option>
+                <option value="August">August</option>
+                <option value="September">September</option>
+                <option value="October">October</option>
+                <option value="November">November</option>
+                <option value="December">December</option>
+                <option value="January">January</option>
+                <option value="February">February</option>
+                <option value="March">March</option>
+            </select>
+        </div>
+        <div class="m-2">
+            <button class="btn btn-default btn-sm back-btn" (click)="backClicked()"> Back <i
+                    class="fas fa-long-arrow-alt-left"></i></button>
+        </div>
+    </div>
+    <hr>
+    <div class="row">
+        <div class="col-md-4">
+            <h4>Challan Payment mode :</h4>
+            <label (click)="getpaymentMode('Cash/Online')">Cash/Online <input type="radio" name="payment"
+                    [(ngModel)]="cashPaymentModel"></label>
+            <label class="ml-50" (click)="getpaymentMode('Cheque')">Cheque Payment <input type="radio"
+                    name="payment"></label>
+            <table>
+                <tr>
+                    <td>Bank Name<span class="color-red">*</span></td>
+                    <td>
+                        <select class="form-control ml-50" [(ngModel)]="bankModel">
+                            <option value="">Please Select Bank</option>
+                            <option *ngFor="let bank of bankMasterList" value={{bank.bankId}}>{{bank.bankName}}</option>
+                        </select>
+                        <span span class="color-red" *ngIf="submitted && bankModel == ''">Bank Name can't
+                            be blank.</span>
+                    </td>
+                </tr>
+                <tr>
+                    <td>Challan Amount<span class="color-red">*</span></td>
+                    <td><input type="number" class="form-control ml-50" [(ngModel)]="challanAmountModel"
+                            (keyup)="addChallanAmount()">
+                        <span span class="color-red" *ngIf="submitted && challanAmountModel == ''">Bank Name can't
+                            be blank.</span>
+                    </td>
+                </tr>
+                <tr>
+                    <td>Date of Deposit<span class="color-red">*</span></td>
+                    <td>
+                        <input type="text" [(ngModel)]="dod" bsDatepicker placeholder="Please Select Date" readonly
+                            [bsConfig]="{ isAnimated: true, dateInputFormat: 'DD-MM-YYYY' }" bsDatepicker
+                            (bsValueChange)="onTdsDateValueChange($event)" placement="bottom"
+                            class="text ml-50 form-control pull-top-5" maxlength="50" />
+                        <span span class="color-red" *ngIf="submitted && dod == ''">Date of Deposit can't
+                            be blank.</span>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td>Challan No.<span class="color-red">*</span></td>
+                    <td><input type="number" class="form-control ml-50" [(ngModel)]="challanNoModel">
+                        <span span class="color-red" *ngIf="submitted && challanNoModel == ''">Challan No. can't
+                            be blank.</span>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td>Cheque No.<span class="color-red">*</span></td>
+                    <td><input type="number" class="form-control ml-50" [(ngModel)]="ChequeNoModel">
+                        <span span class="color-red" *ngIf="submitted && ChequeNoModel == ''">Cheque No. can't
+                            be blank.</span>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td>TDS Amount<span class="color-red">*</span></td>
+                    <td> <input type="number" class="form-control ml-50" [(ngModel)]="tdsAmountModel" readonly>
+                        <span span class="color-red" *ngIf="submitted && tdsAmountModel == 0">TDS Amount can't
+                            be blank.</span>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td>Education Cess<span class="color-red">*</span></td>
+                    <td><input type="number" class="form-control ml-50" [(ngModel)]="eduCessModel" readonly>
+                        <span span class="color-red" *ngIf="submitted && eduCessModel == 0">Education Cess can't
+                            be blank.</span>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td>Interest</td>
+                    <td><input type="number" class="form-control ml-50" [(ngModel)]="InterestModel"
+                            (keyup)="addInterest()"></td>
+                </tr>
+
+                <tr>
+                    <td>Other</td>
+                    <td><input type="number" class="form-control ml-50" [(ngModel)]="otherModel" (keyup)="addOthers()">
+                    </td>
+                </tr>
+
+                <tr>
+                    <td>Total Amount</td>
+                    <td><input type="number" class="form-control ml-50" [(ngModel)]="totalAmountModel"></td>
+                </tr>
+            </table>
+        </div>
+        <div class="col-md-8">
+            <table class="table table-bordered table-hover table-sm">
+                <thead class="t-head">
+                    <tr>
+                        <th *ngFor="let head of headers"><a>{{head}}</a></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let data of tdsList;let i=index">
+                        <!-- <td>{{i+1}}</td> -->
+                        <td>{{data?.Month}}</td>
+                        <td>{{data.employeeCode}}</td>
+                        <td>{{data.firstName}}</td>
+                        <td>{{data.monthly}}</td>
+                        <td>
+                            <input type="number" [(ngModel)]="data.tdsDeposit" (keyup)="changeTdsDeposit(i)">
+                        </td>
+                        <!-- <td>
+                                <input type="number" name="incometax" value={{incmTax}}  >
+                            </td> -->
+                        <td>{{data.incometax}}</td>
+                        <!-- <td>
+                                <input type="number" name="eduCess"  value={{surCharge}}  >
+                            </td> -->
+                        <!-- [value]='data.tdsDeposit*4/100' -->
+                        <td>{{data.eduCess}}</td>
+                        <td>0</td>
+                        <td>{{data.branchName}}</td>
+                        <td>{{data.departmentName}}</td>
+                    </tr>
+                </tbody>
+
+            </table>
+        </div>
+    </div>
+    <br>
+    <div class="row">
+        <div class="col-12">
+            <button class="btn btn-success" (click)="saveChallan()">Save</button>
+            <button class="btn btn-warning ml-20" (click)="clear()">Clear</button>
+        </div>
+    </div>
+</div>

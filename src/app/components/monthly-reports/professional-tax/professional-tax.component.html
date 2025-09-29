@@ -1,0 +1,168 @@
+
+ <div class="reports-box">
+  <h2 class="head-margin"> Professional Tax Reports</h2>
+  <ul>
+      <li data-toggle="modal" data-target="#myModal-filter"><em class="fas fa-file-pdf"></em>  Professional Tax </li>
+      <li data-toggle="modal" data-target="#myModal-filter"><em class="fas fa-file-pdf"></em>  Professional Tax Summary </li>
+      <li data-toggle="modal" data-target="#myModal-filter"><em class="fas fa-file-pdf"></em>  LWF Report</li>
+      <li data-toggle="modal" data-target="#myModal-filter"><em class="fas fa-file-pdf"></em>  LWF Details</li>
+      <li data-toggle="modal" data-target="#myModal-filter"><em class="fas fa-file-pdf"></em>  LWF Summary</li>
+
+      
+      
+  </ul> 
+  
+  
+  <button class="btn btn-outline-secondary" ><em class="fas fa-file-excel"></em> Export To Excel</button>
+ 
+</div>
+
+
+
+<div class="modal fade common-model" id="myModal-filter">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+    
+      <!-- Modal Header -->
+      <div class="modal-header">
+        
+        <h4 class="modal-title align-center"><em class="fas fa-filter"></em>  Employees Filter</h4>
+
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+      </div>
+      
+      <!-- Modal body -->
+      <div class="modal-body">
+        <div class="row">
+            <div class="col-md-6">
+                <div class="title-headers">
+                  <h2><em class="fas fa-filter"></em>  Master Filter</h2>
+
+                  <button type="button" class="btn btn-secondary btn-sm btn-header ml-40">Apply Filter</button>
+                  <button type="button" class="btn btn-secondary btn-sm btn-header">Clear Filter</button>
+                </div>
+                <div >
+                    <table class="model-tbl mt-10">
+                      <tr>
+                        <td><h4>Branch</h4></td>
+                        <td><input type="text" class="form-control" ></td>
+                      </tr>
+                      <tr>
+                        <td><h4>Grade</h4></td>
+                        <td><input type="text" class="form-control" ></td>
+                      </tr>
+                      <tr>
+                        <td><h4>Department</h4></td>
+                        <td><input type="text" class="form-control" ></td>
+                      </tr>
+                      <tr>
+                        <td><h4>Designation</h4></td>
+                        <td><input type="text" class="form-control" ></td>
+                      </tr>
+                      <tr>
+                        <td><h4>Division</h4></td>
+                        <td><input type="text" class="form-control" ></td>
+                      </tr>
+                      <tr>
+                        <td><h4>Cost Center</h4></td>
+                        <td><input type="text" class="form-control" ></td>
+                      </tr>
+                      <tr>
+                        <td><h4>Project</h4></td>
+                        <td><input type="text" class="form-control" ></td>
+                      </tr>
+                      <tr>
+                        <td><h4>Category</h4></td>
+                        <td><input type="text" class="form-control" ></td>
+                      </tr>
+                      <tr>
+                        <td><h4>Bank</h4></td>
+                        <td><input type="text" class="form-control" ></td>
+                      </tr>
+                    </table>
+                    <div>
+                         <h2><em class="fas fa-filter"></em>   Show Report Between Dates</h2>
+                         <div class="row">
+                           <div class="col-md-6">
+                             <label>From Date:</label>
+                             <input type="date" class="form-control">
+                           </div>
+                           <div class="col-md-6">
+                            <label>To Date:</label>
+                            <input type="date" class="form-control">
+                          </div>
+                         </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6">
+              <div>
+                <input type="text" class="form-control" >
+              </div>
+              <br>
+              <div>
+                <table>
+                  <tr>
+                    <th>
+                        <input type="checkbox" class="select-all">
+                    </th>
+                    <th>
+                        <label class="s-lable"> Select Branch</label>
+                    </th>
+                  </tr>
+                  <tr>
+                    <td><input type="checkbox" class="select-all"></td>
+                    <td><label class="s-lable">Ahmedabad</label> </td>
+                  </tr>
+                  <tr>
+                    <td><input type="checkbox" class="select-all"></td>
+                    <td><label class="s-lable">BANGALORE</label> </td>
+                  </tr>
+                  <tr>
+                    <td><input type="checkbox" class="select-all"></td>
+                    <td><label class="s-lable">Bango</label>  </td>
+                  </tr><tr>
+                    <td><input type="checkbox" class="select-all"></td>
+                    <td><label class="s-lable">Bavdhan-Sales</label></td>
+                  </tr><tr>
+                    <td><input type="checkbox" class="select-all"></td>
+                    <td><label class="s-lable">chennai</label></td>
+                  </tr><tr>
+                    <td><input type="checkbox" class="select-all"></td>
+                    <td><label class="s-lable">Delhi</label></td>
+                  </tr><tr>
+                    <td><input type="checkbox" class="select-all"></td>
+                    <td><label class="s-lable">Greater Noida</label></td>
+                  </tr><tr>
+                    <td><input type="checkbox" class="select-all"></td>
+                    <td><label class="s-lable">Grofers</label></td>
+                  </tr><tr>
+                    <td><input type="checkbox" class="select-all"></td>
+                    <td><label class="s-lable">Gurgaon</label></td>
+                  </tr><tr>
+                    <td><input type="checkbox" class="select-all"></td>
+                    <td><label class="s-lable">INDORE</label></td>
+                  </tr>
+                </table>
+              </div>
+            </div>
+
+        </div>
+      </div>
+      
+      <!-- Modal footer -->
+  <div class="row">
+      <div class="modal-footer">
+        <button type="button" class="btn btn-success" data-dismiss="modal">Ok</button>
+        <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+      </div>
+  </div>
+      
+    </div>
+</div>
+</div>
+
+
+
+
+

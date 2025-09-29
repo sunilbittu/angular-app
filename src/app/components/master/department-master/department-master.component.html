@@ -1,0 +1,155 @@
+<div class="container-fluid">
+    <div class="d-flex align-items-center mt-2">
+        <div class="m-2">
+            <div class="h-size"><i class="fa fa-user mr-1"></i> <b>Department Master</b></div>
+        </div>
+        <div class="flex-fill">
+        </div>
+        <div class="m-3"><input class="form-control rounded-pill py-2 border-right-0 border" type="search"
+            placeholder="search" id="example-search-input" value="" (keyup)="getDepartmentListBySearchParam($event)">
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-12">
+            <table class="table table-bordered table-hover table-sm">
+                <thead matSort (matSortChange)="sortData($event)" class="t-head">
+                    <tr>
+                        <!-- <th *ngFor="let head of headers"><a>{{head}}</a></th> -->
+                        <th mat-sort-header="departmentCode" ><a> Department Code</a></th>
+                        <th mat-sort-header="departmentName" ><a> Department Name</a></th>
+                        <th mat-sort-header="branchName" ><a> Branch</a></th>
+                        <th ><a> Action</a></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let department of sortedData | paginate
+                    : {
+                        itemsPerPage: itemsPerPage,
+                        currentPage: currentPage,
+                        totalItems: totalItems
+                      };let i=index">
+
+                        <td>{{department.departmentCode}}</td>
+                        <td>{{department.departmentName | titlecase}}</td>
+                        <td>{{department.branchName | titlecase}}</td>
+
+                        <td>
+
+                            <a title="Edit" class="icon-margin" (click)="editDepartment(department.departmentId)"
+                                data-toggle="modal" data-target="#employeeModelPopup"><i
+                                    class="fas fa-user-edit"></i></a>
+                            <a title="Delete" class="icon-margin" mwlConfirmationPopover [popoverTitle]="popoverTitle"
+                                [popoverMessage]="popoverMessage" placement="left"
+                                (confirm)="deleteDepartmentMasterById(department.departmentId)"
+                                (cancel)="cancelClicked = true"><span class="fas fa-trash"></span></a>
+                        </td>
+                    </tr>
+                </tbody>
+
+            </table>
+            <div class="row" *ngIf="totalElements!=0">
+                <div class="col-md-6 pull-left"><span class="show-entry">Showing
+                        <span>{{showingFrom}} to {{showingTo}} of {{totalElements}} entries</span></span>&nbsp;
+                </div>
+
+                <div class="col-md-6 pull-right" *ngIf="totalItems > 0">
+                    <pagination-controls (pageChange)="pageChanged($event)"></pagination-controls>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-12">
+            <button type="button" class="btn btn-primary btn-sm" (click)="modelShow()" data-toggle="modal"
+                data-target="#employeeModelPopup">
+                <i class="fas fa-user-plus"></i> Add
+            </button>
+        </div>
+    </div>
+
+
+    <form [formGroup]=departmentMastersForm (ngSubmit)="onSubmit()">
+        <app-employee-model-popup>
+
+
+            <h4 class="modal-title" head><i class="fas fa-plus mr-1"></i> / <i class="fas fa-edit mr-1"></i>Department
+                Details </h4>
+
+            <div body>
+
+                <div class="container">
+                    
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="departmentCode" class="col-form-label">Department Code <span
+                                        class="color-red">*</span></label>
+                                <input type="text" formControlName="departmentCode" required
+                                    class="form-control form-control-sm" id="departmentCode" (change)="changed()">
+                                    <span class="color-red" *ngIf="submitted && form_.departmentCode.errors">Department Code
+                                        {{requiredErrorText}}</span>
+                            </div>
+                        </div>
+
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="departmentName" class="col-form-label">Department Name <span
+                                        class="color-red">*</span>
+
+                                </label>
+                                <input type="text" formControlName="departmentName" required
+                                    class="form-control form-control-sm" id="departmentName" (change)="changed()">
+                                    <span class="color-red" *ngIf="submitted && form_.departmentName.errors">Department Name
+                                        {{requiredErrorText}}</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+
+                                <label for="branch" class="col-form-label">Select your branch <span
+                                        class="color-red">*</span></label>
+                                <select class="form-control form-control-sm" required id="branch"
+                                    formControlName="bepartmentBranch" (change)="changed()">
+                                    <option [ngValue]="null" selected disabled>Select your branch</option>
+                                    <option *ngFor="let branch of branchDetailsList"
+                                        [value]="branch.companyBranchDetailsId">{{branch.branchName}}</option>
+                                </select>
+                                <span class="color-red" *ngIf="submitted && form_.bepartmentBranch.errors">Branch
+                                    {{requiredErrorText}}</span>
+                            </div>
+                        </div>
+                    </div>
+                    <span class="color-red" *ngIf="exist"> Already Exist</span>
+                </div>
+            </div>
+            <div footer>
+
+
+                <div *ngIf=editButtonEnable>
+
+                    <button type="button" class="btn btn-warning btn-sm" data-dismiss="modal">Cancel</button>
+                    <button type="button" class="btn btn-success btn-sm"
+                        (click)="updateDepartmentMaster(0)">Update</button>
+
+
+                </div>
+
+                <div *ngIf=!editButtonEnable>
+
+                    <button type="button" class="btn btn-warning btn-sm" data-dismiss="modal">Cancel</button>
+                    <button type="submit" class="btn btn-primary btn-sm">Save</button>
+
+
+                </div>
+
+
+
+            </div>
+
+        </app-employee-model-popup>
+    </form>
+
+
+</div>

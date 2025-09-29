@@ -1,0 +1,260 @@
+<div class="container-fluid">
+    <div class="d-flex align-items-center mt-2">
+        <div class="m-2">
+            <div class="h-size"><em class="fa fa-user"></em> <strong> Archived Data List </strong></div>
+        </div>
+        <div class="flex-fill">
+        </div>
+    </div>
+    <br>
+    <ul class="nav nav-tabs" role="tablist">
+        <li class="nav-item">
+            <a class="active nav-link active" href="#clients" role="tab" data-toggle="tab"
+                (click)="setType('Clients')">Clients</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" href="#jobs" role="tab" data-toggle="tab" (click)="setType('Jobs')">Jobs</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" href="#candidates" role="tab" data-toggle="tab"
+                (click)="setType('Candidates')">Candidates</a>
+        </li>
+
+    </ul>
+    <!-- Tab panes -->
+    <div class="tab-content" style="margin-top: 10px;">
+        <div role="tabpanel" class="tab-pane active" id="clients">
+            <div class="row">
+                <div class="col-md-12">
+                    <table class="table table-bordered table-hover table-sm">
+                        <thead class="t-head">
+                            <tr>
+                                <th *ngFor="let head of headers"><a>{{head}}</a></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr *ngFor="let data of clientList | paginate: {
+                            itemsPerPage: itemsPerPage,
+                            currentPage: currentPage,
+                            totalItems: totalItems
+                          };let i=index">
+                                <td><a class="advance">{{data.clientName}}</a></td>
+                                <td>{{data.clientWebsite}}</td>
+                                <td>{{data.clientIndustry}}</td>
+                                <td>{{data.clientLocation}}</td>
+                                <td>{{data.clientAddress}}</td>
+                                <td>{{data.createdDate | date:'dd-MM-yyyy'}}</td>
+                                <td>{{data.jobCount}}</td>
+                                <td>{{data.clientOwner}}</td>
+                                <td>{{data.clientTeam}}</td>
+                                <td>{{data.clientStage}}</td>
+                                <td>
+                                    <a title="Archive Restore" data-toggle="modal" data-target="#client-archive-undo"
+                                        (click)="handleClient(data)" class="icon-margin"><i class="fa fa-undo"
+                                            aria-hidden="true"></i></a>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+            </div>
+            <div class="row" *ngIf="totalElements!=0">
+                <div class="col-6"><span class="show-entry">Showing
+                        <span>{{showingFrom}} to {{showingTo}} of {{totalElements}} entries</span></span>&nbsp;
+                </div>
+
+                <div class="col-6" *ngIf="totalItems > 0">
+                    <pagination-controls (pageChange)="pageChanged($event)"></pagination-controls>
+                </div>
+            </div>
+        </div>
+        <div role="tabpanel" class="tab-pane fade block" id="jobs">
+            <div class="d-flex align-items-center mt-2">
+                <div class="m-2">
+                </div>
+                <div class="flex-fill">
+                </div>
+                <!-- <div class="m-3"><input class="form-control rounded-pill py-2 border-right-0 border" type="search"
+                        placeholder="search" id="example-search-input" [(ngModel)]="jobSearchModel"
+                        (ngModelChange)="searchjob()"> -->
+            </div>
+            <table class="table table-bordered table-hover table-sm">
+                <thead class="t-head">
+                    <tr>
+                        <th *ngFor="let head of jobHeaders"><a>{{head}}</a></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let data of jobList | paginate: {
+                        itemsPerPage: jobitemsPerPage,
+                        currentPage: jobcurrentPage,
+                        totalItems: jobtotalItems
+                      };let i=index">
+                        <td><a class="advance" (click)="viewJob(data.id)">{{data.positionName}}</a></td>
+                        <td>{{data.clientName}}</td>
+                        <td>{{data.jobLocation}}</td>
+                        <td>{{data.headCount}}</td>
+                        <td>{{data.jobStage}}</td>
+                        <td>{{data.minSalary}}</td>
+                        <td>{{data.maxSalary}}</td>
+                        <td>{{data.jobOwner}}</td>
+                        <td>{{data.team ? data.team[0].displayName : ''}}</td>
+                        <td>{{data.status}}</td>
+                        <td>
+                            <a title="Archive Restore" data-toggle="modal" data-target="#job-archive-undo"
+                                (click)="handleJob(data)" class="icon-margin"><i class="fa fa-undo"
+                                    aria-hidden="true"></i></a>
+                            <!-- <a title="Edit" (click)="modelShowEditJob(data)" class="icon-margin"><i
+                                    class="fas fa-user-edit"></i></a>
+                            <a title="Delete" class="icon-margin" mwlConfirmationPopover [popoverTitle]="popoverTitle"
+                                [popoverMessage]="popoverMessage" placement="left" (confirm)="deleteJob(data.id)"
+                                (cancel)="cancelClicked = true"><span class="fas fa-trash"></span></a> -->
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+            <!-- <div class="row" *ngIf="jobtotalElements!=0">
+                <div class="col-md-6 col-sm-6 col-6"><span class="show-entry">Showing
+                        <span>{{jobshowingFrom}} to {{jobshowingTo}} of {{jobtotalElements}} entries</span></span>&nbsp;
+                </div>
+
+                <div class="col-md-6" *ngIf="jobtotalItems > 0">
+                    <pagination-controls (pageChange)="jobpageChanged($event)"></pagination-controls>
+                </div>
+            </div> -->
+        </div>
+
+        <div role="tabpanel" class="tab-pane fade block" id="candidates">
+            <div class="row">
+                <div class="col-md-12">
+                    <table class="table table-bordered table-hover table-sm">
+                        <thead class="t-head">
+                            <tr>
+                                <th *ngFor="let head of candidateheaders"><a>{{head}}</a></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr *ngFor="let data of candidateList | paginate: {
+                            itemsPerPage: itemsPerPage,
+                            currentPage: currentPage,
+                            totalItems: totalItems
+                          };let i=index">
+                                <td><a class="advance">{{data.candidateName}}</a></td>
+                                <td>{{data.candidateReference}}</td>
+                                <td>{{data.candidateLocation}}</td>
+                                <td>{{data.currentPosition}}</td>
+                                <td>{{data.currentCompany}}</td>
+                                <td>{{data.noticePeriod}}</td>
+                                <td>{{data.currentSalary}}</td>
+                                <td>{{data.expectedSalary}}</td>
+                                <td>{{data.candidateOwner}}</td>
+                                <td>{{data.createdDate | date:'dd-MM-yyyy'}}</td>
+                                <td>
+                                    <a title="Archive Restore" data-toggle="modal" data-target="#candidate-archive-undo"
+                                        (click)="handleCandidate(data)" class="icon-margin"><i class="fa fa-undo"
+                                            aria-hidden="true"></i></a>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+            </div>
+            <div class="row" *ngIf="candidatetotalElements!=0">
+                <div class="col-6"><span class="show-entry">Showing
+                        <span>{{candidateshowingFrom}} to {{candidateshowingTo}} of {{candidatetotalElements}} entries</span></span>&nbsp;
+                </div>
+
+                <div class="col-6" *ngIf="candidatetotalItems > 0">
+                    <pagination-controls (pageChange)="pageChangedCandidate($event)"></pagination-controls>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal alert-modal fade" id="client-archive-undo" role="dialog" style="display: none;">
+    <div class="modal-dialog modal-md">
+        <div class="modal-content model">
+            <div class="modal-header " id="msg_header">
+                <h4 class="modal-title">Message</h4>
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="row col-12 padding-field-bottom">
+                    <label>Are you sure you want to restore the Client?</label>
+                </div>
+                <hr>
+                <div class="row">
+                    <div class="col-md-6 pull-left">
+                        <button type="button" id="btnComponentSave" [disabled]="submitProcessing"
+                            (click)="clientArchive()" class="button btn-primary btn-style">Yes <i
+                                class="fa fa-spinner fa-spin" *ngIf="submitProcessing"
+                                style="font-size:19px"></i></button>
+                    </div>
+                    <div class="col-md-6 pull-right">
+                        <button type="button" data-dismiss="modal" class="button btn-warning btn-style">
+                            Cancel</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal alert-modal fade" id="job-archive-undo" role="dialog" style="display: none;">
+    <div class="modal-dialog modal-md">
+        <div class="modal-content model">
+            <div class="modal-header " id="msg_header">
+                <h4 class="modal-title">Message</h4>
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="row col-12 padding-field-bottom">
+                    <label>Are you sure you want to restore the Job?</label>
+                </div>
+                <hr>
+                <div class="row">
+                    <div class="col-md-6 pull-left">
+                        <button type="button" id="btnComponentSave" [disabled]="submitProcessing" (click)="jobArchive()"
+                            class="button btn-primary btn-style">Yes <i class="fa fa-spinner fa-spin"
+                                *ngIf="submitProcessing" style="font-size:19px"></i></button>
+                    </div>
+                    <div class="col-md-6 pull-right">
+                        <button type="button" data-dismiss="modal" class="button btn-warning btn-style">
+                            Cancel</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal alert-modal fade" id="candidate-archive-undo" role="dialog" style="display: none;">
+    <div class="modal-dialog modal-md">
+        <div class="modal-content model">
+            <div class="modal-header " id="msg_header">
+                <h4 class="modal-title">Message</h4>
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="row col-12 padding-field-bottom">
+                    <label>Are you sure you want to restore the Candidate?</label>
+                </div>
+                <hr>
+                <div class="row">
+                    <div class="col-md-6 pull-left">
+                        <button type="button" id="btnComponentSave" [disabled]="submitProcessing"
+                            (click)="candidateArchive()" class="button btn-primary btn-style">Yes <i
+                                class="fa fa-spinner fa-spin" *ngIf="submitProcessing"
+                                style="font-size:19px"></i></button>
+                    </div>
+                    <div class="col-md-6 pull-right">
+                        <button type="button" data-dismiss="modal" class="button btn-warning btn-style">
+                            Cancel</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

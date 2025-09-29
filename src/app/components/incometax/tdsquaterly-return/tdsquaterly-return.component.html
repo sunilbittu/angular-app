@@ -1,0 +1,76 @@
+<div class="container-fluid">
+    
+    <div class="card-block mt-4">
+        <div class="row">
+            <div class="col-md-6 offset-md-3">
+    
+                <div class="card">
+                    <div class="card-header bg-secondary">
+                     <h3 class="text-center text-white">TDS Quarterly Return</h3>
+                    </div>
+                    <div class="card-body">
+                     <table class="table table-bordered ">
+
+                        <thead>
+
+                        </thead>
+
+                        <tbody>
+
+                            <tr>
+                                <td>TDS Year</td>
+                                <td>
+                                <select name="ctl00$ContentPlaceHolder1$ddl_tds_year"  [(ngModel)]="yearModel"  class="form-control btn-outline fnt-3">
+                                        <option>Please Select Year</option>
+                                        <option *ngFor="let year of investmentYear" value={{year.financialYearId}}>{{year.financialYear}}</option>
+                                </select>
+                                </td>
+                            </tr>
+
+                            <tr>
+                                <td>File Creation Date</td>
+                                <td>
+                                    <input type="text"  bsDatepicker placeholder="Please Select Date"  readonly [bsConfig]="{ isAnimated: true, dateInputFormat: 'DD-MM-YYYY' }" bsDatepicker
+                                         (bsValueChange)="onTdsDateValueChange($event)" placement="bottom" class="text form-control pull-top-5" maxlength="50" />
+                                </td>
+                            </tr>
+
+                            <tr>
+                                <td>Choose Quarter</td>
+                                <td>
+                                    <select class="popuptxt" class="form-control" [(ngModel)]="QuarterModel" id="ddl_quarter">
+                                        <option value="0">--Select Quarter--</option>
+                                        <option value="1st QUARTER">1st Quarter</option>
+                                        <option value="2nd QUARTER">2nd Quarter</option>
+                                        <option value="3rd QUARTER">3rd Quarter</option>
+                                        <option value="4th QUARTER">4th Quarter</option>
+                                    </select>&nbsp;&nbsp;&nbsp;
+                                </td>
+                            </tr>
+
+                            <tr>
+                                <td>Previous TDS Returns<br> Acknowledgement Number</td>
+                                <td>
+                                    <input type="text" class="form-control">
+                                </td>
+                            </tr>
+
+                            <tr>
+                                <td colspan="2">
+                                    <input class="btn btn-success btn-sm" style="height: 29px; width: 130px;" id="btn_gen_return" (click)="getTdsDetails()" value="Generate E Return" type="button" />
+                                <input class="btn btn-success btn-sm ml-3"  style="height: 29px;"
+                                    value="Close" type="button" />
+                                </td>
+                               
+                            </tr>
+
+                        </tbody>
+                         
+                     </table>
+                    </div>
+                  </div>
+    
+            </div>
+        </div>
+    </div>
+</div>

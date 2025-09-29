@@ -1,0 +1,126 @@
+<div class="container-fluid h-100">
+    <div class="row h-100 margin-top-5" style="overflow: hidden;">
+
+        <div class="col-2 light-bg side-rpt-menu h-100">
+
+            <h2 class="main-head">Organization Hierarchy Chart</h2>
+            <div class="mt-3 btn-group-vertical width-auto">
+                <span class="width-auto" *ngFor="let org of orgCharts">
+                    <a class="btn btn-outline fnt-3" [ngClass]="{ 'active' : chartValue == org.name }"
+                        (click)="handleOrgReport(org.name)"> {{org.name}}</a>
+                    <li *ngFor="let child of org.data">
+                        <a [ngClass]="{ 'child-active' : childValue == child.key }" (click)="handleChild(child.key)">
+                            {{child.value}}</a>
+                    </li>
+                </span>
+                <br />
+                <!-- <a class="btn btn-outline fnt-3" [class.disabled]="chartReport.length == 0" target="_blank"
+                    (click)="exportPDF()"> <i class="fa fa-file-pdf-o excel-icon-text text-danger"></i>Export To
+                    PDF
+                </a>
+                <a class="btn btn-outline fnt-3" [class.disabled]="chartReport.length == 0" target="_blank"
+                    (click)="exportExcel()"> <i class="fas fa-file-excel excel-icon-text text-success"></i>Export To
+                    Excel
+                </a> -->
+            </div>
+        </div>
+        <div class="col-10 p-0 h-100" style="margin-top: 5px;" *ngIf="showPage">
+            <form [formGroup]="form" (ngSubmit)="submit()">
+                <div class="d-flex align-items-center mt-2 light-blue-bg">
+                    <div class="m-2">
+                        <td>
+                            <label><strong>Company</strong><span class="color-red">*</span></label>
+                        </td>
+                        <td>
+                            <select class="custom-select-box form-control" (change)="changeCompany($event)"
+                                formControlName="company">
+                                <option value=''>--Please select Company--</option>
+                                <option *ngFor="let comp of companyList" [value]="comp.companyId">
+                                    {{comp.companyName}}
+                                </option>
+                            </select>
+                            <div class="align-center"><span class="color-red"
+                                    *ngIf="submitted && form_.company.errors">Company
+                                    {{requiredErrorText}}</span></div>
+                        </td>
+                    </div>
+                    <div class="m-2" *ngIf="chartValue !== 'Organization Chart'">
+                        <select class="custom-select-box form-control" (change)="changeBranch($event)"
+                            formControlName="branch">
+                            <option value=''>--Please Select Branch--</option>
+                            <option *ngFor="let branch of branchList" [value]="branch.companyBranchDetailsId">
+                                {{branch.branchName}}
+                            </option>
+                        </select>
+                        <div class="align-center"><span class="color-red"
+                                *ngIf="submitted && form_.branch.errors">Branch
+                                {{requiredErrorText}}</span></div>
+                    </div>
+                    <div class="m-2"
+                        *ngIf="chartValue !== 'Organization Chart' && chartValue == 'Department Hierarchy'">
+                        <select formControlName="department" class="custom-select-box form-control pull-top-5">
+                            <option value="" disabled>Please select Department</option>
+                            <option *ngFor="let dept of departmentList" [value]="dept.departmentId">
+                                {{dept.departmentName}}
+                            </option>
+                        </select>
+                        <div class="align-center"><span class="color-red"
+                                *ngIf="submitted && form_.department.errors">Department
+                                {{requiredErrorText}}</span></div>
+
+                    </div>
+                    <div class="m-2">
+                        <button type="submit" id="btn_projection" class="button btn-primary m-auto">Search</button>
+                        &nbsp;
+                        <button type="button" id="btn_projection" (click)="onClick()"
+                            class="button btn-danger m-auto">Cancel</button>
+                    </div>
+                </div>
+                <div>
+                    <p *ngIf="isFormValueInvalid" class="color-red">&nbsp;&nbsp;Please Select Child value of Branch
+                        Hierarchy</p>
+                </div>
+            </form>
+            <br>
+            <div *ngIf="showChart" class="body">
+                <div *ngIf="!toggleLoader">
+                    <img src="./assets/images/loader-icon.gif" class="loader-margin img-responsive" alt="loading....">
+                </div>
+                <div *ngIf="toggleLoader">
+                    <organization-chart chartClass="myChart" [datasource]="chartReport" [nodeTemplate]="myNodeTemplate">
+                    </organization-chart>
+
+                    <ng-template #myNodeTemplate let-nodeData="datasource">
+                        <div (click)="selectNode(nodeData)">
+                            <div class="fullname">{{nodeData.name}}</div>
+                        </div>
+                    </ng-template>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal fade common-model" id="show-dept">
+    <div class="modal-dialog modal-xl">
+        <div class="modal-content model">
+            <!-- Modal Header -->
+            <div class="modal-header">
+                <div class="modal-title"> Company : <b>{{companyName}}</b></div>
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+            </div>
+            <!-- Modal body -->
+            <div class="modal-body">
+                <div class="row">
+
+                </div>
+            </div>
+            <!-- Modal footer -->
+            <hr>
+            <div class="row btn-footer">
+                <div class="col-md-6 pull-right">
+                    <button type="button" class="button btn-warning btn-style">Ok</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

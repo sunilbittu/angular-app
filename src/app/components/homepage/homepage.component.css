@@ -1,0 +1,15 @@
+table {
+    width: 100%;
+  }
+
+  .home-image{
+
+    width: 100%;
+    background-image: url('src/assets/images/hrms.jpg');
+    background-size: cover;
+   
+  }
+
+  
+
+ 

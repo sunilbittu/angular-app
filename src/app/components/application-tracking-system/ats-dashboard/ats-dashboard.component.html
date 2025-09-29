@@ -1,0 +1,257 @@
+<div class="container-fluid">
+    <div class="row ">
+        <div class="col-md-5 pt-10">
+            <h2 class="Head-counts font-size-18"><i class="fas fa-users"></i> MY PERFORMANCE</h2>
+            <h2 class="Head-counts font-size-15"><i class="fas fa-users"></i> MY JOBS</h2>
+            <div id="content">
+                <div id="left">
+                    <!-- <div id="object1">
+                        <div>
+                            <h3>MY JOBS  </h3>
+                        </div>
+                        
+                    </div> -->
+                    <div id="object2">
+                        <canvas baseChart chartType="doughnut" [data]="doughnutChartData" [labels]="doughnutChartLabels"
+                            [legend]="false">
+                        </canvas>
+                    </div>
+                </div>
+
+                <!-- <div id="right">
+                    <div id="object3">
+                        <h3>Gender Ratio</h3>
+                        <div>
+                            <table class="emp-chat">
+                                <tr>
+                                    <td> Male <a (click)="routeToEmpMaleMaster()" class="color-blue">{{maleCount}}</a>
+                                    </td>
+                                    <td> Female <a (click)="routeToEmpFemaleMaster()"
+                                            class="color-red">{{femaleCount}}</a>
+                                    </td>
+                                </tr>
+                            </table>
+                        </div>
+                    </div>
+                    <div id="object4">
+                        <canvas baseChart chartType="doughnut" [data]="genderDoughnutChartData"
+                            [labels]="genderDoughnutChartLabels" [legend]="false">
+                        </canvas>
+                    </div>
+                </div> -->
+            </div>
+            <!-- <div class="row">
+                <div class="head-container container"
+                    style="height: 50px;margin-bottom: 8px;margin-left: 15px;margin-right: 15px;">
+                    <h3 class="emp-dir"><a class="nav-emp" (click)="routeToEmpMaster()"><em class="fas fa-users"></em>
+                            Employee Directory</a>
+                    </h3>
+                </div>
+            </div> -->
+            <h2 class="Head-counts font-size-15 candidates-top"><i class="fas fa-users"></i> MY CANDIDATES</h2>
+            <div id="left">
+                <!-- <ul class="nav nav-tabs menu-tabs" role="tablist">
+                    <li class="nav-item">
+                        <a class="nav-link active" data-toggle="tab" href="#sateChart"><i class="fas fa-building"></i>
+                            My Candidates</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" data-toggle="tab" href="#BranchChart"><i class="fas fa-house-user"></i>
+                            My Jobs</a>
+                    </li>
+                    
+                </ul> -->
+               
+                
+                <div class="tab-content">
+                    <!-- State Tab -->
+                    <div id="sateChart" class="container tab-pane active">
+                        <div style="display: block">
+                            <canvas baseChart [datasets]="barChartData2" 
+                                [labels]="barChartLabels2" [options]="barChartOptions2" [legend]="barChartLegend2"
+                                [chartType]="barChartType2"></canvas>
+                        </div>
+                    </div>
+                    <!-- Branch Tab -->
+                    <!-- <div id="BranchChart" class="container tab-pane ">
+                        <div style="display: block">
+                            <canvas baseChart [datasets]="barChartData3" 
+                                [labels]="barChartLabels3" [options]="barChartOptions3" [legend]="barChartLegend3"
+                                [chartType]="barChartType3"></canvas>
+                        </div>
+                    </div> -->
+                    <!-- Department Tab -->
+                    <!-- <div id="DepartmentChart" class="container tab-pane ">
+                        <div style="display: block">
+                            <canvas baseChart [datasets]="barChartData4" 
+                                [labels]="barChartLabels4" [options]="barChartOptions4" [legend]="barChartLegend4"
+                                [chartType]="barChartType4"></canvas>
+                        </div>
+                    </div> -->
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4 pt-10">
+            <div class="row">
+                <div class="col-md-12">
+                    <!-- <h2 class="Head-counts font-size-18"><i class="fas fa-calendar-week"></i> Today Attendance
+                        Status
+                        Out Of <span class="color-red">{{totalCount}}</span></h2>
+                    <div class="progress">
+                        <div class="progress-bar progress-bar-striped progress-bar-animated"
+                            [ngStyle]="{'width': presentPercentage + '%'}"></div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6">Present <span class="color-or">{{presentPercentage}}%</span></div>
+                        <div class="col-md-6 pl-90">Absent <span class="color-red">{{absentPercentage}}%</span>
+                        </div>
+                    </div> -->
+
+                    <!-- <div class="head-container container" style="height: 50px">
+                        <h3 class="emp-dir"><a class="nav-emp" (click)="routeToEmployeesOnLeaveToday()"><em
+                                    class="fas fa-users"></em> Employee's on Leave Today <a
+                                    class="bg-red lt-a">{{todayLeaveCount}}</a></a></h3>
+                    </div> -->
+
+                    <!-- <div class="head-container container" style="height: 50px">
+                        <h3 class="emp-dir"><em class="fas fa-users"></em> Future Leave Analysis <a
+                                class="bg-red lt-a">{{futureLeaveCount}}</a></h3>
+                    </div> -->
+                    <h2 class="Head-counts font-size-18"><i class="fas fa-users"></i> NOTIFICATIONS</h2>
+                   
+                    <div class="notificatonevents-scroll" style="background-color: #dbf1fc;">
+                        <div class="media border" *ngFor="let data of annoucementList">
+                            <div class="media-body">
+                                <label class="font-size-15">{{data.announcementName}}</label>
+                                <label class="color-span font-size-18">{{data.announcementDate|date:'dd MMM'}}</label>
+                            </div>
+                        </div>
+                    </div>
+                    <br>
+                    <!-- <h3 class="Head-counts font-size-18"><i class="fas fa-calendar-times"></i> Leave Trend's </h3> -->
+                    <h2 class="Head-counts font-size-18"><i class="fas fa-users"></i> RECENT ACTIONS</h2>
+                    <div class="actionevents-scroll" style="background-color: #dbf1fc;">
+                        <h2 class="Head-counts font-size-15 candidates-top"> CANDIDATES</h2>
+                        <div class="media border" *ngFor="let data of candidateList">
+
+                            <img src="assets/images/user-avatar.png" alt="IMAGE" class="mg-8 rounded-circle"
+                                style="width:32px;">
+                            <label class="font-size-15">{{data.candidateName}} </label>
+                                                   
+                        </div>
+                        <h2 class="Head-counts font-size-15 candidates-top"> JOBS</h2>
+                        <div class="media border" *ngFor="let data of jobList">
+
+                            <img src="assets/images/user-avatar.png" alt="IMAGE" class="mg-8 rounded-circle"
+                                style="width:32px;">
+                            <label class="font-size-15">{{data.positionName}} </label>
+                                                   
+                        </div>
+                    </div>
+                    <br>
+                    <!-- <div style="display: block;">
+                    <canvas baseChart 
+                      [datasets]="barChartData"
+                      [labels]="barChartLabels"
+                      [plugins]="barChartPlugins"
+                      [chartType]="barChartType">
+                    </canvas>
+                  </div> -->
+                    <!-- <div style="display: block;">
+                        <canvas baseChart width="400" height="200" [datasets]="lineChartData" [labels]="lineChartLabels"
+                            [chartType]="lineChartType" [plugins]="lineChartPlugins">
+                        </canvas>
+                    </div> -->
+
+
+                </div>
+                <!-- <div class="col-md-5 pt-10"> -->
+
+                <!-- <div class="head-container container" style="height: 200px">
+                        <h3>Employee Attrition Ratio:</h3>
+                        <div class="row ">
+                            <div class="col-md-6">
+                                <table class="d-activity">
+                                    <tr>
+                                        <td></td>
+                                        <td></td>
+                                    </tr>
+                                    <tr>
+                                        <td></td>
+                                        <td></td>
+                                    </tr>
+                                    <tr>
+                                        <td></td>
+                                        <td></td>
+                                    </tr>
+                                </table>
+                                <br>
+                                <br>
+                                <br>
+                                <p>Yearly <span class="color-blue">0%</span></p>
+                            </div>
+                            <div class="col-md-6">
+                                <table class="d-activity">
+                                    <tr>
+                                        <td><span class="spinner-grow text-success"></span></td>
+                                        <td>New</td>
+                                    </tr>
+                                    <tr>
+                                        <td><span class="spinner-grow text-info"></span></td>
+                                        <td>Monthly</td>
+                                    </tr>
+                                    <tr>
+                                        <td><span class="spinner-grow text-warning"></span></td>
+                                        <td>Yearly</td>
+                                    </tr>
+                                </table>
+                                
+                                 <li > New</li>
+                                 <li ><span class="spinner-grow text-info"></span> Monthly</li>
+                                 <li ><span class="spinner-grow text-warning"></span> Yearly</li>
+        
+                             </ul>
+                                <p>Monthly <span class="color-blue">0%</span></p>
+                            </div>
+
+                        </div>
+                    </div> -->
+
+
+                <!-- </div> -->
+            </div>
+            <!-- <div>
+                <ul class="nav nav-tabs menu-tabs" role="tablist">
+                    <li class="nav-item nav-salary">
+                        <a class="nav-link active" data-toggle="tab" href="#process"><i class="fas fa-dollar-sign"></i>
+                            Salary Process</a>
+                    </li>
+                    <li class="nav-item nav-salary">
+                        <a class="nav-link" data-toggle="tab" href="#structre"><i class="fas fa-dollar-sign"></i> Salary
+                            Structre in Average</a>
+                    </li>
+                </ul>
+                <div class="tab-content">
+                    <div id="process" class="container tab-pane active">
+                        <div style="display: block;">
+                            <canvas baseChart [datasets]="barChartData" [labels]="barChartLabels"
+                                [plugins]="barChartPlugins" [chartType]="barChartType">
+                            </canvas>
+                        </div>
+
+                    </div>
+
+                    <div id="structre" class="container tab-pane">
+                        <div style="display: block;">
+                            <canvas baseChart [datasets]="barChartData1" [labels]="barChartLabels1"
+                                [plugins]="barChartPlugins1" [chartType]="barChartType1">
+                            </canvas>
+                        </div>
+
+                    </div>
+                </div>
+            </div> -->
+        </div>
+        
+    </div>
+</div>

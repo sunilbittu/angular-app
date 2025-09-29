@@ -1,0 +1,26 @@
+.modal-title {
+    font-size: 1rem;
+    font-weight: bold;
+    text-align: center;
+    flex: 1;
+    color: rgb(70, 68, 68);
+    font-family: sans-serif;
+}
+
+.add-title{
+    border-bottom: 1px solid #000;
+   border-bottom-style: dashed;
+}
+
+
+
+   .form-control{
+    height: 30px ;
+    margin: 5px;
+    border: 1px solid #81badb;
+}
+
+
+.btn{
+    margin: 10px;
+}

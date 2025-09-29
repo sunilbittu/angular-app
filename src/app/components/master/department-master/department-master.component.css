@@ -1,0 +1,68 @@
+.t-head {
+    background-color: #d0e5f9;
+}
+.t-header-filter {
+    position: relative;
+    box-sizing: border-box;
+    margin-top: 2px;
+    width: 100%;
+    text-align: center;
+}
+.s-control {
+    display: flex;
+    border: solid 1px #aaa;
+    background-color: #fff;
+    padding: 0.25rem;
+}
+.border {
+    border: 0px;
+    padding-bottom: 5px;
+}
+.h-padding {
+    padding-bottom: 0px;
+    color: #555;
+}
+.button {
+    border: none;
+    color: white;
+    padding: 2px 8px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 13px;
+    margin: 3px 2px;
+    cursor: pointer;
+  }
+.h-size {
+    font-size: 17px;
+    color: #555;
+}  
+
+
+
+.modal-title {
+    font-size: 1rem;
+    font-weight: bold;
+    text-align: center;
+    flex: 1;
+    color: rgb(70, 68, 68);
+    font-family: sans-serif;
+}
+
+.add-title{
+    border-bottom: 1px solid #000;
+   border-bottom-style: dashed;
+}
+
+
+
+   .form-control{
+    height: 30px ;
+    margin: 5px;
+    border: 1px solid #81badb;
+}
+
+
+.btn{
+    margin: 10px;
+}

@@ -1,0 +1,223 @@
+<div class="container-fluid">
+    <div class="d-flex align-items-center mt-2">
+        <div class="col-md-8">
+            <div class="h-size"><strong>View Applied Leaves List</strong></div>
+        </div>
+    </div>
+
+    <div class="d-flex align-items-center mt-2">
+        <div class="col-md-1">
+            <label class="control-label">Leave Year: </label>
+        </div>
+        <div class="col-md-3">
+            <select class="form-control" name="leaveYear" [(ngModel)]="yearModel">
+                <option value="" disabled>Select Year</option>
+                <option *ngFor="let data of leaveYear" [value]="data.leaveYear">{{data.leaveYear}}</option>
+            </select>
+        </div>
+        <div class="col-md-1">
+            <button type="button" class="btn btn-primary btn-sm" (click)="apply()">
+                Apply</button>
+        </div>
+        <div class="col-md-2"></div>
+        <div class="col-md-4">
+            <button type="button" class="btn btn-labeled btn-outline-danger btn-sm" (click)="exportTable('PDF')">
+                <span class="btn-label"><i class="fa fa-file-pdf-o" aria-hidden="true"></i></span>Export To
+                PDF</button>&nbsp;
+            <button type="button" class="btn btn-labeled btn-outline-success btn-sm" (click)="exportTable('EXCEL')">
+                <span class="btn-label"><i class="fa fa-file-excel-o" aria-hidden="true"></i></span>Export To
+                Excel</button>
+        </div>
+    </div>
+    <br>
+    <div class="row">
+
+        <div class="col-md-12">
+            <table class="table table-bordered table-hover table-sm">
+                <thead class="t-head">
+                    <tr class="text-center">
+                        <th *ngFor="let head of headers1"><a>{{head}}</a></th>
+                    </tr>
+
+                </thead>
+                <tbody>
+                    <tr *ngFor="let data of leavesList">
+                        <td>{{data.leaveTypeCode}}</td>
+                        <td>{{data.startDate | date:'dd-MM-YYYY'}}</td>
+                        <td>{{data.endDate | date:'dd-MM-YYYY'}}</td>
+                        <td>{{data.noOfDays}}</td>
+                        <td>{{data.status}}</td>
+                        <td>{{data.remarks}}</td>
+                        <td>{{data.modifiedBy}}</td>
+                        <td>{{data.modifiedDate | date:'dd-MM-YYYY'}}</td>
+                        <!-- <td>
+                                <a title="Edit" class="icon-margin"><i class="fas fa-user-edit" (click)="editLeaveMaster(data)"></i></a>
+                                <a  title="View" class="icon-margin" tabindex="-1" data-toggle="modal" data-target="#confirmDelete" (click)="deleteItem(data.id)"><span class="fas fa-trash-alt"></span></a>
+                             </td> -->
+                    </tr>
+                </tbody>
+
+            </table>
+        </div>
+    </div>
+
+
+    <div class="row">
+        <div class="col-md-12">
+            
+            <table class="table table-bordered table-hover table-sm">
+                <tr class="center">
+                    <th>Leave Type</th>
+                    <ng-container *ngFor="let leaveInfo of viewleavesList">
+                    <th  class="text-center" colspan="6">{{leaveInfo.leaveType}}</th></ng-container>
+                    <!-- <th>Action</th> -->
+                </tr>
+                <tr>
+                    <th>Month</th>
+                    <ng-container *ngFor="let leaveInfo of viewleavesList">
+                    <th *ngFor="let leaveMonthInfo of leaveInfo.monthlyLeaveBalanceDTO">{{leaveMonthInfo.month}}</th></ng-container>
+                    <!-- <th>Action</th> -->
+                    <!-- <td rowspan="4">
+
+                        <label for="isAdvance">Allow Advance:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</label>
+                        <input [(ngModel)]="checked" [checked]="advanceLeaves == true" (change)="checkCheckBoxvalue($event)" type="checkbox"
+                            style="height: 30px; width: 22px;" />
+    
+                        <button id="btn_add" type="button" class="btn-primary button"
+                            (click)="updateLeaves()">Update</button>
+                    </td> -->
+                </tr>
+                <tr>
+                    <th>Available</th>
+                    <ng-container *ngFor="let leaveInfo2 of viewleavesList;let a=index">
+                    <td *ngFor="let leaveInfo2 of leaveInfo2.monthlyLeaveBalanceDTO;let k=index">
+                        <input type="text"  readOnly [(ngModel)]="leaveInfo2.available" name="name2{{a}}{{k}}" class="form-control"
+                            #name2="ngModel" required />
+                    </td></ng-container>
+    
+                    <!-- <td rowspan="3">
+    
+                        <label for="isAdvance">Allow Advance:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</label>
+                        <input [(ngModel)]="checked" [checked]="advanceLeaves == true" (change)="checkCheckBoxvalue($event)" type="checkbox"
+                            style="height: 30px; width: 22px;" />
+    
+                        <button id="btn_add" type="button" class="btn-primary button"
+                            (click)="updateLeaves()">Update</button>
+                    </td> -->
+                </tr>
+                <tr>
+                    <th>Used / Expired</th>
+                    <ng-container *ngFor="let leaveInfo2 of viewleavesList;let b=index">
+                    <td *ngFor="let leaveInfo1 of leaveInfo2.monthlyLeaveBalanceDTO;let j=index">
+                        <input type="text" readOnly [(ngModel)]="leaveInfo1.used" name="name{{b}}{{j}}"
+                            class="form-control" #name="ngModel" required />
+                    </td></ng-container>
+                </tr>
+                <tr>
+                    <th>Balance</th>
+                    <ng-container *ngFor="let leaveInfo2 of viewleavesList">
+                    <td *ngFor="let leaveInfo1 of leaveInfo2.monthlyLeaveBalanceDTO;let m=index">
+                        <input type="text" readOnly value="{{leaveInfo1.balance}}" name="name{{m}}"
+                            class="form-control" required />
+                    </td></ng-container>
+                </tr>
+            </table>
+        </div>
+    </div>
+
+
+    <div *ngIf="toggleApprovedList">
+        <div class="d-flex align-items-center mt-2">
+            <div class="m-20">
+                <div class="h-size"> <b>Manage Applied Leaves List</b></div>
+            </div>
+            <div class="m-3"><input class="form-control rounded-pill py-2 border-right-0 border" type="search"
+                placeholder="Search Employee" id="example-search-input" [(ngModel)]="searchModel"
+                (ngModelChange)="getListEmployeeByManager()">
+             </div>
+        </div>
+        <br>
+        <div class="row">
+            <div class="col-md-12">
+                <table class="table table-bordered table-hover table-sm">
+                    <thead class="t-head">
+                        <tr class="text-center">
+                            <th *ngFor="let head of headers2"><a>{{head}}</a></th>
+                        </tr>
+
+                    </thead>
+                    <tbody>
+                        <tr
+                            *ngFor="let data of ManageleavesList | paginate: { itemsPerPage: 20, currentPage: p };;let i=index">
+                            <td>{{data.employeeCode}}</td>
+                            <td>{{data.firstName}} </td>
+                            <td>{{data.leaveTypeCode}}</td>
+                            <td>{{data.startDate | date:'dd-MM-YYYY'}}</td>
+                            <td>{{data.endDate | date:'dd-MM-YYYY'}}</td>
+                            <td>{{data.noOfDays}}</td>
+
+                            <td>
+                                <span *ngIf="hideStatus !==i">{{data.status}}</span>
+                                <select class="form-control" *ngIf="hideStatus==i" [(ngModel)]="statusModel"
+                                    (ngModelChange)="handleStatus()">
+                                    <option value="" disabled>Select Status</option>
+                                    <option value="Pending">Pending</option>
+                                    <option value="Approved">Approved</option>
+                                    <option value="Reject">Reject</option>
+                                </select>
+                            </td>
+                            <td>{{data.remarks}}</td>
+                            <td><a title="Download to View" class="icon-margin" target="_blank"
+                                    (click)="downloadDocumentAttachment(data.filePath, data.fileName)"><i
+                                        class="fas fa-download"></i></a></td>
+                            <td>
+                                <button class="btn btn-primary btn-sm" *ngIf="!(hideStatus ==i && toggleStatus)"
+                                    (click)="changeStatus(i)">Change Status</button>
+                                <button class="btn btn-primary btn-sm" *ngIf="hideStatus ==i "
+                                    (click)="updateStatus(data.leaveApplicationId)">Update Status</button>
+
+                            </td>
+
+                            <!-- <td>  
+                                <a title="Edit" class="icon-margin"><i class="fas fa-user-edit" (click)="editLeaveMaster(data)"></i></a>
+                                <a  title="View" class="icon-margin" tabindex="-1" data-toggle="modal" data-target="#confirmDelete" (click)="deleteItem(data.id)"><span class="fas fa-trash-alt"></span></a>
+                             </td> -->
+                        </tr>
+                    </tbody>
+
+                </table>
+                <div class="row">
+                    <div class="col-md-6 pull-left">
+                        <pagination-controls (pageChange)="p = $event"></pagination-controls>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade common-model" id="add-1">
+    <div class="modal-dialog modal-md">
+        <div class="modal-content model">
+            <div class="modal-header">
+                <div class="modal-title"><em class="fas fa-edit ml-1"></em> Remarks </div>
+                <button type="button" class="close" data-dismiss="modal" (click)="resetTheForm()">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <input type="text" class="form-control in" placeholder="Please Enter Remarks"
+                        [(ngModel)]="remarksModel">
+                </div>
+            </div>
+            <div class="row btn-footer">
+                <div class="col-md-6 pull-left">
+                    <button type="button" id="btnComponentSave" data-dismiss="modal"
+                        class="button btn-primary btn-style">Ok</button>
+                </div>
+                <div class="col-md-6 pull-right">
+                    <button type="button" class="button btn-warning btn-style" (click)="resetTheForm()">Clear</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

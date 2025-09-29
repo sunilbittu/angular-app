@@ -1,0 +1,149 @@
+
+<div class="container-fluid">
+    <div class="d-flex align-items-center mt-2">
+        <div class="m-2">
+            <div class="h-size"><i class="fa fa-user"></i> <b>Shift Master</b></div>
+        </div>
+        <div class="flex-fill">
+        </div>
+            <div class="m-3"><input class="form-control rounded-pill py-2 border-right-0 border" type="search"
+                placeholder="search" id="example-search-input" [(ngModel)]="searchModel"
+                (ngModelChange)="fetchList()">
+        </div>
+    </div>
+   
+    <div class="row">
+        <div class="col-md-12">
+            <table class="table table-bordered table-hover table-sm mt-4">
+                <thead class="t-head">
+                    <tr>
+                        <th *ngFor="let head of headers"><a>{{head}}</a></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let data of shiftList | paginate: {
+                        itemsPerPage: itemsPerPage,
+                        currentPage: currentPage,
+                        totalItems: totalItems
+                      };let i=index">
+                        <td>{{data.name}}</td>
+                        <td>{{data.descreption}}</td>
+                        <td>{{data.startTime}}</td>
+                        <td>{{data.endTime}}</td>
+                        <td>{{data.duration}}</td>
+                        <td [style.background-color]="data.shiftColour" ></td>
+                        <td>
+                            <a title="Edit" class="icon-margin" (click)="getKpaDetailsById(data.shiftId)"
+                                data-toggle="modal" data-target="#add"><i class="fas fa-user-edit"></i></a>
+                            <a title="Delete" class="icon-margin" mwlConfirmationPopover [popoverTitle]="popoverTitle"
+                                [popoverMessage]="popoverMessage" placement="left" (confirm)="deleteKpaData(data.shiftId)"
+                                (cancel)="cancelClicked = true"><span class="fas fa-trash"></span></a>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+            <div class="row" *ngIf="totalElements!=0">
+                <div class="col-md-6 col-sm-6 col-6"><span class="show-entry">Showing
+                        <span>{{showingFrom}} to {{showingTo}} of {{totalElements}} entries</span></span>&nbsp;
+                </div>
+
+                <div class="col-md-6" *ngIf="totalItems > 0">
+                    <pagination-controls (pageChange)="pageChanged($event)"></pagination-controls>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-12">
+            <button id="btn_add" type="button" class="btn btn-primary button" data-toggle="modal"
+            data-target="#add" (click)="clickAdd()"><i
+                    class="fas fa-user-plus"></i>Add</button>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade common-model" id="add">
+    <div class="modal-dialog modal-xl">
+        <div class="modal-content model">
+            <form [formGroup]=shiftForm (ngSubmit)="onSubmit()">
+                <!-- Modal Header -->
+                <div class="modal-header">
+                    <div class="modal-title"><i class="fas fa-plus"></i>/ <i class="fas fa-edit ml-1"></i>
+                        {{submitText}} Shift Master
+                    </div>
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                </div>
+                <!-- Modal body -->
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="form-row">
+                                <div class="form-group col-md-12">
+                                    <label for="name">Shift Name <span class="color-red">*</span></label>
+                                    <input type="text" formControlName="name" class="form-control " id="name"
+                                       >
+                                    <span class="color-red" *ngIf="submitted && form_.name.errors">Shift Name {{requiredErrorText}}</span>
+                                </div>
+                               
+                            </div>
+                            <div class="form-row">
+                                <div class="form-group col-md-12">
+                                    <label for="descreption">Descreption <span class="color-red">*</span></label>
+                                    <textarea  formControlName="descreption"
+                                    class="form-control " id="descreption"></textarea>
+                                    <span class="color-red" *ngIf="submitted && form_.descreption.errors">Description
+                                        {{requiredErrorText}}</span>
+                                </div>
+                            </div>
+                            <div class="form-row">
+                                <div class="form-group col-md-6">
+                                    <label for="startTime">Start Time <span
+                                            class="color-red">*</span></label>
+                                            <input formControlName="startTime" class="form-control " id="startTime" [ngxTimepicker]="picker" >
+                                            <ngx-material-timepicker [minutesGap]="minutesGap"  #picker (timeSet)="timeChange1($event)"></ngx-material-timepicker>
+                                            <span class="color-red" *ngIf="submitted && form_.startTime.errors">Start Time 
+                                                {{requiredErrorText}}</span>
+                                </div>
+                                <div class="form-group col-md-6">
+                                    <label for="endTime">End Time <span
+                                            class="color-red">*</span></label>
+                                            <input formControlName="endTime" class="form-control " id="endTime" [ngxTimepicker]="picker2"  >
+                                            <ngx-material-timepicker  [minutesGap]="minutesGap" #picker2 (timeSet)="timeChange2($event)" ></ngx-material-timepicker>
+                                            <span class="color-red" *ngIf="submitted && form_.endTime.errors">End Time 
+                                                {{requiredErrorText}}</span>
+                                </div>
+                            </div>
+                            <div class="form-row">
+                                <div class="form-group col-md-6">
+                                    <label for="duration">Duration(Hrs) </label>
+                                    <input readonly type="text" class="form-control " [value]="finalDuration" formControlName="duration" id="duration">
+                                </div>
+                                <div class="form-group col-md-6">
+                                    <label for="duration">Shift Colour  </label>
+                                    <input  class="form-control" formControlName="shiftColour"  [(colorPicker)]="color" [style.background]="color"/>
+                                   
+                                </div>
+                            </div>
+                           
+                        </div>
+                    </div>
+                </div>
+                <!-- Modal footer -->
+                <hr>
+                <div class="row btn-footer">
+                    <div class="col-md-6 pull-left">
+                        <button type="submit" id="btnComponentSave" [disabled]="submitProcessing"
+                            class="button btn-primary btn-style"><i class="fas fa-save"></i>
+                            {{submitText}} <i class="fa fa-spinner fa-spin" *ngIf="submitProcessing"
+                                style="font-size:19px"></i></button>
+                    </div>
+                    <div class="col-md-6 pull-right" *ngIf="submitText == 'Save'">
+                        <button type="button" id="btnComponentSave" (click)="resetTheForm()"
+                            class="button btn-warning btn-style" [disabled]="submitProcessing">
+                            Clear</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

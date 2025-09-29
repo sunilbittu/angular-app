@@ -1,0 +1,87 @@
+<div class="container-fluid">
+    <div class="d-flex align-items-center mt-2">
+        <div class="m-2">
+            <div class="h-size"><em class="fa fa-user mr-1"></em> <strong>Employee Vaccination Report</strong>
+            </div>
+        </div>
+        <div class="flex-fill">
+        </div>
+        <div class="m-3">
+        </div>
+    </div>
+    <br>
+    <div>
+        <div class="row">
+            <div class="form-group col-md-3">
+                <label for="empbranch">Branch <span class="color-red"></span></label>
+                <select id="empbranch" [(ngModel)]="branchModel" class="form-control" name="branch" #branch
+                    (change)="onchangeBranch(branch.value)">
+                    <option value="" disabled selected>Select Branch</option>
+                    <option *ngFor="let data of branchDetailsList" [value]="data.companyBranchDetailsId">
+                        {{data.branchName}}</option>
+                </select>
+            </div>
+            <div class="form-group col-md-3">
+                <label for="libraryType">Department <span class="color-red"></span></label>
+                <select id="libraryType" [(ngModel)]="departmentModel" name="department" class="form-control"
+                    name="department">
+                    <option value="" disabled selected>Select Department</option>
+                    <option *ngFor="let data of departmentsList" [value]="data.departmentId">
+                        {{data.departmentName}}</option>
+                </select>
+            </div>
+            <div class="form-group col-md-3">
+                <label for="vaccine">Vaccination Name </label>
+                <select id="vaccine" class="form-control" [(ngModel)]="vaccinationModel" name="vaccination"
+                    #vaccination>
+                    <option value="" disabled selected>Select Vacination Name</option>
+                    <option *ngFor="let vaccination of vaccinationList" [value]="vaccination.vaccinationName">
+                        {{vaccination.vaccinationCode}}-{{vaccination.vaccinationName}}</option>
+                </select>
+            </div>
+            <div class="form-group col-md-3 padding-top-25">
+                <button type="submit" id="btn_projection" class="button btn-primary btn-size"
+                    (click)="submit(branch.value,departmentModel,vaccinationModel)">Search</button>
+                &nbsp;
+                <button type="button" id="btn_projection" (click)="clear()"
+                    class="button btn-danger m-auto btn-size">Clear</button>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-12">
+            <table class="table table-bordered table-hover table-sm">
+                <thead class="t-head">
+                    <tr>
+                        <th *ngFor="let head of headers" id="headers1"><a>{{head}}</a></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr
+                        *ngFor="let data of filteredVaccinationReportList | paginate: { itemsPerPage: 10, currentPage: p };let i=index">
+                        <td>{{i+1}}</td>
+                        <td>{{data.employeeCode}}</td>
+                        <td>{{data.fullName}}</td>
+                        <td>{{data.vaccineName}}</td>
+                        <td>{{data.vaccineDate}}</td>
+                        <td>{{data.vaccineDoseType}}</td>
+                        <td>{{data.vaccineDetailsRemarks}}</td>
+                        <td>{{data.branchName}}</td>
+                        <td>{{data.departmentName}}</td>
+                    </tr>
+                </tbody>
+            </table>
+            <pagination-controls (pageChange)="p = $event"></pagination-controls>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-6">
+            <button type="button" class="btn btn-labeled btn-outline-danger btn-sm" (click)="exportTable('PDF')">
+                <span class="btn-label"><i class="fa fa-file-pdf-o" aria-hidden="true"></i></span>&nbsp;Export To
+                PDF</button>&nbsp;&nbsp;&nbsp;
+            <button type="button" class="btn btn-labeled btn-outline-success btn-sm" (click)="exportTable('EXCEL')">
+                <span class="btn-label"><i class="fa fa-file-excel-o" aria-hidden="true"></i></span>&nbsp;Export To
+                Excel</button>
+        </div>
+    </div>
+</div>

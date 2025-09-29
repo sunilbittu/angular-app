@@ -1,0 +1,801 @@
+<div class="container-fluid" style="margin-top: 16px;">
+
+    <div class="row">
+        <div class="col-md-12 pull-right">
+            <button class="btn btn-success btn-sm mb-3 " (click)="goBack()"><i class="fas fa-backward"></i>
+                Back</button>
+        </div>
+    </div>
+    <form [formGroup]="addEmployeeForm" (ngSubmit)="onSubmit()">
+        <div class="row">
+            <div class="col-4">
+                <table>
+                    <tr class="title">
+                        <th>
+                            <i class="fas fa-user-check"></i> Employee details
+                        </th>
+
+                    </tr>
+                    <tr>
+                        <td>
+                            <label>Employee Code<span class="color-red">*</span></label>
+                            <i class="icon fa fa-question-circle text-info fa-fw " title="Employee Code should follow this formate company prefix-code"></i>
+                        </td>
+                        <td>
+                            <input type="text" formControlName="EmployeeCode" class="text form-control" id="emp-code"
+                                maxlength="50" required readonly />
+                            <span class="color-red" *ngIf="submitted && form_.EmployeeCode.errors">Employee Code
+                                {{requiredErrorText}}</span>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <label>Salutation</label>
+                        </td>
+                        <td>
+                            <select class="form-control form-control-sm" formControlName="Title"
+                                (ngModelChange)="namechange()">
+                                <option value="" selected disabled>Select Salutation</option>
+                                <option value="Dr.">Dr.</option>
+                                <option value="Miss.">Miss.</option>
+                                <option value="Mr.">Mr.</option>
+                                <option value="Mrs.">Mrs.</option>
+                                <option value="Ms.">Ms.</option>
+                                <option value="Prof.">Prof.</option>
+                            </select>
+                        </td>
+
+                    </tr>
+                    <tr>
+                        <label>Employee Name</label>
+                        <td>
+                            <input type="text" readonly [ngModelOptions]="{standalone: true}"
+                                [(ngModel)]="employeeNameSample" placeholder="Employee Name" class="text form-control"
+                                id="emp-name" maxlength="50" />
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <label>First Name<span class="color-red">*</span></label>
+                        </td>
+                        <td>
+                            <input type="text" formControlName="FirstName" (ngModelChange)="namechange()"
+                                class="text form-control" id="first_name" maxlength="50" />
+                            <span class="color-red" *ngIf="submitted && form_.FirstName.errors">First Name
+                                {{requiredErrorText}}</span>
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td>
+                            <label>Middle Name</label>
+                        </td>
+                        <td>
+                            <input type="text" formControlName="MiddleName" (ngModelChange)="namechange()"
+                                class="text form-control" id="middle_name" maxlength="50" />
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <label>Last Name<span class="color-red">*</span></label>
+                        </td>
+                        <td>
+                            <input type="text" formControlName="LastName" (ngModelChange)="namechange()"
+                                class="text form-control" id="last_name" maxlength="50" />
+                            <span class="color-red" *ngIf="submitted && form_.LastName.errors">Last Name
+                                {{requiredErrorText}}</span>
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td>
+                            <label for="gender">Gender<span class="color-red">*</span></label>
+                        </td>
+                        <td>
+                            <select formControlName="Gender" id="gender" formControlName="Gender"
+                                class="form-control text">
+                                <option value="" selected disabled hidden>--Select--</option>
+                                <option value="female">Female</option>
+                                <option value="male">Male</option>
+                            </select>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <label>Father Name<span class="color-red">*</span></label>
+                        </td>
+                        <td>
+                            <input type="text" formControlName="FatherName" class="text form-control"
+                                id="txt_father_name" maxlength="50" required />
+                            <span class="color-red" *ngIf="submitted && form_.FatherName.errors">Father Name
+                                {{requiredErrorText}}</span>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <label>Mother Name</label>
+                        </td>
+                        <td>
+                            <input type="text" formControlName="MotherName" class="text form-control"
+                                id="txt_mother_name" maxlength="50" />
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <label>Spouse Name</label>
+                        </td>
+                        <td>
+                            <input type="text" formControlName="SpouseName" class="text form-control"
+                                id="txt_spouse_name" maxlength="50" />
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <label for="isSpouseWorking">Is Spouse Working</label>
+                        </td>
+                        <td>
+                            <div class="form-group ">
+                                <select formControlName="isSpouseWorking" id="isSpouseWorking" (change)="disbalePfblock()"
+                                    class="form-group form-control text">
+
+                                    <option [ngValue]="true">Yes</option>
+                                    <option [ngValue]="false" selected>No</option>
+                                </select>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <label>Social Status</label>
+                        </td>
+                        <td>
+                            <input type="text" formControlName="SpouseName" class="text form-control"
+                                id="txt_spouse_name" maxlength="50" />
+                        </td>
+                    </tr>
+
+                    <tr class="title">
+                        <th>
+                            <i class="fas fa-piggy-bank"></i> Bank details
+                        </th>
+
+                    </tr>
+                    <tr>
+                        <td>
+                            <label for="paymentMode">Payment Mode<span class="color-red">*</span></label>
+                        </td>
+                        <td>
+                            <select id="paymentMode" formControlName="PaymentMode" class="form-control text">
+                                <option value=null selected>--Select--</option>
+                                <option value="Bank">Bank</option>
+                                <!-- <option value="Cash">Cash</option>
+                                <option value="Cheque">Cheque</option>
+                                <option value="Happay">Happay</option> -->
+                            </select>
+                            <span class="color-red" *ngIf="submitted && form_.PaymentMode.errors">Payment Mode
+                                {{requiredErrorText}}</span>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <label for="bankName">Bank Name<span class="color-red">*</span></label>
+                        </td>
+                        <td>
+                            <select id="bankName" formControlName="BankName" class="form-control text">
+                                <option value=null selected disabled hidden>--Select--</option>
+                                <option *ngFor="let bank of bankMasterList" [value]=bank.bankId>
+                                    {{bank.bankName}}
+                                </option>
+                            </select>
+                            <span class="color-red" *ngIf="submitted && form_.BankName.errors">Bank Name
+                                {{requiredErrorText}}</span>
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td>
+                            <label>Account Number</label>
+                        </td>
+                        <td>
+                            <input type="text" formControlName="AccountNo" class="text form-control"
+                                id="txt_accountNumber" maxlength="50" />
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td>
+                            <label>IFSC Code</label>
+                        </td>
+                        <td>
+                            <input type="text" formControlName="IfscCode" class="text form-control" id="txt_IfscCode"
+                                maxlength="50" />
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td>
+                            <label>Account Name</label>
+                        </td>
+                        <td>
+                            <input type="text" formControlName="AccountName" class="text form-control"
+                                id="txt_accountName" maxlength="50" />
+                        </td>
+                    </tr>
+
+                </table>
+            </div>
+
+            <!-- 1 roww -->
+            <div class="col-4">
+                <table>
+                    <tr class="title">
+                        <th>
+                            <i class="fas fa-user-check"></i> Joining details
+                        </th>
+
+                    </tr>
+                    <tr>
+                        <td>
+                            <label>Date of Birth<span class="color-red">*</span><i></i> </label>
+                        </td>
+                        <td>
+                            <input type="text" formControlName="DataOfBirth" bsDatepicker placeholder="Date of Birth"
+                                [bsConfig]="{ isAnimated: true, dateInputFormat: 'DD-MM-YYYY' }" readonly
+                                placement="bottom" class="text form-control" id="dateOfBirth" maxlength="50" required />
+                            <span class="color-red" *ngIf="submitted && form_.DataOfBirth.errors">Date Of Birth
+                                {{requiredErrorText}}</span>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <label>Date of Joining<span class="color-red">*</span>
+                            </label>
+                        </td>
+                        <td>
+                            <input type="text" formControlName="DateOfJoining" bsDatepicker
+                                placeholder="Date of Joining"
+                                [bsConfig]="{ isAnimated: true, dateInputFormat: 'DD-MM-YYYY' }"
+                                class="text form-control" id="dateOfJoining" maxlength="50" readonly
+                                placement="bottom" />
+                            <span class="color-red" *ngIf="submitted && form_.DateOfJoining.errors">Date Of Joining
+                                {{requiredErrorText}}</span>
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td>
+                            <label>Date of Confirmation </label>
+                        </td>
+                        <td>
+                            <input type="text" formControlName="DateOfCommunications" class="text form-control"
+                                bsDatepicker placeholder="Date of Confirmation"
+                                [bsConfig]="{ isAnimated: true, dateInputFormat: 'DD-MM-YYYY' }" readonly
+                                placement="bottom" id="dateOfConformation" maxlength="50" />
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td>
+                            <label>Probation Date<span class="color-red">*</span></label>
+                        </td>
+                        <td>
+                            <input type="text" formControlName="provisionDate" bsDatepicker
+                                placeholder="Probation Date"
+                                [bsConfig]="{ isAnimated: true, dateInputFormat: 'DD-MM-YYYY' }"
+                                class="text form-control" id="provisionDate" maxlength="50" readonly
+                                placement="bottom" />
+                            <span class="color-red" *ngIf="submitted && form_.provisionDate.errors">Provision Date
+                                {{requiredErrorText}}</span>
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td>
+                            <label for="typeapplicable">Employee Type <span class="color-red">*</span> </label>
+                        </td>
+                        <td>
+                            <div class="form-group ">
+                                <select formControlName="TypeApplicable" id="typeapplicable"
+                                    (change)="disbaleTypeShowApplicable()" class="form-group form-control text">
+                                    <option [ngValue]="false" disabled selected>-- Select Employee Type --</option>
+                                    <option [ngValue]='false'>Contract</option>
+                                    <option [ngValue]="true">Part Time</option>
+                                    <option [ngValue]='true'>Permanent</option>
+                                </select>
+                                <span class="color-red" *ngIf="submitted && form_.TypeApplicable.errors">Employee Type
+                                    {{requiredErrorText}}</span>
+                            </div>
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td>
+                            <label>Contract End Date </label>
+                        </td>
+                        <td>
+                            <input type="text" formControlName="contractEndDate" class="text form-control"
+                                bsDatepicker placeholder="Contract End Date"
+                                [bsConfig]="{ isAnimated: true, dateInputFormat: 'DD-MM-YYYY' }" readonly
+                                placement="bottom" id="contractEndDate" maxlength="50" />
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <label>Date Of Issue- EP </label>
+                        </td>
+                        <td>
+                            <input type="text" formControlName="dateOfIssueEP" class="text form-control"
+                                bsDatepicker placeholder="Date Of Issue EP"
+                                [bsConfig]="{ isAnimated: true, dateInputFormat: 'DD-MM-YYYY' }" readonly
+                                placement="bottom" id="dateOfIssueEP" maxlength="50" />
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <label>Date Of Expiry- EP </label>
+                        </td>
+                        <td>
+                            <input type="text" formControlName="dateOfExpiryEP" class="text form-control"
+                                bsDatepicker placeholder="Date Of Expiry EP"
+                                [bsConfig]="{ isAnimated: true, dateInputFormat: 'DD-MM-YYYY' }" readonly
+                                placement="bottom" id="dateOfExpiryEP" maxlength="50" />
+                        </td>
+                    </tr>
+                </table>
+                <!-- </div>
+                <div > -->
+                <table id="typeShowApplicable" *ngIf=tableShow>
+                    <tr class="title">
+                        <th>
+                            <i class="fas fa-list"></i> PF / ESIC details
+                        </th>
+                    </tr>
+                    <tr>
+                        <td>
+                            <label for="pfapplicable">PF Applicable</label>
+                        </td>
+                        <td>
+                            <div class="form-group ">
+                                <select formControlName="PfApplicable" id="pfapplicable" (change)="disbalePfblock()"
+                                    class="form-group form-control text">
+
+                                    <option [ngValue]="true">Yes</option>
+                                    <option [ngValue]="false" selected>No</option>
+                                </select>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <label for="pfApplicableDate">PF Applicable Date</label>
+                        </td>
+                        <td>
+
+                            <input type="text" formControlName="PfApplicableDate" bsDatepicker
+                                placeholder="PF Applicable Date"
+                                [bsConfig]="{ isAnimated: true, dateInputFormat: 'DD-MM-YYYY' }" readonly
+                                placement="bottom" class="text form-control" id="pfApplicableDate" maxlength="50" />
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <label>PF Number</label>
+                        </td>
+                        <td>
+                            <input formControlName="PfNumber" type="text" class="text form-control" id="pfNumber"
+                                maxlength="50" />
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td>
+                            <label>UAN</label>
+                        </td>
+                        <td>
+                            <input formControlName="UanNo" type="text " class="text form-control" id="uanNo"
+                                maxlength="50" />
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td>
+                            <label>Is International Worker</label>
+                        </td>
+                        <td>
+                            <div class="form-group ">
+                                <select formControlName="internationalWorker" id="internationalWorker"
+                                    (change)="disbalePfblock()" class="form-group form-control text">
+
+                                    <option [ngValue]=true>Yes</option>
+                                    <option [ngValue]=false selected>No</option>
+                                </select>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <label for="EsicApplicable"> ESIC Applicable</label>
+                        </td>
+                        <td>
+
+                            <div class="form-group ">
+                                <select formControlName="EsicApplicable" id="EsicApplicable" (change)="disbalePfblock()"
+                                    class="form-group form-control text" (change)="disableEsicBlock()">
+
+                                    <option [ngValue]="true">Yes</option>
+                                    <option [ngValue]="false" selected>No</option>
+                                </select>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <label>ESIC Application Date</label>
+                        </td>
+                        <td>
+
+                            <input type="text" formControlName="EsicApplicableDate" bsDatepicker
+                                placeholder="ESIC Application Date"
+                                [bsConfig]="{ isAnimated: true, dateInputFormat: 'DD-MM-YYYY' }" readonly
+                                placement="bottom" class="text form-control" id="esicApplicableDate" maxlength="50" />
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <label>ESIC Number</label>
+                        </td>
+                        <td>
+                            <input type="text" formControlName="EsisNumber" class="text form-control" id="esisNumber"
+                                maxlength="50" />
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <label for="ptApplicable">PT Applicable</label>
+                        </td>
+                        <td>
+                            <select id="ptApplicable" formControlName="PtApplicable" class="form-control text">
+                                <option value="" selected disabled hidden>--Select--</option>
+                                <option [ngValue]="true">Yes</option>
+                                <option [ngValue]="false">No</option>
+
+                            </select>
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td>
+                            <label for="tdsApplicable">TDS Applicable</label>
+                        </td>
+                        <td>
+                            <select id="tdsApplicable" formControlName="TdsApplicable" class="form-control text">
+                                <option value="" selected disabled hidden>--Select--</option>
+                                <option [ngValue]="true">Yes</option>
+                                <option [ngValue]="false">No</option>
+
+                            </select>
+                        </td>
+                    </tr>
+                    <!-- </div> -->
+                    <!-- 
+                    <tr class="title">
+                        <th>
+                            <i class="fas fa-user-slash"></i> Date of Leaving
+                        </th>
+                    </tr>
+                    <tr>
+                        <td>
+                            <label for="dateOfLeaving">Date of Leaving</label>
+                        </td>
+                        <td>
+                                <select id="DataOfLeaving" (change)="leavingDatemodelPopup()" formControlName="DataOfLeaving" class="form-control text">
+                                    <option value=""  selected disabled hidden>--Select--</option>
+                                    <option [ngValue]="true">Yes</option>
+                                    <option [ngValue]="false">No</option>
+                                </select>
+                        </td>
+                    </tr> -->
+                </table>
+
+                <table id="typeParttimeApplicable" *ngIf=!tableShow>
+
+                    <tr>
+                        <td>
+                            <label>Salary Type <span class="color-red">*</span> </label>
+                        </td>
+                        <td>
+                            <input formControlName="salaryType" type="radio" name="salaryType" value="Hourly"
+                                maxlength="50" /> <label for="Hourly">Hourly</label>&nbsp;
+                            <input formControlName="salaryType" type="radio" name="salaryType" value="Day"
+                                maxlength="50" /> <label for="Day">Day</label>
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td>
+                            <label>Salary Amount {{currencyType}} <span class="color-red">*</span> </label>
+                        </td>
+                        <td>
+                            <input formControlName="salaryNumber" type="text" class="text form-control"
+                                id="salaryNumber" maxlength="50" />
+                        </td>
+                    </tr>
+                </table>
+            </div>
+            <div class="col-4">
+                <table>
+                    <tr class="title">
+                        <th>
+                            <i class="fas fa-id-badge"></i> Identity card details
+                        </th>
+
+                    </tr>
+                    <tr>
+                        <td>
+                            <label for="nationality">Nationality<span class="color-red">*</span></label>
+                        </td>
+                        <td>
+                            <select id="nationality" formControlName="Nationality" class="form-control text">
+                                <option value=null selected disabled>--Select--</option>
+                                <option *ngFor="let nationality of nationalityList" [value]="nationality.nationalityId">
+                                    {{nationality.nationalityName | titlecase}}
+                                </option>
+                            </select>
+                            <span class="color-red" *ngIf="submitted && form_.Nationality.errors">Nationality
+                                {{requiredErrorText}}</span>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <label>Tax No.</label>
+                        </td>
+                        <td>
+                            <input type="text" formControlName="PanNo" class="text form-control" id="Tax"
+                                maxlength="50" />
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td>
+                            <label>National Identity No<span class="color-red">*</span></label>
+                            <i class="icon fa fa-question-circle text-info fa-fw " title="National Identity No allows numbers , alphabets and special characters also"></i>
+                        </td>
+                        <td>
+                            <input type="number" (keyup)="aadharValidation()" formControlName="AadhaarNo"
+                                class="text form-control" id="aadhaarNo" maxlength="12" required />
+                            <!-- <span class="color-red" *ngIf="submitted && form_.AadhaarNo.errors">National Identity No
+                                {{requiredErrorText}}</span>
+                            <span class="color-red" *ngIf="aadharCantBemoreThan12">National Identity No
+                                should be 12 digits</span> -->
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td>
+                            <label>SOCSO No</label>
+                        </td>
+                        <td>
+                            <input type="text" formControlName="VoterId" class="text form-control" id="voterId"
+                                maxlength="50" />
+                        </td>
+                    </tr>
+
+                    <tr class="title">
+                        <th class="">
+                            <i class="fas fa-user-cog"></i> Employee work details
+                        </th>
+                    </tr>
+                    <tr>
+                        <td>
+                            <label for="branch">Branch<span class="color-red">*</span></label>
+                        </td>
+                        <td>
+                            <select id="branch" formControlName="Branch" class="form-control text"
+                                (change)="fetchDepartmentList()" required>
+                                <option value="" selected disabled hidden>--Select--</option>
+                                <option *ngFor="let branch of branchList" [value]="branch.companyBranchDetailsId">
+                                    {{branch.branchName | titlecase}}
+                                </option>
+                            </select>
+                            <span class="color-red" *ngIf="submitted && form_.Branch.errors">Branch
+                                {{requiredErrorText}}</span>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <label for="grade">Grade<span class="color-red">*</span></label>
+
+                        </td>
+                        <td>
+                            <select id="grade" formControlName="Grade" class="form-control text" required>
+                                <option value="" selected disabled hidden>--Select--</option>
+                                <option *ngFor="let grade of gradeList" [value]=grade.gradeId>
+                                    {{grade.gradeName | titlecase}}
+                                </option>
+                            </select>
+                            <span class="color-red" *ngIf="submitted && form_.Grade.errors">Grade
+                                {{requiredErrorText}}</span>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <label for="department">Department<span class="color-red">*</span></label>
+                        </td>
+                        <td>
+                            <select id="department" formControlName="Department" class="form-control text">
+                                <option value="" selected disabled hidden>--Select--</option>
+                                <option *ngFor="let department of departMentList" [value]=department.departmentId>
+                                    {{department.departmentName | titlecase}}
+                                </option>
+                            </select>
+                            <span class="color-red" *ngIf="submitted && form_.Department.errors">Department
+                                {{requiredErrorText}}</span>
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td>
+                            <label>Is Department Head</label>
+                        </td>
+                        <td>
+                            <div class="form-group ">
+                                <select formControlName="DepartmentHead" id="departmentHead"
+                                    class="form-group form-control text">
+                                    <option [ngValue]=true>Yes</option>
+                                    <option [ngValue]=false selected>No</option>
+                                </select>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <label for="designation">Designation<span class="color-red">*</span></label>
+                        </td>
+                        <td>
+                            <select id="designation" formControlName="Desiganion" class="form-control text">
+                                <option value="" selected disabled hidden>--Select--</option>
+                                <option *ngFor="let designation of designationList" [value]=designation.designationId>
+                                    {{designation.designationName | titlecase}}
+                                </option>
+                            </select>
+                            <span class="color-red" *ngIf="submitted && form_.Desiganion.errors">Desiganion
+                                {{requiredErrorText}}</span>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <label for="costCenteer">Cost Center<span class="color-red">*</span></label>
+                        </td>
+                        <td>
+                            <select id="costCenteer" formControlName="CostCenter" class="form-control text">
+                                <option value="" selected disabled hidden>--Select--</option>
+                                <option *ngFor="let costcenter of costCenterList" [value]=costcenter.costCenterId>
+                                    {{costcenter.costCenterName | titlecase}}
+                                </option>
+                            </select>
+                            <span class="color-red" *ngIf="submitted && form_.CostCenter.errors">CostCenter
+                                {{requiredErrorText}}</span>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <label for="project"> Project<span class="color-red">*</span></label>
+                        </td>
+                        <td>
+                            <select id="project" formControlName="Project" class="form-control text">
+                                <option value="" selected disabled hidden>--Select--</option>
+                                <option *ngFor="let project of projectList" [value]=project.projectId>
+                                    {{project.projectName | titlecase}}
+                                </option>
+                            </select>
+                            <span class="color-red" *ngIf="submitted && form_.Project.errors">Project
+                                {{requiredErrorText}}</span>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <label for="category"> Category<span class="color-red">*</span></label>
+                        </td>
+                        <td>
+                            <select id="category" formControlName="Category" class="form-control text">
+                                <option value="" selected disabled hidden>--Select--</option>
+                                <option *ngFor="let category of categoryList" [value]=category.categoryId>
+                                    {{category.categoryName | titlecase}}
+                                </option>
+                            </select>
+                            <span class="color-red" *ngIf="submitted && form_.Category.errors">Category
+                                {{requiredErrorText}}</span>
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td>
+                            <label for="reportingHead"> Reporting Head<span class="color-red">*</span></label>
+                        </td>
+                        <td>
+                            <select id="reportingHead" formControlName="ReportingHead" class="form-control text">
+                                <option value="" selected disabled hidden>--Select--</option>
+                                <option *ngFor="let reporting of reportingList" [value]=reporting.employeeId>
+                                    {{reporting.employeeCode}} - {{reporting.firstName | titlecase}} {{ reporting.lastName | titlecase}}
+                                </option>
+                            </select>
+                            <span class="color-red" *ngIf="submitted && form_.ReportingHead.errors">Reporting Head
+                                {{requiredErrorText}}</span>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <label for="reportingHead"> Approval Workflow</label>
+                        </td>
+                        <td>
+                            <select class="form-control" formControlName="workflow">
+                                <option value=null>Select Workflow</option>
+                                <option *ngFor="let data of workflowList" value={{data.id}}>{{data.name | titlecase}}</option>
+                            </select>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <label>External Reporting Head Mail<span class="color-red">*</span></label>
+                        </td>
+                        <td>
+                            <input type="text" formControlName="ExternalReportingHeadMail" class="text form-control"
+                                maxlength="50" required />
+
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <label>Client Name<span class="color-red">*</span></label>
+                        </td>
+                        <td>
+                            <input type="text" formControlName="clientName" class="text form-control"
+                                maxlength="50" required />
+
+                        </td>
+                    </tr>
+                    <br>
+                    <tr>
+                        <td class="pull-right-5" style="text-align: right;">
+                            <button class="btn btn-success btn-sm ml-60">Save&nbsp;</button>
+                        </td>
+                        <td class="pull-left-5">
+                            <button type="button" class="btn btn-warning btn-sm" (click)="reset()">&nbsp;Reset</button>
+                        </td>
+                    </tr>
+
+                </table>
+
+            </div>
+        </div>
+    </form> <!-- Modal -->
+    <div class="modal fade" id="dateOfLeaving" tabindex="-1" role="dialog" aria-labelledby="dateOfLeavingModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="dateOfLeavingModalLabel">Modal title</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+
+                    <form>
+                        <div class="form-row">
+                            <div class="gorm-group">
+
+                            </div>
+                        </div>
+
+                    </form>
+
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary btn-sm" data-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-primary btn-sm">Save changes</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

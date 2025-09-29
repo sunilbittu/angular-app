@@ -1,0 +1,549 @@
+<div class="container-fluid" *ngIf="showMainList">
+    <div class="d-flex align-items-center mt-2">
+        <div class="m-2">
+            <div class="h-size"><i class="fa fa-user mr-1"></i> <b>Salary Increments & Arrears Payment</b></div>
+        </div>
+        <div class="flex-fill">
+        </div>
+        <div class="m-3"><input class="form-control rounded-pill py-2 border-right-0 border" type="search"
+                placeholder="search" id="example-search-input" [(ngModel)]="searchModel"
+                (ngModelChange)="getAllEmployees()">
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-12">
+            <table class="table table-bordered table-hover table-sm  table-hover">
+                <thead class="t-head">
+                    <tr>
+                        <th *ngFor="let head of headers"><a>{{head}}</a></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let employee of employeeList | paginate: {
+                        itemsPerPage: itemsPerPage,
+                        currentPage: currentPage,
+                        totalItems: totalItems
+                      };let i=index"
+                        (click)="clickedRow(i,employee.employeeId, employee.salaryStatus, employee.ssresetRequired)"
+                        [class.active]="i === highlightRow">
+                        <td>{{employee.employeeCode}}</td>
+                        <td>{{employee.firstName | titlecase}} {{employee.lastName | titlecase}}</td>
+                        <td>{{employee.branchName}}</td>
+                        <td>{{employee.departmentName}}</td>
+                        <td>{{employee.designationName}}</td>
+                        <td>{{employee.divisionName}}</td>
+                        <td class="action-width align-center"
+                            *ngIf="employee.salaryStatus && !employee.ssresetRequired"><i
+                                class="fa fa-check-circle green" aria-hidden="true"></i>
+                        </td>
+                        <td class="action-width align-center" *ngIf="employee.salaryStatus && employee.ssresetRequired">
+                            <i class="fa fa-undo"></i>
+                        </td>
+                        <td class="action-width align-center" *ngIf="!employee.salaryStatus"><i
+                                class="fa fa-times-circle" aria-hidden="true"></i></td>
+                    </tr>
+                </tbody>
+            </table>
+            <div class="row" *ngIf="totalElements!=0">
+                <div class="col-md-6 pull-left"><span class="show-entry">Showing
+                        <span>{{showingFrom}} to {{showingTo}} of {{totalElements}} entries</span></span>&nbsp;
+                </div>
+
+                <div class="col-md-6 pull-right" *ngIf="totalItems > 0">
+                    <pagination-controls (pageChange)="pageChanged($event)"></pagination-controls>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="container-fluid" *ngIf="!showMainList">
+    <div class="row">
+        <div class="col-12" style="text-align: right;padding-top: 10px;">
+            <button class="btn btn-default btn-sm back-btn margin-right-10" (click)="back()"> Back <i
+                    class="fas fa-long-arrow-alt-left"></i></button>
+        </div>
+    </div>
+    <div>
+        <div class="d-flex align-items-center mt-2">
+            <div class="m-2">
+                <div class="h-size"><i class="fa fa-user mr-1"></i> <b>Salary Increments</b></div>
+            </div>
+            <div class="flex-fill">
+            </div>
+            <div class="m-3"></div>
+        </div>
+        <div class="row">
+            <div class="col-md-12">
+                <table class="table table-bordered table-hover table-sm  table-hover">
+                    <thead class="t-head">
+                        <tr>
+                            <th *ngFor="let head of incrementHeaders"><a>{{head}}</a></th>
+                            <th class="action-width align-center"> Is Latest Increment </th>
+                            <th class="action-width align-center"> Action </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let data of incrementsList | paginate: {
+                        itemsPerPage: itemsPerPage1,
+                        currentPage: currentPage1,
+                        totalItems: totalItems1
+                      };let i=index">
+                            <td>{{data.employeeId.employeeCode}}</td>
+                            <td>{{data.employeeId.firstName | titlecase}} {{data.employeeId.lastName | titlecase}}</td>
+                            <td style="padding-left: 10px;">
+                                <a title="Show Components" (click)="fetchComponents(data.earnings)" data-toggle="modal"
+                                    data-target="#show_components" class="icon-margin"><i
+                                        class="fa fa-address-card fa-lg"></i></a>
+                            </td>
+                            <td>{{data.year}}-{{data.month}}</td>
+                            <td class="action-width align-center" *ngIf="data.isLatestIncrement"><i
+                                    class="fa fa-check-circle green" aria-hidden="true"></i>
+                            </td>
+                            <td class="action-width align-center" *ngIf="!data.isLatestIncrement"><i
+                                    class="fa fa-times-circle" aria-hidden="true"></i></td>
+                            <td class="action-width align-center">
+                                <a title="Edit" (click)="incrementEdit(data)" class="icon-margin"><i
+                                        class="fas fa-user-edit"></i></a>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+                <div class="row" *ngIf="totalElements1!=0">
+                    <div class="col-md-6 pull-left"><span class="show-entry">Showing
+                            <span>{{showingFrom1}} to {{showingTo1}} of {{totalElements1}} entries</span></span>&nbsp;
+                    </div>
+
+                    <div class="col-md-6 pull-right" *ngIf="totalItems1 > 0">
+                        <pagination-controls (pageChange)="pageChanged1($event)"></pagination-controls>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-12">
+                <button type="button" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#salary_inc_modal"
+                    (click)="clickSalaryIncrements()">
+                    <i class="fas fa-user-plus"></i> Add
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <div>
+        <div class="d-flex align-items-center mt-2">
+            <div class="m-2">
+                <div class="h-size"><i class="fa fa-user mr-1"></i> <b>Arrears Payment</b></div>
+            </div>
+            <div class="flex-fill">
+            </div>
+            <div class="m-3"></div>
+        </div>
+        <div class="row">
+            <div class="col-md-12">
+                <table class="table table-bordered table-hover table-sm  table-hover">
+                    <thead class="t-head">
+                        <tr>
+                            <th *ngFor="let head of arrearHeaders"><a>{{head}}</a></th>
+                            <th class="action-width align-center"> Action </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let data of arrearsList | paginate: {
+                        itemsPerPage: itemsPerPage2,
+                        currentPage: currentPage2,
+                        totalItems: totalItems2
+                      };let i=index">
+                            <td>{{data.employeeId.employeeCode}}</td>
+                            <td>{{data.employeeId.firstName | titlecase}} {{data.employeeId.lastName | titlecase}}</td>
+                            <td>{{data.arrearsAmount}}</td>
+                            <td>{{data.paymentType}}</td>
+                            <td>{{data.installments}}</td>
+                            <td>{{data.installmentAmount}}</td>
+                            <td style="padding-left: 10px;">
+                                <a title="Show Paid Installments" (click)="fetchPaidInstallments(data.id)"
+                                    data-toggle="modal" data-target="#show_arrears_ins" class="icon-margin"><i
+                                        class="fa fa-address-card fa-lg"></i></a>
+                            </td>
+                            <td class="action-width align-center">
+                                <a title="Edit" (click)="arrearstEdit(data)" class="icon-margin"><i
+                                        class="fas fa-user-edit"></i></a>&nbsp;
+                                <a *ngIf="data.paymentType == 'Partial' && data.paidInstallments >0"
+                                    title="Paid Installments" data-toggle="modal"
+                                    data-target="#arrears_installment_modal" (click)="payInstallments(data)"
+                                    class="icon-margin"><i class="fa fa-credit-card" aria-hidden="true"></i></a>
+                                <a *ngIf="data.paymentType == 'Partial' && data.paidInstallments == 0"
+                                    title="Paid Installments" aria-disabled="true" class="icon-margin back-btn"><i
+                                        class="fa fa-credit-card" aria-hidden="true"></i></a>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+                <div class="row" *ngIf="totalElements2!=0">
+                    <div class="col-md-6 pull-left"><span class="show-entry">Showing
+                            <span>{{showingFrom2}} to {{showingTo2}} of {{totalElements2}} entries</span></span>&nbsp;
+                    </div>
+
+                    <div class="col-md-6 pull-right" *ngIf="totalItems2 > 0">
+                        <pagination-controls (pageChange)="pageChanged2($event)"></pagination-controls>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-12">
+                <button type="button" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#arrears_modal"
+                    (click)="clickArrearsPayment()">
+                    <i class="fas fa-user-plus"></i> Add
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal alert-modal fade" id="show_components" role="dialog" style="display: none;">
+    <div class="modal-dialog modal-md">
+        <div class="modal-content model">
+            <div class="modal-header " id="msg_header">
+                <h4 class="modal-title">Salary Component</h4>
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="col-md-12">
+                    <table class="table table-bordered table-hover table-sm">
+                        <thead class="t-head">
+                            <tr>
+                                <th>Salary Component </th>
+                                <th>Current Amount</th>
+                                <th>Increment Amount</th>
+                                <th>New Amount</th>
+                                <th>% of Hike</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr *ngFor="let data of earningComponent; let i=index">
+                                <td>{{data.componentName | titlecase}}</td>
+                                <td>{{data.componentValue}}</td>
+                                <td>{{data.incrementAmount}}</td>
+                                <td>{{data.newAmount}}</td>
+                                <td>{{data.percentage}}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal fade common-model" id="salary_inc_modal" style="margin-top:40px;">
+    <div class="modal-dialog modal-xl">
+        <div class="modal-content">
+            <!-- <form > -->
+            <div class="modal-header">
+                <div class="modal-title"><i class="fas fa-plus"></i>/ <i class="fas fa-edit ml-1"></i> Salary Increment
+                </div>
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+            </div>
+            <div class="modal-body margin-20">
+                <div class="row col-12">
+                    <table class="table table-striped table-bordered">
+                        <thead class="t-head">
+                            <tr>
+                                <th>Salary Component </th>
+                                <th>Current Amount</th>
+                                <th>Increment Amount</th>
+                                <th>New Amount</th>
+                                <th>% of Hike</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr *ngFor="let data of earningList;let j=index">
+                                <td>{{data.componentName | titlecase}}</td>
+                                <td><input type="number" [(ngModel)]="data.componentValue" name="name{{j}}"
+                                        class="form-control" #name="ngModel" required readonly /></td>
+                                <td><input type="number" [(ngModel)]="data.incrementAmount" name="name{{j}}"
+                                        (ngModelChange)="changeAmount(j, data.incrementAmount, data.componentValue)"
+                                        class="form-control" #name="ngModel" required /></td>
+                                <td><input type="number" [(ngModel)]="data.newAmount" name="name{{j}}"
+                                        class="form-control" #name="ngModel" readonly /></td>
+                                <td><input type="number" [(ngModel)]="data.percentage" name="name{{j}}"
+                                        class="form-control" #name="ngModel" required readonly /></td>
+                            </tr>
+                        </tbody>
+                        <tfoot>
+                            <td>
+                                <h3>Overall: </h3>
+                            </td>
+                            <td><input type="text" [(ngModel)]="sumOfOldAmount" name="sumOfOldAmount"
+                                    class="form-control" #name="ngModel" readonly /></td>
+                            <td><input type="text" [(ngModel)]="sumOfIncrementedAmount" name="sumOfIncrementedAmount"
+                                    class="form-control" #name="ngModel" readonly /></td>
+                            <td><input type="text" [(ngModel)]="sumOfNewAmount" name="sumOfNewAmount"
+                                    class="form-control" #name="ngModel" readonly /></td>
+                            <td><input type="text" [(ngModel)]="sumOfPercentage" name="sumOfPercentage"
+                                    class="form-control" #name="ngModel" required readonly /></td>
+                        </tfoot>
+                    </table>
+                    <br>
+                    <div>
+                        <h3><strong><u>Applicable From</u></strong></h3>
+                    </div>
+                    <div class="row col-12 padding-field-bottom">
+                        <div class="col-4">
+                            <label>&nbsp;Year <span class="color-red">*</span> </label>
+                            <select class="form-control" name="leaveYear" [(ngModel)]="selectedYear">
+                                <option value="" disabled>Select Year</option>
+                                <option *ngFor="let data of years" [value]="data.leaveYear">{{data.leaveYear}}</option>
+                            </select>
+                            <div *ngIf="selectedYear == '' && submitted" class="color-red pull-left-5">
+                                &nbsp;<strong>Year Can't be blank</strong></div>
+                        </div>
+                        <div class="col-4">
+                            <label>&nbsp;Month <span class="color-red">*</span> </label>
+                            <select class="form-control" name="month" [(ngModel)]="selectedMonth">
+                                <option value='' [disabled]="true">Select Month</option>
+                                <option *ngFor="let month of months" [value]="month">{{month}}</option>
+                            </select>
+                            <div *ngIf="selectedMonth == ''&& submitted" class="color-red pull-left-5">
+                                &nbsp;<strong>Month Can't be blank</strong></div>
+                        </div>
+                        <div class="col-4" style="padding-top: 35px;">
+                            <input type="checkbox" id="isLatest" [(ngModel)]="isLatestIncrement" name="isLatest"
+                                value="isLatest">
+                            <label for="isLatest">&nbsp; Make this User's Latest Increment</label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row btn-footer">
+                <div class="col-md-6 pull-left">
+                    <button type="submit" [disabled]="submitProcessing" id="btnComponentSave"
+                        *ngIf="incrementSubmitText == 'Create'" (click)="saveSalaryIncrement()"
+                        class="button btn-primary btn-style"><i class="fas fa-save"></i>
+                        Create</button>
+
+                    <button type="submit" [disabled]="submitProcessing" id="btnComponentSave"
+                        *ngIf="incrementSubmitText != 'Create'" (click)="updateSalaryIncrement()"
+                        class="button btn-primary btn-style"><i class="fas fa-save"></i>
+                        Update</button>
+                </div>
+                <div class="col-md-6 pull-right" *ngIf="incrementSubmitText == 'Create'">
+                    <button type="button" class="button btn-warning btn-style" (click)="reset()">Clear</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade common-model" id="arrears_modal" style="margin-top:40px;">
+    <div class="modal-dialog modal-xl">
+        <div class="modal-content">
+            <!-- <form > -->
+            <div class="modal-header">
+                <div class="modal-title"><i class="fas fa-plus"></i>/ <i class="fas fa-edit ml-1"></i> Arrears Payment
+                </div>
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="row col-12 padding-field-bottom">
+                    <div class="col-2">
+                        <label>Total Payable Amount</label>
+                    </div>
+                    <div class="col-4">
+                        <input type="number" [(ngModel)]="calculatedAmt" placeholder="Total Payable Amount"
+                            class="form-control" id="calculatedAmt" readonly>
+                    </div>
+                </div>
+                <div class="row col-12 padding-field-bottom">
+                    <div class="col-2">
+                        <label>Arrears Amount <span class="color-red">*</span> </label>
+                    </div>
+                    <div class="col-4">
+                        <input type="number" [(ngModel)]="arrearsAmount" placeholder="Enter Arrears Amount"
+                            class="form-control" id="arrearsAmount">
+                        <div *ngIf="arrearsAmount == '' && arrearsSubmitted" class="color-red pull-left-5">
+                            &nbsp;<span>Arrears Amount Can't be blank</span></div>
+                        <div *ngIf="arrearsAmount > calculatedAmt" class="color-red pull-left-5">
+                            &nbsp;<span>Arrears Amount Should not be more than Total Payable Amount</span></div>
+                    </div>
+                    <div class="col-2">
+                        <label>Payment Type <span class="color-red">*</span> </label>
+                    </div>
+                    <div class="col-4">
+                        <select class="form-control" name="month" [(ngModel)]="paymentType">
+                            <option value='' [disabled]="true">Select Type</option>
+                            <option *ngFor="let type of paymentTypes" [value]="type">{{type}}</option>
+                        </select>
+                        <div *ngIf="paymentType == ''&& arrearsSubmitted" class="color-red pull-left-5">
+                            &nbsp;<span>Payment Type Can't be blank</span></div>
+                    </div>
+                </div>
+                <div class="row col-12 padding-field-bottom" *ngIf="paymentType == 'Partial'">
+                    <div class="col-2">
+                        <label>No of Installments <span class="color-red">*</span> </label>
+                    </div>
+                    <div class="col-4">
+                        <select class="form-control" name="installment" [(ngModel)]="installment"
+                            (change)="changeInstallments()">
+                            <option value='' [disabled]="true">Select Installments</option>
+                            <option *ngFor="let ins of installemnts" [value]="ins">{{ins}}</option>
+                        </select>
+                        <div *ngIf="installment == '' && arrearsSubmitted" class="color-red pull-left-5">
+                            &nbsp;<span>Year Can't be blank</span></div>
+                    </div>
+                    <div class="col-2">
+                        <label>Installment Amount <span class="color-red">*</span> </label>
+                    </div>
+                    <div class="col-4">
+                        <input type="text" [(ngModel)]="installmentAmount" placeholder="Enter Installment Amount"
+                            readonly class="form-control" id="installmentAmount">
+                        <div *ngIf="installmentAmount == ''&& arrearsSubmitted" class="color-red pull-left-5">
+                            &nbsp;<span>Installment Amount Can't be blank</span></div>
+                    </div>
+                </div>
+            </div>
+            <div class="row btn-footer" *ngIf="calculatedAmt > 0">
+                <div class="col-md-6 pull-left">
+                    <button type="submit" [disabled]="submitProcessing" id="btnComponentSave"
+                        *ngIf="arrearsSubmitText == 'Create'" (click)="saveArrearsPayment()"
+                        class="button btn-primary btn-style"><i class="fas fa-save"></i>
+                        Create</button>
+                    <button type="submit" [disabled]="submitProcessing" id="btnComponentSave"
+                        *ngIf="arrearsSubmitText != 'Create'" (click)="updateArrearsPayment()"
+                        class="button btn-primary btn-style"><i class="fas fa-save"></i>
+                        Update</button>
+                </div>
+                <div class="col-md-6 pull-right" *ngIf="arrearsSubmitText == 'Create'">
+                    <button type="button" class="button btn-warning btn-style" (click)="resetArrears()">Clear</button>
+                </div>
+            </div>
+            <div class="row btn-footer" *ngIf="calculatedAmt == 0">
+                <div class="col-md-6 pull-left">
+                    <strong class="color-red">As Total Payable Amount is Zero, you can't create Arrears Paymnet</strong>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade common-model" id="arrears_installment_modal" style="margin-top:40px;">
+    <div class="modal-dialog modal-xl">
+        <div class="modal-content">
+            <!-- <form > -->
+            <div class="modal-header">
+                <div class="modal-title"><i class="fas fa-plus"></i>/ <i class="fas fa-edit ml-1"></i> Arrears
+                    Installment Payment
+                </div>
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="row col-12 padding-field-bottom">
+                    <div class="col-2">
+                        <label>Installment Amount <span class="color-red">*</span> </label>
+                    </div>
+                    <div class="col-4">
+                        <input type="number" [(ngModel)]="installmentPaymentAmount"
+                            placeholder="Enter Arrears Installment Amount" class="form-control"
+                            id="installmentPaymentAmount" readonly>
+                        <div *ngIf="installmentPaymentAmount == 0 && arrearsInsSubmitted" class="color-red pull-left-5">
+                            &nbsp;<span>Installment Amount Can't be blank</span></div>
+                    </div>
+                    <div class="col-2">
+                        <label>Payment Date <span class="color-red">*</span> </label>
+                    </div>
+                    <div class="col-4">
+                        <input type="text" [(ngModel)]="paymentDate" bsDatepicker placeholder="Please Select Date"
+                            [ngClass]="{ 'is-invalid': submitted && !paymentDate }" [minDate]="now" readonly
+                            [bsConfig]="{ isAnimated: true, dateInputFormat: 'DD-MM-YYYY' }" bsDatepicker
+                            (bsValueChange)="onPaymentDateValueChange($event)" placement="bottom"
+                            class="text form-control date-field-bg" maxlength="50" />
+                        <span class="color-red" *ngIf="submitted && !paymentDate">Payment Date
+                            Can't be blank</span>
+                    </div>
+                </div>
+                <div class="row col-12 padding-field-bottom">
+                    <div class="col-2">
+                        <label>Balance <span class="color-red">*</span> </label>
+                    </div>
+                    <div class="col-4">
+                        <input type="text" [(ngModel)]="balance" placeholder="Enter Balance" readonly
+                            class="form-control" id="balance">
+                    </div>
+                    <div class="col-2">
+                        <label>Remarks <span class="color-red">*</span> </label>
+                    </div>
+                    <div class="col-4">
+                        <textarea type="text" [(ngModel)]="installmentRemarks" placeholder="Enter Installment Remarks"
+                            class="form-control" id="installmentRemarks"></textarea>
+                        <div *ngIf="installmentRemarks == ''&& arrearsInsSubmitted" class="color-red pull-left-5">
+                            &nbsp;<span>Installment Remarks Can't be blank</span></div>
+                    </div>
+                </div>
+            </div>
+            <div class="row btn-footer" *ngIf="balance > 0">
+                <div class="col-md-6 pull-left">
+                    <button type="submit" [disabled]="submitProcessing" id="btnComponentSave"
+                        (click)="saveArrearsInstallmentPayment()" class="button btn-primary btn-style"><i
+                            class="fas fa-save"></i>
+                        Create</button>
+                </div>
+                <div class="col-md-6 pull-right">
+                    <button type="button" class="button btn-warning btn-style"
+                        (click)="resetArrearsIns()">Clear</button>
+                </div>
+            </div>
+            <div class="row btn-footer" *ngIf="balance == 0">
+                <div class="col-md-6 pull-left">
+                    <strong class="color-red">As Balance Amount is Zero, you can't create Arrears Installment
+                        Paymnet</strong>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal alert-modal fade" id="show_arrears_ins" role="dialog" style="display: none;">
+    <div class="modal-dialog modal-md">
+        <div class="modal-content model">
+            <div class="modal-header " id="msg_header">
+                <h4 class="modal-title">Paid Installments</h4>
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="col-md-12">
+                    <table class="table table-bordered table-hover table-sm">
+                        <thead class="t-head">
+                            <tr>
+                                <th>Balance </th>
+                                <th>Installment Amount</th>
+                                <th>Payment Date</th>
+                                <th>Remarks</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr *ngFor="let data of arrearsInsList; let i=index">
+                                <td>{{data.balance}}</td>
+                                <td>{{data.installmentAmount}}</td>
+                                <td>{{data.paymentDate| date: 'dd-MM-yyyy'}}</td>
+                                <td>{{data.installmentRemarks}}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal alert-modal fade" id="mod_msg" role="dialog" style="display: none;">
+    <div class="modal-dialog modal-md">
+        <div class="modal-content model">
+            <div class="modal-header " id="msg_header">
+                <h4 class="modal-title">Message</h4>
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+            </div>
+            <div class="modal-body">
+                <h5 id="msg">Salary structure doesn't exists.</h5>
+            </div>
+        </div>
+    </div>
+</div>

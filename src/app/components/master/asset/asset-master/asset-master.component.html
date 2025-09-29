@@ -1,0 +1,360 @@
+<div class="container-fluid" style="margin-top:10px">
+
+  <div class="col-md-1 offset-md-11">
+    <button class="btn btn-success btn-sm mb-3 " (click)="goBack()"><i class="fas fa-backward"></i> Back</button>
+
+   </div>
+    <div class="d-flex align-items-center mt-2">
+        <div class="m-2">
+            <div class="h-size"><i class="fa fa-user"></i> <b> Asset Master</b></div>
+        </div>
+    </div>
+    <div class="d-flex align-items-center mt-2">
+        <div class="m-2">
+            <i class="fa fa-search"></i>
+            <span> Search </span><input type="text" value="">
+        </div>
+        <div class="flex-fill">
+        </div>
+        <div class="m-2">
+            <button id="btn_add" type="button" class="btn-primary button" ><i class="fas fa-user-edit"></i>Asset
+                Master Import</button>
+            <button id="btn_add" type="button" class="btn-primary button"><i class="fa fa-download"
+                aria-hidden="true"></i>Export To Excel</button>
+         
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-12">
+            <table class="table table-bordered table-hover table-sm">
+                <thead class="t-head">
+                    <tr>
+                        <!-- <th *ngFor="let head of headers1"><a>{{head}}</a></th> -->
+
+                        <th mat-sort-header="empCode" ><a> Employee Code</a></th>
+                        <th mat-sort-header="name" ><a> Employee Name</a></th>
+                        <th mat-sort-header="assetName" ><a> Asset Name</a></th>
+                        <th mat-sort-header="assetCode" ><a> Invoice Code</a></th>
+                        <th mat-sort-header="serialNo" ><a> Approx Asst value</a></th>
+                        <th mat-sort-header="issueDt" ><a> Issue Date</a></th>
+                        <th mat-sort-header="dueDt" ><a> Due Date</a></th>
+                        <th mat-sort-header="remarks" ><a> Asset Details</a></th>
+                        <th ><a> Action</a></th>
+
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let employee of employees">
+                        <td>{{employee.empCode}}</td>
+                        <td>{{employee.name}}</td>
+                        <td>{{employee.assetName}}</td>
+                        <td>{{employee.assetCode}}</td>
+                        <td>{{employee.serialNo}}</td>
+                        <td>{{employee.issueDt}}</td>
+                         <td>{{employee.dueDt}}</td>
+                        <!--<td>{{employee.recievedDt}}</td> -->
+                        <td>{{employee.remarks}}</td>
+                        <td>
+                            <!-- <a title="View" class="icon-margin"><span class="fas fa-eye"></span></a> -->
+  
+                            <a title="Edit" class="icon-margin" data-toggle="modal" href="#edit_masterassets"><i class="fas fa-user-edit"></i></a>
+                       
+                            <a title="delete" class="icon-margin"  data-toggle="modal" href="#remove_masterassets"><i class="fas fa-trash-alt"></i></a>
+                  </td>
+                    </tr>
+                </tbody>
+
+            </table>
+        </div>
+    </div>
+    <div class="d-flex align-items-center mt-2">
+        <div class="m-2">
+            <button id="btn_add" type="button" class="btn-primary button"  data-toggle="modal"data-target="#add_masterassets"><i class="fas fa-user-plus"></i>Add
+               </button>
+            <button id="btn_add" type="button" data-toggle="modal" data-target="#assign_assets" class="btn-primary button"><i class="fas fa-user-plus"></i>Add Assign</button>
+        
+            <!-- <button id="btn_add" type="button" data-toggle="modal" data-target="#mod_add_edit_AssetMovement_details" class="btn-primary button">Edit</button> -->
+            <!-- <button id="btn_add" type="button" data-toggle="modal" data-target="#mod_add_edit_AssetMovement_details" class="btn-primary button">Delete</button> -->
+
+        </div>
+        <div class="flex-fill">
+        </div>
+        <div class="m-2">
+         
+        </div>
+<!-- 
+
+
+        remove_masterassets -->
+
+
+
+        <div class="modal fade" id="edit_masterassets" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+          <div class="modal-dialog" role="document" style="margin-top: 63px;">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel"><i class="fas fa-plus"></i><i class="fas fa-edit ml-1"></i>Asset</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                  <span aria-hidden="true">&times;</span>
+                </button>
+              </div>
+              <div class="modal-body">
+                  <form [formGroup]="edit_masterassetsform">
+                      <div class="form-group label-margin">
+                        <label for="recipient-name" class="col-form-label label-margin">Asset Code
+                          :</label>
+                        <input type="text"   formControlName="update_asset_code" class="form-control textbox-width" id="assest-code">
+                      </div>
+      
+                      <div class="form-group label-margin">
+                          <label for="recipient-name" class="col-form-label label-margin">Asset Name
+                            :</label>
+                          <input type="text"  formControlName="update_asset_name" class="form-control textbox-width" id="assest-name">
+                        </div>
+                        <div class="form-group label-margin">
+                          <label for="recipient-name" class="col-form-label label-margin"> Asset Group
+                            :</label>
+                          <input type="text" formControlName="update_asset_group" class="form-control textbox-width" id="assest-name">
+                        </div>
+                      
+                        
+                        <div class="form-group label-margin">
+                          <label for="recipient-name" class="col-form-label label-margin"> Asset Details
+                            :</label>
+                          <input type="text" formControlName="update_asset_details" class="form-control textbox-width" id="assest-name">
+                        </div>
+      
+      
+                        <div class="form-group label-margin">
+                          <label for="recipient-name" class="col-form-label">  Invoice No.
+                            :</label>
+                          <input type="text"  formControlName="update_invoice_no" class="form-control textbox-width" id="assest-name">
+                        </div>
+                       
+      
+                        <div class="form-group label-margin">
+                          <label for="recipient-name" class="col-form-label "> Serial No.
+                            :</label>
+                          <input type="text"  formControlName="update_serial_no" class="form-control textbox-width" id="assest-name">
+                        </div>
+      
+      
+      
+                          <div class="form-group label-margin">
+                          <label for="recipient-name" class="col-form-label">  Approx Asset Value
+                            :</label>
+                          <input type="text"  formControlName="update_asset_value" class="form-control textbox-width" id="assest-name">
+                        </div>
+                       
+                      </form>
+              </div>
+              <div class="modal-footer">
+                  <button type="button" class="btn btn-secondary" (click)="update_assest()">Update</button>
+                <button type="button" class="btn btn-warning" data-dismiss="modal">Cancel</button>
+                <!-- <button type="button" class="btn btn-primary">Save changes</button> -->
+              </div>
+            </div>
+          </div>
+        </div>
+
+
+
+        <!-- Modal -->
+<div class="modal fade" id="add_masterassets" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document" style="margin-top: 63px;">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel"><i class="fas fa-plus"></i><i class="fas fa-edit ml-1"></i>Asset</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+            <form [formGroup]="add_masterassetsform">
+                <div class="form-group label-margin">
+                  <label for="recipient-name" class="col-form-label label-margin">Asset Code
+                    :</label>
+                  <input type="text"  formControlName="add_asset_code"  class="form-control textbox-width" id="assest-code">
+                </div>
+
+                <div class="form-group label-margin">
+                    <label for="recipient-name" class="col-form-label label-margin">Asset Name
+                      :</label>
+                    <input type="text" formControlName="add_asset_name"  class="form-control textbox-width" id="assest-name">
+                  </div>
+                  <div class="form-group label-margin">
+                    <label for="recipient-name" class="col-form-label label-margin"> Asset Group
+                      :</label>
+                    <input type="text"  formControlName="add_asset_group" class="form-control textbox-width" id="assest-name">
+                  </div>
+                
+                  
+                  <div class="form-group label-margin">
+                    <label for="recipient-name" class="col-form-label label-margin"> Asset Details
+                      :</label>
+                    <input type="text"  formControlName="add_asset_details" class="form-control textbox-width" id="assest-name">
+                  </div>
+
+
+                  <div class="form-group label-margin">
+                    <label for="recipient-name" class="col-form-label">  Invoice No.
+                      :</label>
+                    <input type="text"  formControlName="add_invoice_no" class="form-control textbox-width" id="assest-name">
+                  </div>
+                 
+
+                  <div class="form-group label-margin">
+                    <label for="recipient-name" class="col-form-label "> Serial No.
+                      :</label>
+                    <input type="text"  formControlName="add_serial_no" class="form-control textbox-width" id="assest-name">
+                  </div>
+
+
+
+                    <div class="form-group label-margin">
+                    <label for="recipient-name" class="col-form-label">  Approx Asset Value
+                      :</label>
+                    <input type="text"   formControlName="add_asset_approxvalue" class="form-control textbox-width" id="assest-name">
+                  </div>
+                 
+                </form>
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" (click)="add_assests()">Save</button>
+          <button type="button" class="btn btn-warning" data-dismiss="modal">Cancel</button>
+          <!-- <button type="button" class="btn btn-primary">Save changes</button> -->
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>
+<!-- //addasignmodelpop-up -->
+
+
+
+
+
+  
+
+        <!-- Modal -->
+        <div class="modal fade" id="assign_assets" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog" role="document" style="margin-top: 63px;">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h5 class="modal-title" id="exampleModalLabel"><i class="fas fa-plus"></i><i class="fas fa-edit ml-1"></i>Asset</h5>
+                  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                  </button>
+                </div>
+                <div class="modal-body">
+                    <form    [formGroup]="addassign_masterassetsform">
+                      <div class="row">
+                        <div class="col-6">
+                        <div class="form-group label-margin">
+                          <label for="recipient-name" class="col-form-label label-margin">Asset Code
+                            :</label>
+                          <input type="text"   formControlName="assign_asset_code"  class="form-control" id="assest-code">
+                        </div>
+        
+                        <div class="form-group label-margin">
+                            <label for="recipient-name" class="col-form-label label-margin">Asset Name
+                              :</label>
+                            <input type="text"     formControlName="assign_asset_name" class="form-control" id="assest-name">
+                          </div>
+                          <div class="form-group label-margin">
+                            <label for="recipient-name" class="col-form-label label-margin"> Asset Group
+                              :</label>
+                            <input type="text"     formControlName="assign_asset_group" class="form-control" id="assest-name">
+                          </div>
+
+                        </div>
+                        </div>
+                        <div class="row">
+                          <div class="col-6">
+                          <div class="form-group label-margin">
+                            <label for="recipient-name" class="col-form-label label-margin"> Asset Details
+                              :</label>
+                            <input type="text"   formControlName="assign_asset_details" class="form-control" id="assest-name">
+                          </div>
+
+
+
+                          <div class="form-group label-margin">
+                            <label for="recipient-name" class="col-form-label">  Invoice No.
+                              :</label>
+                            <input type="text"    formControlName="assign_invoice_no"class="form-control " id="assest-name">
+                          </div>
+
+
+                          <div class="form-group label-margin">
+                            <label for="recipient-name" class="col-form-label">  Serial No.
+                              :</label>
+                            <input type="text"     formControlName="assign_serial_no"  class="form-control " id="assest-name">
+                          </div>
+
+                          <div class="form-group label-margin">
+                            <label for="recipient-name" class="col-form-label">  Approx Asset Value.
+                              :</label>
+                            <input type="text"   formControlName="assign_asset_approxvalue" class="form-control " id="assest-name">
+                          </div>
+                          
+
+
+</div>
+
+
+
+<div class="col-6">
+    <div class="form-group label-margin">
+      <label for="recipient-name" class="col-form-label label-margin"> Assign To
+        :</label>
+        <label>Asset</label>
+        <select   class="form-control" formControlName="assign_asset_employeecode">
+          <option value="001">Select Employee</option>
+            <option value="001">LP-001</option>
+            <option value="002">LP-002</option>
+           
+        </select>
+      <!-- <input type="text"   formControlName="add_asset_approxvalue" class="form-control " id="assest-name"> -->
+    </div>
+
+
+
+    <div class="form-group label-margin">
+      <label for="recipient-name" class="col-form-label">  Issue Date.
+        :</label>
+      <input type="text"    formControlName="assign_asset_issuedate" class="form-control" id="assest-name">
+    </div>
+
+
+    <div class="form-group label-margin">
+      <label for="recipient-name" class="col-form-label">  Due Date
+        :</label>
+      <input type="text"    formControlName="assign_asset_duedate" class="form-control " id="assest-name">
+    </div>
+
+    <div class="form-group label-margin">
+        <label for="recipient-name"  class="col-form-label">  Remarks 
+          :</label>
+        <input type="text"    formControlName="assign_asset_remarks"class="form-control " id="assest-name">
+      </div>
+
+
+</div>
+ </div>
+       
+                        </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" (click)="assign_save()">Save</button>
+                  <button type="button" class="btn btn-warning" data-dismiss="modal">Cancel</button>
+                  <!-- <button type="button" class="btn btn-primary">Save changes</button> -->
+                </div>
+              </div>
+            </div>
+          </div>
+
+
+
+</div>

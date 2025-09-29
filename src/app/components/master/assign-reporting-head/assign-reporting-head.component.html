@@ -1,0 +1,82 @@
+
+<div class="container-fluid">
+    <div class="d-flex align-items-center mt-2">
+        <div class="m-2">
+            <div class="h-size"><i class="fa fa-user"></i> <b>Assign Reporting Head</b></div>
+        </div>
+        <div class="flex-fill">
+        </div>
+        
+    </div>
+    <div class="d-flex align-items-center mt-2">
+        <div class="m-2">
+            <div class="form-group required" >
+                <label class="control-label">Reporting Head:</label>
+                <select class="form-control" name="reportingHead"  required>
+                    <option value="">Please Select Reporting Head</option>
+                    <option value="Raja">Raja</option>
+                    <option value="Rani">Rani</option>
+                </select>
+            </div>
+        </div>
+        <div class="m-2">
+            <div class="form-group required" >
+                <label class="control-label">Filter:</label>
+                <select class="form-control" name="filter"  required>
+                    <option value="">Please Select Master</option>
+                    <option *ngFor="let m of master">{{m.name}}</option>
+                </select>
+            </div>
+        </div>
+        <div class="m-2">
+            <div class="form-group required" >
+                <label class="control-label">&nbsp;</label>
+                <select class="form-control" name="filter2"  placeholder="" disabled required>
+                    <option value=""></option>
+                    <option *ngFor="let fil2 of filter2List">{{fil2.name}}</option>
+                </select>
+            </div>
+        </div>
+        <div class="m-2">
+            <label class="control-label">&nbsp;</label>
+            <button id="btn_add" type="button" class="btn btn-primary button">Search</button>
+        </div>
+    </div>
+   
+    <div class="row">
+        <div class="col-md-12">
+            <table class="table table-bordered table-hover table-sm">
+                <thead class="t-head">
+                    <tr>
+                        <th *ngFor="let head of headers"><a>{{head}}</a></th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                         <tr *ngFor="let employee of employees">
+                             <td>{{employee.code}}</td>
+                             <td>{{employee.name | titlecase}}</td>
+                             <td>{{employee.reportinghead}}</td>
+                             <td>{{employee.branch}}</td>
+                             <td>{{employee.department}}</td>
+                             <td>{{employee.designation}}</td>
+                             <td>{{employee.grade}}</td>
+                             <td>{{employee.project}}</td>
+                             <td>{{employee.division}}</td>
+                             <td>{{employee.costCenter}}</td>
+                             <td>
+                                <a  title="View" class="icon-margin"><span class="fas fa-eye"></span></a>
+                                <a title="Edit" class="icon-margin"><i class="fas fa-user-edit"></i></a>
+                             </td>
+                         </tr>
+                    </tbody>
+
+            </table>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-12">
+            <button id="btn_add" type="button" class="btn btn-primary button" disabled="disabled"><i
+                    class="fas fa-user-plus"></i>Assign</button>
+        </div>
+    </div>
+</div>

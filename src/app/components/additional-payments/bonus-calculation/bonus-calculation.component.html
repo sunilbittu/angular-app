@@ -1,0 +1,51 @@
+<div class="container-fluid">
+    <div class="d-flex align-items-center mt-2">
+    <div class="m-2">
+    <div class="h-size"><i class="fa fa-user"></i> <b>Bonus Calculation</b></div>
+    </div>
+    <div class="flex-fill">
+    </div>
+    <div class="m-3"><i class="fa fa-search"></i>
+    <span> Search </span><input type="text" value="">
+    </div>
+    </div>
+    <div class="row">
+    <div class="col-md-12">
+    <table class="table table-bordered table-hover table-sm">
+    <thead class="t-head">
+    <tr>
+    <th *ngFor="let head of headers"><a>{{head}}</a></th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr *ngFor="let b of bonus">
+    <td>{{b.date}}</td>
+    <td>{{b.type}}</td>
+    <td>{{b.bonusFrom}}</td>
+    <td>{{b.bonusTo}}</td>
+    <td>{{b.rate}}</td>
+    <td>
+        <a title="Edit" class="icon-margin"><i class="fas fa-user-edit"></i></a>
+        <a  title="Delete" class="icon-margin"><span class="fa fa-trash"></span></a> 
+    </td>
+    
+    </tr>
+    </tbody>
+    
+    </table>
+    </div>
+    </div>
+    <div class="row">
+    <div class="col-12">
+    <button id="btn_add" type="button" class="btn btn-primary button btn-sm" disabled="disabled"><i class="fas fa-user-plus"></i>Add</button>
+    
+    
+    
+        <button id="btn_add" type="button" class="btn btn-primary button btn-sm" disabled="disabled" style="float: right;">Form C</button>
+        <button id="btn_add" type="button" class="btn btn-primary button btn-sm" disabled="disabled" style="float: right;" ><i class="fas fa-street-view"></i>View Bonus</button>
+        <button id="btn_add" type="button" class="btn btn-primary button btn-sm" disabled="disabled" style="float: right;" >Process Bonus</button>
+    </div>
+
+    </div>
+    </div>
+    

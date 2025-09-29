@@ -1,0 +1,170 @@
+
+
+.login-block{
+
+  background: #a0a5aa;
+  padding: 80px 0;
+  min-height: 100%;
+  background-size: cover;
+  overflow-y: scroll;
+}
+
+.invalid-feedback{
+
+  font-size: medium;
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+.register-photo .image-holder {
+  display: table-cell;
+  width: auto;
+  
+  background-size: cover
+}
+
+.register-photo .form-container {
+  display: table;
+  max-width: 100%;
+  width: 90%;
+  margin: 0 auto;
+  box-shadow: 1px 1px 5px rgba(0, 0, 0, 0.1)
+}
+
+.register-photo form {
+  display: table-cell;
+  width: 400px;
+  background-color: #ffffff;
+  padding: 40px 60px;
+  color: #505e6c;
+  border: 2px solid #12971a;
+}
+
+@media (max-width:991px) {
+  .register-photo form {
+      padding: 40px
+  }
+}
+
+.register-photo form h2 {
+  font-size: 24px;
+  line-height: 1.5;
+  margin-bottom: 30px;
+  
+}
+
+.main-heading{
+
+  border-left-style: solid;
+  border-left-color: #0d9616;
+  padding-left: 2px;
+}
+
+.register-photo form .form-control {
+  background: transparent;
+  border: none;
+  border-bottom: 1px solid #4de73f;
+  border-radius: 0;
+  box-shadow: none;
+  outline: none;
+  color: inherit;
+  text-indent: 0px;
+  height: 70px
+}
+
+.register-photo form .form-check {
+  font-size: 13px;
+  line-height: 10px
+}
+
+.register-photo form .btn-primary {
+  background: green;
+  border: none;
+  border-radius: 4px;
+  padding: 11px;
+  box-shadow: none;
+  margin-top: 35px;
+  text-shadow: none;
+  outline: none !important
+}
+
+.register-photo form .btn-primary:hover,
+.register-photo form .btn-primary:active {
+  background: green
+}
+
+.register-photo form .btn-primary:active {
+  transform: translateY(1px)
+}
+
+.register-photo form .already {
+  display: block;
+  text-align: center;
+  font-size: 13px;
+  color: #214b74;
+  text-decoration: none;
+}
+
+
+
+.inputWithIcon i {
+  position: absolute;
+  left: 0;
+  top: 21px;
+  padding: 6px 11px;
+  color: #aaa;
+  transition: 0.3s;
+}
+
+
+.inputWithIcon {
+  position: relative;
+}
+
+.inputWithIcon input[type="text"] {
+  padding-left: 40px;
+  
+}
+
+.inputWithIcon input[type="text"]:focus + i {
+  color: #00BB0B;
+}
+
+
+
+.inputWithIcon input[type="password"] {
+  padding-left: 40px;
+  
+}
+
+.inputWithIcon input[type="password"]:focus + i {
+  color: #00BB0B;
+}
+
+.inputWithIcon.inputIconBg i {
+  background-color: #aaa;
+  color: #fff;
+  padding: 9px 4px;
+  border-radius: 4px 0 0 4px;
+}
+
+.inputWithIcon.inputIconBg input[type="text"]:focus + i {
+  color: #fff;
+  background-color: #00BB0B;
+}
+
+
+.inputWithIcon.inputIconBg input[type="password"]:focus + i {
+  color: #fff;
+  background-color: #00BB0B;
+}
+.margin-footer {
+  padding-right: 0px;
+  padding-left: 0px;
+}
+.modal-title {
+  font-size: 1.1rem;
+  font-weight: bold;
+  text-align: center;
+  flex: 1;
+  color: #000;
+}

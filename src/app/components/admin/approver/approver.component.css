@@ -1,0 +1,35 @@
+text-box-with-icon > input[type='submit'], .text-box-with-icon > input[type='button'], .text-box-with-icon > button {
+    border: none;
+    background: none;
+    padding: 0px;
+    outline: none!important;
+    cursor: pointer;
+}
+
+
+.text-box-with-icon {
+    border: solid 1px #888;
+    background-color: #fff;
+    border-radius: 3px;
+    padding: 3px;
+    display: flex;
+}
+
+
+.text-box-with-icon > input[type='text'] {
+    border: none;
+    background: none;
+    padding: 0px;
+    outline: none!important;
+    display: inline;
+    border-radius: 0px;
+    box-shadow: none;
+    flex: 1;
+}
+
+
+.table-block{
+
+    height: 400px;
+    border: 1px solid #000;
+}

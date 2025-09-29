@@ -1,0 +1,198 @@
+<div class="modal fade common-model" id="myModal-filter">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content model">
+            <!-- Modal Header -->
+            <div class="modal-header">
+                <h2 class="modal-title align-center"><em class="fas fa-filter"></em> Employees Filter</h2>
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+            </div>
+            <!-- Modal body -->
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-md-6">
+                        <div *ngIf="role!='ROLE_EMPLOYEE'" class="title-headers">
+                            <h2><em class="fas fa-filter"></em> Master Filter</h2>
+                            <button type="button" (click)="applyFilter()"
+                                class="btn btn-secondary btn-sm btn-header ml-40">Apply
+                                Filter</button>
+                                <button type="button" class="btn btn-secondary btn-sm btn-header"
+                                (click)="resetFilter()">Clear Filter</button>
+                        </div>
+                        <div>
+                            <table class="model-tbl mt-10">
+                                <tr>
+                                    <td>
+                                        <label>Start Date <span class="color-red">*</span> </label>
+                                    </td>
+                                    <td class="td-width">
+                                        <input type="text"  bsDatepicker  [(ngModel)]="startDate"
+                                            placeholder="Please select Start Date"
+                                            [bsConfig]="{ isAnimated: true, dateInputFormat: 'YYYY-MM-DD' }" readonly
+                                            placement="bottom" class="text form-control" id="startDate"  (change)="selected()"
+                                            maxlength="50" />
+                                        <div *ngIf="YearValidationText != ''" class="color-red pull-left-5">&nbsp;<strong>{{YearValidationText}}</strong></div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <label>End Date <span class="color-red">*</span> </label>
+                                    </td>
+                                    <td class="td-width">
+                                        <input type="text"  bsDatepicker [(ngModel)]="endDate"
+                                            placeholder="Please select End Date"
+                                            [bsConfig]="{ isAnimated: true, dateInputFormat: 'YYYY-MM-DD' }" readonly
+                                            placement="bottom" class="text form-control" id="endDate" maxlength="50" (change)="selectedMonthForPayslip()" />
+                                        <div *ngIf="monthValidationText != ''" class="color-red pull-left-5">&nbsp;<strong>{{monthValidationText}}</strong></div>
+                                    </td>
+                                </tr>
+                                <tr *ngIf="role!='ROLE_EMPLOYEE'">
+                                    <td>
+                                        <label>Branch</label>
+                                    </td>
+                                    <td class="td-width">
+                                        <ng-multiselect-dropdown [placeholder]="'Select Branch'"
+                                            [settings]="dropdownSettingsBranch" [data]="branchDetailsList"
+                                            [(ngModel)]="selectedItemsBranch" (onSelect)="onItemSelectBranch($event)"
+                                            (onSelectAll)="onSelectAllBranch($event)">
+                                        </ng-multiselect-dropdown>
+                                    </td>
+                                </tr>
+                                <tr *ngIf="role!='ROLE_EMPLOYEE'">
+                                    <td>
+                                        <label>Department</label>
+                                    </td>
+                                    <td class="td-width">
+                                        <ng-multiselect-dropdown [placeholder]="'Select Department'"
+                                            [settings]="dropdownSettingsDepartment" [data]="departmentMasterList"
+                                            [(ngModel)]="selectedItemsDepartment"
+                                            (onSelect)="onItemSelectDepartment($event)"
+                                            (onSelectAll)="onSelectAllDepartment($event)">
+                                        </ng-multiselect-dropdown>
+                                    </td>
+                                </tr>
+                                <tr *ngIf="role!='ROLE_EMPLOYEE'">
+                                    <td>
+                                        <label>Salary Components <span class="color-red">*</span> </label>
+                                    </td>
+                                    <td class="td-width">
+                                        <ng-multiselect-dropdown [placeholder]="'Select Salary Component'" [(ngModel)]="salaryComponent"
+                                            [settings]="dropdownSettingsSalaryComponent" [data]="salaryComponentMasterList"
+                                            [(ngModel)]="selectedItemsSalaryComponent"
+                                            (onSelect)="onItemSelectSalaryComponent($event)"
+                                            (onSelectAll)="onSelectAllSalaryComponent($event)">
+                                        </ng-multiselect-dropdown>
+                                        <div *ngIf="salaryComponentValidationText != ''" class="color-red pull-left-5">&nbsp;<strong>{{salaryComponentValidationText}}</strong></div>
+                                    </td>
+                                </tr>
+                            </table>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div *ngIf="role!='ROLE_EMPLOYEE'">
+                            <input type="text" class="form-control" [(ngModel)]="searchValue"
+                                (ngModelChange)="applyFilter()">
+                        </div>
+                        <br>
+                        <div class="emp-scroll">
+                            <label *ngIf="role!='ROLE_EMPLOYEE'"><strong>Please select employee(s)</strong></label>
+                            <table>
+                                <tr>
+                                    <th class="align-center">
+                                        <input type="checkbox" class="select-all" name="allStudents"
+                                            [value]="employeeList" (change)="selectAll($event)">
+                                    </th>
+                                    <th>
+                                        <label class="s-lable"> Emp Code</label>
+                                    </th>
+                                    <th>
+                                        <label class="s-lable"> Emp Name</label>
+                                    </th>
+                                </tr>
+                                <tr *ngIf="toggleLoader">
+                                    <td colspan="2">
+                                        <img src="./assets/images/loader-icon.gif" class="loader-margin img-responsive"
+                                            alt="loading....">
+                                    </td>
+                                </tr>
+                                <tr *ngFor="let emp of employeeList">
+                                    <td class="align-center">
+                                        <input type="checkbox" class="status-check select-all" [checked]="emp.selected"
+                                            (change)="onClickCheckBox(emp.employeeId)" name="status">
+                                    </td>
+                                    <td>{{emp.employeeCode}} </td>
+                                    <td>{{emp.fullName}}</td>
+                                </tr>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- Modal footer -->
+            <div *ngIf="validationText != ''" class="color-red pull-left-5"><strong>{{validationText}}</strong></div>
+            <div *ngIf="monthAndYearValidationText != ''" class="color-red pull-left-5"><strong>{{monthAndYearValidationText}}</strong></div>
+            <div  class="modal-header">
+                <div class="col-md-6 pull-left" style="padding-left: 0px;">
+                    <button  type="button" class="btn-primary button" [disabled]="submitProcessing" (click)="generatedexpenseReport()">View Payslip Component Report <i class="fa fa-spinner fa-spin" *ngIf="submitProcessing" style="font-size:19px"></i></button>&nbsp;
+                </div>
+                <div class="col-md-6 pull-right" style="padding-right: 0px;">
+                    <button type="button" class="button btn-danger btn-style" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div class="container-fluid">
+    <div class="d-flex align-items-center mt-2">
+        <div class="col-md-5">
+            <div class="h-size"><i class="fa fa-user mr-1"></i> <b>Employees Payslip Component Report</b></div>
+        </div>
+        <div class="col-md-3">
+            <button type="button" class="btn btn-labeled btn-outline-danger btn-sm" (click)="exportTable('PDF')">
+                <span class="btn-label"><i class="fa fa-file-pdf-o" aria-hidden="true"></i></span>Export To PDF</button>
+        </div>
+        <div class="col-md-3">
+            <button type="button" class="btn btn-labeled btn-outline-success btn-sm" (click)="exportTable('EXCEL')">
+                <span class="btn-label"><i class="fa fa-file-excel-o" aria-hidden="true"></i></span>Export To
+                Excel</button>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-12">
+            <table class="table table-bordered table-hover table-sm">
+                <thead class="t-head">
+                    <tr>
+                        <th *ngFor="let head of headers"><a>{{head}}</a></th>
+                        <!-- <th *ngFor="let h1 of expenseReportList.componentList.componentName">{{h1}}</th> -->
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let employee of expenseReportList">
+                        <td>{{employee.employeeId}}</td>
+                        <td>{{employee.employeeName}}</td>
+                        <td>{{employee.branch}}</td>
+                        <td>{{employee.department}}</td>
+                        <td>
+                            <li *ngFor="let d of employee.componentList">
+                                {{d.componentName}} : {{d.componentValue}}
+                            </li>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td><b>Total Component Amounts:</b>
+                            <li *ngFor="let d of totalComponentValues">
+                                {{d.componentName}} : {{d.componentValue}}
+                            </li>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>

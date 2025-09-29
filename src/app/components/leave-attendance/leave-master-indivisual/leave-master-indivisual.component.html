@@ -1,0 +1,114 @@
+<div class="container-fluid">
+    <div class="d-flex align-items-center mt-2">
+        <div class="col-md-8">
+            <div class="h-size"><strong>Leave Master Individual</strong></div>
+        </div>
+        <div class="col-md-4">
+        </div>
+    </div>
+    <br>
+    <div class="d-flex align-items-center mt-2">
+        <div class="col-md-4">
+            <label class="control-label">Select Leave Year<span
+                class="color-red">*</span>:</label>
+            <select class="form-control" (change)="leaveYearChange()" name="leaveYear" [(ngModel)]="yearModel">
+                <option value="" disabled>Select Year</option>
+                <option *ngFor="let data of leaveYear" [value]="data.leaveYear">{{data.leaveYear}}</option>
+            </select>
+            <span class="color-red" *ngIf="leaveYearValidation">Leave Year
+                {{requiredErrorText}}</span>
+        </div>
+        <div class="col-md-4"></div>
+        <div class="col-md-4">
+            <label class="control-label">&nbsp; </label>
+            <input class="form-control rounded-pill py-2 border-right-0 border" type="search" placeholder="search"
+                id="example-search-input" [(ngModel)]="searchModel" (ngModelChange)="getAllEmployees()">
+        </div>
+    </div>
+    <br>
+    <div class="row">
+        <div class="col-md-12">
+            <table class="table table-bordered table-hover table-sm">
+                <thead class="t-head">
+                    <tr>
+                        <th *ngFor="let head of headers"><a>{{head}}</a></th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let employee of epmloyeeList | paginate: { itemsPerPage: 20, currentPage: p }; let i = index"
+                        [class.active]="i === highlightRow && employee.employeeId === empId">
+                        <td>{{employee.employeeCode}}</td>
+                        <td>{{employee.firstName}} {{employee.lastName}}</td>
+                        <td>{{employee.branchName}}</td>
+                        <td>{{employee.departmentName}}</td>
+                        <td>{{employee.designationName}}</td>
+                        <td>{{employee.gradeName}}</td>
+                        <td>{{employee.categoryName}}</td>
+                        <td>{{employee.divisionName}}</td>
+                        <td class="action-width">
+                            <a title="View" class="icon-margin"
+                                (click)="ViewLeaves(employee.employeeId, i, employee.firstName, employee.lastName)"><span
+                                    class="fas fa-eye"></span></a>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+            <pagination-controls (pageChange)="p = $event"></pagination-controls>
+        </div>
+    </div>
+    <form>
+        <div *ngIf='viewLeavestbl'>
+            <strong>Employee Code : </strong> {{empCode}}  <strong>Employee Name : </strong> {{empName}}
+        <table class="table table-bordered table-hover table-sm">
+            <tr>
+                <th>Leave Type</th>
+                <ng-container *ngFor="let leaveInfo of leavesList">
+                <th  class="text-center"  colspan="12">{{leaveInfo.leaveType}}</th></ng-container>
+                <th>Action</th>
+            </tr>
+            <tr>
+                <th>Month</th>
+                <ng-container *ngFor="let leaveInfo of leavesList">
+                <th *ngFor="let leaveMonthInfo of leaveInfo.monthlyLeaveBalanceDTO" class="text-center">{{leaveMonthInfo.month.slice(0,3)}}</th></ng-container>
+                <td rowspan="4">
+
+                    <label for="isAdvance">Allow Advance:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</label>
+                    <input [(ngModel)]="checked" [checked]="advanceLeaves == true" (change)="checkCheckBoxvalue($event)" type="checkbox"
+                        style="height: 30px; width: 22px;" />
+
+                    <button id="btn_add" type="button" class="btn-primary button"
+                        (click)="updateLeaves()">Update</button>
+                </td>
+            </tr>
+            <tr>
+                <th>Available</th>
+                <ng-container *ngFor="let leaveInfo2 of leavesList;let a=index">
+                <td *ngFor="let leaveInfo1 of leaveInfo2.monthlyLeaveBalanceDTO;let k=index">
+                    <input type="text" [(ngModel)]="leaveInfo1.available" name="name2{{a}}{{k}}" class="form-control"
+                        #name2="ngModel" required style="font-size: 12px;" />
+                </td></ng-container>
+
+               
+            </tr>
+            <tr>
+                <th>Used / Expired</th>
+                <ng-container *ngFor="let leaveInfo2 of leavesList;let b=index">
+                <td *ngFor="let leaveInfo1 of leaveInfo2.monthlyLeaveBalanceDTO;let j=index">
+                    <input type="text" [(ngModel)]="leaveInfo1.used" name="name{{b}}{{j}}"
+                        class="form-control" #name="ngModel" required style="font-size: 12px;"/>
+                </td></ng-container>
+            </tr>
+            <tr>
+                <th>Balance</th>
+                <ng-container *ngFor="let leaveInfo2 of leavesList">
+                <td *ngFor="let leaveInfo1 of leaveInfo2.monthlyLeaveBalanceDTO;let m=index">
+                    <input type="text" readOnly value="{{leaveInfo1.balance}}" name="name{{m}}"
+                        class="form-control" required style="font-size: 12px;"/>
+                </td></ng-container>
+            </tr>
+        </table>
+    </div>
+    </form>
+    <br>
+</div>

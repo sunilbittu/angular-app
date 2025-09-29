@@ -1,0 +1,15 @@
+
+.table-eg tr th{
+    background-color: #d0e5f9;
+    width: 20%;
+    color: #555;
+}
+.h-size{
+    padding-bottom: 6px;
+}
+
+.emp-rating{
+    margin-left: 780px;
+    font-size: 18px;
+    padding: 5px;
+}

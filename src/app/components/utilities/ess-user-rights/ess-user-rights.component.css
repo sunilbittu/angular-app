@@ -1,0 +1,15 @@
+.table .thead-dark th {
+    color: #514f4f;
+    background-color: #d2d5d7;
+    border-color: #454d55;
+}
+
+.table{
+    font-family: Arial, Helvetica, sans-serif;
+    
+}
+
+.table-block{
+    height: 300px;
+    overflow-y: scroll;
+}

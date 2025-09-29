@@ -1,0 +1,399 @@
+<div class="container-fluid" style="margin-top: 16px;"> 
+    
+<form [formGroup]=personalDetailsForm (ngSubmit)="onSubmit()">
+    <div class="row">
+        <div class="col-md-4">
+            <table>
+                <tr>
+                    <th class="title">
+                        <i class="fas fa-id-card"></i>   Present Address
+                    </th>
+                </tr>
+                <tr>
+                    <td> 
+                        <label>Address 1<span class="color-red">*</span></label>
+                    </td>
+                    <td>
+                        <input type="text " formControlName= "PresentAddress1" class="text form-control" maxlength="50" />
+                        <span class="color-red" *ngIf="submitted && form_.PresentAddress1.errors">Address 1
+                            {{requiredErrorText}}</span>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <label>Address 2</label>
+                    </td>
+                    <td>
+                        <input type="text " formControlName= "PresentAddress2" class="text form-control" maxlength="50" />
+                    </td>
+                </tr>
+
+               
+               
+                <tr>
+                    <td>
+                        <label>Country<span class="color-red">*</span></label>
+                    </td>
+                    <td>
+                        <select class="form-control form-control-sm" formControlName="PresentCountry" (change)="onChangePresentCountries()">
+                            <option value=""  >Please select country</option>
+                            <option *ngFor="let country of countrypresentList" [value]="country.countryId">
+                                {{country.countryName}}
+                            </option>
+                          </select>
+                          <span class="color-red" *ngIf="submitted && form_.PresentCountry.errors">Country
+                            {{requiredErrorText}}</span>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td>
+                        <label>State<span class="color-red">*</span></label>
+                    </td>
+                    <td>
+                        <select class="form-control form-control-sm" formControlName="PresentState" (change)="onChangePresentState()">
+                            <option value="" >Please select state</option>
+                            <option *ngFor="let state of presentStateList" [value]="state.stateId">{{state.stateName}}
+                            </option>
+                          </select>
+                          <span class="color-red" *ngIf="submitted && form_.PresentState.errors">State
+                            {{requiredErrorText}}</span>
+                          
+                    </td>
+                </tr>
+
+
+                <tr>
+                    <td>
+                        <label>City <span class="color-red">*</span></label>
+                    </td>
+                    <td>
+                        <!-- <select class="form-control form-control-sm" formControlName= "PresentCity" [(ngModel)]="presentCityId">
+                            <option value="" selected disabled >Please select city</option>
+                            <option *ngFor="let city of presentCityList" [value]="city.cityId">{{city.cityName}}</option>
+                          </select>
+ -->
+
+                          <select class="form-control form-control-sm" formControlName="PresentCity" (change)="onChangePresentCity()" >
+                            <option value=""   >Please select city</option>
+                            <option *ngFor="let city of presentCityList" value={{city.cityId}}>{{city.cityName}}</option>
+                          </select>
+                          <span class="color-red" *ngIf="submitted && form_.PresentCity.errors">City
+                            {{requiredErrorText}}</span>
+                    </td>
+                </tr>
+
+                
+
+                <tr>
+                    <th class="title">
+                        <i class="fas fa-id-card"></i> Permanent Address
+                    </th>
+                </tr>
+                <tr>
+                    <td>
+                        <label>Address 1 <span class="color-red">*</span></label>
+                    </td>
+                    <td>
+                        <input type="text " class="text form-control" formControlName= "PermenentAddress1" maxlength="50" />
+                        <span class="color-red" *ngIf="submitted && form_.PermenentAddress1.errors">Address 1
+                            {{requiredErrorText}}</span>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <label>Address 2</label>
+                    </td>
+                    <td>
+                        <input type="text " class="text form-control" formControlName= "PermenentAddress2" maxlength="50" />
+                    </td>
+                </tr>
+                
+                
+                <tr>
+                    <td>
+                        <label>Country <span class="color-red">*</span></label>
+                    </td>
+                    <td>
+                        <select class="form-control form-control-sm" formControlName= "PermenentCountry" (change)="onChangePermenentCountries()">
+                            <option value="" selected disabled >Please select country</option>
+                            <option *ngFor="let country of countrypermenentList" [value]="country.countryId">
+                                {{country.countryName}}
+                            </option>
+                          </select>
+                          <span class="color-red" *ngIf="submitted && form_.PermenentCountry.errors">Country
+                            {{requiredErrorText}}</span>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td>
+                        <label>State <span class="color-red">*</span></label>
+                    </td>
+                    <td>
+                        <select class="form-control form-control-sm" formControlName= "PermenentState" (change)="onChangePermenentState()">
+                            <option value="" selected disabled >Please select state</option>
+                            <option *ngFor="let state of permenentStateList" [value]="state.stateId">{{state.stateName}}
+                            </option>
+                          </select>
+                          <span class="color-red" *ngIf="submitted && form_.PermenentState.errors">State
+                            {{requiredErrorText}}</span>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td>
+                        <label>City <span class="color-red">*</span></label>
+                    </td>
+                    <td>
+                        <select class="form-control form-control-sm" formControlName= "PermenentCity" [(ngModel)]="permenentCityIdValue">
+                            <option value="" selected disabled >Please select city</option>
+                            <option *ngFor="let city of permenentCityList" [value]="city.cityId">{{city.cityName}}</option>
+                          </select>
+                          <span class="color-red" *ngIf="submitted && form_.PermenentCity.errors">City
+                            {{requiredErrorText}}</span>
+                    </td>
+                </tr>
+
+               
+            </table>
+
+       
+        
+        
+        </div>
+        <div class="col-md-4">
+            <table>
+                <tr>
+                    <th class="title">
+                        <i class="fas fa-phone"></i>   Contact Details
+                    </th>
+                </tr>
+                <tr>
+                    <td>
+                        <label>Telephone No. </label>
+                        <i class="icon fa fa-question-circle text-info fa-fw " title="Please mention only numbers"></i>
+                    </td>
+                    <td>
+                        <input type="text " class="text form-control" formControlName= "TelephoneNumber" maxlength="50" />
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <label>Personal No.<span class="color-red">*</span></label>
+                        <i class="icon fa fa-question-circle text-info fa-fw " title="Please mention only numbers"></i>
+                    </td>
+                    <td>
+                        <input type="text " class="text form-control" formControlName= "PersonalNo" maxlength="50" />
+                        <span class="color-red" *ngIf="submitted && form_.PersonalNo.errors">Personal Number
+                            {{requiredErrorText}}</span>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <label>Office Mobile No.</label>
+                        <i class="icon fa fa-question-circle text-info fa-fw " title="Please mention only numbers"></i>
+                    </td>
+                    <td>
+                        <input type="text " class="text form-control" formControlName= "OfficeMobileNo" maxlength="50" />
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <label>Emergency Contact Name</label>
+                    </td>
+                    <td>
+                        <input type="text " class="text form-control" formControlName= "EmergencyContactName" maxlength="50" />
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <label>Emergency Contact No.</label>
+                        <i class="icon fa fa-question-circle text-info fa-fw " title="Please mention only numbers"></i>
+                    </td>
+                    <td>
+                        <input type="text " class="text form-control" formControlName= "EmergencyContactNo" maxlength="50" />
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <label>ESIC Dispensary</label>
+                    </td>
+                    <td>
+                        <input type="text " class="text form-control" formControlName= "ESICDespensary" maxlength="50" />
+                    </td>
+                </tr>
+
+                <tr>
+                    <th class="title">
+                        <i class="fas fa-mail-bulk"></i> Email Address
+                    </th>
+                </tr>
+                <tr>
+                    <td>
+                        <label>Email Personal<span class="color-red">*</span></label>
+                        <i class="icon fa fa-question-circle text-info fa-fw " title="Email should contain @ and . values"></i>
+                    </td>
+                    <td>
+                        <input type="text " class="text form-control" formControlName= "EmailPersonal" maxlength="50" />
+                        <span class="color-red" *ngIf="submitted && form_.EmailPersonal.errors">Email Personal
+                            {{requiredErrorText}}</span>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <label>Email Official<span class="color-red">*</span></label>
+                        <i class="icon fa fa-question-circle text-info fa-fw " title="Email should contain @ and . values"></i>
+                    </td>
+                    <td>
+                        <input type="text " class="text form-control" formControlName= "EmailOfficial" maxlength="50" />
+                        <span class="color-red" *ngIf="submitted && form_.EmailOfficial.errors">Email Official
+                            {{requiredErrorText}}</span>
+                    </td>
+                </tr>
+                
+            </table>
+        </div>
+        <div class="col-md-4">
+            <table>
+                <tr class="title">
+                    <th>
+                        <i class="fas fa-user-cog"></i>  Personal Details
+                    </th>
+                </tr>
+                <tr>
+                    <td>
+                        <label>Marital Status</label>
+                    </td>
+                    <td>
+                    <select class="form-control form-control-sm" formControlName="MaritalStatus" (change)="marriageStatus()">
+                        <option value="Married">Married</option>
+                        <option value="Unmarried">Unmarried</option>
+                    </select>
+                </td>
+                </tr>
+                <tr>
+                    <td>
+                        <label>Marriage Date</label>
+                    </td>
+                    <td>
+                        <input type="text" formControlName="MarriageDate" bsDatepicker placeholder="Marriage Date"
+                                [bsConfig]="{ isAnimated: true, dateInputFormat: 'DD-MM-YYYY' }" readonly
+                                placement="bottom" class="text form-control" id="dateOfBirth" maxlength="50" />
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <label>No. of Kids</label>
+                    </td>
+                    <td>
+                        <input type="text " formControlName= "NoOfChilds" class="text form-control" maxlength="50" />
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <label>Age Under 18</label>
+                    </td>
+                    <td>
+                        <input type="text " formControlName= "AgeUnder18" class="text form-control" maxlength="50" />
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <label>Age Above 18</label>
+                    </td>
+                    <td>
+                        <input type="text " formControlName= "AgeAbove18" class="text form-control" maxlength="50" />
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <label>Blood Group</label>
+                    </td>
+                    <td>
+                        <select class="form-control form-control-sm" formControlName="BloodGroup">
+                            <option value="A+">A+</option>
+                            <option value="B+">B+</option>
+                            <option value="B-">B-</option>
+                            <option value="O+">O+</option>
+                            <option value="O-">O-</option>
+                            <option value="AB+">AB+</option>
+                            <option value="AB-">AB-</option>
+                        </select>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <label>Height</label>
+                    </td>
+                    <td>
+                        <input type="text " formControlName= "Height" class="text form-control" maxlength="50" />
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <label>Weight</label>
+                    </td>
+                    <td>
+                        <input type="text " formControlName= "Weight" class="text form-control" maxlength="50" />
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <label>Spectacles</label>
+                    </td>
+                    <td>
+                        <input type="text " formControlName= "Spectacles" class="text form-control" maxlength="50" />
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <label>Mode of Recruitment</label>
+                    </td>
+                    <td>
+                        <select class="form-control form-control-sm" formControlName="ModeOfRecruitment" >
+                            <option value="External">External</option>
+                            <option value="Referral">Referral</option>
+                          
+                        </select>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <label>Referenced By</label>
+                    </td>
+                    <td>
+                        <input type="text " formControlName= "ReferenceBy" class="text form-control" maxlength="50" />
+                    </td>
+                </tr>
+
+                
+               
+            </table>
+
+           
+
+        </div>
+
+       
+
+            <button *ngIf="!enableUpdateButton" class="btn btn-success mx-auto d-block">Save</button>
+
+        
+    </div>
+
+
+
+       </form>
+
+
+       
+
+       <button *ngIf="enableUpdateButton" class="btn btn-success mx-auto d-block" (click)="updateEmplooyeePersonalDetails(0)">Update</button>
+
+
+  
+    
+
+</div>
+
